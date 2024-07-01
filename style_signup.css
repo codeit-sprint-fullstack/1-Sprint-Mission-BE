@@ -164,4 +164,11 @@ input {
     font-size: 0.938rem;
     font-weight: 500;
   }
-  
+
+  /* 타블렛 */
+  @media (max-width: 1199px) {
+}
+
+  /* 모바일 */
+  @media (min-width: 375px) and (max-width: 767px) {
+}

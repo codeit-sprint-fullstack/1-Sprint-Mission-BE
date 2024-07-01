@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>로그인</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,15 +13,23 @@
 </head>
 
 <body>
-    <form class="login">
+    <section>
         <a href="/" class="login_title">
             <img src="logo.svg" alt="로고">
         </a>
-        <label class="email_box">이메일</label>
-        <input id="email" type="text" placeholder="이메일을 입력해주세요" />
-        <label class="password_box">비밀번호</label>
-        <input id="password" type="password" placeholder="비밀번호를 입력해주세요" />
-        <button class="login_button">로그인</button>
+    <form class="login">
+        <div class="login_set">
+            <article class="email_box_set">
+                <label class="email_box">이메일</label>
+                <input id="email" type="text" placeholder="이메일을 입력해주세요" />
+            </article>
+            <article class="password_box_set">
+                <label class="password_box">비밀번호</label>
+                <input id="password" type="password" placeholder="비밀번호를 입력해주세요" />
+            </article>
+    
+            <button class="login_button">로그인</button>
+        </div>
         <div class="simple_login">
             <div class="simple_login_text">
                 간편 로그인하기
@@ -37,6 +46,7 @@
             <a href="/signup.html" style="color: #3182F6">회원가입</a>
         </div>
     </form>
+    </section>
 </body>
 
 </html>
