@@ -26,10 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
     passwordInput.parentNode.appendChild(passwordErrorMessage);
 
     function checkEmail() {
+        const emailLen = emailInput.value.trim()
         const emailRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-        const email_confirm = emailRegex.test(emailInput.value.trim());
-
-        if (email_confirm) {
+        const email_confirm = emailRegex.test(emailLen);
+        if (emailLen === "") {
+                        emailErrorMessage.style.display = 'none';
+            emailInput.style.border = 'none'
+        }
+        else if (email_confirm) {
             emailErrorMessage.style.display = 'none';
             emailInput.style.border = 'none'
         } else {
@@ -37,11 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
             emailInput.style.border = '1px solid #F74747';
             emailInput.style.borderRadius = '12px'
         }
-        
+        InputCheck();
     }
 
     function checkPassword() {
-        if (passwordInput.value.trim().length >= 8) {
+        if (passwordInput.value.trim() == "") {
+            passwordErrorMessage.style.display = 'none';
+            passwordInput.style.border = 'none'
+        }
+        else if (passwordInput.value.trim().length >= 8) {
             passwordErrorMessage.style.display = 'none';
             passwordInput.style.border = 'none'
         } else {
@@ -49,20 +57,39 @@ document.addEventListener('DOMContentLoaded', () => {
             passwordInput.style.border = '1px solid #F74747';
             passwordInput.style.borderRadius = '12px'
         }
-        
+        InputCheck();
     }
     
     function InputCheck() {
-        if (isValidEmail && passwordInput.value.trim().length >= 8) {
+        const confirmedEmail = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(emailInput.value.trim());
+        const confirmedPassword = passwordInput.value.trim().length >= 8;
+
+        if (confirmedEmail && confirmedPassword) {
             loginButton.style.backgroundColor = '#3692FF';
             loginButton.style.border = 'none';
         } else {
             loginButton.style.backgroundColor = '#ccc';
-            loginButton.style.border = '1px solid #ccc';
+            loginButton.style.border = '1px solid #ccc';      
         }
     }
 
     emailInput.addEventListener('input', checkEmail);
     passwordInput.addEventListener('input', checkPassword);
-    loginButton.addEventListener('input', InputCheck)
+
+    loginButton.addEventListener('click', (event) => {
+        const confirmedEmail = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(emailInput.value.trim());
+        const confirmedPassword = passwordInput.value.trim().length >= 8;
+
+        if (!confirmedEmail || !confirmedPassword) {
+            event.preventDefault();
+
+            if (!confirmedEmail && !confirmedPassword) {
+                alert('이메일과 비밀번호를 확인해주세요');
+            } else if (!confirmedEmail) {
+                alert('이메일을 확인해주세요');
+            } else if (!confirmedPassword) {
+                alert('비밀번호를 확인해주세요');
+            }
+        }
+    });
 });
