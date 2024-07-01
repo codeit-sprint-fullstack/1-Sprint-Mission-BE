@@ -1,0 +1,221 @@
+* {
+    box-sizing: border-box;
+  }
+
+html {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  
+  label {
+    color: #2c2c2c;
+    display: block;
+  }
+  
+body{
+    margin-top: 60px;
+}
+input {
+    border: 1px solid #d1d1d1;
+    color: #ababab;
+    display: block;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 16px 24px;
+    width: 100%;
+  }
+  
+  .login_button {
+    background-color: #3692FF;
+    border: none;
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 16px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 40px;
+  }
+  
+  .email_box{
+    font-weight:700;
+    font-size:1.125rem;
+  }
+
+  section{
+    display: flex;
+    flex-direction: column;
+  }
+
+  #email{
+    background-color: #F3F4F6;
+    border:none;
+  }
+
+  #email:focus{
+    outline-color: #3692FF;
+  }
+
+  #password{
+    background-color: #F3F4F6;
+    border:none;
+    background-image:url('TheEye.png');
+    background-repeat:no-repeat;
+    background-size: 24px 24px;
+    background-position: right 16px bottom 16px;
+  }
+
+  #password:focus{
+    outline-color: #3692FF;
+  }
+
+
+  .password_box{
+    font-weight:700;
+    font-size:1.125rem;
+  }
+
+  .login_title{
+    display: flex;
+    align-self: center;
+    margin-bottom: 40px;
+  }
+
+  .login_set{
+    display:flex;
+    flex-direction: column;
+    gap:24px;
+}
+
+  .email_box_set{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .password_box_set{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .login {
+    display: flex;
+    flex-direction: column;
+    margin: auto auto;
+    width: 640px;
+    gap: 24px;
+  }
+  
+  .simple_login{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #E6F2FF;
+    height:70px;
+    line-height: 24px;
+    border-radius: 8px;
+    width: 100%;
+    height: 74px;
+    border-radius: 8px;
+  }
+
+  .simple_login_text{
+    font-size: 0.938rem;
+    font-weight: 500;
+    margin-left: 25px;
+  }
+
+  .simple_login_logos{
+    display: flex;
+    margin-right: 23px;
+    position: relative;
+    width: 100px;
+    height: 42px;
+    gap: 16px;
+  }
+
+  .reg_text{
+    align-self: center;
+    font-size: 0.938rem;
+    font-weight: 500;
+  }
+  
+  /* 타블렛 */
+
+  @media (max-width: 1199px) {
+
+    html{
+        display:flex;
+        flex-direction: column;
+    }
+
+    section{
+        align-self: center;
+    }
+
+    .login{
+        gap: 24px;
+        height: 38%;
+    }
+
+    .login_set{
+        display:flex;
+        flex-direction: column;
+        gap:24px;
+    }
+
+    .simple_login_logos{
+        display: flex;
+        position: relative;
+        margin-right: 23px;
+        width: 100px;
+        height: 42px;
+        gap: 16px;
+      }
+
+
+  }
+
+  /* 모바일 */
+
+
+
+  
+
+  @media (min-width: 375px) and (max-width: 767px) {
+
+    .email_box_set, .password_box_set{
+        gap: 8px;
+    }
+
+    body {
+        display:flex;
+        justify-content: center;
+    }
+
+    .login_title{
+        margin-bottom: 24px;
+    }
+    .login {
+        width:100%;
+        gap: 24px;
+    }
+
+    .login_title{
+        height:66px;
+    }
+
+    .login_set{
+        display:flex;
+        flex-direction: column;
+        gap:16px;
+    }
+
+    section{
+        width:95%;
+    }
+
+  }
