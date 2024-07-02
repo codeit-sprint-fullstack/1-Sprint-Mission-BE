@@ -6,7 +6,7 @@
 
 - [X] React와 같은 UI 라이브러리를 사용하지 않고 진행합니다
 - [X]  PC사이즈만 고려해 주어진 디자인으로 구현합니다.
-- [X]  HTML, CSS 파일을 [Netlify](https://www.netlify.com/)로 배포해 주세요.  
+- [X]  HTML, CSS 파일을 [Netlify](https://www.netlify.com/)로 배포해 주세요.
 - [X]  랜딩 페이지의 url path는 루트(‘/’)로 설정합니다.
 - [X]  title은 “판다마켓”로 설정합니다.
 - [X]  “판다마켓” 로고 클릭 시 루트 페이지(‘/’)로 이동합니다.
@@ -36,7 +36,7 @@
 - [X]    주요 변경사항
 - [X]    멘토님에게 남길 메시지
 - [X]   Git 활용 과정에서 유닉스 커맨드를 활용해 주세요.
-- [X]   HTML, CSS 파일을 Netlify로 배포합니다. (참고: https://www.codeit.kr/learn/5309)
+- [X]   HTML, CSS 파일을 Netlify로 배포합니다.
 
 ### 로그인 페이지, 회원가입 페이지 공통
 
@@ -45,7 +45,7 @@
  - [X]   SNS 아이콘들은 클릭 시 각각 “[https://www.google.com/”](https://www.google.com/%E2%80%9D), “[https://www.kakaocorp.com/page/”](https://www.kakaocorp.com/page/%E2%80%9D) 으로 이동합니다.
 - [X]    input 요소에 focus in 일 때, 테두리 색상은 ##3692FF입니다.
 - [X]   input 요소에 focus out 일 때, 테두리는 없습니다.
- 
+
 ### 로그인 페이지
 
 - [X]   “회원가입”버튼 클릭 시 “/signup” 페이지로 이동합니다.
@@ -70,14 +70,14 @@
 
 ### 스크린샷
 
-### index.html 
+### index.html
 ![image](https://github.com/codeit-sprint-fullstack/1-Sprint-Mission-FE/assets/101076926/9287b6d0-7305-4191-b741-e8c8c101667a)
 
-### login.html 
+### login.html
 ![image](https://github.com/codeit-sprint-fullstack/1-Sprint-Mission-FE/assets/101076926/1b6004f5-ade9-4df2-b8d8-376d079fd117)
 
-### signup.html 
+### signup.html
 ![image](https://github.com/codeit-sprint-fullstack/1-Sprint-Mission-FE/assets/101076926/db9c956d-d0e9-4acf-be73-e2fa6a49a18e)
 
-### google_analytics 
+### google_analytics
 ![77F420B4-274D-46EC-A19A-6D80E1E1C63F_1_201_a](https://github.com/codeit-sprint-fullstack/1-Sprint-Mission-FE/assets/101076926/de317c61-5d6e-4dfb-8b71-db2eee3ce1a5)
