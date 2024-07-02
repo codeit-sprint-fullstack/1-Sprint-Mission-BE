@@ -239,10 +239,12 @@ section {
     .password_box_set {
         gap: 8px;
     }
+
     body{
         display: flex;
         justify-content: center;
     }
+    
     .Container {
         align-self: center;
         display:flex;
