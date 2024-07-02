@@ -1,11 +1,19 @@
 <!DOCTYPE html>
-<script src="components.js"></script>
 <html>
 
 <head>
-
+    <script src="components.js"></script>
     <link rel="icon" href="Group22.png">
-    <head-default title="판다마켓"></head-default>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <title>판다마켓</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@4.0.1/reset.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHZDZ0XHTB"></script>
@@ -18,32 +26,9 @@
     </script>
 
 </head>
-
 <body>
 
-    <Header class="Header">
-        <div class="Header_Wrapper">
-            <a class="Header_Logo" href="/">
-                <img src="headlogo.svg" alt="Header_Logo">
-            </a>
-            <a class="Header_Logo2" href="/">
-                <img src="lillogo.svg" alt="">
-            </a>
-                <div class="Header_Text">
-                    <div>
-                        자유게시판
-                    </div>
-                    <div>
-                        중고마켓
-                    </div>
-                </div>
-                <a href="./login.html" class="Login_Button">
-                    로그인
-                </a>
-        </div>
-
-
-    </Header>
+<panda-head></panda-head>
 
     <section class="Click_Part">
         <div class="Click_Part_Wrapper">
@@ -52,7 +37,7 @@
                     <side>일상의 모든 물건을</side>
                     <side>거래해 보세요</side>
                 </div>
-                <button class="Click_Button" type="button" onclick="location.href='./items.html';"
+                <button class="Click_Button" type="button" onclick="location.href='/items';"
                     style="cursor: pointer">
                     구경하러 가기
                 </button>
@@ -136,8 +121,8 @@
                     @codeit - 2024
                 </p>
                 <p class="Footer_Text_2">
-                    <a href="privacy.html"> Privacy Policy </a>
-                    <a href="faq.html"> FAQ </a>
+                    <a href="privacy"> Privacy Policy </a>
+                    <a href="faq"> FAQ </a>
                 </p>
                 <p class="Footer_Logos">
                     <a href="http://www.facebook.com" target="_blank">

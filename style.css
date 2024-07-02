@@ -601,7 +601,7 @@ side {
         align-items: flex-End;
         gap: 0px;
     }
-
+    
     .Hotitem_Part_Pic,
     .Search_Part_Pic,
     .Register_Part_Pic {
@@ -660,7 +660,7 @@ side {
     .Hotitem_Part_Pic,
     .Search_Part_Pic,
     .Register_Part_Pic {
-        padding: 16px 24px;
+        padding: 32px 16px;
         width: 100%;
         height: auto;
     }
