@@ -1,37 +1,7 @@
-class Head extends HTMLElement {
-
-    connectedCallback() {
-       this.innerHTML = 
-       `
-           <Header class="Header">
-        <a class="Header_Logo" href="/">
-            <img src="headlogo.svg" alt="Header_Logo">
-        </a>
-        <a class="Header_Logo2" href="/">
-            <img src="lillogo.svg" alt="">
-        </a>
-        <div class="Header_Text">
-            <div>
-                자유게시판
-            </div>
-            <div>
-                중고마켓
-            </div>
-        </div>
-        <a href="./login.html" class="Login_Button">
-            로그인
-        </a>
-    </Header>
-       `
-    }
- }
- 
- customElements.define("panda-head", Head);
-
- class Basic extends HTMLElement {
+class Basic extends HTMLElement {
     connectedCallback() {
 
-        let title = this.getAttribute('title') || "Default-Title";
+        let title = this.getAttribute('title') || "document";
         let style_name = this.getAttribute('style_name') || "style";
 
         this.innerHTML = 

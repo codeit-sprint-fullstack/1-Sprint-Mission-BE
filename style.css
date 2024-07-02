@@ -25,9 +25,9 @@ html {
 }
 
 .Header {
-    display: flex;
+    display:flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     top: 0;
     left: 0;
     right: 0;
@@ -36,6 +36,14 @@ html {
     height: 70px;
     background-color:var(--pure-white);
     z-index: 9999;
+}
+
+.Header_Wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width:100%;
+    max-width: 1920px;
 }
 
 .Header_Logo {
@@ -333,9 +341,11 @@ html {
 }
 
 .Footer {
+    display:flex;
     color: var(--cool-gray-200);
     background-color: #111827;
     width: 100%;
+    justify-content: center;
     height: 10rem;
 }
 
@@ -344,6 +354,8 @@ html {
     padding-top: 32px;
     position: relative;
     justify-content: space-around;
+    max-width:1920px;
+    width:100%;
 }
 
 .Footer_Text_1 {
@@ -734,6 +746,10 @@ side {
     .Footer_Wrapper {
         width: auto;
         overflow: visible;
+    }
+
+    .Footer {
+        display:block;
     }
 
     .Footer_Wrapper {
