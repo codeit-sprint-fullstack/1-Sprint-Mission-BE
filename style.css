@@ -1,5 +1,6 @@
  * {
     box-sizing: border-box;
+    word-break: keep-all;
 }
 
 @import "./reset.css";
@@ -7,6 +8,8 @@
 body {
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 span {
@@ -83,6 +86,7 @@ html {
     background-color: #cfe5ff;
     width: 100%;
     height: auto;
+    overflow-x:hidden;
 }
 
 .Click_Part_Wrapper {
@@ -90,6 +94,8 @@ html {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    position: relative;
+    left:68px;
 }
 
 .Click_Text {
@@ -140,7 +146,7 @@ html {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 64px;
 }
 
@@ -184,12 +190,18 @@ html {
     height: 45rem;
 }
 
+.Part_Align {
+    max-width: 1200px;
+    width: 100%;
+    align-self: center;
+}
+
 .Search_Part_Wrapper {
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 64px;
 }
 
@@ -239,7 +251,7 @@ html {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 64px;
 }
 
@@ -284,6 +296,7 @@ html {
     background-color: #cfe5ff;
     width: 100%;
     height: auto;
+    overflow-x:hidden;
 }
 
 .End_Part_Wrapper {
@@ -292,6 +305,8 @@ html {
     align-items: center;
     justify-content: center;
     gap: 46px;
+    position: relative;
+    left:70px;
 }
 
 .End_Text {
@@ -441,6 +456,7 @@ side {
 /* 타블렛 */
 @media (max-width: 1199px) {
 
+
     side {
         display: inline;
     }
@@ -500,6 +516,7 @@ side {
         width: 100%;
         height: auto;
         overflow-x: hidden;
+        position: static;
     }
 
     .End_Part_Wrapper {
@@ -511,6 +528,7 @@ side {
         width: 100%;
         height: auto;
         overflow-x: hidden;
+        position: static;
     }
 
     .End_Text {
@@ -556,12 +574,14 @@ side {
 
     .Hotitem_Part_Wrapper,
     .Register_Part_Wrapper {
+        position: static;
         display: flex;
         align-items: flex-start;
         gap: 0px;
     }
 
     .Search_Part_Wrapper {
+        position: static;
         display: flex;
         align-items: flex-End;
         gap: 0px;
@@ -570,6 +590,7 @@ side {
     .Hotitem_Part_Pic,
     .Search_Part_Pic,
     .Register_Part_Pic {
+        box-sizing: border-box;
         padding: 40px 24px;
         width: 100%;
         height: auto;

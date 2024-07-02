@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('email');
+    const nicknameInput = document.getElementById('nickname');
     const passwordInput = document.getElementById('password');
+    const pwConfirmInput = document.getElementById('pw_confirm')
     const loginButton = document.getElementsByClassName('login_button')[0];
 
     const emailErrorMessage = document.createElement('span');
@@ -25,24 +27,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     passwordInput.parentNode.appendChild(passwordErrorMessage);
 
-    function checkEmail() {
-        const emailLen = emailInput.value.trim()
-        const emailRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-        const email_confirm = emailRegex.test(emailLen);
-        if (emailLen === "") {
-                        emailErrorMessage.style.display = 'none';
-            emailInput.style.border = 'none'
-        }
-        else if (email_confirm) {
-            emailErrorMessage.style.display = 'none';
-            emailInput.style.border = 'none'
-        } else {
-            emailErrorMessage.style.display = 'block';
-            emailInput.style.border = '1px solid #F74747';
-            emailInput.style.borderRadius = '12px'
-        }
-        InputCheck();
-    }
+    const pwConfirmErrorMessage = document.createElement('span');
+    passwordErrorMessage.textContent = '비밀번호가 일치하지 않습니다';
+    passwordErrorMessage.style.color = '#F74747';
+    passwordErrorMessage.style.fontSize = '15px';
+    passwordErrorMessage.style.fontWeight = '600';
+    passwordErrorMessage.style.marginTop = '-8px';
+    passwordErrorMessage.style.marginLeft = '16px';
+    passwordErrorMessage.style.display = 'none';
+
+    pwConfirmInput.parentNode.appendChild(pwConfirmErrorMessage);
+
+    const nicknameErrorMessage = document.createElement('span');
+    passwordErrorMessage.textContent = '닉네임을 입력해 주세요';
+    passwordErrorMessage.style.color = '#F74747';
+    passwordErrorMessage.style.fontSize = '15px';
+    passwordErrorMessage.style.fontWeight = '600';
+    passwordErrorMessage.style.marginTop = '-8px';
+    passwordErrorMessage.style.marginLeft = '16px';
+    passwordErrorMessage.style.display = 'none';
+
+    nicknameInput.parentNode.appendChild(nicknameErrorMessage);
 
     function checkPassword() {
         if (passwordInput.value.trim() == "") {
@@ -59,12 +64,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         InputCheck();
     }
-    
+
+    function checkConfirmPassword() {
+        if (passwordConfirmInput.value.trim() == passwordInput.value.trim()) {
+            passwordErrorMessage.style.display = 'none';
+            passwordInput.style.border = 'none'
+        }
+        else if (passwordInput.value.trim().length >= 8) {
+            passwordErrorMessage.style.display = 'none';
+            passwordInput.style.border = 'none'
+        } else {
+            passwordErrorMessage.style.display = 'block';
+            passwordInput.style.border = '1px solid #F74747';
+            passwordInput.style.borderRadius = '12px'
+        }
+        InputCheck();
+    }
+
     function InputCheck() {
         const confirmedEmail = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(emailInput.value.trim());
         const confirmedPassword = passwordInput.value.trim().length >= 8;
+        const confirmedNickname = nicknameInput.value.trim().length >= 1;
 
-        if (confirmedEmail && confirmedPassword) {
+        if (confirmedEmail && confirmedPassword && confirmedNickname) {
             loginButton.style.backgroundColor = '#3692FF';
             loginButton.style.border = 'none';
         } else {
@@ -73,38 +95,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    emailInput.addEventListener('input', checkEmail);
-    passwordInput.addEventListener('input', checkPassword);
-
-    loginButton.addEventListener('click', (event) => {
-        const confirmedEmail = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(emailInput.value.trim());
-        const confirmedPassword = passwordInput.value.trim().length >= 8;
-
-        if (!confirmedEmail || !confirmedPassword) {
-            event.preventDefault();
-
-            if (!confirmedEmail && !confirmedPassword) {
-                swal.fire({
-                    text: '이메일과 비밀번호를 확인해주세요',
-                    icon: 'warning',
-                    showCloseButton: true,
-                    showConfirmButton: true
-                });
-            } else if (!confirmedEmail) {
-                swal.fire({
-                    text: '이메일을 확인해주세요',
-                    icon: 'warning',
-                    showCloseButton: true,
-                    showConfirmButton: true
-                });
-            } else if (!confirmedPassword) {
-                swal.fire({
-                    text: '비밀번호를 확인해주세요',
-                    icon: 'warning',
-                    showCloseButton: true,
-                    showConfirmButton: true
-                });
-            }
-        }
-    });
-});
+})
