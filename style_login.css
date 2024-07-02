@@ -2,6 +2,8 @@
     box-sizing: border-box;
 }
 
+
+
 html {
     font-family: 'Pretendard', sans-serif;
     font-size: 16px;
@@ -26,6 +28,11 @@ input {
     padding: 16px 24px;
     border-radius: 12px;
     width: 100%;
+}
+
+.Container {
+    display:flex;
+    margin-top:60px;
 }
 
 .login_button {
@@ -158,6 +165,11 @@ section {
         align-self: center;
     }
 
+    .Container {
+        display:flex;
+        margin-top:48px;
+    }
+
     .login {
         gap: 24px;
         height: 38%;
@@ -185,14 +197,16 @@ section {
 
 @media (min-width: 375px) and (max-width: 767px) {
 
-    .email_box_set,
-    .password_box_set {
-        gap: 8px;
-    }
+
 
     body {
         display: flex;
         justify-content: center;
+    }
+
+    .Container {
+        display:flex;
+        margin-top:24px;
     }
 
     .login_title {
@@ -212,6 +226,11 @@ section {
         display: flex;
         flex-direction: column;
         gap: 16px;
+    }
+    
+    .email_box_set,
+    .password_box_set {
+        gap: 8px;
     }
 
     section {

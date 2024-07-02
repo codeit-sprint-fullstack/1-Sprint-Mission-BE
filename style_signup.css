@@ -17,6 +17,11 @@ body {
     margin-top: 60px;
 }
 
+.Container {
+    display:flex;
+    margin-top:60px;
+}
+
 input {
     border: 1px solid #d1d1d1;
     color: #ababab;
@@ -198,8 +203,9 @@ section {
         flex-direction: column;
     }
 
-    section {
-        align-self: center;
+    .Container {
+        display:flex;
+        margin-top:48px;
     }
 
     .login {
@@ -233,10 +239,16 @@ section {
     .password_box_set {
         gap: 8px;
     }
-
-    body {
+    body{
         display: flex;
         justify-content: center;
+    }
+    .Container {
+        align-self: center;
+        display:flex;
+        margin-top:24px;
+        justify-content: center;
+        width: 95%;
     }
 
     .login_title {
@@ -259,7 +271,7 @@ section {
     }
 
     section {
-        width: 95%;
+
     }
 
 }
