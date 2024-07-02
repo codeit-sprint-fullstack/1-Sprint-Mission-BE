@@ -1,3 +1,16 @@
+
+:root {
+    /* 색 지정 */
+    --pure-white: #ffffff;
+    --background-sky: #CFE5FF;
+    --brand-blue: #3692FF;
+    ---white-font: #ffffff;
+    --cool-gray-200: #E5E7EB;
+    --cool-gray-400: #9CA3AF;
+    --cool-gray-600: #4B5563;
+    --cool-gray-700: #374151;
+}
+
 */
 
 html, body, div, span, applet, object, iframe,
@@ -43,3 +56,4 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
