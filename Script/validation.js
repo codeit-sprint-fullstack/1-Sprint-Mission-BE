@@ -1,4 +1,4 @@
-const USER_DATA = [
+export const USER_DATA = [
     { email: 'codeit1@codeit.com', password: "codeit101!" },
     { email: 'codeit2@codeit.com', password: "codeit202!" },
     { email: 'codeit3@codeit.com', password: "codeit303!" },
