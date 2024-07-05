@@ -1,3 +1,5 @@
+import * as valid from './validation.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
