@@ -25,6 +25,7 @@
                 <div class="form-group email-group">
                     <label for="email">이메일</label>
                     <input type="email" id="email" name="email" placeholder="이메일을 입력해주세요" required>
+                    <div id="email-error" class="error-message"></div>
                 </div>
                 <div class="form-group nickname-group">
                     <label for="nickname">닉네임</label>
@@ -37,6 +38,7 @@
                       <span class="toggle-visibility" onclick="togglePasswordVisibility('password', this)">
                         <img src="/Vector.svg" alt="비밀번호 표시">
                       </span>
+                      <div id="password-error" class="error-message"></div>
                     </div>
                 </div>
                 <div class="form-group password-group">
@@ -46,6 +48,7 @@
                       <span class="toggle-visibility" onclick="togglePasswordVisibility('confirm-password', this)">
                         <img src="/Vector.svg" alt="비밀번호 표시">
                       </span>
+                      <div id="confirm-password-error" class="error-message"></div>
                     </div>
                 </div>
                 <button type="submit" class="signup-btn">회원가입</button>
@@ -66,5 +69,6 @@
             </div>
         </main>
         <script src="visibility.js"></script>
+        <script src="signup.js"></script>
     </body>
 </html>
