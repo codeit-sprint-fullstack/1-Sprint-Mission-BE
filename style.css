@@ -19,7 +19,7 @@ span {
 }
 
 html {
-    font-family: "Pretendard", sans-serif;
+    font-family: "Pretendard", sans-serif !important;
     font-size: 1rem;
     font-weight: 400;
 }

@@ -1,4 +1,5 @@
 import * as valid from "./validation_signup.js";
+import { USER_DATA } from "./data.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const emailInput = document.getElementById("Email");
@@ -73,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      valid.USER_DATA.push(newUser);
+      USER_DATA.push(newUser);
       showModal("회원가입이 완료되었습니다!");
       setTimeout(() => {
         window.location.href = "/login.html";
@@ -82,6 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function isEmailAlreadyExist(email) {
-    return valid.USER_DATA.some((user) => user.email === email);
+    return USER_DATA.some((user) => user.email === email);
   }
 });

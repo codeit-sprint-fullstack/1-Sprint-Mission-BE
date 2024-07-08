@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
   emailInput.addEventListener("input", valid.ValidMail);
   passwordInput.addEventListener("input", valid.ValidPassword);
 
+
+
   loginButton.addEventListener("click", (event) => {
     const confirmedEmail =
       /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(
@@ -53,3 +55,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+const passwordInput = document.getElementById("Password");
+const toggleImage = document.getElementById("togglePassword");
+
+toggleImage.addEventListener("click", togglePasswordVisibility);
+
+function togglePasswordVisibility() {
+    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+
+    // 이미지 경로 설정
+    if (type === "password") {
+        toggleImage.src = "../TheEye.png"; // 비밀번호 보이기 이미지
+    } else {
+        toggleImage.src = "../TheEyeOpen.png"; // 비밀번호 감추기 이미지
+    }
+}

@@ -5,7 +5,7 @@
 }
 
 html {
-    font-family: 'Pretendard', sans-serif;
+    font-family: 'Pretendard', sans-serif !important;
     font-size: 16px;
     font-weight: 400;
 }
@@ -83,10 +83,6 @@ section {
 #Password {
     background-color: #F3F4F6;
     border: none;
-    background-image: url('TheEye.png');
-    background-repeat: no-repeat;
-    background-size: 24px 24px;
-    background-position: right 16px bottom 16px;
 }
 
 #Password:focus {
@@ -102,10 +98,6 @@ section {
 #Password_con {
     background-color: #F3F4F6;
     border: none;
-    background-image: url('TheEye.png');
-    background-repeat: no-repeat;
-    background-size: 24px 24px;
-    background-position: right 16px bottom 16px;
 }
 
 #Password_con:focus {
