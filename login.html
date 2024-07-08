@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html>
-    <script type="module" src="login_js.js"></script>
-    <script src="components.js"></script>
 <head>
     <link rel="icon" href="Group22.png">
     <link rel="icon" href="Group22.png">
@@ -25,15 +23,15 @@
         <form class="login">
             <div class="login_set">
                 <article class="email_box_set">
-                    <label class="email_box">이메일</label>
-                    <input id="email" type="text" placeholder="이메일을 입력해주세요" />
+                    <label for="Email" class="email_box">이메일</label>
+                    <input id="Email" type="email" placeholder="이메일을 입력해주세요" />
                 </article>
                 <article class="password_box_set">
-                    <label class="password_box">비밀번호</label>
-                    <input id="password" type="password" placeholder="비밀번호를 입력해주세요" />
+                    <label for="Password" class="password_box">비밀번호</label>
+                    <input id="Password" type="password" placeholder="비밀번호를 입력해주세요" />
                 </article>
 
-                <button class="login_button">로그인</button>
+                <button type="button" class="login_button" disabled>로그인</button>
             </div>
             <div class="simple_login">
                 <div class="simple_login_text">
@@ -50,9 +48,15 @@
                 판다마켓이 처음이신가요?
                 <a href="/signup.html" style="color: #3182F6">회원가입</a>
             </div>
+            <div class="modal" id="customModal">
+                <div class="modal_popup">
+                    <span id="modalMessage"></span>
+                    <button type="button" class="close_btn" id="closeModalBtn">닫기</button>
+                </div>
+            </div>
         </form>
     </section>
-
+    <script type="module" src="Script/login_js.js"></script>
 </body>
 
 </html>

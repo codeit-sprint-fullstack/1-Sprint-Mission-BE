@@ -1,64 +1,55 @@
-import * as valid from './validation.js';
+import * as valid from "./validation_login.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const loginButton = document.getElementsByClassName('login_button')[0];
+document.addEventListener("DOMContentLoaded", () => {
+  const emailInput = document.getElementById("Email");
+  const passwordInput = document.getElementById("Password");
+  const loginButton = document.querySelector(".login_button");
+  const modal = document.getElementById("customModal");
+  const modalMessage = document.getElementById("modalMessage");
+  const closeModalBtn = document.getElementById("closeModalBtn");
 
-    const emailErrorMessage = document.createElement('span');
-    emailErrorMessage.textContent = '잘못된 이메일 입니다';
-    emailErrorMessage.style.color = '#F74747';
-    emailErrorMessage.style.fontSize = '15px';
-    emailErrorMessage.style.fontWeight = '600';
-    emailErrorMessage.style.marginTop = '-8px';
-    emailErrorMessage.style.marginLeft = '16px';
-    emailErrorMessage.style.display = 'none';
+  closeModalBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
 
-    emailInput.parentNode.appendChild(emailErrorMessage);
+  const showModal = (message) => {
+    modalMessage.textContent = message;
+    modal.style.display = "flex";
+  };
 
-    const passwordErrorMessage = document.createElement('span');
-    passwordErrorMessage.textContent = '비밀번호를 8자 이상 입력해주세요';
-    passwordErrorMessage.style.color = '#F74747';
-    passwordErrorMessage.style.fontSize = '15px';
-    passwordErrorMessage.style.fontWeight = '600';
-    passwordErrorMessage.style.marginTop = '-8px';
-    passwordErrorMessage.style.marginLeft = '16px';
-    passwordErrorMessage.style.display = 'none';
+  const emailErrorMessage = valid.createErrorMessage("잘못된 이메일입니다");
+  emailInput.parentNode.appendChild(emailErrorMessage);
 
-    passwordInput.parentNode.appendChild(passwordErrorMessage);
+  const passwordErrorMessage =
+    valid.createErrorMessage("비밀번호를 8자 이상 입력해주세요");
+  passwordInput.parentNode.appendChild(passwordErrorMessage);
 
-    emailInput.addEventListener('input', checkEmail);
-    passwordInput.addEventListener('input', checkPassword);
+  emailInput.addEventListener("input", valid.ValidMail);
+  passwordInput.addEventListener("input", valid.ValidPassword);
 
-    loginButton.addEventListener('click', (event) => {
-        const confirmedEmail = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(emailInput.value.trim());
-        const confirmedPassword = passwordInput.value.trim().length >= 8;
+  loginButton.addEventListener("click", (event) => {
+    const confirmedEmail =
+      /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(
+        emailInput.value.trim()
+      );
+    const confirmedPassword = passwordInput.value.trim().length >= 8;
 
-        if (!confirmedEmail || !confirmedPassword) {
-            event.preventDefault();
+    if (!confirmedEmail || !confirmedPassword) {
+      event.preventDefault();
 
-            if (!confirmedEmail && !confirmedPassword) {
-                swal.fire({
-                    text: '이메일과 비밀번호를 확인해주세요',
-                    icon: 'warning',
-                    showCloseButton: true,
-                    showConfirmButton: true
-                });
-            } else if (!confirmedEmail) {
-                swal.fire({
-                    text: '이메일을 확인해주세요',
-                    icon: 'warning',
-                    showCloseButton: true,
-                    showConfirmButton: true
-                });
-            } else if (!confirmedPassword) {
-                swal.fire({
-                    text: '비밀번호를 확인해주세요',
-                    icon: 'warning',
-                    showCloseButton: true,
-                    showConfirmButton: true
-                });
-            }
-        }
-    });
+      if (!confirmedEmail && !confirmedPassword) {
+        showModal("올바른 이메일 및 비밀번호를 입력해주세요");
+      } else if (!confirmedEmail) {
+        showModal("올바른 이메일 양식이 아닙니다");
+      } else if (!confirmedPassword) {
+        showModal("올바른 비밀번호 양식이 아닙니다");
+      }
+    } else {
+      valid.ValueChecker(
+        emailInput.value.trim(),
+        passwordInput.value.trim(),
+        event
+      );
+    }
+  });
 });

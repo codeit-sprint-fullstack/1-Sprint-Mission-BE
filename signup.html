@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <script src="Script/signup_js.js"></script>
-    <script src="Script/components.js"></script>
 
 <head>
-    <link rel="icon" href="Group22.png">
     <link rel="icon" href="Group22.png">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,9 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" as="style" crossorigin
-    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@4.0.1/reset.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 </head>
 
 <body>
@@ -27,21 +22,21 @@
             <div class="login_set">
                 <article class="email_box_set">
                     <label class="email_box">이메일</label>
-                    <input id="email" type="text" placeholder="이메일을 입력해주세요" />
+                    <input id="Email" type="text" placeholder="이메일을 입력해주세요" />
                 </article>
                 <article class="nickname_box_set">
-                    <label class="nickname_box">닉네임</label>
-                    <input id="nickname" type="text" placeholder="비밀번호를 입력해주세요" />
+                    <label for="Nickname" class="nickname_box">닉네임</label>
+                    <input id="Nickname" type="text" placeholder="닉네임을 입력해주세요" />
                 </article>
                 <article class="password_box_set">
                     <label class="password_box">비밀번호</label>
-                    <input id="password" type="password" placeholder="비밀번호를 입력해주세요" />
+                    <input id="Password" type="password" placeholder="비밀번호를 입력해주세요" />
                 </article>
                 <article class="password_con_box_set">
                     <label class="password_con_box">비밀번호 확인</label>
-                    <input id="password_con" type="password" placeholder="비밀번호를 다시 한 번 입력해주세요" />
+                    <input id="Password_con" type="password" placeholder="비밀번호를 다시 한 번 입력해주세요" />
                 </article>
-                <button class="login_button">로그인</button>
+                <button type="button" class="login_button">회원가입</button>
             </div>
             <div class="simple_login">
                 <div class="simple_login_text">
@@ -56,11 +51,17 @@
             </div>
             <div class="reg_text">
                 이미 회원이신가요?
-                <a href="/signup.html" style="color: #3182F6">로그인</a>
+                <a href="/login.html" style="color: #3182F6">로그인</a>
             </div>
         </form>
+        <div class="modal" id="customModal">
+            <div class="modal_popup">
+                <span id="modalMessage"></span>
+                <button type="button" class="close_btn" id="closeModalBtn">닫기</button>
+            </div>
+        </div>
     </section>
-
+    <script type="module" src="Script/signup_js.js"></script>
 </body>
 
 </html>
