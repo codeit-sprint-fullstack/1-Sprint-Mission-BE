@@ -126,7 +126,6 @@ section {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    max-height: 89.95px;
 }
 
 .nickname_box_set {
