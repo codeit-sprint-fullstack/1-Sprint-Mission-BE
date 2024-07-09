@@ -96,7 +96,7 @@ html {
     justify-content: center;
     background-color: var(--background-sky);
     width: 100%;
-    height: auto;
+    height: 540px;
     overflow-x:hidden;
 }
 
@@ -388,7 +388,7 @@ html {
     cursor: pointer;
 }
 
-/* 판다파는곳 */
+/* item.css */
 
 .top_title {
     font-size: 3.2rem;
@@ -559,6 +559,10 @@ side {
         line-height: 56px;
     }
 
+    .Click_Part {
+        height:auto;
+    }
+
     .Click_Text {
         display: block;
         width: auto;
@@ -637,8 +641,14 @@ side {
 /* 모바일 */
 @media (min-width: 375px) and (max-width: 767px) {
 
+
+
     side {
         display: block
+    }
+
+    .Click_Part {
+        height:auto;
     }
 
     .Click_Text {

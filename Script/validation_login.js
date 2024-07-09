@@ -59,7 +59,7 @@ import { USER_DATA } from "./data.js";
     InputValid();
   }
 
-  
+
   export function InputValid() {
     const emailInput = document.getElementById("Email");
     const passwordInput = document.getElementById("Password");
