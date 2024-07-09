@@ -75,9 +75,9 @@ section {
 
 #togglePassword{
     width:24px;
-    position: relative;
-    left:92.5%;
-    bottom:40px;
+    position: absolute;
+    right:25px;
+    top: 16.5px;
 }
 
 .visible {

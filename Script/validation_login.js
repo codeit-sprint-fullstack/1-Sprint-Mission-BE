@@ -107,7 +107,7 @@ import { USER_DATA } from "./data.js";
     errorMessage.style.color = "#F74747";
     errorMessage.style.fontSize = "15px";
     errorMessage.style.fontWeight = "600";
-    errorMessage.style.marginTop = "-8px";
+    errorMessage.style.marginTop = "8px";
     errorMessage.style.marginLeft = "16px";
     errorMessage.style.display = "none";
     return errorMessage;

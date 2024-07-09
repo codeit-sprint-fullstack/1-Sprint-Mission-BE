@@ -20,11 +20,15 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "flex";
   };
 
-  const emailErrorMessage = valid.createErrorMessage("잘못된 이메일입니다");
+  const emailErrorMessage = 
+  valid.createErrorMessage("잘못된 이메일입니다");
+
   const nicknameErrorMessage =
     valid.createErrorMessage("닉네임을 입력해 주세요");
+
   const passwordErrorMessage =
     valid.createErrorMessage("비밀번호를 8자 이상 입력해주세요");
+
   const passwordConErrorMessage =
     valid.createErrorMessage("비밀번호가 일치하지 않습니다");
 
@@ -35,8 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   emailInput.addEventListener("input", valid.ValidMail);
   passwordInput.addEventListener("input", valid.ValidPassword);
-  passwordConInput.addEventListener("input", valid.ValidConPassword);
+  passwordConInput.addEventListener("input", valid.ValidPasswordConfirm);
 
+
+// 로그인 시도시 검사
   loginButton.addEventListener("click", (event) => {
     const confirmedEmail =
       /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(
@@ -86,3 +92,38 @@ document.addEventListener("DOMContentLoaded", () => {
     return USER_DATA.some((user) => user.email === email);
   }
 });
+
+// 비밀번호란 토글
+const passwordInput = document.getElementById("Password");
+const toggleImage = document.getElementById("togglePassword");
+
+toggleImage.addEventListener("click", togglePasswordVisibility);
+
+function togglePasswordVisibility() {
+    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+
+    if (type === "password") {
+        toggleImage.src = "../TheEye.png";
+    } else {
+        toggleImage.src = "../TheEyeOpen.png";
+    }
+}
+
+
+// 비밀번호 확인란 토글
+const passwordInputCon = document.getElementById("Password_con");
+const toggleImageCon = document.getElementById("togglePassword_con");
+
+toggleImageCon.addEventListener("click", togglePasswordVisibilityCon);
+
+function togglePasswordVisibilityCon() {
+    const type = passwordInputCon.getAttribute("type") === "password" ? "text" : "password";
+    passwordInputCon.setAttribute("type", type);
+
+    if (type === "password") {
+        toggleImageCon.src = "../TheEye.png";
+    } else {
+        toggleImageCon.src = "../TheEyeOpen.png";
+    }
+}
