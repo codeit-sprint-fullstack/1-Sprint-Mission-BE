@@ -505,7 +505,7 @@ side {
     font-weight: 600;
     width: 88px;
     height: 42px;
-    margin-right: 34px;
+    margin-right: 24px;
     line-height: 42px;
     text-align: center;
     background-color: var(--brand-blue);
@@ -665,6 +665,21 @@ side {
     font-size: 16px;
     margin-left: 113px;
     gap: 8px;
+  }
+
+  .Login_Button {
+    font-size: 1rem;
+    font-weight: 600;
+    width: 88px;
+    height: 42px;
+    margin-right: 16px;
+    line-height: 42px;
+    text-align: center;
+    background-color: var(--brand-blue);
+    color: var(--pure-white);
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
   }
 
   .Hotitem_Part_Pic,
