@@ -1,8 +1,8 @@
 import * as valid from "./validation_login.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const emailInput = document.getElementById("Email");
-  const passwordInput = document.getElementById("Password");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
   const loginButton = document.querySelector(".login_button");
   const modal = document.getElementById("customModal");
   const modalMessage = document.getElementById("modalMessage");
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-const passwordInput = document.getElementById("Password");
+const passwordInput = document.getElementById("password");
 const toggleImage = document.getElementById("togglePassword");
 
 toggleImage.addEventListener("click", togglePasswordVisibility);

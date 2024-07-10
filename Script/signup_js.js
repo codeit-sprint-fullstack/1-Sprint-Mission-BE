@@ -2,10 +2,10 @@ import * as valid from "./validation_signup.js";
 import { USER_DATA } from "./data.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const emailInput = document.getElementById("Email");
-  const nicknameInput = document.getElementById("Nickname");
-  const passwordInput = document.getElementById("Password");
-  const passwordConInput = document.getElementById("Password_con");
+  const emailInput = document.getElementById("email");
+  const nicknameInput = document.getElementById("nickname");
+  const passwordInput = document.getElementById("nassword");
+  const passwordConInput = document.getElementById("password_con");
   const loginButton = document.querySelector(".login_button");
   const modal = document.getElementById("customModal");
   const modalMessage = document.getElementById("modalMessage");
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 비밀번호란 토글
-const passwordInput = document.getElementById("Password");
+const passwordInput = document.getElementById("password");
 const toggleImage = document.getElementById("togglePassword");
 
 toggleImage.addEventListener("click", togglePasswordVisibility);
@@ -112,7 +112,7 @@ function togglePasswordVisibility() {
 
 
 // 비밀번호 확인란 토글
-const passwordInputCon = document.getElementById("Password_con");
+const passwordInputCon = document.getElementById("password_con");
 const toggleImageCon = document.getElementById("togglePassword_con");
 
 toggleImageCon.addEventListener("click", togglePasswordVisibilityCon);
