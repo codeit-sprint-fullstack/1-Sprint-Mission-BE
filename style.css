@@ -515,7 +515,6 @@ side {
     text-decoration: none;
   }
 
-
   .Hotitem_Part_Wrapper,
   .Search_Part_Wrapper,
   .Register_Part_Wrapper {
@@ -610,14 +609,14 @@ side {
   .Search_Part_Pic,
   .Register_Part_Pic {
     box-sizing: border-box;
-    padding: 40px 24px;
+    padding: 16px 24px;
     width: 100%;
     height: auto;
   }
 
   .Hotitem_Part_Text_Hug,
   .Search_Part_Text_Hug {
-    margin: 16px 24px;
+    margin: 0px 24px;
     margin-bottom: 40px;
     position: relative;
     display: flex;
@@ -626,7 +625,7 @@ side {
   }
 
   .Register_Part_Text_Hug {
-    margin: 16px 24px;
+    margin: 0px 24px;
     margin-bottom: 80px;
     position: relative;
     display: flex;
@@ -639,7 +638,7 @@ side {
 }
 
 /* 모바일 */
-@media (max-width: 767px) {
+@media (max-width: 743px) {
 
 
 
@@ -685,7 +684,7 @@ side {
   .Hotitem_Part_Pic,
   .Search_Part_Pic,
   .Register_Part_Pic {
-    padding: 32px 16px;
+    padding: 8px 16px;
     width: 100%;
     height: auto;
   }
@@ -693,7 +692,8 @@ side {
   .Hotitem_Part_Text_Hug,
   .Search_Part_Text_Hug {
     margin: 16px 24px;
-    margin-bottom: 40px;
+    margin-top: 0px;
+    margin-bottom: 32px;
     position: relative;
     display: flex;
     flex-direction: column;
