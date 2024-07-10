@@ -1,17 +1,17 @@
 import { USER_DATA } from "./data.js";
 
-  document.getElementById("Email").addEventListener("input", ValidMail);
-  document.getElementById("Password").addEventListener("input", ValidPassword);
+  document.getElementById("email").addEventListener("input", ValidMail);
+  document.getElementById("password").addEventListener("input", ValidPassword);
   document
     .querySelector(".login_button")
     .addEventListener("click", function (event) {
-      const email = document.getElementById("Email").value.trim();
-      const password = document.getElementById("Password").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
       ValueChecker(email, password, event);
     });
   
   export function ValidMail() {
-    const emailInput = document.getElementById("Email");
+    const emailInput = document.getElementById("email");
     const emailErrorMessage = emailInput.parentNode.querySelector("span");
     if (!emailErrorMessage) {
       emailErrorMessage = createErrorMessage("유효한 이메일을 입력해주세요.");
@@ -36,7 +36,7 @@ import { USER_DATA } from "./data.js";
   }
   
   export function ValidPassword() {
-    const passwordInput = document.getElementById("Password");
+    const passwordInput = document.getElementById("password");
     const passwordErrorMessage = passwordInput.parentNode.querySelector("span");
     if (!passwordErrorMessage) {
       passwordErrorMessage = createErrorMessage(
@@ -61,8 +61,8 @@ import { USER_DATA } from "./data.js";
 
 
   export function InputValid() {
-    const emailInput = document.getElementById("Email");
-    const passwordInput = document.getElementById("Password");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
     const loginButton = document.querySelector(".login_button");
   
     const email = emailInput.value.trim();

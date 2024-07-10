@@ -57,12 +57,12 @@ section {
     font-size: 1.125rem;
 }
 
-#Email {
+#email {
     background-color: #F3F4F6;
     border: none;
 }
 
-#Email:focus {
+#email:focus {
     outline-color: #3692FF;
 }
 
@@ -71,21 +71,21 @@ section {
     font-size: 1.125rem;
 }
 
-#Nickname {
+#nickname {
     background-color: #F3F4F6;
     border: none;
 }
 
-#Nickname:focus {
+#nickname:focus {
     outline-color: #3692FF;
 }
 
-#Password {
+#password {
     background-color: #F3F4F6;
     border: none;
 }
 
-#Password:focus {
+#password:focus {
     outline-color: #3692FF;
 }
 
@@ -95,12 +95,12 @@ section {
     font-size: 1.125rem;
 }
 
-#Password_con {
+#password_con {
     background-color: #F3F4F6;
     border: none;
 }
 
-#Password_con:focus {
+#password_con:focus {
     outline-color: #3692FF;
 }
 

@@ -59,16 +59,16 @@ section {
     flex-direction: column;
 }
 
-#Email {
+#email {
     background-color: #F3F4F6;
     border: none;
 }
 
-#Email:focus {
+#email:focus {
     outline-color: #3692FF;
 }
 
-#Password {
+#password {
     background-color: #F3F4F6;
     border: none;
 }
