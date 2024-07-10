@@ -738,6 +738,7 @@ side {
 
   .End_Text {
     font-size: 2rem;
+    white-space: nowrap
   }
 
   .End_Pic {
