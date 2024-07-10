@@ -1,469 +1,469 @@
 @import "./reset.css";
 
 * {
-    box-sizing: border-box;
-    word-break: keep-all;
-    font-family: "Pretendard", sans-serif !important;
+  box-sizing: border-box;
+  word-break: keep-all;
+  font-family: "Pretendard", sans-serif !important;
 }
 
 
-    /* 본문 */
+/* 본문 */
 body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 span {
-    display: block
+  display: block
 }
 
 html {
-    font-size: 1rem;
-    font-weight: 400;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .Header {
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    top: 0;
-    left: 0;
-    right: 0;
-    position: sticky;
-    width: 100%;
-    height: 70px;
-    background-color:var(--pure-white);
-    z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: sticky;
+  width: 100%;
+  height: 70px;
+  background-color: var(--pure-white);
+  z-index: 9999;
 }
 
-.Header_Wrapper{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width:100%;
-    max-width: 1920px;
+.Header_Wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1920px;
 }
 
 .Header_Logo {
-    cursor: pointer;
-    position: absolute;
-    margin-left: 200px;
-    width: 153px;
-    height: 51px;
+  cursor: pointer;
+  position: absolute;
+  margin-left: 200px;
+  width: 153px;
+  height: 51px;
 }
 
 .Header_Logo2 {
-    display:none;
-    cursor: pointer;
-    position: absolute;
-    margin-left: 16px;
-    width: 81px;
-    height: 40px;
+  display: none;
+  cursor: pointer;
+  position: absolute;
+  margin-left: 16px;
+  width: 81px;
+  height: 40px;
 }
 
 .Header_Text {
-    display: flex;
-    align-items: center;
-    margin-left: 385px;
-    width: 218px;
-    height: 69px;
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 1.343rem;
-    gap: 2.875rem;
-    color: var(--cool-gray-600)
+  display: flex;
+  align-items: center;
+  margin-left: 385px;
+  width: 218px;
+  height: 69px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.343rem;
+  gap: 2.875rem;
+  color: var(--cool-gray-600)
 }
 
 .Login_Button {
-    font-size:1rem;
-    font-weight: 600;
-    width:88px;
-    height:42px;
-    margin-right: 200px;
-    line-height: 42px;
-    text-align: center;
-    background-color: var(--brand-blue);
-    color: var(--pure-white);
-    border-radius: 8px;
-    cursor:pointer;
-    text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  width: 88px;
+  height: 42px;
+  margin-right: 200px;
+  line-height: 42px;
+  text-align: center;
+  background-color: var(--brand-blue);
+  color: var(--pure-white);
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .Click_Part {
-    display: flex;
-    justify-content: center;
-    background-color: var(--background-sky);
-    width: 100%;
-    height: 540px;
-    overflow-x:hidden;
+  display: flex;
+  justify-content: center;
+  background-color: var(--background-sky);
+  width: 100%;
+  height: 540px;
+  overflow-x: hidden;
 }
 
 .Click_Part_Wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    left:68px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: 68px;
 }
 
 .Click_Text {
-    font-weight: 700;
-    font-size: 2.5rem;
-    line-height: 1.4;
-    color:var(--cool-gray-700);
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.4;
+  color: var(--cool-gray-700);
 }
 
 .Click_Pic {
-    width: 996px;
-    height: auto;
-    align-self: flex-end;
+  width: 996px;
+  height: auto;
+  align-self: flex-end;
 }
 
 .Click_Part_Hug {
-    position: relative;
-    width:auto;
-    left: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  position: relative;
+  width: auto;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .Click_Button {
-    padding: 16px, 124px, 16px, 124px;
-    width: 357px;
-    height: 56px;
-    border-radius: 40px;
-    gap: 10px;
-    background-color: var(--brand-blue);
-    border: none;
-    font-size: 20px;
-    line-height: 24px;
-    font-weight: 600;
-    color: var(--pure-white);
-    cursor: pointer;
+  padding: 16px, 124px, 16px, 124px;
+  width: 357px;
+  height: 56px;
+  border-radius: 40px;
+  gap: 10px;
+  background-color: var(--brand-blue);
+  border: none;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--pure-white);
+  cursor: pointer;
 }
 
 .Hotitem_Part {
-    background-color: var(--pure-white);
-    height: 45rem;
-    margin-top: 138px;
+  background-color: var(--pure-white);
+  height: 45rem;
+  margin-top: 138px;
 }
 
 .Hotitem_Part_Wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 64px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 64px;
 }
 
 .Hotitem_Part_Pic {
-    width: 588px;
-    height: 444px;
+  width: 588px;
+  height: 444px;
 }
 
 .Hotitem_Part_Text_Hug {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .Hotitem_Part_Text_1 {
-    color: var(--brand-blue);
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 25.2px;
+  color: var(--brand-blue);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 25.2px;
 }
 
 .Hotitem_Part_Text_2 {
-    color: var(--cool-gray-700);
-    font-size: 2.5rem;
-    font-weight: 700;
-    letter-spacing: 0.02rem;
-    line-height: 56px;
+  color: var(--cool-gray-700);
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02rem;
+  line-height: 56px;
 }
 
 .Hotitem_Part_Text_3 {
-    color: var(--cool-gray-700);
-    font-size: 1.5rem;
-    font-weight: 500;
-    letter-spacing: 0.08rem;
-    line-height: 1.8rem;
+  color: var(--cool-gray-700);
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.08rem;
+  line-height: 1.8rem;
 }
 
 .Search_Part {
-    background-color: var(--pure-white);
-    width: 100%;
-    height: 45rem;
+  background-color: var(--pure-white);
+  width: 100%;
+  height: 45rem;
 }
 
 .Part_Align {
-    max-width: 1200px;
-    width: 100%;
-    align-self: center;
+  max-width: 1200px;
+  width: 100%;
+  align-self: center;
 }
 
 .Search_Part_Wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 64px;
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 64px;
 }
 
 .Search_Part_Pic {
-    width: 588px;
-    height: 444px;
+  width: 588px;
+  height: 444px;
 }
 
 .Search_Part_Text_Hug {
-    text-align: end;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  text-align: end;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .Search_Part_Text_1 {
-    color: var(--brand-blue);
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 25.2px;
+  color: var(--brand-blue);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 25.2px;
 }
 
 .Search_Part_Text_2 {
-    color: var(--cool-gray-700);
-    font-size: 2.5rem;
-    font-weight: 700;
-    letter-spacing: 0.02rem;
-    line-height: 56px;
+  color: var(--cool-gray-700);
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02rem;
+  line-height: 56px;
 }
 
 .Search_Part_Text_3 {
-    color: var(--cool-gray-700);
-    font-size: 1.5rem;
-    font-weight: 500;
-    letter-spacing: 0.08rem;
-    line-height: 1.8rem;
+  color: var(--cool-gray-700);
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.08rem;
+  line-height: 1.8rem;
 }
 
 .Register_Part {
-    background-color: var(--pure-white);
-    width: 100%;
-    height: 45rem;
+  background-color: var(--pure-white);
+  width: 100%;
+  height: 45rem;
 }
 
 .Register_Part_Wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 64px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 64px;
 }
 
 .Register_Part_Pic {
-    width: 588px;
-    height: 444px;
+  width: 588px;
+  height: 444px;
 }
 
 .Register_Part_Text_Hug {
-    text-align: start;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  text-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .Register_Part_Text_1 {
-    color: var(--brand-blue);
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 25.2px;
+  color: var(--brand-blue);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 25.2px;
 }
 
 .Register_Part_Text_2 {
-    color: var(--cool-gray-700);
-    font-size: 2.5rem;
-    font-weight: 700;
-    letter-spacing: 0.02rem;
-    line-height: 56px;
+  color: var(--cool-gray-700);
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02rem;
+  line-height: 56px;
 }
 
 .Register_Part_Text_3 {
-    color: var(--cool-gray-700);
-    font-size: 1.5rem;
-    font-weight: 500;
-    letter-spacing: 0.08rem;
-    line-height: 1.8rem;
+  color: var(--cool-gray-700);
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.08rem;
+  line-height: 1.8rem;
 }
 
 .End_Part {
-    display: flex;
-    justify-content: center;
-    background-color: var(--background-sky);
-    width: 100%;
-    height: auto;
-    overflow-x:hidden;
+  display: flex;
+  justify-content: center;
+  background-color: var(--background-sky);
+  width: 100%;
+  height: auto;
+  overflow-x: hidden;
 }
 
 .End_Part_Wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 46px;
-    position: relative;
-    left:70px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 46px;
+  position: relative;
+  left: 70px;
 }
 
 .End_Text {
-    font-weight: 700;
-    font-size: 2.5rem;
-    line-height: 1.4;
-    color:var(--cool-gray-700);
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.4;
+  color: var(--cool-gray-700);
 }
 
 .End_Pic {
-    width: 996px;
-    height: auto;
-    align-self: flex-end;
+  width: 996px;
+  height: auto;
+  align-self: flex-end;
 }
 
 .End_Part_Hug {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .Footer {
-    display:flex;
-    color: var(--cool-gray-200);
-    background-color: #111827;
-    width: 100%;
-    justify-content: center;
-    height: 10rem;
+  display: flex;
+  color: var(--cool-gray-200);
+  background-color: #111827;
+  width: 100%;
+  justify-content: center;
+  height: 10rem;
 }
 
 .Footer_Wrapper {
-    display: flex;
-    padding-top: 32px;
-    position: relative;
-    justify-content: space-around;
-    max-width:1920px;
-    width:100%;
+  display: flex;
+  padding-top: 32px;
+  position: relative;
+  justify-content: space-around;
+  max-width: 1920px;
+  width: 100%;
 }
 
 .Footer_Text_1 {
-    color: var(--cool-gray-400);
-    grid-area: A;
+  color: var(--cool-gray-400);
+  grid-area: A;
 }
 
 .Footer_Text_2 {
-    display: flex;
-    gap: 30px;
-    color: var(--cool-gray-200);
-    grid-area: B;
+  display: flex;
+  gap: 30px;
+  color: var(--cool-gray-200);
+  grid-area: B;
 }
 
 .Footer_Text_2 a {
-    color: var(--cool-gray-200);
-    cursor: pointer;
-    text-decoration: none;
+  color: var(--cool-gray-200);
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .Footer_Logos {
-    display: flex;
-    gap: 0.75rem;
-    grid-area: C;
+  display: flex;
+  gap: 0.75rem;
+  grid-area: C;
 }
 
 .Footer_Logos img {
-    width: 20px; 
-    height: 20px; 
-    cursor: pointer;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 
 /* item.css */
 
 .top_title {
-    font-size: 3.2rem;
-    font-weight: 600;
-    margin-top: 100px;
-    text-align: center;
-    margin-bottom: 100px;
+  font-size: 3.2rem;
+  font-weight: 600;
+  margin-top: 100px;
+  text-align: center;
+  margin-bottom: 100px;
 }
 
 
 
 .item {
-    width: 100%;
-    height: 300px;
-    flex-grow: 0;
-    flex-basis: auto;
-    margin: auto;
+  width: 100%;
+  height: 300px;
+  flex-grow: 0;
+  flex-basis: auto;
+  margin: auto;
 }
 
 .item_row {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 100px;
-    gap: 30px;
-    place-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 100px;
+  gap: 30px;
+  place-items: center;
 
 }
 
 .item_name {
-    font-size: 1.563rem;
-    margin-top: 10px;
-    font-weight: 400;
-    text-overflow: ellipsis;
-    white-space: wrap;
+  font-size: 1.563rem;
+  margin-top: 10px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: wrap;
 }
 
 .item_price {
-    margin-top: 10px;
-    font-weight: 700;
+  margin-top: 10px;
+  font-weight: 700;
 }
 
 .item_place {
-    font-weight: 400;
-    font-size: smaller;
-    margin-top: 10px;
+  font-weight: 400;
+  font-size: smaller;
+  margin-top: 10px;
 }
 
 .like_chatting {
-    display: flex;
-    flex-direction: row;
-    color: #969ea5b9;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  color: #969ea5b9;
+  margin-top: 10px;
 }
 
 .like {
-    font-size: smaller;
+  font-size: smaller;
 }
 
 .chat {
-    font-size: smaller;
+  font-size: smaller;
 }
 
 .wrap {
-    display: block;
-    width: 900px;
-    margin-left: auto;
-    margin-right: auto;
+  display: block;
+  width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .none {
-    opacity: 0.25;
+  opacity: 0.25;
 }
 
 side {
-    display: block
+  display: block
 }
 
 /* 미디어 쿼리 */
@@ -472,167 +472,167 @@ side {
 @media (max-width: 1199px) {
 
 
-    side {
-        display: inline;
-    }
+  side {
+    display: inline;
+  }
 
-    span {
-        display: inline;
-    }
+  span {
+    display: inline;
+  }
 
-    .Header_Logo {
-        cursor: pointer;
-        position: absolute;
-        margin-left: 24px;
-        width: 153px;
-        height: 51px;
-    }
+  .Header_Logo {
+    cursor: pointer;
+    position: absolute;
+    margin-left: 24px;
+    width: 153px;
+    height: 51px;
+  }
 
-    .Header_Text {
-        display: flex;
-        align-items: center;
-        margin-left: 197px;
-        width: 218px;
-        height: 69px;
-        font-size: 1.125rem;
-        font-weight: 700;
-        line-height: 1.343rem;
-        gap: 2.875rem;
-    }
+  .Header_Text {
+    display: flex;
+    align-items: center;
+    margin-left: 197px;
+    width: 218px;
+    height: 69px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.343rem;
+    gap: 2.875rem;
+  }
 
-    .Login_Button {
-        font-size: 1rem;
-        font-weight: 600;
-        width: 88px;
-        height: 42px;
-        margin-right: 34px;
-        line-height: 42px;
-        text-align: center;
-        background-color: var(--brand-blue);
-        color: var(--pure-white);
-        border-radius: 8px;
-        cursor: pointer;
-        text-decoration: none;
-    }
+  .Login_Button {
+    font-size: 1rem;
+    font-weight: 600;
+    width: 88px;
+    height: 42px;
+    margin-right: 34px;
+    line-height: 42px;
+    text-align: center;
+    background-color: var(--brand-blue);
+    color: var(--pure-white);
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+  }
 
 
-    .Hotitem_Part_Wrapper,
-    .Search_Part_Wrapper,
-    .Register_Part_Wrapper {
-        flex-direction: column;
-    }
+  .Hotitem_Part_Wrapper,
+  .Search_Part_Wrapper,
+  .Register_Part_Wrapper {
+    flex-direction: column;
+  }
 
-    .Click_Part_Wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--background-sky);
-        width: 100%;
-        height: auto;
-        overflow-x: hidden;
-        position: static;
-    }
+  .Click_Part_Wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-sky);
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    position: static;
+  }
 
-    .End_Part_Wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-end;
-        background-color: var(--background-sky);
-        width: 100%;
-        height: auto;
-        overflow-x: hidden;
-        position: static;
-    }
+  .End_Part_Wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: var(--background-sky);
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    position: static;
+  }
 
-    .End_Text {
-        display: flex;
-        flex-direction: column;
-        width: auto;
-        margin: 60px;
-        text-align: center;
-        line-height: 56px;
-    }
+  .End_Text {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    margin: 60px;
+    text-align: center;
+    line-height: 56px;
+  }
 
-    .End_Part_Hug p {
-        line-height: 56px;
-    }
+  .End_Part_Hug p {
+    line-height: 56px;
+  }
 
-    .Click_Part {
-        height:auto;
-    }
+  .Click_Part {
+    height: auto;
+  }
 
-    .Click_Text {
-        display: block;
-        width: auto;
-    }
+  .Click_Text {
+    display: block;
+    width: auto;
+  }
 
-    .Click_Pic,
-    .End_Pic {
-        align-self: center;
-    }
+  .Click_Pic,
+  .End_Pic {
+    align-self: center;
+  }
 
-    .Click_Part_Hug {
-        position: relative;
-        width: auto;
-        align-items: center;
-        margin: 94px;
-        left: 0px;
-    }
+  .Click_Part_Hug {
+    position: relative;
+    width: auto;
+    align-items: center;
+    margin: 94px;
+    left: 0px;
+  }
 
-    .Hotitem_Part {
-        margin-top: 0px;
-        height: auto;
-    }
+  .Hotitem_Part {
+    margin-top: 0px;
+    height: auto;
+  }
 
-    .Search_Part,
-    .Register_Part {
-        height: auto;
-    }
+  .Search_Part,
+  .Register_Part {
+    height: auto;
+  }
 
-    .Hotitem_Part_Wrapper,
-    .Register_Part_Wrapper {
-        position: static;
-        display: flex;
-        align-items: flex-start;
-        gap: 0px;
-    }
+  .Hotitem_Part_Wrapper,
+  .Register_Part_Wrapper {
+    position: static;
+    display: flex;
+    align-items: flex-start;
+    gap: 0px;
+  }
 
-    .Search_Part_Wrapper {
-        position: static;
-        display: flex;
-        align-items: flex-End;
-        gap: 0px;
-    }
-    
-    .Hotitem_Part_Pic,
-    .Search_Part_Pic,
-    .Register_Part_Pic {
-        box-sizing: border-box;
-        padding: 40px 24px;
-        width: 100%;
-        height: auto;
-    }
+  .Search_Part_Wrapper {
+    position: static;
+    display: flex;
+    align-items: flex-End;
+    gap: 0px;
+  }
 
-    .Hotitem_Part_Text_Hug,
-    .Search_Part_Text_Hug {
-        margin: 16px 24px;
-        margin-bottom: 40px;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
+  .Hotitem_Part_Pic,
+  .Search_Part_Pic,
+  .Register_Part_Pic {
+    box-sizing: border-box;
+    padding: 40px 24px;
+    width: 100%;
+    height: auto;
+  }
 
-    .Register_Part_Text_Hug {
-        margin: 16px 24px;
-        margin-bottom: 80px;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
+  .Hotitem_Part_Text_Hug,
+  .Search_Part_Text_Hug {
+    margin: 16px 24px;
+    margin-bottom: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .Register_Part_Text_Hug {
+    margin: 16px 24px;
+    margin-bottom: 80px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 
 
 
@@ -643,133 +643,133 @@ side {
 
 
 
-    side {
-        display: block
-    }
+  side {
+    display: block
+  }
 
-    .Click_Part {
-        height:auto;
-    }
+  .Click_Part {
+    height: auto;
+  }
 
-    .Click_Text {
-        text-align: center;
-    }
+  .Click_Text {
+    text-align: center;
+  }
 
-    .Click_Pic {
-        width: 626px;
-        height: 281px;
-    }
+  .Click_Pic {
+    width: 626px;
+    height: 281px;
+  }
 
-    .Header_Text {
-        width: 135px;
-        font-size: 16px;
-        margin-left: 113px;
-        gap: 8px;
-    }
+  .Header_Text {
+    width: 135px;
+    font-size: 16px;
+    margin-left: 113px;
+    gap: 8px;
+  }
 
-    .Hotitem_Part_Pic,
-    .Search_Part_Pic,
-    .Register_Part_Pic {
-        padding: 32px 16px;
-        width: 100%;
-        height: auto;
-    }
+  .Hotitem_Part_Pic,
+  .Search_Part_Pic,
+  .Register_Part_Pic {
+    padding: 32px 16px;
+    width: 100%;
+    height: auto;
+  }
 
-    .Hotitem_Part_Text_Hug,
-    .Search_Part_Text_Hug {
-        margin: 16px 24px;
-        margin-bottom: 40px;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
+  .Hotitem_Part_Text_Hug,
+  .Search_Part_Text_Hug {
+    margin: 16px 24px;
+    margin-bottom: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 
-    .Register_Part_Text_Hug {
-        margin: 16px 24px;
-        margin-bottom: 56px;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
+  .Register_Part_Text_Hug {
+    margin: 16px 24px;
+    margin-bottom: 56px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 
-    .Hotitem_Part_Text_Hug,
-    .Search_Part_Text_Hug,
-    .Register_Part_Text_Hug {
-        gap: 8px;
-    }
+  .Hotitem_Part_Text_Hug,
+  .Search_Part_Text_Hug,
+  .Register_Part_Text_Hug {
+    gap: 8px;
+  }
 
-    .Hotitem_Part_Text_1,
-    .Search_Part_Text_1,
-    .Register_Part_Text_1 {
-        font-size: 1rem;
-        line-height: 1.4rem;
-    }
+  .Hotitem_Part_Text_1,
+  .Search_Part_Text_1,
+  .Register_Part_Text_1 {
+    font-size: 1rem;
+    line-height: 1.4rem;
+  }
 
-    .Hotitem_Part_Text_2,
-    .Search_Part_Text_2,
-    .Register_Part_Text_2 {
-        font-size: 1.5rem;
-        line-height: 2.1rem;
-    }
+  .Hotitem_Part_Text_2,
+  .Search_Part_Text_2,
+  .Register_Part_Text_2 {
+    font-size: 1.5rem;
+    line-height: 2.1rem;
+  }
 
-    .Hotitem_Part_Text_3,
-    .Search_Part_Text_3,
-    .Register_Part_Text_3 {
-        font-size: 1rem;
-        line-height: 1.2rem;
-    }
+  .Hotitem_Part_Text_3,
+  .Search_Part_Text_3,
+  .Register_Part_Text_3 {
+    font-size: 1rem;
+    line-height: 1.2rem;
+  }
 
-    .End_Text {
-        font-size: 2rem;
-    }
+  .End_Text {
+    font-size: 2rem;
+  }
 
-    .End_Pic {
-        width: 498px;
-        height: 270px;
-    }
+  .End_Pic {
+    width: 498px;
+    height: 270px;
+  }
 
-    .Header_Logo {
-        display: none;
-    }
+  .Header_Logo {
+    display: none;
+  }
 
-    .Header_Logo2 {
-        display: block;
-        cursor: pointer;
-        position: absolute;
-        margin-left: 16px;
-        width: 81px;
-        height: 40px;
-    }
+  .Header_Logo2 {
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    margin-left: 16px;
+    width: 81px;
+    height: 40px;
+  }
 
-    .End_Text {
-        margin: 90px 70px;
-    }
+  .End_Text {
+    margin: 90px 70px;
+  }
 
-    .End_Part_Hug p {
-        line-height: 44.8px;
-    }
+  .End_Part_Hug p {
+    line-height: 44.8px;
+  }
 
-    .Footer_Text_1,
-    .Footer_Text_2,
-    .Footer_Wrapper {
-        width: auto;
-        overflow: visible;
-    }
+  .Footer_Text_1,
+  .Footer_Text_2,
+  .Footer_Wrapper {
+    width: auto;
+    overflow: visible;
+  }
 
-    .Footer {
-        display:block;
-    }
+  .Footer {
+    display: block;
+  }
 
-    .Footer_Wrapper {
-        display: grid;
-        grid-template-rows: 1fr 1fr;
-        grid-template-areas:
-            "B C"
-            ". ."
-            "A .";
+  .Footer_Wrapper {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      "B C"
+      ". ."
+      "A .";
 
 
-    }
+  }
 }

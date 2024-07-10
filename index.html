@@ -2,152 +2,155 @@
 <html>
 
 <head>
-    <meta name="og:site_name" content="Panda Market"></meta>
-    <meta property="og:title" content="판다마켓" />
-    <meta property="og:description" content="일상에서 모든 물건을 거래해보세요" />
-    <meta property="og:image" content="https://ken2.netlify.app/Head_image.jpg" />
-    <meta property="og:url" content="https://ken2.netlify.app/" />
+  <meta name="og:site_name" content="Panda Market">
+  </meta>
+  <meta property="og:title" content="판다마켓" />
+  <meta property="og:description" content="일상에서 모든 물건을 거래해보세요" />
+  <meta property="og:image" content="https://ken2.netlify.app/Head_image.jpg" />
+  <meta property="og:url" content="https://ken2.netlify.app/" />
 
-    <script src="Script/components.js"></script>
-    <link rel="icon" href="Group22.png">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="style.css" />
-    <title>판다마켓</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@4.0.1/reset.min.css" />
-    <link rel="stylesheet" as="style" crossorigin
-        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="Script/GNB.js"></script>
+  <link rel="icon" href="../images/Group22.png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <title>판다마켓</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@4.0.1/reset.min.css" />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHZDZ0XHTB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHZDZ0XHTB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-        gtag('config', 'G-EHZDZ0XHTB');
-    </script>
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-EHZDZ0XHTB');
+  </script>
 
 </head>
+
 <body>
 
-<panda-head></panda-head>
+  <panda-head></panda-head>
 
-    <section class="Click_Part">
-        <div class="Click_Part_Wrapper">
-            <div class="Click_Part_Hug">
-                <div class="Click_Text">
-                    <side>일상의 모든 물건을</side>
-                    <side>거래해 보세요</side>
-                </div>
-                <button class="Click_Button" type="button" onclick="location.href='/items';"
-                    style="cursor: pointer">
-                    구경하러 가기
-                </button>
-            </div>
-            <img src="I1.png" class="Click_Pic" alt="Panda_Says_Hello">
+  <section class="Click_Part">
+    <div class="Click_Part_Wrapper">
+      <div class="Click_Part_Hug">
+        <div class="Click_Text">
+          <side>일상의 모든 물건을</side>
+          <side>거래해 보세요</side>
         </div>
-    </section>
-
-    <div class="Part_Align">
-        <section class="Hotitem_Part">
-            <div class="Hotitem_Part_Wrapper">
-                <img src="I2.png" class="Hotitem_Part_Pic" alt="Panda_Love_Shirts">
-                <div class="Hotitem_Part_Text_Hug">
-                    <div class="Hotitem_Part_Text_1">
-                        Hot item
-                    </div>
-                    <p class="Hotitem_Part_Text_2">
-                        <span>인기 상품을</span> <span>확인해 보세요</span>
-                    </p>
-                    <p class="Hotitem_Part_Text_3">
-                        가장 HOT한 중고거래 물품을<br>
-                        판다 마켓에서 확인해 보세요
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="Search_Part">
-            <div class="Search_Part_Wrapper">
-                <img src="I3.png" class="Search_Part_Pic" alt="Looking_For_Items">
-                <div class="Search_Part_Text_Hug">
-                    <div class="Search_Part_Text_1">
-                        Search
-                    </div>
-                    <p class="Search_Part_Text_2">
-                        <span>구매를 원하는</span>
-                        <span>상품을 검색하세요</span>
-                    </p>
-                    <p class="Search_Part_Text_3">
-                        구매하고 싶은 물품은 검색해서<br>
-                        쉽게 찾아보세요
-                    </p>
-                </div>
-        </section>
-
-        <section class="Register_Part">
-            <div class="Register_Part_Wrapper">
-                <img src="I4.png" class="Register_Part_Pic" alt="Looking_For_Items">
-                <div class="Register_Part_Text_Hug">
-                    <div class="Register_Part_Text_1">
-                        Register
-                    </div>
-                    <p class="Register_Part_Text_2">
-                        <span>판매를 원하는</span>
-                        <span>상품을 등록하세요</span>
-                    </p>
-                    <p class="Register_Part_Text_3">
-                        어떤 물건이든 판매하고 싶은 상품을<br>
-                        쉽게 등록하세요
-                    </p>
-                </div>
-        </section>
+        <button class="Click_Button" type="button" onclick="location.href='../items';" style="cursor: pointer">
+          구경하러 가기
+        </button>
+      </div>
+      <img src="../images/I1.png" class="Click_Pic" alt="Panda_Says_Hello">
     </div>
+  </section>
 
-    <section class="End_Part">
-        <div class="End_Part_Wrapper">
-            <div class="End_Part_Hug">
-                <p class="End_Text">
-                    믿을 수 있는<br>
-                    판다마켓 중고 거래
-                </p>
-            </div>
-            <img src="I5.png" class="End_Pic" alt="Panda_Says_Hello">
+  <div class="Part_Align">
+    <section class="Hotitem_Part">
+      <div class="Hotitem_Part_Wrapper">
+        <img src="../images/I2.png" class="Hotitem_Part_Pic" alt="Panda_Love_Shirts">
+        <div class="Hotitem_Part_Text_Hug">
+          <div class="Hotitem_Part_Text_1">
+            Hot item
+          </div>
+          <p class="Hotitem_Part_Text_2">
+            <span>인기 상품을</span> <span>확인해 보세요</span>
+          </p>
+          <p class="Hotitem_Part_Text_3">
+            가장 HOT한 중고거래 물품을<br>
+            판다 마켓에서 확인해 보세요
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="Search_Part">
+      <div class="Search_Part_Wrapper">
+        <img src="../images/I3.png" class="Search_Part_Pic" alt="Looking_For_Items">
+        <div class="Search_Part_Text_Hug">
+          <div class="Search_Part_Text_1">
+            Search
+          </div>
+          <p class="Search_Part_Text_2">
+            <span>구매를 원하는</span>
+            <span>상품을 검색하세요</span>
+          </p>
+          <p class="Search_Part_Text_3">
+            구매하고 싶은 물품은 검색해서<br>
+            쉽게 찾아보세요
+          </p>
         </div>
     </section>
 
-    <footer>
-        <section class="Footer">
-            <div class="Footer_Wrapper">
-                <p class="Footer_Text_1">
-                    @codeit - 2024
-                </p>
-                <p class="Footer_Text_2">
-                    <a href="privacy"> Privacy Policy </a>
-                    <a href="faq"> FAQ </a>
-                </p>
-                <p class="Footer_Logos">
-                    <a href="http://www.facebook.com" target="_blank">
-                        <img src="ic_facebook.png" alt="Facebook_Logo_Redirect">
-                    </a>
+    <section class="Register_Part">
+      <div class="Register_Part_Wrapper">
+        <img src="../images/I4.png" class="Register_Part_Pic" alt="Looking_For_Items">
+        <div class="Register_Part_Text_Hug">
+          <div class="Register_Part_Text_1">
+            Register
+          </div>
+          <p class="Register_Part_Text_2">
+            <span>판매를 원하는</span>
+            <span>상품을 등록하세요</span>
+          </p>
+          <p class="Register_Part_Text_3">
+            어떤 물건이든 판매하고 싶은 상품을<br>
+            쉽게 등록하세요
+          </p>
+        </div>
+    </section>
+  </div>
 
-                    <a href="http://www.twitter.com" target="_blank">
-                        <img src="ic_twitter.png" alt="Twitter_Logo_Redirect">
-                    </a>
+  <section class="End_Part">
+    <div class="End_Part_Wrapper">
+      <div class="End_Part_Hug">
+        <p class="End_Text">
+          믿을 수 있는<br>
+          판다마켓 중고 거래
+        </p>
+      </div>
+      <img src="../images/I5.png" class="End_Pic" alt="Panda_Says_Hello">
+    </div>
+  </section>
 
-                    <a href="http://www.youtube.com" target="_blank">
-                        <img src="ic_youtube.png" alt="Youtube_Logo_Redirect">
-                    </a>
+  <footer>
+    <section class="Footer">
+      <div class="Footer_Wrapper">
+        <p class="Footer_Text_1">
+          @codeit - 2024
+        </p>
+        <p class="Footer_Text_2">
+          <a href="./privacy"> Privacy Policy </a>
+          <a href="./faq"> FAQ </a>
+        </p>
+        <p class="Footer_Logos">
+          <a href="http://www.facebook.com" target="_blank">
+            <img src="../images/ic_facebook.png" alt="Facebook_Logo_Redirect">
+          </a>
 
-                    <a href="http://www.instagram.com" target="_blank">
-                        <img src="ic_instagram.png" alt="Instagram_Logo_Redirect">
-                    </a>
-                </p>
-            </div>
-        </section>
-    </footer>
+          <a href="http://www.twitter.com" target="_blank">
+            <img src="../images/ic_twitter.png" alt="Twitter_Logo_Redirect">
+          </a>
+
+          <a href="http://www.youtube.com" target="_blank">
+            <img src="../images/ic_youtube.png" alt="Youtube_Logo_Redirect">
+          </a>
+
+          <a href="http://www.instagram.com" target="_blank">
+            <img src="../images/ic_instagram.png" alt="Instagram_Logo_Redirect">
+          </a>
+        </p>
+      </div>
+    </section>
+  </footer>
 </body>
