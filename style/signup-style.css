@@ -138,7 +138,7 @@ h1 {
 .social-icons {
     display: flex;
     gap: 10px;
-  }
+}
 
 .social-login img {
     width: 42px;
@@ -167,4 +167,23 @@ h1 {
 
 .login-link a:hover {
     text-decoration: underline;
+}
+
+.error {
+    border-color: #F74747 !important;
+    border-width: 1px !important;
+}
+
+.error-message {
+    font-family: 'Pretendard', sans-serif;
+    color: #F74747;
+    font-size: 15px;
+    line-height: 17.9px;
+    margin-top: 5px;
+    margin-left: 16px;
+    display: none; /* 기본적으로 숨김 */
+}
+
+.error .error-message {
+    display: block; /* 에러 발생 시 보임 */
 }
