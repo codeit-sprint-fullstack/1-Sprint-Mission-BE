@@ -25,6 +25,7 @@
                 <div class="form-group email-group">
                     <label for="email">이메일</label>
                     <input type="email" id="email" name="email" placeholder="이메일을 입력해주세요" required>
+                    <div id="email-error" class="error-message"></div>
                 </div>
                 <div class="form-group password-group">
                     <label for="password">비밀번호</label>
@@ -33,6 +34,7 @@
                         <span class="toggle-visibility" onclick="togglePasswordVisibility('password', this)">
                             <img src="/image/invisible.svg" alt="비밀번호 표시">
                         </span>
+                        <div id="password-error" class="error-message"></div>
                     </div>
                 </div>
                 <button type="submit" class="login-btn">로그인</button>
@@ -53,5 +55,6 @@
             </div>
         </main>
         <script src="/js/visibility.js"></script>
+        <script src="/js/login.js"></script>
     </body>
 </html>
