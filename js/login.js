@@ -47,3 +47,35 @@ function validatePassword() {
         passwordError.textContent = '비밀번호를 8자 이상 입력해주세요.';
     }
 }
+
+function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const user = USER_DATA.find(user => user.email === email);
+
+    if (!user || user.password !== password) {
+        showAlert('비밀번호가 일치하지 않습니다.');
+    } else {
+        window.location.href = './items.html';
+    }
+}
+
+function showAlert(message) {
+    const alertBox = document.createElement('div');
+    alertBox.className = 'alert-box';
+    alertBox.innerHTML = `
+        <div class="alert-content">
+            <p>${message}</p>
+            <button onclick="closeAlert()">확인</button>
+        </div>
+    `;
+    document.body.appendChild(alertBox);
+}
+
+function closeAlert() {
+    const alertBox = document.querySelector('.alert-box');
+    if (alertBox) {
+        alertBox.remove();
+    }
+}
