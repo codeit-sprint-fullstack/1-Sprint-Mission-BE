@@ -41,9 +41,8 @@ h1 {
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* 박스 간격 더 추가적 수정 할 수도 */
     text-align: left;
-    position: relative;
 }
 
 .form-group label {
@@ -79,7 +78,6 @@ h1 {
 
 .password-container {
     position: relative;
-    padding-bottom: 5px;
 }
 
 .password-container input {
@@ -90,7 +88,7 @@ h1 {
 
 .password-container .toggle-visibility {
     position: absolute;
-    top: calc(50% - 10px);
+    top: 50%;
     right: 10px;
     transform: translateY(-50%);
     cursor: pointer;
@@ -106,7 +104,7 @@ h1 {
     font-weight: 600;
     font-size: 24px;
     line-height: 24px;
-    text-align: center;
+    text-align: center ;
     display: block;
     color: #FFFFFF;
     background-color: #9CA3AF;
@@ -171,10 +169,10 @@ h1 {
     text-decoration: underline;
 }
 
-.error {
+.form-group.error input {
     border-color: #F74747 !important;
     border-width: 1px !important;
-}
+  }
 
 .error-message {
     font-family: 'Pretendard', sans-serif;
@@ -243,3 +241,74 @@ h1 {
     cursor: pointer;
     text-align: center;
 }
+/* 미디어쿼리 */
+@media (max-width: 743px) and (min-width: 375px) {
+    body {
+      padding: 0 16px;
+    }
+
+    header img {
+      width: 60%;
+      height: 60%;
+      top: 60px;
+      left: 762px;
+      margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .signup-btn,
+    .social-login,
+    .social-login span,
+    .login-link {
+      width: 330px;
+      max-width: 400px; /* 최대 너비 400px */
+    }
+
+    .social-login {
+        justify-content: space-between;
+    }
+
+    .social-login span {
+        margin-right: 90px;
+    }
+
+    .social-login img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .alert-box {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000; /* 화면 제일 앞에 배치 */
+      }
+
+    .alert-content {
+      width: calc(100% - 32px);
+      max-width: 400px;
+    }
+    .alert-content p {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 19.09px;
+      color: #1F2937;
+      position: absolute;
+      top: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .alert-content button {
+      left: calc(50% - 0px); /* 버튼이 중앙에 위치하도록 조정 */
+      transform: translateX(-50%);
+    }
+
+  }
