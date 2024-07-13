@@ -43,6 +43,7 @@ margin-bottom: 30px;
 .form-group {
 margin-bottom: 20px;
 text-align: left;
+
 }
 
 .form-group label {
@@ -180,10 +181,12 @@ transform: translateY(-50%);
 cursor: pointer;
 }
 
-.error {
-border-color: #F74747 !important;
-border-width: 1px !important;
+/* 에러 메시지에 대한 스타일링 */
+.form-group.error input {
+  border-color: #F74747 !important;
+  border-width: 1px !important;
 }
+
 
 .error-message {
 font-family: 'Pretendard', sans-serif;
@@ -197,4 +200,58 @@ display: none; /* 기본적으로 숨김 */
 
 .error .error-message {
 display: block; /* 에러 발생 시 보임 */
+}
+
+.alert-box {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 1000; /* 화면 제일 앞에 배치 */
+}
+
+.alert-content {
+width: 540px;
+height: 250px;
+background-color: white;
+padding: 20px;
+border-radius: 8px;
+text-align: center;
+position: relative;
+}
+
+.alert-content p {
+font-family: 'Pretendard', sans-serif;
+font-size: 16px;
+font-weight: 500;
+line-height: 19.09px;
+color: #1F2937;
+position: absolute;
+top: 108px;
+left: 50%;
+transform: translateX(-50%);
+}
+
+.alert-content button {
+width: 120px;
+height: 48px;
+position: absolute;
+top: 174px;
+left: 392px;
+border-radius: 8px;
+padding: 12px 23px;
+font-family: 'Pretendard', sans-serif;
+font-size: 16px;
+font-weight: 600;
+line-height: 19.09px;
+color: #FFFFFF;
+background-color: #3692FF;
+border: none;
+cursor: pointer;
+text-align: center;
 }
