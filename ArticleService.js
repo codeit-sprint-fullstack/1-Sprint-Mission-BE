@@ -1,10 +1,10 @@
 const basicUrl = 'https://sprint-mission-api.vercel.app/articles';
 
-export async function getArticleList(){
+export async function getArticleList({page = 1, pageSize = 10, keyword = ''} = {}){
   const params = {
-    page: 1,
-    pageSize: 30,
-    keyword: '추천'
+    page,
+    pageSize,
+    keyword,
   };
   const url = new URL(basicUrl);
   Object.keys(params).forEach((key) =>
