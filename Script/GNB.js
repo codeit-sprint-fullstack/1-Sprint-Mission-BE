@@ -29,4 +29,4 @@ class Head extends HTMLElement {
   }
 }
 
-customElements.define("panda-head", Head);
+customElements.define("GNB", Head);
