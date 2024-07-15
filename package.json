@@ -1,16 +1,25 @@
 {
   "name": "1-sprint-mission-fe-2",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "For Panda Market",
+  "main": "/script/API/main.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "A"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Paladonial/1-Sprint-Mission-FE.git"
+  },
+  "keywords": [
+    "PandaMarket"
+  ],
+  "author": "Paladonial",
   "license": "ISC",
-  "description": "",
+  "bugs": {
+    "url": "https://github.com/Paladonial/1-Sprint-Mission-FE/issues"
+  },
+  "homepage": "https://github.com/Paladonial/1-Sprint-Mission-FE#readme",
   "dependencies": {
-    "axios": "^1.7.2",
-    "date-fns": "^3.6.0"
+    "axios": "^1.7.2"
   }
 }
