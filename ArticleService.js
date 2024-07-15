@@ -26,4 +26,17 @@ export async function getArticle(id){
   console.log(data);
 }
 
+export async function createArticle(articleContent){
+  const url = basicUrl;
 
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type' : 'application/json',
+    },
+    body: JSON.stringify(articleContent),
+  });
+  const data = await res.json();
+
+  console.log(data);
+}

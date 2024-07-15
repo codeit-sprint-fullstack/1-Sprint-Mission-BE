@@ -1,4 +1,14 @@
-import { getArticleList, getArticle } from './ArticleService.js';
+import { getArticleList, getArticle, createArticle } from './ArticleService.js';
 
 // getArticleList();
-getArticle(5);
+
+// getArticle(5);
+
+const articleContent = {
+  "title": "stringTitle",
+  "content": "stringContent",
+  "image": "stringImage", 
+};
+
+createArticle(articleContent);
+
