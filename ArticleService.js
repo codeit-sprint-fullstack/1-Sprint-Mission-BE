@@ -75,7 +75,7 @@ export function createArticle(data) {
   })
 }
 
-export function patchArticle(data) {
+export function patchArticle(id, data) {
   const url = new URL(`https://sprint-mission-api.vercel.app/articles/${id}`);
 
   return fetch(url, {
