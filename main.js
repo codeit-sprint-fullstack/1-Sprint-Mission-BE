@@ -24,4 +24,17 @@ import * as ProductService from './ProductService.js';
 
 // ArticleService.deleteArticle(37);
 
+// ProductService.getProductList();
+// ProductService.getProductList({page: 1, pageSize: 30, keyword: '삼성'});
 
+// ProductService.getProduct(5);
+
+const productContent = {
+  "name": "삼성 마이크",
+  "description": "삼성 USB 마이크",
+  "price": 90000,
+  "tags": ["전자제품", "삼성"],
+  "images": ["image_url"],
+};
+
+ProductService.createProduct(productContent);
