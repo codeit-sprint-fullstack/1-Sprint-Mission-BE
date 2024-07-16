@@ -1,6 +1,6 @@
 import * as article from './ArticleService.js'
 
-
+// ----------------articles--------------------
 article.getArticleList()
   .then(result => {
     if (result) {
@@ -20,7 +20,6 @@ article.getArticle(45)
       console.log('Failed to get Article');
     }
   });
-
 
 
 const articlesData = [
@@ -67,4 +66,4 @@ article.deleteArticle(77)
   })
 
 
-
+// ----------------products--------------------
