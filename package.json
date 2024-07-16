@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "## 판다마켓 웹페이지",
   "main": "main.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+    
   },
-  "author": "",
+  "author": "sanho",
   "license": "ISC"
 }
