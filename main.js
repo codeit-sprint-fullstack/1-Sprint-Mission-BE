@@ -1,4 +1,4 @@
-import { getArticleList, getArticle, createArticle } from './ArticleService.js';
+import { getArticleList, getArticle, createArticle, patchArticle, deleteArticle } from './ArticleService.js';
 
 // getArticleList();
 // getArticleList({page: 1, pageSize: 30, keyword: '추천'});
@@ -13,3 +13,12 @@ import { getArticleList, getArticle, createArticle } from './ArticleService.js';
 
 // createArticle(articleContent);
 
+// const updateContent = {
+//   "title": "patchTitle",
+//   "content": "patchContent",
+//   "image": "patchImage",
+// };
+
+// patchArticle(30, updateContent);
+
+deleteArticle(31);

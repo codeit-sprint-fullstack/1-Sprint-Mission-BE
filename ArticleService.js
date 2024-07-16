@@ -40,3 +40,34 @@ export async function createArticle(articleContent){
 
   console.log(data);
 }
+
+export async function patchArticle(id, updateContent){
+  const url = `${basicUrl}/${id}`;
+
+  const res = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type' : 'application/json',
+    },
+    body: JSON.stringify(updateContent),
+  });
+
+  const data = await res.json();
+
+  console.log(data);
+}
+
+export async function deleteArticle(id){
+  const url = `${basicUrl}/${id}`;
+
+  const res = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type' : 'application/json',
+    },
+  });
+
+  const data = await res.text();
+
+  console.log(data);
+}
