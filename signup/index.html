@@ -2,76 +2,76 @@
 <html>
 
 <head>
-    <link rel="icon" href="/images/Group22.png">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="style_signup.css" />
-    <title>회원가입</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@4.0.1/reset.min.css" />
-    <link rel="stylesheet" as="style" crossorigin
-        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-        
+  <link rel="icon" href="/images/Group22.png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style_signup.css" />
+  <title>회원가입</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@4.0.1/reset.min.css" />
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
 </head>
 
 <body>
-    <section class="Container">
-        <a href="/" class="login_title">
-            <img src="/images/logo.svg" alt="로고">
-        </a>
-        <form class="login">
-            <div class="login_set">
-                <article class="email_box_set">
-                    <label class="email_box">이메일</label>
-                    <div style="position: relative;">
-                        <input id="email" type="text" placeholder="이메일을 입력해주세요" />
-                    </div>
-                </article>
-                <article class="nickname_box_set">
-                    <label for="nickname" class="nickname_box">닉네임</label>
-                    <input id="nickname" type="text" placeholder="닉네임을 입력해주세요" />
-                </article>
-                <article class="password_box_set">
-                    <label class="password_box">비밀번호</label>
-                    <div style="position: relative;">
-                        <input id="password" type="password" placeholder="비밀번호를 입력해주세요" />
-                        <img src="/images/TheEye.png" alt="Eye_for_password" ID="togglePassword" class="toggleEye">
-                    </div>
-                </article>
-                <article class="password_con_box_set">
-                    <label class="password_con_box">비밀번호 확인</label>
-                    <div style="position: relative;">
-                        <input id="password_con" type="password" placeholder="비밀번호를 입력해주세요" />
-                        <img src="/images/TheEye.png" alt="Eye_for_password" ID="togglePassword_con" class="toggleEye">
-                    </div>
-                </article>
-                <button type="button" class="login_button">회원가입</button>
-            </div>
-            <div class="simple_login">
-                <div class="simple_login_text">
-                    간편 로그인하기
-                </div>
-                <div class="simple_login_logos">
-                    <img src="/images/kakao.png" onclick="window.open('https://www.kakaocorp.com/page/ ')"
-                        style="cursor: pointer;" alt="Kakao_logo">
-                    <img src="/images/google.png" onclick="window.open('https://www.google.com ')" style="cursor: pointer;"
-                        alt="Google_logo">
-                </div>
-            </div>
-            <div class="reg_text">
-                이미 회원이신가요?
-                <a href="/login/" style="color: #3182F6">로그인</a>
-            </div>
-        </form>
-        <div class="modal" id="customModal">
-            <div class="modal_popup">
-                <span id="modalMessage"></span>
-                <button type="button" class="close_btn" id="closeModalBtn">닫기</button>
-            </div>
+  <section class="Container">
+    <a href="/" class="login_title">
+      <img src="/images/logo.svg" alt="로고">
+    </a>
+    <form class="login">
+      <div class="login_set">
+        <article class="email_box_set">
+          <label class="email_box">이메일</label>
+          <div style="position: relative;">
+            <input id="email" type="text" placeholder="이메일을 입력해주세요" />
+          </div>
+        </article>
+        <article class="nickname_box_set">
+          <label for="nickname" class="nickname_box">닉네임</label>
+          <input id="nickname" type="text" placeholder="닉네임을 입력해주세요" />
+        </article>
+        <article class="password_box_set">
+          <label class="password_box">비밀번호</label>
+          <div style="position: relative;">
+            <input id="password" type="password" placeholder="비밀번호를 입력해주세요" />
+            <img src="/images/TheEye.png" alt="Eye_for_password" ID="togglePassword" class="toggleEye">
+          </div>
+        </article>
+        <article class="password_con_box_set">
+          <label class="password_con_box">비밀번호 확인</label>
+          <div style="position: relative;">
+            <input id="password_con" type="password" placeholder="비밀번호를 입력해주세요" />
+            <img src="/images/TheEye.png" alt="Eye_for_password" ID="togglePassword_con" class="toggleEye">
+          </div>
+        </article>
+        <button type="button" class="login_button" disabled>회원가입</button>
+      </div>
+      <div class="simple_login">
+        <div class="simple_login_text">
+          간편 로그인하기
         </div>
-    </section>
-    <script type="module" src="/Script/signup_js.js"></script>
+        <div class="simple_login_logos">
+          <img src="/images/kakao.png" onclick="window.open('https://www.kakaocorp.com/page/ ')"
+            style="cursor: pointer;" alt="Kakao_logo">
+          <img src="/images/google.png" onclick="window.open('https://www.google.com ')" style="cursor: pointer;"
+            alt="Google_logo">
+        </div>
+      </div>
+      <div class="reg_text">
+        이미 회원이신가요?
+        <a href="/login/" style="color: #3182F6">로그인</a>
+      </div>
+    </form>
+    <div class="modal" id="customModal">
+      <div class="modal_popup">
+        <span id="modalMessage"></span>
+        <button type="button" class="close_btn" id="closeModalBtn">닫기</button>
+      </div>
+    </div>
+  </section>
+  <script type="module" src="/script/signup.js"></script>
 </body>
 
 </html>
