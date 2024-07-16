@@ -29,15 +29,15 @@ import * as ProductService from './ProductService.js';
 
 // ProductService.getProduct(5);
 
-const productContent = {
-  "name": "test",
-  "description": "test",
-  "price": 12345,
-  "tags": ["test1", "test2"],
-  "images": ["test"],
-};
+// const productContent = {
+//   "name": "test",
+//   "description": "test",
+//   "price": 12345,
+//   "tags": ["test1", "test2"],
+//   "images": ["test"],
+// };
 
-ProductService.createProduct(productContent);
+// ProductService.createProduct(productContent);
 
 // const productUpdate = {
 //   "name": "무농약 제주 당근",
@@ -49,4 +49,4 @@ ProductService.createProduct(productContent);
 
 // ProductService.patchProduct(13, productUpdate);
 
-// ProductService.deleteProduct(14);
+// ProductService.deleteProduct(16);

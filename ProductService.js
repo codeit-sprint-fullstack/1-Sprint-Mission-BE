@@ -64,7 +64,8 @@ export async function patchProduct(id, updateContent){
 export async function deleteProduct(id){
   try{
     const res = await instance.delete(`/products/${id}`);
-    // console.log(res.data);
+    console.log(res.data);
+    console.log("delete successful");
   } catch(error) {
     if(error.response){
       console.log(error.response.status);
