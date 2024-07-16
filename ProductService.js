@@ -26,3 +26,13 @@ export async function createProduct(productData) {
   const res = await instance.post('/products', productData);
   return res.data;
 }
+
+export async function patchProduct(id, productData) {
+  const res = await instance.patch(`/products/${id}`, productData);
+  return res.data;
+}
+
+export async function deleteProduct(id) {
+  const res = await instance.delete(`/products/${id}`);
+  return res.data;
+}
