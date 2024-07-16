@@ -1,4 +1,4 @@
-const ARTICLE_API_ADDRESS = "https://sprint-mission-api.vercel.app";
+const ARTICLE_API_ORIGIN = "https://sprint-mission-api.vercel.app";
 /*
 [ ]  fetch를 이용해 주세요.
     [ ] 응답의 상태 코드가 2XX가 아닐 경우, 에러메시지를 콘솔에 출력해 주세요.
@@ -6,108 +6,192 @@ const ARTICLE_API_ADDRESS = "https://sprint-mission-api.vercel.app";
 [ ]  .catch() 를 이용하여 오류 처리를 해주세요.
 */
 
-
-/*
-method : GET
-param : {
-    page :
-    pageSize : 
-    keyword :
-}
-*/
+/* getArticleList 게시글 목록 조회 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : 
-method : 
+method : GET
 param : {
+    page : / optional / default : 1 / type : integer / description : pageSize 크기로 나눠진 list의 page 번호
+    pageSize : / opsional / default : 100 / type : integer / description : 배열로 보내줄 list의 최대 크기
+    keyword : / optional / default : (none) / type : string / description : list 중 keyword값이 name이나 decription의 값이 포함된 상품만 선별
 }
-header : 
-body : 
+header : (default)
+body : (none)
 */
 /* ===== RESPONSE(data) =====
-
+[
+    {
+        "id": 3,
+        "title": "퀸사이즈 침대 프레임 조립 후기",
+        "content": "퀸사이즈 침대 프레임을 직접 조립해본 후기입니다.",
+        "image": "https://images-na.ssl-images-amazon.com/images/I/71aG%2BxDKSYL._AC_SL1500_.jpg",
+        "likeCount": 6
+    },
+    {
+        "id": 4,
+        "title": "중고 노트북 거래 후기",
+        "content": "중고 노트북 거래 후기를 남깁니다. 아주 만족스러웠어요.",
+        "image": "https://images-na.ssl-images-amazon.com/images/I/81t2CVWEsUL._AC_SL1500_.jpg",
+        "likeCount": 5
+    }
+]
 */
-export function getArticleList()
+export async function getArticleList(page = 1, pageSize = 100, keyword = "")
 {
+    const params = {
+        "page" : page,
+        "pageSize" : pageSize,
+        "keyword" : keyword,
+    }
 
+    const str_params = new URLSearchParams(params);
+    const url = new URL(`/articles?${str_params.toString()}`, ARTICLE_API_ORIGIN);
+    
+    const res = await fetch(url);
+    return await res.json();
 }
 
-/*
-method : GET
-*/
+/* getArticle 게시글 상세 조회 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
-path : 
-method : 
-param : {
-}
-header : 
-body : 
+path : /articles/{id}
+method : GET
+params : (none)
+header : (default)
+body : (none)
 */
 /* ===== RESPONSE(data) =====
-
-*/
-function getArticle()
 {
+    "id": 6,
+    "title": "홈트레이닝 기구 리뷰",
+    "content": "집에서 운동할 때 유용한 홈트레이닝 기구 리뷰입니다.",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/81N6HXJ4YPL._AC_SL1500_.jpg",
+    "likeCount": 9
+}
+*/
+export async function getArticle(id)
+{
+    const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
 
+    const res = await fetch(url);
+    return await res.json();
 }
 
-/*
+/* createAritcle 게시글 등록 */
+/* ===== REQUEST ===== 
+origin : https://sprint-mission-api.vercel.app
+path : /articles
 method : POST
-*/
-/* ===== REQUEST ===== 
-origin : https://sprint-mission-api.vercel.app
-path : 
-method : 
-param : {
+params : (none)
+header : (default)
+body : {
+    title : / required / type : string / description : 게시글 제목
+    content : / required / type : string / description : 게시글 내용
+    image : / required / type : string / description : 게시글 이미지
 }
-header : 
-body : 
 */
 /* ===== RESPONSE(data) =====
-
-*/
-function createAritcle()
 {
+    "id": 84,
+    "title": "테스트용으로 만든 글 제목2",
+    "content": "fetch.then 사용할 때 주의사항이 뭘까?",
+    "image": "https://telegra.ph/file/c75794e72a2569f0c0426.png",
+    "likeCount": 0
+}
+*/
+export async function createAritcle(title, content, image)
+{
+    const body = {
+        "title" : title,
+        "content" : content,
+        "image" : image
+    };
 
+    const option = {
+        "method" : "POST",
+        "headers" : {
+            'Content-Type': 'application/json'
+        },
+        "body" : JSON.stringify(body)
+    };
+    
+    console.log(option);
+
+    const url = new URL(`/articles`, ARTICLE_API_ORIGIN);
+    const res = await fetch(url, option);
+    return await res.json();
 }
 
-/*
+/* pathArticle 게시글 수정 */
+/* ===== REQUEST ===== 
+origin : https://sprint-mission-api.vercel.app
+path : /articles/{id}
 method : PATCH
-*/
-/* ===== REQUEST ===== 
-origin : https://sprint-mission-api.vercel.app
-path : 
-method : 
-param : {
+params : (none)
+header : (default)
+body : {
+    title : / optional / type : string / description : 게시글 제목
+    content : / optional / type : string / description : 게시글 내용
+    image : / optional / type : string / description : 게시글 이미지
 }
-header : 
-body : 
 */
 /* ===== RESPONSE(data) =====
-
-*/
-function pathArticle()
 {
+    "id": 84,
+    "title": "테스트용으로 만든 글 제목22",
+    "content": "fetch.then.then 사용할 때 주의사항이 뭘까?",
+    "image": "https://telegra.ph/file/c75794e72a2569f0c0426.png",
+    "likeCount": 0
+}
+*/
+export async function pathArticle(id, body)
+{
+    const option = {
+        "method" : "PATCH",
+        "headers" : {
+            'Content-Type': 'application/json'
+        },
+        "body" : JSON.stringify(body)
+    };
 
+    const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
+    const res = await fetch(url, option);
+    return await res.json();
 }
 
-/*
+/* 게시글 삭제 */
+/* ===== REQUEST ===== 
+origin : https://sprint-mission-api.vercel.app
+path : /articles/{id}
 method : DELETE
-*/
-/* ===== REQUEST ===== 
-origin : https://sprint-mission-api.vercel.app
-path : 
-method : 
-param : {
-}
-header : 
-body : 
+params : (none)
+header : (default)
+body : (none)
 */
 /* ===== RESPONSE(data) =====
 
 */
-function deleteArticle()
+export async function deleteArticle(id)
 {
+    const option = {
+        "method" : "DELETE",
+        "headers" : {
+            'Content-Type': 'application/json'
+        }
+    };
 
+    const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
+
+    return await fetch(url, option);
+}
+
+// for patch param info
+export function getPatchBodyFrame()
+{
+    return {
+        "title" : "optional",
+        "content" : "optional",
+        "image" : "optional"
+    };
 }
