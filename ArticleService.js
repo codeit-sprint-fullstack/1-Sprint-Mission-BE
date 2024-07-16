@@ -1,5 +1,6 @@
-export function getArticleList(page=1, pageSize=100, keyword) {
+export function getArticleList(options = {}) {
   const url = new URL('https://sprint-mission-api.vercel.app/articles');
+  const {page=1, pageSize=100, keyword} = options;
   const params = {
     page: page,
     pageSize: pageSize
