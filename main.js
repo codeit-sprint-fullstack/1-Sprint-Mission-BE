@@ -4,7 +4,7 @@ import * as ProductService from './ProductService.js';
 // ArticleService.getArticleList();
 // ArticleService.getArticleList({page: 1, pageSize: 30, keyword: '추천'});
 
-// ArticleService.getArticle(5);
+// ArticleService.getArticle(19);
 
 // const articleContent = {
 //   "title": "stringTitle",
@@ -14,13 +14,13 @@ import * as ProductService from './ProductService.js';
 
 // ArticleService.createArticle(articleContent);
 
-// const updateContent = {
+// const articleUpdate = {
 //   "title": "patchTitle",
 //   "content": "patchContent",
 //   "image": "patchImage",
 // };
 
-// ArticleService.patchArticle(37, updateContent);
+// ArticleService.patchArticle(37, articleUpdate);
 
 // ArticleService.deleteArticle(37);
 
@@ -30,11 +30,23 @@ import * as ProductService from './ProductService.js';
 // ProductService.getProduct(5);
 
 const productContent = {
-  "name": "삼성 마이크",
-  "description": "삼성 USB 마이크",
-  "price": 90000,
-  "tags": ["전자제품", "삼성"],
-  "images": ["image_url"],
+  "name": "test",
+  "description": "test",
+  "price": 12345,
+  "tags": ["test1", "test2"],
+  "images": ["test"],
 };
 
 ProductService.createProduct(productContent);
+
+// const productUpdate = {
+//   "name": "무농약 제주 당근",
+//   "description": "제주산 유기농 흙당근",
+//   "price": 20000,
+//   "tags": ["채소", "국내산"],
+//   "images": ["image_url"],
+// };
+
+// ProductService.patchProduct(13, productUpdate);
+
+// ProductService.deleteProduct(14);

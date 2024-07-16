@@ -48,3 +48,28 @@ export async function createProduct(productContent){
   }
 }
 
+export async function patchProduct(id, updateContent){
+  try{
+    const res = await instance.patch(`/products/${id}`, updateContent);
+    console.log(res.data);
+  } catch(error) {
+    if(error.response){
+      console.log(error.response.status);
+      console.log(error.response.data);
+    }
+    else console.log('리퀘스트가 실패했습니다.');
+  }
+}
+
+export async function deleteProduct(id){
+  try{
+    const res = await instance.delete(`/products/${id}`);
+    // console.log(res.data);
+  } catch(error) {
+    if(error.response){
+      console.log(error.response.status);
+      console.log(error.response.data);
+    }
+    else console.log('리퀘스트가 실패했습니다.');
+  }
+}
