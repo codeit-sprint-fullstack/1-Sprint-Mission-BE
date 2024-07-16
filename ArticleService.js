@@ -11,63 +11,77 @@ export async function getArticleList({page = 1, pageSize = 10, keyword = ''} = {
     url.searchParams.append(key, params[key])
   );
 
-  const res = await fetch(url);
-  const data = await res.json();
-  
-  console.log(data);
+  fetch(url)
+  .then((res) => {
+    if(!res.ok) throw new Error(res.status);
+    else return res.json();
+  })
+  .then((data) => console.log(data))
+  .catch((error) => console.log(`Error : ${error}`));
 }
 
-export async function getArticle(id){
+export function getArticle(id){
   const url = `${basicUrl}/${id}`;
 
-  const res = await fetch(url);
-  const data = await res.json();
-
-  console.log(data);
+  fetch(url)
+  .then((res) => {
+    if(!res.ok) throw new Error(res.status);
+    else return res.json();
+  })
+  .then((data) => console.log(data))
+  .catch((error) => console.log(`Error : ${error}`));
 }
 
-export async function createArticle(articleContent){
+export function createArticle(articleContent){
   const url = basicUrl;
 
-  const res = await fetch(url, {
+  fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type' : 'application/json',
     },
     body: JSON.stringify(articleContent),
-  });
-  const data = await res.json();
-
-  console.log(data);
+  })
+  .then((res) => {
+    if(!res.ok) throw new Error(res.status);
+    else return res.json();
+  })
+  .then((data) => console.log(data))
+  .catch((error) => console.log(`Error : ${error}`));
 }
 
-export async function patchArticle(id, updateContent){
+export function patchArticle(id, updateContent){
   const url = `${basicUrl}/${id}`;
 
-  const res = await fetch(url, {
+  fetch(url, {
     method: 'PATCH',
     headers: {
       'Content-Type' : 'application/json',
     },
     body: JSON.stringify(updateContent),
-  });
-
-  const data = await res.json();
-
-  console.log(data);
+  })
+  .then((res) => {
+    if(!res.ok) throw new Error(res.status);
+    else return res.json();
+  })
+  .then((data) => console.log(data))
+  .catch((error) => console.log(`Error : ${error}`));
 }
 
-export async function deleteArticle(id){
+export function deleteArticle(id){
   const url = `${basicUrl}/${id}`;
 
-  const res = await fetch(url, {
+  fetch(url, {
     method: 'DELETE',
     headers: {
       'Content-Type' : 'application/json',
     },
-  });
-
-  const data = await res.text();
-
-  console.log(data);
+  })
+  .then((res) => {
+    if(!res.ok) throw new Error(res.status);
+    else return res.text();
+  })
+  .then((data) => console.log(data))
+  .then(() => console.log("delete successful"))
+  .catch((error) => console.log(`Error : ${error}`));
 }

@@ -19,6 +19,6 @@ import { getArticleList, getArticle, createArticle, patchArticle, deleteArticle 
 //   "image": "patchImage",
 // };
 
-// patchArticle(30, updateContent);
+// patchArticle(37, updateContent);
 
-deleteArticle(31);
+deleteArticle(37);
