@@ -23,11 +23,11 @@ import * as product from "./ProductService.js";
 // console.log(data);
 
 
-// const data = await article.getArticleList(1, 4);
+// const data = await article.getArticleList(1, 20, "테스트");
 
-// const data = await article.getArticle(6);
+// const data = await article.getArticle(31);
 
-// const data = await article.createAritcle("테스트용으로 만든 글 제목", "fetch 사용할 때 주의사항이 뭘까?", "https://telegra.ph/file/c75794e72a2569f0c0426.png");
+// const data = await article.createAritcle("테스트용으로 만든 글 제목44", "fetch 사용할 때 주의사항이 뭘까?", "https://telegra.ph/file/c75794e72a2569f0c0426.png");
 
 // const data = article.getPatchBodyFrame();
 // const body = {
@@ -35,8 +35,8 @@ import * as product from "./ProductService.js";
 //     "content" : "fetch 사용할 때 주의사항이 뭘까?",
 //     "image" : "https://telegra.ph/file/c75794e72a2569f0c0426.png"
 // }
-// const data = await article.pathArticle(83, body);
+// const data = await article.pathArticle(93, body);
 
-const data = await article.deleteArticle(84);
+// const data = await article.deleteArticle(31);
 
 console.log(data);

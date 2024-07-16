@@ -1,10 +1,4 @@
 const ARTICLE_API_ORIGIN = "https://sprint-mission-api.vercel.app";
-/*
-[ ]  fetch를 이용해 주세요.
-    [ ] 응답의 상태 코드가 2XX가 아닐 경우, 에러메시지를 콘솔에 출력해 주세요.
-[ ]  .then() 메서드를 이용하여 비동기 처리를 해주세요.
-[ ]  .catch() 를 이용하여 오류 처리를 해주세요.
-*/
 
 /* getArticleList 게시글 목록 조회 */
 /* ===== REQUEST ===== 
@@ -47,9 +41,18 @@ export async function getArticleList(page = 1, pageSize = 100, keyword = "")
 
     const str_params = new URLSearchParams(params);
     const url = new URL(`/articles?${str_params.toString()}`, ARTICLE_API_ORIGIN);
-    
-    const res = await fetch(url);
-    return await res.json();
+
+    return fetch(url)
+        .then(function(res) {
+            if (!res.ok) {
+                throw new Error(`getArticleList - status : ${res.status}`);
+            }
+        
+            return res.json();
+        })
+        .catch((err) => {
+            return err;
+        });        
 }
 
 /* getArticle 게시글 상세 조회 */
@@ -74,8 +77,24 @@ export async function getArticle(id)
 {
     const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
 
-    const res = await fetch(url);
-    return await res.json();
+    return fetch(url)
+        .then(function(res) {
+            if (!res.ok) {
+                if(res.status === 404)
+                {
+                    throw new Error(`게시글을 찾을 수 없음 getArticle - status : 404`);
+                }
+                else
+                {
+                    throw new Error(`getArticle - status : ${res.status}`);
+                }
+            }
+        
+            return res.json();
+        })
+        .catch((err) => {
+            return err;
+        });   
 }
 
 /* createAritcle 게시글 등록 */
@@ -116,11 +135,26 @@ export async function createAritcle(title, content, image)
         "body" : JSON.stringify(body)
     };
     
-    console.log(option);
-
     const url = new URL(`/articles`, ARTICLE_API_ORIGIN);
-    const res = await fetch(url, option);
-    return await res.json();
+
+    return fetch(url, option)        
+        .then(function(res) {
+            if (!res.ok) {
+                if(res.status === 400)
+                {
+                    throw new Error(`유효성 검사 오류 createAritcle - status : 400`);
+                }
+                else
+                {
+                    throw new Error(`createAritcle - status : ${res.status}`);
+                }
+            }
+        
+            return res.json();
+        })
+        .catch((err) => {
+            return err;
+        });   
 }
 
 /* pathArticle 게시글 수정 */
@@ -156,11 +190,28 @@ export async function pathArticle(id, body)
     };
 
     const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
-    const res = await fetch(url, option);
-    return await res.json();
+    
+    return fetch(url, option)
+        .then(function(res) {
+            if (!res.ok) {
+                if(res.status === 404)
+                {
+                    throw new Error(`게시글을 찾을 수 없음 pathArticle - status : 404`);
+                }
+                else
+                {
+                    throw new Error(`pathArticle - status : ${res.status}`);
+                }
+            }
+        
+            return res.json();
+        })
+        .catch((err) => {
+            return err;
+        });  
 }
 
-/* 게시글 삭제 */
+/* deleteArticle 게시글 삭제 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /articles/{id}
@@ -170,7 +221,7 @@ header : (default)
 body : (none)
 */
 /* ===== RESPONSE(data) =====
-
+(none)
 */
 export async function deleteArticle(id)
 {
@@ -183,7 +234,24 @@ export async function deleteArticle(id)
 
     const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
 
-    return await fetch(url, option);
+    return fetch(url, option)
+        .then(function(res) {
+            if (!res.ok) {
+                if(res.status === 404)
+                {
+                    throw new Error(`게시글을 찾을 수 없음 deleteArticle - status : 404`);
+                }
+                else
+                {
+                    throw new Error(`deleteArticle - status : ${res.status}`);
+                }
+            }
+        
+            return res;
+        })
+        .catch((err) => {
+            return err;
+        }); 
 }
 
 // for patch param info
