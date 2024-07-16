@@ -21,3 +21,8 @@ export async function getProduct(id) {
   const res = await instance.get(`/products/${id}`);
   return res.data;
 }
+
+export async function createProduct(productData) {
+  const res = await instance.post('/products', productData);
+  return res.data;
+}

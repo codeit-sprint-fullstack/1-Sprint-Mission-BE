@@ -3,7 +3,7 @@ import * as products from './ProductService.js'
 
 // ----------------products--------------------
 // try {
-//   const result = await products.getProductList({page:1, pageSize:3});
+//   const result = await products.getProductList();
 //   if (result) {
 //     console.log(result);
 //   }
@@ -16,19 +16,45 @@ import * as products from './ProductService.js'
 //   }
 // }
 
-try {
-  const result = await products.getProduct(7);
-  if (result) {
+// try {
+//   const result = await products.getProduct(7);
+//   if (result) {
+//     console.log(result);
+//   } 
+// } catch (e) {
+//   if (e.response) {
+//     console.log(e.response.status);
+//     console.log(e.response.data);
+//   } else {
+//     console.log('Failed requests')
+//   }
+// }
+
+const productData = [
+  {name: "감자", description: "강원도 감자", price: 1000, tags:["채소", "강원도"], images: ['https://thumbnail7.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/6597174365713211-338aa9b8-a411-4d36-8127-24be7159bad0.jpg']},
+  {name: "피데기", description: "포항 구룡포 피데기", price: 20000, tags:["해산물", "포항", "구룡포"], images:['https://imagecdn.skstoa.com/goods/422/26466422_g.jpg']},
+  {name: "랍스타", description: "캐나다산 랍스타", price: 80000, tags:["해산물", "캐나다"], images:['https://sitem.ssgcdn.com/99/24/95/item/1000081952499_i1_750.jpg']},
+]
+
+productData.forEach(async (product, idx) => {
+  try {
+    const result = await products.createProduct(product);
     console.log(result);
-  } 
-} catch (e) {
-  if (e.response) {
-    console.log(e.response.status);
-    console.log(e.response.data);
-  } else {
-    console.log('Failed requests')
+    if (result) {
+      console.log(`Product ${idx + 1} created successfully`);
+    } else {
+      console.log(`Failed to create Product ${idx + 1}`);
+    }
+  } catch (e) {
+    if (e.response) {
+      console.log(e.response.status);
+      console.log(e.response.data);
+    } else {
+      console.log('Failed requests');
+    }
   }
-}
+});
+
 
 // ----------------articles--------------------
 // article.getArticleList()
