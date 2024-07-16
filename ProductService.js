@@ -35,3 +35,16 @@ export const createProduct = async (name, description, price, manufacturer, tags
     }
 };
 
+export const patchProduct = async (id, name, description, price, tags, images) => {
+    try {
+        const response = await axios.patch(`https://sprint-mission-api.vercel.app/products/${id}`, {
+            name, description, price, tags, images
+        });
+        console.log('상품이 수정되었습니다.');
+        return response.data;
+    } catch (error) {
+        console.error('상품을 수정하는 중 에러 발생:', error);
+        throw error;
+    }
+};
+
