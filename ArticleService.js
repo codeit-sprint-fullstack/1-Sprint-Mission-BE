@@ -58,3 +58,15 @@ export const patchArticle = (id, title, content, image) => {
         .catch(error => console.error('게시글을 수정하는 중 에러 발생:', error));
 };
 
+export const deleteArticle = (id) => {
+    return fetch(`https://sprint-mission-api.vercel.app/articles/${id}`, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`에러: ${response.statusText}`);
+            }
+            console.log('게시글이 삭제되었습니다.');
+        })
+        .catch(error => console.error('게시글을 삭제하는 중 에러 발생:', error));
+};
