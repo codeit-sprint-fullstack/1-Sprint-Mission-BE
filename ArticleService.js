@@ -17,7 +17,7 @@ export async function getArticleList({page = 1, pageSize = 10, keyword = ''} = {
     else return res.json();
   })
   .then((data) => console.log(data))
-  .catch((error) => console.log(`Error : ${error}`));
+  .catch((error) => console.log(`Error : ${error.message}`));
 }
 
 export function getArticle(id){
@@ -29,7 +29,7 @@ export function getArticle(id){
     else return res.json();
   })
   .then((data) => console.log(data))
-  .catch((error) => console.log(`Error : ${error}`));
+  .catch((error) => console.log(`Error : ${error.message}`));
 }
 
 export function createArticle(articleContent){
@@ -47,7 +47,7 @@ export function createArticle(articleContent){
     else return res.json();
   })
   .then((data) => console.log(data))
-  .catch((error) => console.log(`Error : ${error}`));
+  .catch((error) => console.log(`Error : ${error.message}`));
 }
 
 export function patchArticle(id, updateContent){
@@ -65,7 +65,7 @@ export function patchArticle(id, updateContent){
     else return res.json();
   })
   .then((data) => console.log(data))
-  .catch((error) => console.log(`Error : ${error}`));
+  .catch((error) => console.log(`Error : ${error.message}`));
 }
 
 export function deleteArticle(id){
@@ -83,5 +83,5 @@ export function deleteArticle(id){
   })
   .then((data) => console.log(data))
   .then(() => console.log("delete successful"))
-  .catch((error) => console.log(`Error : ${error}`));
+  .catch((error) => console.log(`Error : ${error.message}`));
 }
