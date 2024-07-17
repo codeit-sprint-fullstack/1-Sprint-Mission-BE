@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "axios";
 
 const apiUrl = "https://sprint-mission-api.vercel.app/articles";
 const headers = {
@@ -7,7 +7,7 @@ const headers = {
 
 /** 게시글 목록 조회 함수
  * @param {number} page 몇번째 페이지로 할것이냐?
- * @param {number} pageSize 한페이지에 몇개나 나오게 할것이냐? [이거 따라서 페이지가 정해짐]
+ * @param {number} pageSize 한페이지에 몇개의 게시물이 나오게 할 것인가?
  * @param {string} keyword 키워드
  */
 export async function getArticleList(page, pageSize, keyword) {
@@ -34,35 +34,31 @@ export async function getArticleList(page, pageSize, keyword) {
 }
 
 /** 게시글 개별 조회 함수
- * @param {number} ID 제품의 ID를 넣자
+ * @param {number} ID 글의 ID를 넣자
  */
 export async function getArticle() {
-    const apiUrl = `https://sprint-mission-api.vercel.app/articles/${ID || 2}`;
+  const apiUrl = `https://sprint-mission-api.vercel.app/articles/${ID || 2}`;
 
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
     console.log(data);
   } catch (error) {
-    console.error("내가 짠 쓰레기같은 코드 말고는 생길 문제가없다:", error);
+    console.error("뭔가 안됐음:", error);
   }
 }
 
 /** 게시글 작성 함수
  * @param {string} title 글의 제목을 넣자
  * @param {string} content 글의 내용을 넣자
- * @param {Array} image 글의 이미지를 배열로 넣자
+ * @param {string} image 글의 이미지를 넣자
  */
-export function createArticle(
-  title,
-  content,
-  image
-) {
+export function createArticle(title, content, image) {
   axios
     .post(apiUrl, {
-      title : title,
-      content : content,
-      image : image,
+      title: title,
+      content: content,
+      image: image,
     })
     .then((response) => {
       console.log(response.data);
@@ -82,9 +78,9 @@ export function patchArticle(ID, title, content, image) {
   const apiUrl = `https://sprint-mission-api.vercel.app/articles/${ID || null}`;
   axios
     .patch(apiUrl, {
-      title : title,
-      content : content,
-      image : image,
+      title: title,
+      content: content,
+      image: image,
     })
     .then((response) => {
       console.log(response.data);
@@ -108,4 +104,3 @@ export function deleteArticle(ID) {
       console.error(`${ID} 번 게시글 삭제에 실패했습니다: ${error.message}`);
     });
 }
-

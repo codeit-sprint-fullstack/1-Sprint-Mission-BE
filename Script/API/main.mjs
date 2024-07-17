@@ -5,7 +5,7 @@ import * as Product from "./ProductService.mjs";
 // Product.getProductList();
 
 // Article.deleteArticle(57);
-// Product.deleteProduct(2);
+// Product.deleteProduct(76);
 
 // Article.getArticle();
 // Product.getProduct();
@@ -20,3 +20,13 @@ Article.createArticle(
 );
 
 // Product.createProduct("string", "string", 10, "string", ["Array"], ["Array"]);
+
+// getProductList catch에서 throw한번 더해서 예외처리 받아보고자 만든함수 //
+// async function getDataOfProduct() {
+//   try {
+//     const productList = await getProductList(1, 10, "");
+//     console.log("제품종류 :", productList);
+//   } catch (error) {
+//     console.error("getProductList 안됨:", error.message);
+//   }
+// }

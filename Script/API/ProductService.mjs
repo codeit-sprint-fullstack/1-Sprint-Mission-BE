@@ -34,7 +34,7 @@ export async function getProductList(page, pageSize, keyword) {
 }
 
 /** 제품 개별 조회 함수
- * @param {number} ID 제품의 ID 입력하기
+ * @param {number} ID 제품의 ID를 넣자
  */
 export async function getProduct(ID) {
   const apiUrl = `https://sprint-mission-api.vercel.app/products/${ID || 2}`;
@@ -44,7 +44,7 @@ export async function getProduct(ID) {
     const data = response.data;
     console.log(data);
   } catch (error) {
-    console.error("내가 짠 쓰레기같은 코드 말고는 생길 문제가없다:", error);
+    console.error("뭔가 안됐음:", error);
   }
 }
 
@@ -80,7 +80,6 @@ export function createProduct(
       console.error(error);
     });
 }
-
 
 /** 제품 수정 함수
  * @param {number} ID 제품의 ID를 넣자
