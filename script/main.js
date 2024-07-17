@@ -6,7 +6,7 @@ const getArticlesBtn = document.querySelector('#getarticles');
 const getArticleBtn = document.querySelector('#getarticle');
 const updateArticlesBtn = document.querySelector('#updatearticle');
 const createArticlesBtn = document.querySelector('#createarticle');
-const deletearticlesBtn = document.querySelector('#updatearticle');
+const deletearticlesBtn = document.querySelector('#deletearticle');
 
 const serachKeyword = document.querySelector('#keyword');
 const searchId = document.querySelector('#searchid');
@@ -29,7 +29,9 @@ getArticleBtn.addEventListener('click', async () => {
     const data = await article.getArticle(searchId.value)
             .then((res) => res.json())
             .catch((e) => console.log(e));
-    renderingItem(data);
+    if(data) {
+        renderingItem(data);
+    }
 })
 
 const articleTitle = document.querySelector('#articletitle');
@@ -41,8 +43,8 @@ createArticlesBtn.addEventListener('click', async () => {
     const body = new obj.createArticleBody(articleTitle.value, articleContent.value, articleImg.value)
     const data = await article.createArticle(body)
             .then((res) => res.json())
+            .then(() => console.log(data))
             .catch((e) => console.log(e));
-    console.log(data);
 })
 
 const itemId = document.querySelector('#itemid');
@@ -63,16 +65,15 @@ updateArticlesBtn.addEventListener('click', async () => {
     const body = new obj.createArticleBody(itemTitle.value, itemContent.value, itemImg.value)
     const data = await article.patchArticle(itemId.value, body)
             .then((res) => res.json())
+            .then(() => console.log(`수정완료$`))
             .catch((e) => console.log(e));
-    console.log(`수정완료$`);
 })
 
 //Delete Article 
 deletearticlesBtn.addEventListener('click', async () => {
     const data = await article.deleteArticle(itemId.value)
-            .then((res) => res.json())
+            .then(() => console.log(`삭제완료$`))
             .catch((e) => console.log(e));
-    console.log(`삭제완료${data}`);
 })
 
 //---------- axios ----------

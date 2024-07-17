@@ -64,8 +64,9 @@ export async function deleteArticle(id) {
         {
         method : 'DELETE',
         })
+    console.log(response);
     if(!response.ok) {
-        throw new Error('게시글조회의 실패했습니다.');
+        throw new Error('게시글삭제의 실패했습니다.');
     }
     return response;
 }
