@@ -12,7 +12,7 @@ export async function getArticleList(params = {}) {
     Object.keys(params).forEach((key) => 
         searchParams.append(key, params[key]));
     paramsUrl.search = searchParams;
-    const response =  await fetch(url)
+    const response =  await fetch(paramsUrl)
     if(!response.ok) {
         throw new Error('게시글을 불러오는데 실패했습니다.');
     }
@@ -37,7 +37,6 @@ export async function createArticle(obj) {
                 'Content-type' : 'application/json',
             },
         })
-        .then((res) => res.json())
     if(!response.ok) {
         throw new Error('게시글등록에 실패했습니다.');
     }

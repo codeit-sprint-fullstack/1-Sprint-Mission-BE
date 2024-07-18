@@ -31,6 +31,7 @@ getArticleBtn.addEventListener('click', async () => {
             .catch((e) => console.log(e));
     if(data) {
         renderingItem(data);
+        console.log('조회완료');
     }
 })
 
@@ -43,8 +44,11 @@ createArticlesBtn.addEventListener('click', async () => {
     const body = new obj.createArticleBody(articleTitle.value, articleContent.value, articleImg.value)
     const data = await article.createArticle(body)
             .then((res) => res.json())
-            .then(() => console.log(data))
             .catch((e) => console.log(e));
+    if(data) {
+        renderingItem(data);
+        console.log('생성완료');
+    }
 })
 
 const itemId = document.querySelector('#itemid');
@@ -83,15 +87,18 @@ const updateProductBtn = document.querySelector('#updateproduct');
 const createProductBtn = document.querySelector('#createproduct');
 const deleteProductBtn = document.querySelector('#deleteproduct');
 
+const productKeyword = document.querySelector('#productkeyword');
+
 //Get Product List
 getProductsBtn.addEventListener('click', async () => {
     const params = {
         page : 1,
         pageSize: 100,
-        keyword : serachKeyword.value,
+        keyword : productKeyword.value,
     }
     try {
-        const res = await product.getProductList(params)
+        const data = await product.getProductList(params)
+        console.log('조회완료');
     } catch (e) {
         console.log(e.message);
     }
@@ -104,6 +111,7 @@ getProductBtn.addEventListener('click', async () => {
     try {
         const data = await product.getProduct(ProductSearchId.value)
         renderingProduct(data);
+        console.log('조회완료');
     } catch (e) {
         console.log(e.message);
     }
@@ -129,6 +137,7 @@ createProductBtn.addEventListener('click', async () => {
     try {
         const data = await product.createProduct(body)
         console.log(data);
+        console.log('생성완료');
     } catch (e) {
         console.log(e.message);
     }
@@ -155,6 +164,7 @@ updateProductBtn.addEventListener('click', async () => {
     try {
         const data = await product.patchProduct(ProductItemId.value, body)
         console.log(data);
+        console.log('수정완료');
     } catch (e) {
         console.log(e.message);
     }
@@ -180,6 +190,7 @@ function renderingProduct (obj) {
 deleteProductBtn.addEventListener('click', async () => {
     try {
         const data = await product.deleteProduct(ProductItemId.value)
+        console.log('삭제완료');
     } catch (e) {
         console.log(e.message);
     }
