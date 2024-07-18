@@ -1,5 +1,6 @@
-import { patchArticle } from './ArticleService.js';
+import { deleteArticle } from './ArticleService.js';
 
-patchArticle(128, '수정된 게시글', '수정된 내용', '수정된_이미지_주소')
-    .then(data => console.log('수정된 게시글:', data))
-    .catch(error => console.error('게시글을 수정하는 중 에러 발생:', error));
+deleteArticle(128)
+    .then(() => console.log('게시글이 삭제되었습니다.'))
+    .catch(error => console.error('게시글을 삭제하는 중 에러 발생:', error));
+
