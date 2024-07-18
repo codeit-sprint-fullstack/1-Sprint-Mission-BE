@@ -48,9 +48,9 @@ export async function getProductList(page = 1, pageSize = 100, keyword = "")
             "keyword" : keyword,
         };
 
-        const res = await instance.get("/products", {params});
+        const res = instance.get("/products", {params});
 
-        return (await res);
+        return (await res).data;
     }
     catch(err)
     {
