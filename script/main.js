@@ -69,8 +69,11 @@ updateArticlesBtn.addEventListener('click', async () => {
     const body = new obj.createArticleBody(itemTitle.value, itemContent.value, itemImg.value)
     const data = await article.patchArticle(itemId.value, body)
             .then((res) => res.json())
-            .then(() => console.log(`수정완료$`))
             .catch((e) => console.log(e));
+    if(data) {
+        renderingItem(data);
+        console.log('수정완료');
+    }
 })
 
 //Delete Article 
@@ -98,6 +101,7 @@ getProductsBtn.addEventListener('click', async () => {
     }
     try {
         const data = await product.getProductList(params)
+        console.log(data);
         console.log('조회완료');
     } catch (e) {
         console.log(e.message);
