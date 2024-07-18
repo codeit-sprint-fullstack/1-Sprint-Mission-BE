@@ -1,0 +1,148 @@
+html {
+  font-size: 10px;
+}
+
+body {
+  background-color: #FFFFFF;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  transform : rotate(0.04deg); 
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+header {
+  height: 7.508vh;
+  width: 100%;
+  border-bottom: 0.109vh solid #dfdfdf;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: #FFFFFF;
+}
+
+a {  
+  text-decoration-line: none;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
+
+.navi {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-left: 200px;
+}
+
+.logo > img {
+  width: 7.9688vw; 
+  height: 5.55vh;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  width: 218px;
+  margin-left: 1.6667vw;
+}
+
+.menu > a {
+  width: 109px;
+  color: #4B5563;
+  font-size: 1.8rem;
+  font-weight: 700;
+  white-space:nowrap;
+}
+
+.loginHome_btn {
+  margin-right: 200px;
+}
+
+.loginHome_btn button {
+  height: 4.57vh;
+  width: 88px;
+  background-color: #3692FF;
+  color: #ffffff;
+  font-size: 1.74vmin;
+  font-weight: 600;
+  border-radius: 0.8vmin;
+  border: none;
+  white-space:nowrap;
+}
+
+footer {
+  height: 10.41vh;
+  background-color: #111827;
+  padding-top: 3.264vh;
+}
+
+.foot {
+  margin: auto 21.763vh;
+  height: 2.176vh;
+  display: flex;
+  justify-content: space-between;
+}
+
+.f_left {
+  color: #9CA3AF;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.f_middle a {
+  color: #E5E7EB;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.f_right{
+  width: 6.042vw;
+  display: flex;
+  justify-content: space-between;
+}
+
+.f_right img {
+  width: 1.042vw;
+  height: 2.176vh;
+}
+
+/* ------------------------------------------- */
+
+img {
+  width: 100px;
+}
+
+main {
+  font-size: large;
+}
+
+.list{
+  min-height: 200PX;
+  width: 100%;
+  border: 1px solid;
+  font-size: medium;
+  display: flex;
+  padding: 0 20px;
+}
+
+.showList {
+  width: 50%;
+}
+
+.put {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px;
+  div {
+    display: flex;
+    justify-content: space-between;
+  }
+}
