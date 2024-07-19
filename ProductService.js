@@ -47,3 +47,13 @@ export const patchProduct = async (id, name, description, price, tags, images) =
         throw error;
     }
 };
+
+export const deleteProduct = async (id) => {
+    try {
+        await axios.delete(`https://sprint-mission-api.vercel.app/products/${id}`);
+        console.log('상품이 삭제되었습니다.');
+    } catch (error) {
+        console.error('상품을 삭제하는 중 에러 발생:', error);
+        throw error;
+    }
+};
