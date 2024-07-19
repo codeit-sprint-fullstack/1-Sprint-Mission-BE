@@ -23,3 +23,24 @@ export async function getProduct(id) {
         throw error;
     }
 }
+
+export async function createProduct(product) {
+    const URL = 'https://sprint-mission-api.vercel.app/products';
+
+    try {
+      const response = await axios.post(URL,
+        {
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        tags: product.tags,
+        images: product.images
+        }
+      );
+      const data = response.data;
+      return console.log('새로운 상품이 추가되었습니다.', data);
+    } catch (error) {
+      console.error(`Error : ${error}`);
+      throw error;
+    }
+  }
