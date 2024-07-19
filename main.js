@@ -1,5 +1,5 @@
-import { createProduct } from './ProductService.js';
+import { patchProduct } from './ProductService.js';
 
-createProduct('고디바 초콜릿', '이것은 고디바입니다', 50000, '고디바', ['초콜릿', '달달'], ['이미지_주소'])
-    .then(data => console.log('생성된 상품:', data))
-    .catch(error => console.error('상품을 생성하는 중 에러 발생:', error));
+patchProduct(85, '나쵸', '고디바에서 나쵸로 변경되었습니다.', 2000, ['과자', '치'], ['수정된_이미지_주소'])
+    .then(data => console.log('수정된 상품:', data))
+    .catch(error => console.error('상품을 수정하는 중 에러 발생:', error));
