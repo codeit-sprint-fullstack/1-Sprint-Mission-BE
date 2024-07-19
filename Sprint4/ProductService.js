@@ -44,3 +44,16 @@ export async function createProduct(product) {
       throw error;
     }
   }
+
+export async function patchProduct(id, Product) {
+    const URL = `https://sprint-mission-api.vercel.app/products/${id}`;
+  
+    try {
+      const response = await axios.patch(URL, Product);
+      const data = response.data;
+      return console.log('상품 업데이트가 완료되었습니다.',data);
+    } catch (error) {
+      console.error(`Error : ${error}`);
+      throw error;
+    }
+}
