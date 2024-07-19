@@ -7,3 +7,10 @@ export async function getArticleList(page, pageSize, keyword) {
         .then((checkStatus))
         .catch(error => console.error(error));
 }
+
+export async function getArticle(articleId){
+    const response = await fetch(`https://sprint-mission-api.vercel.app/articles/${articleId}`)
+    .then(checkStatus)
+    .catch(error => console.error(error)
+  );
+}
