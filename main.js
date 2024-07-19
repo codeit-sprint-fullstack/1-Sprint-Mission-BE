@@ -2,9 +2,9 @@ import * as ArticleService from './ArticleService.js';
 import * as ProductService from './ProductService.js';
 
 // ArticleService.getArticleList();
-// ArticleService.getArticleList({page: 1, pageSize: 30, keyword: '추천'});
+// ArticleService.getArticleList({page: 1, pageSize: 30, keyword: 'title'});
 
-// ArticleService.getArticle(19);
+// ArticleService.getArticle(57);
 
 // const articleContent = {
 //   "title": "stringTitle",
@@ -20,14 +20,14 @@ import * as ProductService from './ProductService.js';
 //   "image": "patchImage",
 // };
 
-// ArticleService.patchArticle(37, articleUpdate);
+// ArticleService.patchArticle(163, articleUpdate);
 
-// ArticleService.deleteArticle(37);
+// ArticleService.deleteArticle(163);
 
 // ProductService.getProductList();
 // ProductService.getProductList({page: 1, pageSize: 30, keyword: '삼성'});
 
-// ProductService.getProduct(5);
+// ProductService.getProduct(4);
 
 // const productContent = {
 //   "name": "test",
@@ -47,6 +47,6 @@ import * as ProductService from './ProductService.js';
 //   "images": ["image_url"],
 // };
 
-// ProductService.patchProduct(13, productUpdate);
+// ProductService.patchProduct(104, productUpdate);
 
-// ProductService.deleteProduct(16);
+// ProductService.deleteProduct(104);
