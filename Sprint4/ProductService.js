@@ -57,3 +57,16 @@ export async function patchProduct(id, Product) {
       throw error;
     }
 }
+
+export async function deleteProduct(id) {
+    const URL = `https://sprint-mission-api.vercel.app/products/${id}`;
+  
+    try {
+      const response = await axios.delete(URL);
+      const data = response.data;
+      return console.log('삭제가 완료되았습니다.',data);
+    } catch (error) {
+      console.error(`Error : ${error}`);
+      throw error;
+    }
+  }
