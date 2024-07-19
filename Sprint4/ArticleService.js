@@ -14,3 +14,15 @@ export async function getArticle(articleId){
     .catch(error => console.error(error)
   );
 }
+
+export async function createArticle(title, content, image){
+    const response = await fetch('https://sprint-mission-api.vercel.app/articles', {
+      method: 'POST',
+      body: JSON.stringify({ title, content, image }),
+      headers: {
+          'Content-Type': 'application/json',
+        },
+    })
+    .then(checkStatus)
+    .catch(error => console.error(error));
+}
