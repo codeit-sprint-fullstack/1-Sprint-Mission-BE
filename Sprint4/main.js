@@ -37,3 +37,20 @@ const newProduct = {
 
 //상품 삭제하기
 //deleteProduct(2);
+
+/* -------------ArticleService.js 파일 함수 동작 확인------------- */
+
+//게시글 목록 조회
+//getArticleList(1, 1, '캐리어');
+
+//게시글 상세 조회
+//getArticle(9);
+
+//새로운 게시글 등록
+//createArticle(newArticle.title, newArticle.content, newArticle.image);
+
+//게시글 수정
+//patchArticle(13, newArticle);
+
+//게시글 삭제
+//deleteArticle(17);
