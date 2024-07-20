@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="../img/panda-face.png">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <title>로그인</title>
+</head>
+<body>
+  <div id="modalContainer" class="hidden">
+    <div id="modalContent">
+      <p id>비밀번호가 일치하지 않습니다.</p>
+      <button id="modalCloseButton">확인</button>
+    </div>
+  </div>
+  <a href="/" class="login_logo">
+    <img src="../img/panda-face.png" class="login_img_1">
+    <img src="../img/panda-market-logo.png" class="login_img_2">
+  </a>
+  <form>
+    <label for="user-email">이메일</label>
+    <input id="user-email" placeholder="이메일을 입력해주세요">
+    <div class="email-error-message1 hide">이메일을 입력해주세요.</div>
+    <div class="email-error-message2 hide">잘못된 이메일 형식입니다.</div>
+    <div class="pw">
+      <label for="password">비밀번호</label>
+      <input class="password" placeholder="비밀번호를 입력해주세요" type="password">
+      <img src="../img/eyeclose.png" class="pass_icon">
+      <div class="password-error-message1 hide">비밀번호를 입력해주세요.</div>
+      <div class="password-error-message2 hide">비밀번호를 8자 이상 입력해주세요.</div>
+    </div>
+    <button type="button" class="login_btn" disabled>로그인</button>
+    <div class="convenience"> 
+      <div class="convenience_text">간편 로그인하기</div>
+      <div class="convenience_img">
+        <a href="https://www.google.com"><img src="../img/Component 2.png" class="icon"></a>
+        <a href="https://www.kakaocorp.com/page/"><img src="../img/Component 3.png" class="icon"></a>
+      </div>    
+    </div>
+    <div class="signup">판다마켓이 처음이신가요? <a href="/signup" class="already-member">회원가입</a></div>
+  </form>
+  <script type="module" src="./login.js"></script>
+</body>
+</html>
