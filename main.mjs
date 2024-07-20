@@ -8,6 +8,7 @@ import * as product from './api/productService.mjs';
 //   keyword: '기구',
 // });
 
+//-get all articles
 // article.getArticleList();
 
 // - get an article by id (if no id existed (404), it throws error)
@@ -20,4 +21,76 @@ import * as product from './api/productService.mjs';
 // article.patchArticle(165, { title: '수정된 타이틀' });
 
 //- delete the article by id
-// article.deleteArticle(167);
+// article.deleteArticle(155);
+
+//----------------------------//
+
+// - get all products with parameters
+// try {
+//   const params = { page: 1, pageSize: 3, keyword: '갤럭시' };
+//   const readAllProducts = await product.getProductList(params);
+//   console.log(readAllProducts);
+// } catch (err) {
+//   console.error(err.message);
+
+//   if (err.response) {
+//     console.log(err.response.status);
+//     console.log(err.response.data);
+//   }
+// }
+
+// - get a product by id
+// try {
+//   const readProduct = await product.getProduct(4);
+//   console.log(readProduct);
+// } catch (err) {
+//   console.error(err.message);
+//   if (err.response) {
+//     console.log(err.response.status);
+//     console.log(err.response.data);
+//   }
+// }
+
+// - create a product
+// try {
+//   const addProduct = await product.createProduct(
+//     '머그컵',
+//     '피카츄 머그컵',
+//     2000,
+//     ['키친웨어'],
+//     ['이미지 주소']
+//   );
+//   console.log(addProduct);
+// } catch (err) {
+//   console.error(err.message);
+//   if (err.response) {
+//     console.log(err.response.status);
+//     console.log(err.response.data);
+//   }
+// }
+
+// - update a product by id
+// try {
+//   const updateProduct = await product.patchProduct(106, {
+//     name: '수정됐다',
+//   });
+//   console.log(updateProduct);
+// } catch (err) {
+//   console.error(err.message);
+//   if (err.response) {
+//     console.log(err.response.status);
+//     console.log(err.response.data);
+//   }
+// }
+
+// - delete a product by id
+// try {
+//   const deleteProduct = await product.deleteProduct(108);
+//   console.log(deleteProduct);
+// } catch (err) {
+//   console.error(err.message);
+//   if (err.response) {
+//     console.log(err.response.status);
+//     console.log(err.response.data);
+//   }
+// }

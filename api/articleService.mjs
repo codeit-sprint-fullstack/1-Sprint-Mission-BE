@@ -85,7 +85,10 @@ export function deleteArticle(id) {
       } else if (!res.ok) {
         throw new Error(res.status);
       } else {
-        return { status: res.status, message: 'Deleted successful' };
+        return {
+          status: res.status,
+          message: 'The article has deleted successfully',
+        };
       }
     })
     .then((data) => console.log(data))
