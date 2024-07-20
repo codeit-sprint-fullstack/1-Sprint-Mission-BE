@@ -1,0 +1,62 @@
+form {
+  margin: 0 0 184px;
+}
+
+/* js 에러 관리 메시지 style */
+small#nickname-error,
+small#password-repeat-error{
+  color: var(--red);
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: -8px;
+  margin-left: 16px;
+  visibility: hidden;
+}
+
+/* 함수 실행 시, visible 변경 */
+#nickname-error.show,
+#password-repeat-error.show{
+  visibility: visible;
+}
+
+/* 비밀번호 type변경 관련 기능을 위한 style */
+#re-eye-close-icon, #re-eye-show-icon {
+  visibility: hidden;
+}
+
+#re-eye-close-icon.show, #re-eye-show-icon.show {
+  visibility: visible;
+}
+
+.pw-re-box {
+  position: relative;
+}
+
+.pw-re-box #re-eye-close-icon {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  cursor: pointer;
+}
+
+.pw-re-box #re-eye-show-icon {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  cursor: pointer;
+  width: 24px;
+}
+/* -------------------------------------------- */
+
+/* Tablet view */
+@media (min-width: 744px) and (max-width: 1199px) {
+  form {
+    margin-bottom: 273px;
+  }
+}
+
+@media (max-width: 743px) {
+  form {
+    margin-bottom: 185px;
+  }
+}
