@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css" />
+  <link rel="stylesheet" href="/style/sign-common.css">
+  <link rel="stylesheet" href="/style/sign-up-only.css">
+</head>
+<body style="font-family: Pretendard GOV">
+  <div class="header">
+    <a href="/index.html">
+      <img src="/images/logo.png" class="header-image">
+    </a>
+  </div>
+  <form>
+    <div class="input-form">
+      <label for="email">이메일</label>
+      <input id="email-input" name="email" placeholder="이메일을 입력해주세요">
+      <small id="email-error"></small>
+    </div>
+    <div class="input-form">
+      <label for="nickname">닉네임</label>
+      <input id="nickname" name="nickname" placeholder="닉네임을 입력해주세요">
+      <small id="nickname-error"></small>
+    </div>
+    <div class="input-form">
+      <label for="password">비밀번호</label>
+      <div class="pw-box">
+        <input id="password-input" name="password" type="password" placeholder="비밀번호를 입력해주세요">
+        <img src="/images/eye-close.png" id="eye-close-icon">
+        <img src="/images/eye-show.png" id="eye-show-icon">
+      </div>
+      <small id="password-error"></small>
+    </div>
+    <div class="input-form">
+      <label for="password-repeat">비밀번호 확인</label>
+      <div class="pw-re-box">
+        <input id="password-repeat-input" name="password-repeat" type="password" placeholder="비밀번호를 다시 한 번 입력해주세요">
+        <img src="/images/eye-close.png" id="re-eye-close-icon">
+        <img src="/images/eye-show.png" id="re-eye-show-icon">
+      </div>
+      <small id="password-repeat-error"></small>
+    </div>
+    <button id="button" type="button">회원가입</button>
+    <div class="simple-login">
+      <span class="simple-login-text">간편 로그인하기</span>
+      <div class="simple-login-icons">
+        <a href="https://www.google.co.kr/?hl=ko">
+          <img src="/images/googleDirect.png">
+        </a>
+        <a href="https://www.kakaocorp.com/page/">
+          <img src="/images/kakaoDirect.png">
+        </a>  
+      </div>
+    </div>
+    <div class="other-case">
+      <span>이미 회원이신가요?</span>
+      <a href="/page/login.html" class="other-case-link">로그인</a>
+    </div>
+  </form>
+  <dialog id="password-error-dlg">
+    <span id="error-message">error</span>
+    <button id="dialog-button">확인</button>
+  </dialog> 
+  <script type="module" src="/script/signup.js"></script>
+</body>
+</html>

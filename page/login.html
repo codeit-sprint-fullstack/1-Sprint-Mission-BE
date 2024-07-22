@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Log In</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css" />
+  <link rel="stylesheet" href="/style/sign-common.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T8RE4DXX4S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-T8RE4DXX4S');
+  </script>
+</head>
+<body style="font-family: Pretendard GOV">
+  <div class="header">
+    <a href="/index.html">
+      <img src="/images/logo.png" class="header-image">
+    </a>
+  </div>
+  <form>
+    <div class="input-form">
+      <label for="email">이메일</label>
+      <input id="email-input" name="email" placeholder="이메일을 입력해주세요">
+      <small id="email-error"></small>
+    </div>
+    <div class="input-form">
+      <label for="password">비밀번호</label>
+      <div class="pw-box">
+        <input id="password-input" name="password" type="password" placeholder="비밀번호를 입력해주세요">
+        <img src="/images/eye-close.png" id="eye-close-icon">
+        <img src="/images/eye-show.png" id="eye-show-icon">
+      </div>
+      <small id="password-error"></small>
+    </div>
+    <button id="button" type="button">로그인</button>
+    <div class="simple-login">
+      <span class="simple-login-text">간편 로그인하기</span>
+      <div class="simple-login-icons">
+        <a href="https://www.google.co.kr/?hl=ko">
+          <img src="/images/GoogleDirect.png">
+        </a>
+        <a href="https://www.kakaocorp.com/page/">
+          <img src="/images/kakaoDirect.png">
+        </a>  
+      </div>
+    </div>
+    <div class="other-case">
+      <span>판다마켓이 처음이신가요?</span>
+      <a href="/page/signup.html" class="other-case-link">회원가입</a>
+    </div>
+  </form>
+  <dialog id="password-error-dlg">
+    <span id="error-message">error</span>
+    <button id="dialog-button">확인</button>
+  </dialog>
+
+  <script type="module" src="/script/login.js"></script>
+</body>
+</html>

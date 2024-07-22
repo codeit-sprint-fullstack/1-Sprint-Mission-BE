@@ -1,0 +1,262 @@
+* {
+  box-sizing: border-box;
+}
+
+
+/* 사용법: var(--blue); */
+:root {
+  --blue: #3692FF;
+  --skyblue: #E6F2FF;
+  --white: #ffffff;
+  --input: #F3F4F6;
+  --button: #9CA3AF;
+  --link: #3182F6;
+  --black: #1F2937;
+  --red: #f74747;
+}
+
+/* button과 input은 글꼴이 body와 다른 것을 인지 */
+/* 상속되지 않는 것을 알게 됐다. */
+input, select, textarea, button{font-family:inherit;}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  color: var(--black);
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 0 418px;
+}
+
+label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+input {
+  width: 640px;
+  height: 56px;
+  border-radius: 12px;
+  background-color: var(--input);
+  padding: 16px 24px;
+  border-style: none;
+  font-size: 16px;
+}
+
+input:focus {
+  outline: 1px solid var(--blue);
+}
+
+button {
+  border-radius: 40px;
+  border-style: none;
+  background-color: var(--button);
+  color: var(--white);
+  font-size: 20px;
+  font-weight: 600;
+  padding: 16px 124px;
+  height: 56px;
+  cursor: pointer;
+}
+
+/* js 에러 관리 메시지 style */
+small#email-error, 
+small#password-error{
+  color: var(--red);
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: -8px;
+  margin-left: 16px;
+  visibility: hidden;
+}
+
+#email-error.show, 
+#password-error.show{
+  visibility: visible;
+}
+/* ---------------------------- */
+
+/* error message dialog style */
+dialog {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 540px;
+  height: 250px;
+  border-radius: 8px;
+  border: none;
+  padding: 0;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+#dialog-button {
+  position: absolute;
+  right: 28px;
+  bottom: 28px;
+  width: 120px;
+  height: 48px;
+  padding: 12px 23px;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: var(--blue);
+}
+/* ---------------------------- */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin: 60px 0 0;
+}
+
+.input-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 640px;
+  gap: 16px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* 비밀번호 type변경 관련 기능을 위한 style */
+#eye-close-icon, #eye-show-icon {
+  visibility: hidden;
+}
+
+#eye-close-icon.show, #eye-show-icon.show {
+  visibility: visible;
+}
+
+.pw-box {
+  position: relative;
+}
+
+.pw-box #eye-close-icon {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  cursor: pointer;
+}
+
+.pw-box #eye-show-icon {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  cursor: pointer;
+  width: 24px;
+}
+/* -------------------------------------------- */
+
+.simple-login {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--skyblue);
+  border-radius: 8px;
+  height: 74px;
+  padding: 23px;
+}
+
+.simple-login-icons {
+  display: flex;
+  gap: 16px;
+}
+
+.other-case {
+  display: flex;
+  justify-content: center;
+  font-size: 15px;
+  gap: 4px;
+}
+
+.other-case-link {
+  color: var(--link);
+  text-decoration: underline;
+}
+
+/* Tablet view */
+@media (min-width: 744px) and (max-width: 1199px) {
+  form {
+    margin-bottom: 483px;
+  }
+
+  .header {
+    margin: 48px 0 0;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 743px) {
+  body {
+    gap: 24px;
+  }
+
+  form {
+    padding: 0 16px;
+    width: 100%;
+    gap: 16px;
+    margin-bottom: 307px;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  dialog {
+    width: 327px;
+    height: 220px;
+    justify-content: space-between;
+  }
+
+  #error-message {
+    margin-top: 81px;
+  }
+  #dialog-button {
+    position: static;
+    margin-bottom: 23px;
+  }
+
+  .header {
+    margin: 24px 0 0;
+  }
+
+  /* 헷갈림 */
+  .header-image {
+    width: 52.8vw;
+  }
+
+  .input-form {
+    width: 100%;
+  }
+
+  #button {
+    margin-bottom: 8px;
+  }
+
+  .simple-login {
+    margin-bottom: 8px;
+  }
+}
