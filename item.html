@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script type="importmap">
+      {
+        "imports": {
+          "axios": "https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/esm/axios.min.js"
+        }
+      }
+    </script>
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="icon" href="./img/face.png">
+  <meta charset="utf-8" />
+  <title>판다마켓</title>
+</head>
+
+<body>
+  <header class="header">
+    <div class="navi">
+      <a href="" class="logo">
+        <img src="./img/logo.png">
+      </a>
+      <div class="menu">
+        <a href="">
+          <div>자유게시판</div>
+        </a>
+        <a href="">
+          <div>중고마켓</div>
+        </a>
+      </div>
+    </div>
+    <a href="" class="loginHome_btn">
+      <button> 로그인 </button>
+    </a>
+  </header>
+  <main>
+    <div class="showResult">
+      <div class="articleResult">
+        <p>Article list</p>
+        <div class="articleList list">
+          <div class="showList">
+            <div class="aList"></div>
+            <input type="text" id="aSearch" value="" />
+            <button type="button" id="aSearchBtn">검색</button>
+            <button type="button" id="aPre"> < </button>
+            <button type="button" id="aNext"> > </button>
+          </div>
+          <div class="putArticle put">
+            <div>title <input type="text" id="aTitle" value="" /> </div>
+            <div>content &nbsp;<input type="text" id="aContent" value="" /> </div>
+            <div>image <input type="text" id="aImage" value="" /> </div>
+            <div style="display: flex; justify-content: center; gap: 20px;">
+              <button type="button" id="aPutBtn"> 생성 </button>
+              <button type="button" id="aModifyBtn" disabled> 수정 </button>
+              <button type="button" id="aDeleteBtn" disabled> 삭제 </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="productResult">
+        <p>Product list</p>
+        <div class="productList list">
+          <div class="showList">
+            <div class="pList"></div>
+            <input type="text" id="pSearch" value="" />
+            <button type="button" id="pSearchBtn">검색</button>
+            <button type="button" id="pPre"> < </button>
+            <button type="button" id="pNext"> > </button>
+          </div>
+          <div class="putProduct put">
+            <div>name <input type="text" id="pName" value="" /> </div>
+            <div>description &nbsp;<input type="text" id="pDescription" value="" /> </div>
+            <div>price <input type="text" id="pPrice" value="" /> </div>
+            <div>tags <input type="text" id="pTags" value="" /> </div>
+            <div>images <input type="text" id="pImages" value="" /> </div>
+            <div style="display: flex; justify-content: center; gap: 20px;">
+              <button type="button" id="pPutBtn"> 생성 </button>
+              <button type="button" id="pModifyBtn" disabled> 수정 </button>
+              <button type="button" id="pDeleteBtn" disabled> 삭제 </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="foot">
+      <div class="f_left">codeit-2024</div>
+      <div class="f_middle">
+        <a href="">Privacy Policy</a>
+        <a href="">FAQ</a>
+      </div>
+      <div class="f_right">
+        <a href="" target="_blank"><img src="./img/ic_facebook.png"> </a>
+        <a href="" target="_blank"><img src="./img/ic_twitter.png"> </a>
+        <a href="" target="_blank"><img src="./img/ic_instagram.png"> </a>
+        <a href="" target="_blank"><img src="./img/ic_youtube.png"> </a>
+      </div>
+    </div>
+  </footer>
+</body>
+<script type="module" src="./js/main.js"></script>
+
+</html>
