@@ -86,7 +86,7 @@ export async function patchProduct({ ID, title, content, image }) {
  * @param {number} ID 제품의 ID를 넣자
  */
 export async function deleteProduct(ID) {
-  if (!ID) throw new Error("ID is required");
+  if (!ID) throw new Error("No ID founded");
   const url = `${apiUrl}/${ID}`;
   try {
     await axios.delete(url);

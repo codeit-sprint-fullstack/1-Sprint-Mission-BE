@@ -86,7 +86,7 @@ export async function patchArticle({ ID, title, content, image }) {
  * @param {number} ID 글의 ID를 넣자
  */
 export async function deleteArticle(ID) {
-  if (!ID) throw new Error("ID is required");
+  if (!ID) throw new Error("No ID founded");
   const url = `${apiUrl}/${ID}`;
   try {
     await axios.delete(url);
