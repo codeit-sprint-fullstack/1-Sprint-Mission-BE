@@ -23,13 +23,19 @@ export async function getProduct(id) {
   }
 }
 
-export async function createProduct(name, description, price, tags, images) {
+export async function createProduct({
+  name,
+  description,
+  price,
+  tags,
+  images,
+}) {
   const newProduct = {
-    name: name,
-    description: description,
-    price: price,
-    tags: tags,
-    images: images,
+    name,
+    description,
+    price,
+    tags,
+    images,
   };
   try {
     const res = await instance.post('/products', newProduct);

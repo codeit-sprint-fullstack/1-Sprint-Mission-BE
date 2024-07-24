@@ -1,6 +1,7 @@
 //require to use fetch and then
 
 const url = new URL('https://sprint-mission-api.vercel.app/articles');
+const defaultHeader = { 'Content-Type': 'application/json' };
 
 export function getArticleList(params = {}) {
   Object.keys(params).forEach((key) => {
@@ -34,15 +35,15 @@ export function getArticle(id) {
     .catch((err) => console.log(err));
 }
 
-export function createArticle(title, content, image) {
+export function createArticle({ title, content, image }) {
   const newArticle = {
-    title: title,
-    content: content,
-    image: image,
+    title,
+    content,
+    image,
   };
   fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { ...defaultHeader },
     body: JSON.stringify(newArticle),
   })
     .then((res) => {
@@ -59,7 +60,7 @@ export function createArticle(title, content, image) {
 export function patchArticle(id, amendData) {
   fetch(`${url}/${id}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { ...defaultHeader },
     body: JSON.stringify(amendData),
   })
     .then((res) => {

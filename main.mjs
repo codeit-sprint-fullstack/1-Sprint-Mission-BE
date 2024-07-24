@@ -15,7 +15,11 @@ import * as product from './api/productService.mjs';
 // article.getArticle(11);
 
 // - create new article
-// article.createArticle('새 리뷰', '새리뷰입니다', '이미지주소');
+article.createArticle({
+  image: '이미지주소',
+  content: '새리뷰입니다',
+  title: '새 리뷰',
+});
 
 //- update an article by id
 // article.patchArticle(165, { title: '수정된 타이틀' });
@@ -53,13 +57,13 @@ import * as product from './api/productService.mjs';
 
 // - create a product
 // try {
-//   const addProduct = await product.createProduct(
-//     '머그컵',
-//     '피카츄 머그컵',
-//     2000,
-//     ['키친웨어'],
-//     ['이미지 주소']
-//   );
+//   const addProduct = await product.createProduct({
+//     description: '피카츄 머그컵',
+//     name: '머그컵',
+//     price: 2000,
+//     images: ['이미지 주소'],
+//     tags: ['키친웨어'],
+//   });
 //   console.log(addProduct);
 // } catch (err) {
 //   console.error(err.message);
