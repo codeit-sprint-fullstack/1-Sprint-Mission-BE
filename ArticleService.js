@@ -3,6 +3,7 @@
 const BASE_URL = "https://sprint-mission-api.vercel.app/articles";
 
 // GET /articles - 게시글 목록 조회
+
 const params = {
   page,
   pageSize,
