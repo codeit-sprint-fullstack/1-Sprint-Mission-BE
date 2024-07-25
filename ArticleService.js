@@ -1,9 +1,12 @@
+const missionUrl = 'https://sprint-mission-api.vercel.app/articles';
+
 export function getArticleList(options = {}) {
-  const url = new URL('https://sprint-mission-api.vercel.app/articles');
+  const url = new URL(missionUrl);
   const {page=1, pageSize=100, keyword} = options;
   const params = {
     page: page,
-    pageSize: pageSize
+    pageSize: pageSize,
+    ...(keyword && { keyword })
   }
 
   // Add query parameter to URL
@@ -32,7 +35,7 @@ export function getArticleList(options = {}) {
 }
 
 export function getArticle(id) {
-  const url = new URL(`https://sprint-mission-api.vercel.app/articles/${id}`);
+  const url = new URL(missionUrl + `/${id}`);
 
   return fetch(url, {
     method: 'GET',
@@ -52,7 +55,7 @@ export function getArticle(id) {
 }
 
 export function createArticle(data) {
-  const url = new URL('https://sprint-mission-api.vercel.app/articles');
+  const url = new URL(missionUrl);
 
   return fetch(url, {
     method: 'POST',
@@ -73,7 +76,7 @@ export function createArticle(data) {
 }
 
 export function patchArticle(id, data) {
-  const url = new URL(`https://sprint-mission-api.vercel.app/articles/${id}`);
+  const url = new URL(missionUrl + `/${id}`);
 
   return fetch(url, {
     method: 'PATCH',
@@ -94,7 +97,7 @@ export function patchArticle(id, data) {
 }
 
 export function deleteArticle(id) {
-  const url = new URL(`https://sprint-mission-api.vercel.app/articles/${id}`);
+  const url = new URL(missionUrl + `/${id}`);
 
   return fetch(url, {
     method: 'DELETE',
