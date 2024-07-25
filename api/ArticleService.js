@@ -3,12 +3,9 @@ const baseUrl = 'https://sprint-mission-api.vercel.app/articles';
 export function getArticleList(params = {}) {
   const { page = 1, pageSize = 10, keyword = '' } = params;
 
-  const res = fetch(
-    `${baseUrl}?page=${page}&pageSize=${pageSize}&keyword=${keyword}`,
-    {
-      method: 'GET',
-    }
-  )
+  fetch(`${baseUrl}?page=${page}&pageSize=${pageSize}&keyword=${keyword}`, {
+    method: 'GET',
+  })
     .then((res) => {
       if (!res.ok) {
         const message = res.text();
@@ -26,7 +23,7 @@ export function getArticleList(params = {}) {
 }
 
 export function getArticle(articleId) {
-  const res = fetch(`${baseUrl}/${articleId}`, {
+  fetch(`${baseUrl}/${articleId}`, {
     method: 'GET',
   })
     .then((res) => {
@@ -46,7 +43,7 @@ export function getArticle(articleId) {
 }
 
 export function createArticle(articleUploadData) {
-  const res = fetch(`${baseUrl}/`, {
+  fetch(`${baseUrl}/`, {
     method: 'POST',
     body: JSON.stringify(articleUploadData),
     headers: {
@@ -70,7 +67,7 @@ export function createArticle(articleUploadData) {
 }
 
 export function patchArticle(articleId, articleUpdateData) {
-  const res = fetch(`${baseUrl}/${articleId}`, {
+  fetch(`${baseUrl}/${articleId}`, {
     method: 'PATCH',
     body: JSON.stringify(articleUpdateData),
     headers: {
@@ -94,7 +91,7 @@ export function patchArticle(articleId, articleUpdateData) {
 }
 
 export function deleteArticle(articleId) {
-  const res = fetch(`${baseUrl}/${articleId}`, {
+  fetch(`${baseUrl}/${articleId}`, {
     method: 'DELETE',
     headers: {
       'content-type': 'application/json',
