@@ -44,14 +44,17 @@ deleteProductFunction(99);
 
 async function listArticleFunction(page, pageSize, keyword) {
   const articleList = await article.getArticleList({ page, pageSize, keyword });
+  console.log('Article List: ');
 }
 
 async function getArticleFunction(articleId) {
+  console.log(`Get article ID: ${articleId}`);
   const articleGet = await article.getArticle(articleId);
 }
 
 async function createArticleFunction(articleUploadData) {
   const newArticle = await article.createArticle(articleUploadData);
+  console.log(`Created article:`);
 }
 
 async function pathArticleFunction(articleId, articleUpdateData) {
@@ -59,10 +62,12 @@ async function pathArticleFunction(articleId, articleUpdateData) {
     articleId,
     articleUpdateData
   );
+  console.log(`Patched article with ID: ${articleId}`);
 }
 
 async function deleteArticleFunction(articleId) {
   const deletedArticle = await article.deleteArticle(articleId);
+  console.log(`Deleted article with ID: ${articleId}`);
 }
 
 async function listProductFunction(page, pageSize, keyword) {

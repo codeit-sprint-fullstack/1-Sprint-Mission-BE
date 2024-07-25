@@ -7,10 +7,10 @@ const instance = axios.create({
 export async function getProductList(params = {}) {
   const { page = 1, pageSize = 10, keyword = '' } = params;
   try {
-    const res = await instance.get(`/products`, {
+    const { data } = await instance.get(`/products`, {
       params,
     });
-    return res.data;
+    return data;
   } catch (e) {
     if (e.res) {
       console.log(e.res.status);
@@ -23,8 +23,8 @@ export async function getProductList(params = {}) {
 
 export async function getProduct(productId) {
   try {
-    const res = await instance.get(`/products/${productId}`);
-    return res.data;
+    const { data } = await instance.get(`/products/${productId}`);
+    return data;
   } catch (e) {
     if (e.res) {
       console.log(e.res.status);
@@ -37,8 +37,8 @@ export async function getProduct(productId) {
 
 export async function createProduct(updateData) {
   try {
-    const res = await instance.post(`/products`, updateData);
-    return res.data;
+    const { data } = await instance.post(`/products`, updateData);
+    return data;
   } catch (e) {
     if (e.res) {
       console.log(e.res.status);
@@ -51,8 +51,8 @@ export async function createProduct(updateData) {
 
 export async function patchProduct(productId, updateData) {
   try {
-    const res = await instance.patch(`/products/${productId}`, updateData);
-    return res.data;
+    const { data } = await instance.patch(`/products/${productId}`, updateData);
+    return data;
   } catch (e) {
     if (e.res) {
       console.log(e.res.status);
@@ -65,7 +65,7 @@ export async function patchProduct(productId, updateData) {
 
 export async function deleteProduct(id) {
   try {
-    const res = await instance.delete(`/products/${id}`);
+    const { data } = await instance.delete(`/products/${id}`);
     return true;
   } catch (e) {
     if (e.res) {

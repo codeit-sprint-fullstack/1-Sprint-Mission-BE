@@ -14,7 +14,6 @@ export function getArticleList(params = {}) {
       return res.json();
     })
     .then((data) => {
-      console.log('Article List: ');
       console.log(data);
     })
     .catch((error) =>
@@ -34,7 +33,6 @@ export function getArticle(articleId) {
       return res.json();
     })
     .then((data) => {
-      console.log(`Get article ID: ${articleId}`);
       console.log(data);
     })
     .catch((error) =>
@@ -58,7 +56,6 @@ export function createArticle(articleUploadData) {
       return res.json();
     })
     .then((data) => {
-      console.log(`Created article:`);
       console.log(data);
     })
     .catch((error) =>
@@ -82,7 +79,6 @@ export function patchArticle(articleId, articleUpdateData) {
       return res.json();
     })
     .then((data) => {
-      console.log(`Patched article with ID: ${articleId}`);
       console.log(data);
     })
     .catch((error) =>
@@ -105,7 +101,6 @@ export function deleteArticle(articleId) {
       return true;
     })
     .then((data) => {
-      console.log(`Deleted article with ID: ${articleId}`);
       console.log(data);
     })
     .catch((error) =>
