@@ -3,30 +3,7 @@ const baseUrl = 'https://sprint-mission-api.vercel.app/articles';
 export function getArticleList(params = {}) {
   const { page = 1, pageSize = 10, keyword = '' } = params;
 
-  const res = fetch(
-    `${baseUrl}?page=${page}&pageSize=${pageSize}&keyword=${keyword}`,
-    {
-      method: 'GET',
-    }
-  )
-    .then((res) => {
-      if (!res.ok) {
-        const message = res.text();
-        throw new Error(message);
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log('Article List: ');
-      console.log(data);
-    })
-    .catch((error) =>
-      console.log('Article List: 데이터 불러오기에 실패했습니다')
-    );
-}
-
-export function getArticle(articleId) {
-  const res = fetch(`${baseUrl}/${articleId}`, {
+  fetch(`${baseUrl}?page=${page}&pageSize=${pageSize}&keyword=${keyword}`, {
     method: 'GET',
   })
     .then((res) => {
@@ -37,7 +14,25 @@ export function getArticle(articleId) {
       return res.json();
     })
     .then((data) => {
-      console.log(`Get article ID: ${articleId}`);
+      console.log(data);
+    })
+    .catch((error) =>
+      console.log('Article List: 데이터 불러오기에 실패했습니다')
+    );
+}
+
+export function getArticle(articleId) {
+  fetch(`${baseUrl}/${articleId}`, {
+    method: 'GET',
+  })
+    .then((res) => {
+      if (!res.ok) {
+        const message = res.text();
+        throw new Error(message);
+      }
+      return res.json();
+    })
+    .then((data) => {
       console.log(data);
     })
     .catch((error) =>
@@ -46,7 +41,7 @@ export function getArticle(articleId) {
 }
 
 export function createArticle(articleUploadData) {
-  const res = fetch(`${baseUrl}/`, {
+  fetch(`${baseUrl}/`, {
     method: 'POST',
     body: JSON.stringify(articleUploadData),
     headers: {
@@ -61,7 +56,6 @@ export function createArticle(articleUploadData) {
       return res.json();
     })
     .then((data) => {
-      console.log(`Created article:`);
       console.log(data);
     })
     .catch((error) =>
@@ -70,7 +64,7 @@ export function createArticle(articleUploadData) {
 }
 
 export function patchArticle(articleId, articleUpdateData) {
-  const res = fetch(`${baseUrl}/${articleId}`, {
+  fetch(`${baseUrl}/${articleId}`, {
     method: 'PATCH',
     body: JSON.stringify(articleUpdateData),
     headers: {
@@ -85,7 +79,6 @@ export function patchArticle(articleId, articleUpdateData) {
       return res.json();
     })
     .then((data) => {
-      console.log(`Patched article with ID: ${articleId}`);
       console.log(data);
     })
     .catch((error) =>
@@ -94,7 +87,7 @@ export function patchArticle(articleId, articleUpdateData) {
 }
 
 export function deleteArticle(articleId) {
-  const res = fetch(`${baseUrl}/${articleId}`, {
+  fetch(`${baseUrl}/${articleId}`, {
     method: 'DELETE',
     headers: {
       'content-type': 'application/json',
@@ -108,7 +101,6 @@ export function deleteArticle(articleId) {
       return true;
     })
     .then((data) => {
-      console.log(`Deleted article with ID: ${articleId}`);
       console.log(data);
     })
     .catch((error) =>
