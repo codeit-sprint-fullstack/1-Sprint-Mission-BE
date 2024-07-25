@@ -3,23 +3,27 @@
 const BASE_URL = "https://sprint-mission-api.vercel.app/articles";
 
 // GET /articles - 게시글 목록 조회
+export function getArticleList(page, pageSize, keyword) {
+  // 함수로 수정
+  const params = {
+    page,
+    pageSize,
+    keyword,
+  };
+  const url = new URL(BASE_URL);
+  Object.keys(params).forEach((key) =>
+    url.searchParams.append(key, params[key])
+  );
 
-const params = {
-  page,
-  pageSize,
-  keyword,
-};
-const url = new URL(BASE_URL);
-Object.keys(params).forEach((key) => url.searchParams.append(key, params[key]));
-
-fetch(url)
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error("Failed to fetch article list");
-    }
-    return response.json();
-  })
-  .catch((error) => console.error("Error:", error));
+  return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch article list");
+      }
+      return response.json();
+    })
+    .catch((error) => console.error("Error:", error));
+}
 
 // GET /articles/{id} - 게시글 상세 조회
 export function getArticle(id) {
