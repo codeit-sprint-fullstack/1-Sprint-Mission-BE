@@ -1,7 +1,7 @@
 const ARTICLE_API_ORIGIN = "https://sprint-mission-api.vercel.app";
 
 /* getArticleList 게시글 목록 조회 */
-/* ===== REQUEST ===== 
+/** ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : 
 method : GET
@@ -13,7 +13,7 @@ param : {
 header : (default)
 body : (none)
 */
-/* ===== RESPONSE(data) =====
+/** ===== RESPONSE(data) =====
 [
     {
         "id": 3,
@@ -54,7 +54,7 @@ export async function getArticleList(page = 1, pageSize = 100, keyword = "") {
     });
 }
 
-/* getArticle 게시글 상세 조회 */
+/** getArticle 게시글 상세 조회 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /articles/{id}
@@ -92,7 +92,7 @@ export async function getArticle(id) {
     });
 }
 
-/* createAritcle 게시글 등록 */
+/** createArticle 게시글 등록 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /articles
@@ -114,7 +114,7 @@ body : {
     "likeCount": 0
 }
 */
-export async function createAritcle(title, content, image) {
+export async function createArticle(title, content, image) {
   const body = {
     title: title,
     content: content,
@@ -135,9 +135,9 @@ export async function createAritcle(title, content, image) {
     .then(function (res) {
       if (!res.ok) {
         if (res.status === 400) {
-          throw new Error(`유효성 검사 오류 createAritcle - status : 400`);
+          throw new Error(`유효성 검사 오류 createArticle - status : 400`);
         } else {
-          throw new Error(`createAritcle - status : ${res.status}`);
+          throw new Error(`createArticle - status : ${res.status}`);
         }
       }
 
@@ -148,7 +148,7 @@ export async function createAritcle(title, content, image) {
     });
 }
 
-/* pathArticle 게시글 수정 */
+/** patchArticle 게시글 수정 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /articles/{id}
@@ -170,7 +170,7 @@ body : {
     "likeCount": 0
 }
 */
-export async function pathArticle(id, body) {
+export async function patchArticle(id, body) {
   const option = {
     method: "PATCH",
     headers: {
@@ -185,9 +185,9 @@ export async function pathArticle(id, body) {
     .then(function (res) {
       if (!res.ok) {
         if (res.status === 404) {
-          throw new Error(`게시글을 찾을 수 없음 pathArticle - status : 404`);
+          throw new Error(`게시글을 찾을 수 없음 patchArticle - status : 404`);
         } else {
-          throw new Error(`pathArticle - status : ${res.status}`);
+          throw new Error(`patchArticle - status : ${res.status}`);
         }
       }
 
@@ -198,7 +198,7 @@ export async function pathArticle(id, body) {
     });
 }
 
-/* deleteArticle 게시글 삭제 */
+/** deleteArticle 게시글 삭제 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /articles/{id}

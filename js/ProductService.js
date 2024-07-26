@@ -7,7 +7,7 @@ const instance = axios.create({
   header: { "Content-Type": "application/json" },
 });
 
-/* getProductList : 상품 목록 조회 */
+/** getProductList : 상품 목록 조회 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /products
@@ -69,7 +69,7 @@ export async function getProductList(page = 1, pageSize = 100, keyword = "") {
   }
 }
 
-/* getProduct : 상품 상세 조회 */
+/** getProduct : 상품 상세 조회 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /products/{id}
@@ -125,7 +125,7 @@ export async function getProduct(id) {
   }
 }
 
-/* createProduct : 상품 등록 */
+/** createProduct : 상품 등록 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /products
@@ -204,7 +204,7 @@ export async function createProduct(
   }
 }
 
-/* patchProduct : 상품 수정 */
+/** patchProduct : 상품 수정 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /products/{id}
@@ -267,7 +267,7 @@ export async function patchProduct(id, body) {
   }
 }
 
-/* deleteProduct : 상품 삭제 */
+/** deleteProduct : 상품 삭제 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /products/{id}

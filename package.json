@@ -1,4 +1,10 @@
 {
   "main": "index.js",
-  "type": "module"
+  "scripts": {
+    "start": "node js/main.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "axios": "^1.7.2"
+  }
 }
