@@ -31,28 +31,27 @@ body : (none)
     }
 ]
 */
-export async function getArticleList(page = 1, pageSize = 100, keyword = "")
-{
-    const params = {
-        "page" : page,
-        "pageSize" : pageSize,
-        "keyword" : keyword,
-    }
+export async function getArticleList(page = 1, pageSize = 100, keyword = "") {
+  const params = {
+    page: page,
+    pageSize: pageSize,
+    keyword: keyword,
+  };
 
-    const str_params = new URLSearchParams(params);
-    const url = new URL(`/articles?${str_params.toString()}`, ARTICLE_API_ORIGIN);
+  const str_params = new URLSearchParams(params);
+  const url = new URL(`/articles?${str_params.toString()}`, ARTICLE_API_ORIGIN);
 
-    return fetch(url)
-        .then(function(res) {
-            if (!res.ok) {
-                throw new Error(`getArticleList - status : ${res.status}`);
-            }
-        
-            return res.json();
-        })
-        .catch((err) => {
-            return err;
-        });        
+  return fetch(url)
+    .then(function (res) {
+      if (!res.ok) {
+        throw new Error(`getArticleList - status : ${res.status}`);
+      }
+
+      return res.json();
+    })
+    .catch((err) => {
+      return err;
+    });
 }
 
 /* getArticle 게시글 상세 조회 */
@@ -73,28 +72,24 @@ body : (none)
     "likeCount": 9
 }
 */
-export async function getArticle(id)
-{
-    const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
+export async function getArticle(id) {
+  const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
 
-    return fetch(url)
-        .then(function(res) {
-            if (!res.ok) {
-                if(res.status === 404)
-                {
-                    throw new Error(`게시글을 찾을 수 없음 getArticle - status : 404`);
-                }
-                else
-                {
-                    throw new Error(`getArticle - status : ${res.status}`);
-                }
-            }
-        
-            return res.json();
-        })
-        .catch((err) => {
-            return err;
-        });   
+  return fetch(url)
+    .then(function (res) {
+      if (!res.ok) {
+        if (res.status === 404) {
+          throw new Error(`게시글을 찾을 수 없음 getArticle - status : 404`);
+        } else {
+          throw new Error(`getArticle - status : ${res.status}`);
+        }
+      }
+
+      return res.json();
+    })
+    .catch((err) => {
+      return err;
+    });
 }
 
 /* createAritcle 게시글 등록 */
@@ -119,42 +114,38 @@ body : {
     "likeCount": 0
 }
 */
-export async function createAritcle(title, content, image)
-{
-    const body = {
-        "title" : title,
-        "content" : content,
-        "image" : image
-    };
+export async function createAritcle(title, content, image) {
+  const body = {
+    title: title,
+    content: content,
+    image: image,
+  };
 
-    const option = {
-        "method" : "POST",
-        "headers" : {
-            'Content-Type': 'application/json'
-        },
-        "body" : JSON.stringify(body)
-    };
-    
-    const url = new URL(`/articles`, ARTICLE_API_ORIGIN);
+  const option = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  };
 
-    return fetch(url, option)        
-        .then(function(res) {
-            if (!res.ok) {
-                if(res.status === 400)
-                {
-                    throw new Error(`유효성 검사 오류 createAritcle - status : 400`);
-                }
-                else
-                {
-                    throw new Error(`createAritcle - status : ${res.status}`);
-                }
-            }
-        
-            return res.json();
-        })
-        .catch((err) => {
-            return err;
-        });   
+  const url = new URL(`/articles`, ARTICLE_API_ORIGIN);
+
+  return fetch(url, option)
+    .then(function (res) {
+      if (!res.ok) {
+        if (res.status === 400) {
+          throw new Error(`유효성 검사 오류 createAritcle - status : 400`);
+        } else {
+          throw new Error(`createAritcle - status : ${res.status}`);
+        }
+      }
+
+      return res.json();
+    })
+    .catch((err) => {
+      return err;
+    });
 }
 
 /* pathArticle 게시글 수정 */
@@ -179,36 +170,32 @@ body : {
     "likeCount": 0
 }
 */
-export async function pathArticle(id, body)
-{
-    const option = {
-        "method" : "PATCH",
-        "headers" : {
-            'Content-Type': 'application/json'
-        },
-        "body" : JSON.stringify(body)
-    };
+export async function pathArticle(id, body) {
+  const option = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  };
 
-    const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
-    
-    return fetch(url, option)
-        .then(function(res) {
-            if (!res.ok) {
-                if(res.status === 404)
-                {
-                    throw new Error(`게시글을 찾을 수 없음 pathArticle - status : 404`);
-                }
-                else
-                {
-                    throw new Error(`pathArticle - status : ${res.status}`);
-                }
-            }
-        
-            return res.json();
-        })
-        .catch((err) => {
-            return err;
-        });  
+  const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
+
+  return fetch(url, option)
+    .then(function (res) {
+      if (!res.ok) {
+        if (res.status === 404) {
+          throw new Error(`게시글을 찾을 수 없음 pathArticle - status : 404`);
+        } else {
+          throw new Error(`pathArticle - status : ${res.status}`);
+        }
+      }
+
+      return res.json();
+    })
+    .catch((err) => {
+      return err;
+    });
 }
 
 /* deleteArticle 게시글 삭제 */
@@ -223,43 +210,38 @@ body : (none)
 /* ===== RESPONSE(data) =====
 (none)
 */
-export async function deleteArticle(id)
-{
-    const option = {
-        "method" : "DELETE",
-        "headers" : {
-            'Content-Type': 'application/json'
+export async function deleteArticle(id) {
+  const option = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
+
+  return fetch(url, option)
+    .then(function (res) {
+      if (!res.ok) {
+        if (res.status === 404) {
+          throw new Error(`게시글을 찾을 수 없음 deleteArticle - status : 404`);
+        } else {
+          throw new Error(`deleteArticle - status : ${res.status}`);
         }
-    };
+      }
 
-    const url = new URL(`/articles/${id}`, ARTICLE_API_ORIGIN);
-
-    return fetch(url, option)
-        .then(function(res) {
-            if (!res.ok) {
-                if(res.status === 404)
-                {
-                    throw new Error(`게시글을 찾을 수 없음 deleteArticle - status : 404`);
-                }
-                else
-                {
-                    throw new Error(`deleteArticle - status : ${res.status}`);
-                }
-            }
-        
-            return res;
-        })
-        .catch((err) => {
-            return err;
-        }); 
+      return res;
+    })
+    .catch((err) => {
+      return err;
+    });
 }
 
 // for patch param info
-export function getPatchBodyFrame()
-{
-    return {
-        "title" : "optional",
-        "content" : "optional",
-        "image" : "optional"
-    };
+export function getPatchBodyFrame() {
+  return {
+    title: "optional",
+    content: "optional",
+    image: "optional",
+  };
 }

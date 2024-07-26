@@ -3,8 +3,8 @@ import axios from "axios";
 const PRODUCT_API_ADDRESS = "https://sprint-mission-api.vercel.app";
 
 const instance = axios.create({
-    baseURL : PRODUCT_API_ADDRESS,
-    header : {'Content-Type': 'application/json'}
+  baseURL: PRODUCT_API_ADDRESS,
+  header: { "Content-Type": "application/json" },
 });
 
 /* getProductList : 상품 목록 조회 */
@@ -38,44 +38,35 @@ body : none
     }
 ]
 */
-export async function getProductList(page = 1, pageSize = 100, keyword = "")
-{
-    try
-    {
-        const params = { 
-            "page" : page,
-            "pageSize" : pageSize,
-            "keyword" : keyword,
-        };
+export async function getProductList(page = 1, pageSize = 100, keyword = "") {
+  try {
+    const params = {
+      page: page,
+      pageSize: pageSize,
+      keyword: keyword,
+    };
 
-        const res = instance.get("/products", {params});
+    const res = instance.get("/products", { params });
 
-        return (await res).data;
+    return (await res).data;
+  } catch (err) {
+    if (err.response) {
+      // status = 2xx 이외 처리
+      console.log("getProductList - status : " + err.response.status);
+
+      return err.response.data;
+    } else if (err.request) {
+      // request 완료 & response 안됨
+      console.log("getProductList - no response");
+
+      return err.request;
+    } else {
+      // request 설정 오류
+      console.log("getProductList - request setting error");
+
+      return null;
     }
-    catch(err)
-    {
-        if(err.response)
-        {   
-            // status = 2xx 이외 처리
-            console.log("getProductList - status : " + err.response.status);
-
-            return err.response.data;   
-        }
-        else if(err.request)
-        {
-            // request 완료 & response 안됨
-            console.log("getProductList - no response");
-
-            return err.request;
-        }
-        else
-        {
-            // request 설정 오류
-            console.log("getProductList - request setting error");
-
-            return null;
-        }        
-    }
+  }
 }
 
 /* getProduct : 상품 상세 조회 */
@@ -105,48 +96,36 @@ body : (none)
     "favoriteCount": 6
 }
 */
-export async function getProduct(id)
-{
-    try
-    {
-        const res = instance.get(`/products/${id}`);
+export async function getProduct(id) {
+  try {
+    const res = instance.get(`/products/${id}`);
 
-        return (await res).data;
+    return (await res).data;
+  } catch (err) {
+    if (err.response) {
+      // status = 2xx 이외 처리
+      if (err.response.status === 404) {
+        console.log("상품을 찾을 수 없음 getProduct - status : 404");
+      } else {
+        console.log("getProduct - status : " + err.response.status);
+      }
+
+      return err.response.data;
+    } else if (err.request) {
+      // request 완료 & response 안됨
+      console.log("getProduct - no response");
+
+      return err.request;
+    } else {
+      // request 설정 오류
+      console.log("getProduct - request setting error");
+
+      return null;
     }
-    catch(err)
-    {
-        if(err.response)
-        {   
-            // status = 2xx 이외 처리
-            if(err.response.status === 404)
-            {
-                console.log("상품을 찾을 수 없음 getProduct - status : 404");
-            }
-            else
-            {
-                console.log("getProduct - status : " + err.response.status);
-            }
-            
-            return err.response.data;   
-        }
-        else if(err.request)
-        {
-            // request 완료 & response 안됨
-            console.log("getProduct - no response");
-
-            return err.request;
-        }
-        else
-        {
-            // request 설정 오류
-            console.log("getProduct - request setting error");
-
-            return null;
-        }        
-    }    
+  }
 }
 
-/* createProduct : 상품 등록 */ 
+/* createProduct : 상품 등록 */
 /* ===== REQUEST ===== 
 origin : https://sprint-mission-api.vercel.app
 path : /products
@@ -180,54 +159,49 @@ body :{
     "favoriteCount": 0
 }    
 */
-export async function createProduct(name, description, price, manufacturer, tags, images)
-{    
-    try
-    {
-        const body = {
-            "name" : name,
-            "description" : description,
-            "price" : price,
-            "manufacturer" : manufacturer,
-            "tags" : tags,
-            "images" : images,
-        };
-    
-        const res = instance.post("/products", body);  
+export async function createProduct(
+  name,
+  description,
+  price,
+  manufacturer,
+  tags,
+  images
+) {
+  try {
+    const body = {
+      name: name,
+      description: description,
+      price: price,
+      manufacturer: manufacturer,
+      tags: tags,
+      images: images,
+    };
 
-        return (await res).data;
+    const res = instance.post("/products", body);
+
+    return (await res).data;
+  } catch (err) {
+    if (err.response) {
+      // status = 2xx 이외 처리
+      if (err.response.status === 400) {
+        console.log("유효성 검사 오류 createProduct - status : 400");
+      } else {
+        console.log("createProduct - status : " + err.response.status);
+      }
+
+      return err.response.data;
+    } else if (err.request) {
+      // request 완료 & response 안됨
+      console.log("createProduct - no response");
+
+      return err.request;
+    } else {
+      // request 설정 오류
+      console.log("createProduct - request setting error");
+
+      return null;
     }
-    catch(err)
-    {
-        if(err.response)
-        {   
-            // status = 2xx 이외 처리
-            if(err.response.status === 400)
-            {
-                console.log("유효성 검사 오류 createProduct - status : 400");
-            }
-            else
-            {
-                console.log("createProduct - status : " + err.response.status);
-            }
-            
-            return err.response.data;   
-        }
-        else if(err.request)
-        {
-            // request 완료 & response 안됨
-            console.log("createProduct - no response");
-
-            return err.request;
-        }
-        else
-        {
-            // request 설정 오류
-            console.log("createProduct - request setting error");
-
-            return null;
-        }        
-    }  
+  }
 }
 
 /* patchProduct : 상품 수정 */
@@ -264,45 +238,33 @@ body : {
     "favoriteCount": 0
 }
 */
-export async function patchProduct(id, body)
-{
-    try
-    {
-        const res = instance.patch(`/products/${id}`, body);
+export async function patchProduct(id, body) {
+  try {
+    const res = instance.patch(`/products/${id}`, body);
 
-        return (await res).data;
+    return (await res).data;
+  } catch (err) {
+    if (err.response) {
+      // status = 2xx 이외 처리
+      if (err.response.status === 404) {
+        console.log("상품을 찾을 수 없음 patchProduct - status : 404");
+      } else {
+        console.log("patchProduct - status : " + err.response.status);
+      }
+
+      return err.response.data;
+    } else if (err.request) {
+      // request 완료 & response 안됨
+      console.log("patchProduct - no response");
+
+      return err.request;
+    } else {
+      // request 설정 오류
+      console.log("patchProduct - request setting error");
+
+      return null;
     }
-    catch(err)
-    {
-        if(err.response)
-        {   
-            // status = 2xx 이외 처리
-            if(err.response.status === 404)
-            {
-                console.log("상품을 찾을 수 없음 patchProduct - status : 404");
-            }
-            else
-            {
-                console.log("patchProduct - status : " + err.response.status);
-            }
-            
-            return err.response.data;   
-        }
-        else if(err.request)
-        {
-            // request 완료 & response 안됨
-            console.log("patchProduct - no response");
-
-            return err.request;
-        }
-        else
-        {
-            // request 설정 오류
-            console.log("patchProduct - request setting error");
-
-            return null;
-        }        
-    }  
+  }
 }
 
 /* deleteProduct : 상품 삭제 */
@@ -317,56 +279,43 @@ body : (none)
 /* ===== RESPONSE(data) =====
 (none)
 */
-export async function deleteProduct(id)
-{
-    try
-    {
-        const res = instance.delete(`/products/${id}`);
+export async function deleteProduct(id) {
+  try {
+    const res = instance.delete(`/products/${id}`);
 
-        return (await res).data;
+    return (await res).data;
+  } catch (err) {
+    if (err.response) {
+      // status = 2xx 이외 처리
+      if (err.response.status === 404) {
+        console.log("상품을 찾을 수 없음 deleteProduct - status : 404");
+      } else {
+        console.log("deleteProduct - status : " + err.response.status);
+      }
+
+      return err.response.data;
+    } else if (err.request) {
+      // request 완료 & response 안됨
+      console.log("deleteProduct - no response");
+
+      return err.request;
+    } else {
+      // request 설정 오류
+      console.log("deleteProduct - request setting error");
+
+      return null;
     }
-    catch(err)
-    {
-        if(err.response)
-        {   
-            // status = 2xx 이외 처리
-            if(err.response.status === 404)
-            {
-                console.log("상품을 찾을 수 없음 deleteProduct - status : 404");
-            }
-            else
-            {
-                console.log("deleteProduct - status : " + err.response.status);
-            }
-            
-            return err.response.data;   
-        }
-        else if(err.request)
-        {
-            // request 완료 & response 안됨
-            console.log("deleteProduct - no response");
-
-            return err.request;
-        }
-        else
-        {
-            // request 설정 오류
-            console.log("deleteProduct - request setting error");
-
-            return null;
-        }        
-    }  
+  }
 }
 
 // for patch param info
-export function getPatchBodyFrame()
-{
-    return {
-        "name" : "optional",
-        "description" : "optional",
-        "price" : "optional",
-        "manufacturer" : "optional",
-        "tags" : "optional",
-        "images" : "optional"
-    };
+export function getPatchBodyFrame() {
+  return {
+    name: "optional",
+    description: "optional",
+    price: "optional",
+    manufacturer: "optional",
+    tags: "optional",
+    images: "optional",
+  };
 }
