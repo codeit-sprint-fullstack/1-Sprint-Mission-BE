@@ -1,0 +1,36 @@
+/* 페이지네이션 버튼 */
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .pageButtons button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* 동그란 버튼 */
+    background-color: white; /* 버튼 배경 색상 */
+    border: 1px solid #E5E7EB;
+    color: #6B7280;
+    font-size: 16px;
+    line-height: 40px; /* 텍스트 수직 중앙 정렬 */
+    cursor: pointer;
+    margin: 0 5px; /* 버튼 간격 */
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .pageButtons button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .pageButtons button.active {
+    background-color: #2F80ED;
+    color: white;
+    border: none;
+  }
+  
+  .pageButtons button:disabled {
+    background-color: #e0e0e0; /* 비활성화된 버튼 배경 색상 */
+    color: #a0a0a0; /* 비활성화된 버튼 텍스트 색상 */
+    cursor: not-allowed; /* 비활성화된 버튼 커서 */
+  }
