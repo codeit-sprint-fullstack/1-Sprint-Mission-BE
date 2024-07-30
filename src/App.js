@@ -111,7 +111,12 @@ function App() {
         )}
         {loadingError && <p>{loadingError}</p>}
         <ProductList products={searchProduct ? searchResults : sortedProducts} />
-        <Pagination />
+        <Pagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          onPageChange={handlePageClick} 
+          hasNext={hasNext} 
+        />
       </main>
     </div>
   );
