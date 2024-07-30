@@ -3,6 +3,7 @@ import searchIcon from './assets/images/ic_search.png';
 import Header from './components/Header';
 import BestProducts from './components/BestProducts';
 import ProductList from './components/ProductList';
+import Pagination from './components/Pagination';
 import { getProductList } from './api/api';
 import { filterProductsByName } from './api/api';
 import './App.css';
@@ -110,6 +111,7 @@ function App() {
         )}
         {loadingError && <p>{loadingError}</p>}
         <ProductList products={searchProduct ? searchResults : sortedProducts} />
+        <Pagination />
       </main>
     </div>
   );
