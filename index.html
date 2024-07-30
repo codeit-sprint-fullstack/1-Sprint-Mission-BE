@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미션4 테스트 페이지</title>
+</head>
+<body>
+    <div>
+        <h1>FETCH 사용 ---------------</h1>
+        <div>
+            <label>키워드</label>
+            <input id="keyword" type="text">
+            <button id="getarticles">게시글리스트</button>
+        </div>
+        <div>
+            <label>게시글아이디</label>
+            <input id="searchid" type="text">
+            <button id="getarticle">게시글조회</button>
+        </div>
+        <div>
+            <input id="articletitle" type="text">
+            <input id="articlecontent" type="text">
+            <input id="articleimg" type="text">
+            <button id="createarticle">게시글생성</button>
+        </div>
+        <div>
+            <input id="itemid" type="text" disabled>
+            <input id="itemtitle" type="text">
+            <input id="itemcontent" type="text">
+            <input id="itemimg" type="text">
+            <button id="updatearticle">게시글수정</button>
+            <button id="deletearticle">게시글삭제</button>
+        </div>
+        
+    </div>
+    <div style="width: 500px;">
+        <h1>AXIOS 사용 ---------------</h1>
+        <div>
+            <label>키워드</label>
+            <input id="productkeyword" type="text">
+            <button id="getproducts">상품리스트</button>
+        </div>
+        <div>
+            <label>상품아이디</label>
+            <input id="productsearchid" type="text">
+            <button id="getproduct">상품조회</button>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+            <label>상품명</label>
+            <input id="productname" type="text">
+            <label>상품설명</label>
+            <input id="productdes" type="text">
+            <label>상품가격</label>
+            <input id="productprice" type="text">
+            <label>제조업체</label>
+            <input id="productmanu" type="text">
+            <label>태그</label>
+            <input id="producttag" type="text" placeholder="각 태그를 @(으)로 구분해 주세요.">
+            <label>이미지</label>
+            <input id="productimage" type="text" placeholder="각 이미지를 ,(으)로 구분해 주세요.">
+            <button id="createproduct">상품생성</button>
+        </div>
+        <hr>
+        <div style="display: flex; flex-direction: column; margin-top: 15px;">
+            <label>상품아이디</label>
+            <input id="productitemid" type="text" disabled>
+            <label>상품명</label>
+            <input id="productitemname" type="text">
+            <label>상품설명</label>
+            <input id="productitemdes" type="text">
+            <label>상품가격</label>
+            <input id="productitemprice" type="text">
+            <label>제조업체</label>
+            <input id="productitemmanu" type="text">
+            <label>태그</label>
+            <input id="productitemtag" type="text">
+            <label>이미지</label>
+            <input id="productitemimage" type="text">
+            <button id="updateproduct">상품수정</button>
+        </div>
+        <div>
+            <button id="deleteproduct">상품삭제</button>
+        </div>
+    </div>
+    <!-- <script type="importmap">
+        {
+            "imports": {
+                "axios": "https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/esm/axios.min.js"
+            }
+        }
+    </script> -->
+    <script type="module" src="../script/main.js"></script>
+</body>
+</html>
