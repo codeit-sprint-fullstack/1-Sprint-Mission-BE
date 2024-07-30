@@ -1,38 +1,150 @@
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
+main {
+  display: grid;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: left;
+  font-weight: 700px;
+  font-size: 20px;
+  color: #111827;
+}
+
+/* 판매 중인 상품 줄 메뉴*/
+.SaleProductNav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 42px;
+}
+
+input{
+  background-color: #F3F4F6;
+  border-style: none;
+  width: 300px;
+  border-radius: 12px;
+  height: 100%;
+  padding: 0 10px 0 35px;
+  gap: 1rem;
+  background-repeat: no-repeat;
+  background-position: 10px center; /* 이미지 위치 조정 */
+  background-size: 20px 20px; /* 이미지 크기 조정 */
+}
+
+input::placeholder {
+  padding-left: 4px;
+  color: #999;
+  font-size: 16px;
+}
+
+.inputBtDrop{
+  height: 100%;
+}
+
+.inputBtDrop input,
+.inputBtDrop button,
+.inputBtDrop select {
+  font-family: 'Pretendard', sans-serif !important;
+}
+
+/* 드롭다운 */
+select{
+  appearance: none;
+  padding-right: 30px;
+}
+
+select::after{
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid black;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.sortDropDown{
+  width: 130px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  color:#1F2937;
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid #E5E7EB;
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath d="M7 10l5 5 5-5z" fill="%23333"/%3E%3C/svg%3E'); /* 삼각형 이모티콘 SVG */
+  background-repeat: no-repeat; 
+  background-position: right 10px center; 
+  background-size: 30px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* 버튼 */
+.addProductBotton {
+  font-size: 16px;
+  font-weight: 600;
+  width: 133px;
+  height: 42px;
+  border-radius: 8px;
+  border: none;
+  color: #ffffff;
+  background-color: #3692FF;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* 검색 기능 */
+.inputBtDrop {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 10px; 
+}
+
+.search-button {
+  padding: 12px 12px;
+  border: none;
+  border-radius: 10px;
+  background-color: #676869;
   color: white;
+  cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
+.search-button:hover {
+  background-color: #0056b3;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.search-results {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.search-results h3 {
+  margin-bottom: 10px;
+}
+
+.search-results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.search-results li {
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.search-results li:last-child {
+  border-bottom: none;
 }
