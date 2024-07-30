@@ -1,0 +1,56 @@
+.header {
+    display: flex;
+    height: 70px;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 10px 20px; */
+    background-color: #ffffff;
+
+    border-bottom: 1px solid #DFDFDF
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 200px;
+    margin-right: 20px;
+  }
+  
+  #pandaMarket_logo{
+    height: auto;
+    width: 103px;
+  }
+
+  .logo {
+    height: 40px;
+  }
+  
+  .nav {
+    margin-right: auto; /* 네비게이션을 오른쪽으로 정렬 */
+
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 26px;
+    text-align: center;
+  }
+  
+  .nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px; /* 네비게이션 링크 간의 간격 */
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+  }
+  
+  .profile {
+    height: 40px;
+    margin-right: 200px; 
+  }
+  
