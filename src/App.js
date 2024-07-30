@@ -6,10 +6,17 @@ import ProductList from './components/ProductList';
 import { getProductList } from './api/api';
 import './App.css';
 
+const LIMIT = 5;
+
 function App() {
   const [products, setProducts] = useState([]);
   const [order, setOrder] = useState('createdAt');
   const [loadingError, setLoadingError] = useState(null);
+
+  // 검색 기능
+  const [searchProduct, setSearchProduct] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchError, setSearchError] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,6 +35,23 @@ function App() {
     setOrder(event.target.value);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchProduct(event.target.value);
+  };
+
+  // 검색 기능
+  const handleSearchClick = async () => {
+    try {
+      if (searchProduct.trim() === '') {
+        setSearchResults([]);
+        setSearchError('⚠ 검색어를 입력해 주세요.');
+        return;
+      }
+    }catch (error) {
+      setSearchError('검색 중 오류가 발생했습니다.');
+      console.error('검색 오류', error);
+    }
+  };
 
   // 정렬 함수
   const sortedProducts = [...products].sort((a, b) => {
@@ -53,17 +77,30 @@ function App() {
               placeholder="검색할 상품을 입력해주세요" 
               className="search-input" 
               style={{ backgroundImage: `url(${searchIcon})` }}
+              value={searchProduct}
+              onChange={handleSearchChange}
             />
-            <button className="search-button">검색</button>
+            <button onClick={handleSearchClick} className="search-button">검색</button>
             <button className='addProductBotton'>상품 등록하기</button>
-            <select className="sortDropDown" onChange={handleOrderChange} value={order}>
+            <select className="sortDropDown" onChange={handleOrderChange}>
               <option value="createdAt">최신순</option>
               <option value="favoriteCount">좋아요순</option>
             </select>
           </div>
         </div>
+        {searchError && <div className="search-error">{searchError}</div>}
+        {searchProduct && searchResults.length > 0 && (
+          <div className="search-results">
+            <h3>검색 결과</h3>
+            <ul>
+              {searchResults.map((product) => (
+                <li key={product.id}>{product.name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         {loadingError && <p>{loadingError}</p>}
-        <ProductList products={sortedProducts}/>
+        <ProductList products={searchProduct ? searchResults : sortedProducts} />
       </main>
     </div>
   );
