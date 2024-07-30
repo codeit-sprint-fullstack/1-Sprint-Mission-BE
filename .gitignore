@@ -14,6 +14,13 @@
 # public
 /public
 
+# 테스트 관련 파일들
+setupTests.js
+App.test.js
+
+# 웹 바이탈 측정 관련
+reportWebVitals.js
+
 # misc
 .DS_Store
 .env.local
