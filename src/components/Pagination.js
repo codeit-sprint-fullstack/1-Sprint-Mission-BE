@@ -11,7 +11,8 @@ const Pagination = ({currentPage, totalPages}) => {
     <div className="pagination">
       <div className='pageButtons'>
         <button 
-          className="leftPageButton" 
+          className="leftPageButton"
+          disabled={currentPage === 1} 
         >
           &lt;
         </button>
@@ -19,6 +20,7 @@ const Pagination = ({currentPage, totalPages}) => {
           </button>
         <button 
           className='rightPageButton' 
+          disabled={!hasNext || currentPage === totalPages}
         >
           &gt;
         </button>
