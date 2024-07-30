@@ -2,6 +2,7 @@ import React from 'react';
 import searchIcon from './assets/images/ic_search.png';
 import Header from './components/Header';
 import BestProducts from './components/BestProducts';
+import ProductList from './components/ProductList';
 import './App.css';
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
               </select>
           </div>
         </div>
+        <ProductList />
       </main>
     </div>
   );
