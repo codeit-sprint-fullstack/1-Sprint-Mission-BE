@@ -20,6 +20,11 @@ function App() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchError, setSearchError] = useState(null);
 
+  // 페이지네이션
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPageProducts, setCurrentPageProducts] = useState([]);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -35,6 +40,8 @@ function App() {
 
   const handleOrderChange = (event) => {
     setOrder(event.target.value);
+    setCurrentPage(1); // 정렬 순서 변경 시 첫 페이지로 이동
+    setCursor(null); // 정렬 순서 변경 시 커서 초기화
   };
 
   const handleSearchChange = (event) => {
@@ -110,7 +117,7 @@ function App() {
           </div>
         )}
         {loadingError && <p>{loadingError}</p>}
-        <ProductList products={searchProduct ? searchResults : sortedProducts} />
+        <ProductList products={searchProduct ? searchResults : sortedProducts}/>
         <Pagination 
           currentPage={currentPage} 
           totalPages={totalPages} 
