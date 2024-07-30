@@ -21,6 +21,8 @@ function App() {
               className="search-input" 
               style={{ backgroundImage: `url(${searchIcon})` }}
               />
+              <button className="search-button">검색</button>
+              <button className='addProductBotton'>상품 등록하기</button>
           </div>
         </div>
       </main>
