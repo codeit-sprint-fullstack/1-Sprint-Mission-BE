@@ -12,6 +12,7 @@ const Pagination = ({currentPage, totalPages}) => {
       <div className='pageButtons'>
         <button 
           className="leftPageButton"
+          onClick={() => onPageChange(currentPage - 1)} 
           disabled={currentPage === 1} 
         >
           &lt;
@@ -20,6 +21,7 @@ const Pagination = ({currentPage, totalPages}) => {
           </button>
         <button 
           className='rightPageButton' 
+          onClick={() => onPageChange(currentPage + 1)} 
           disabled={!hasNext || currentPage === totalPages}
         >
           &gt;
