@@ -38,6 +38,36 @@ function App() {
     fetchProducts();
   }, [order]);
 
+  // 페이지 번호에 따른 상품 목록 업데이트
+  const handleLoad = async (page) => {
+    try {
+      setLoadingError(null);
+      const response = await getProductList({ order, cursor, limit: LIMIT });
+      const { paging, list, totalCount } = response; 
+
+      const actualTotalCount = totalCount !== undefined && totalCount > 0 ? totalCount : list.length;
+
+      console.log('서버에서 받은 전체 상품의 총 개수:', totalCount);
+      console.log('수정된 전체 상품의 총 개수:', actualTotalCount);
+  
+      if (page === 1) {
+        setProducts(list);
+      } else {
+        const startIndex = (page - 1) * LIMIT;
+        const endIndex = page * LIMIT;
+        setCurrentPageProducts(products.slice(startIndex, endIndex));
+      }
+
+      // 다음 페이지를 위한 커서를 업데이트
+      setCursor(paging ? paging.nextCursor : null);
+      //다음 페이지가 있는지 여부를 업데이트
+      setHasNext(paging ? paging.hasNext : false);
+      setTotalPages(totalCount ? Math.ceil(totalCount / LIMIT) : 5); // 총 페이지 수 설정
+    } catch (error) {
+      setLoadingError(error.message);
+    }
+  };
+
   const handleOrderChange = (event) => {
     setOrder(event.target.value);
     setCurrentPage(1); // 정렬 순서 변경 시 첫 페이지로 이동
