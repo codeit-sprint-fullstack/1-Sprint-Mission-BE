@@ -23,6 +23,10 @@ function App() {
               />
               <button className="search-button">검색</button>
               <button className='addProductBotton'>상품 등록하기</button>
+              <select className="sortDropDown">
+                <option value="createdAt">최신순</option>
+                <option value="favoriteCount">좋아요순</option>
+              </select>
           </div>
         </div>
       </main>
