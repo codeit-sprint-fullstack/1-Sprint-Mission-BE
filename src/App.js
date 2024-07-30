@@ -4,6 +4,7 @@ import Header from './components/Header';
 import BestProducts from './components/BestProducts';
 import ProductList from './components/ProductList';
 import { getProductList } from './api/api';
+import { filterProductsByName } from './api/api';
 import './App.css';
 
 const LIMIT = 5;
@@ -47,7 +48,15 @@ function App() {
         setSearchError('⚠ 검색어를 입력해 주세요.');
         return;
       }
-    }catch (error) {
+      const results = filterProductsByName(products, searchProduct);
+      if (results.length === 0) {
+        setSearchResults([]);
+        setSearchError('상품이 존재하지 않습니다.');
+      } else {
+        setSearchResults(results);
+        setSearchError(null);
+      }
+    } catch (error) {
       setSearchError('검색 중 오류가 발생했습니다.');
       console.error('검색 오류', error);
     }
