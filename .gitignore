@@ -21,6 +21,8 @@ App.test.js
 # 웹 바이탈 측정 관련
 reportWebVitals.js
 
+*.stackdump
+
 # misc
 .DS_Store
 .env.local
