@@ -21,3 +21,10 @@ try {
   throw new Error('상품을 불러오는데 실패했습니다');
 }
 }
+
+/* 제품 목록을 필터링하는 함수 */
+export function filterProductsByName(products, query) {
+  return products.filter(product =>
+    product.name.toLowerCase().includes(query.toLowerCase())
+  );
+}
