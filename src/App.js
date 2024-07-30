@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import searchIcon from './assets/images/ic_search.png';
 import Header from './components/Header';
+import './App.css';
+import './index.css';
+import './styles/Responsive.css'; 
 import BestProducts from './components/BestProducts';
 import ProductList from './components/ProductList';
-import Pagination from './components/Pagination';
 import { getProductList } from './api/api';
 import { filterProductsByName } from './api/api';
-import './App.css';
+import Pagination from './components/Pagination';
 
 const LIMIT = 5;
 
 function App() {
-  const [products, setProducts] = useState([]);
   const [order, setOrder] = useState('createdAt');
+  const [products, setProducts] = useState([]);
+  const [hasNext, setHasNext] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
+  const [cursor, setCursor] = useState(null);
 
   // 검색 기능
   const [searchProduct, setSearchProduct] = useState('');
@@ -25,11 +29,6 @@ function App() {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPageProducts, setCurrentPageProducts] = useState([]);
 
-  useEffect(() => {
-    handleLoad(currentPage); // 초기 로드 및 페이지 변경 시 로드
-  }, [order, currentPage]);
-
-  // 페이지 번호에 따른 상품 목록 업데이트
   const handleLoad = async (page) => {
     try {
       setLoadingError(null);
@@ -59,6 +58,10 @@ function App() {
     }
   };
 
+  // 페이지네이션 페이지 범위 설정
+  const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
+  const endPage = Math.min(startPage + 4, totalPages);
+  
   const handleOrderChange = (event) => {
     setOrder(event.target.value);
     setCurrentPage(1); // 정렬 순서 변경 시 첫 페이지로 이동
@@ -69,7 +72,6 @@ function App() {
     setSearchProduct(event.target.value);
   };
 
-  // 검색 기능
   const handleSearchClick = async () => {
     try {
       if (searchProduct.trim() === '') {
@@ -91,7 +93,16 @@ function App() {
     }
   };
 
-  // 정렬 함수
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+    handleLoad(page);
+  };
+
+  useEffect(() => {
+    handleLoad(currentPage); // 초기 로드 및 페이지 변경 시 로드
+  }, [order, currentPage]);
+
+  // 최신순 좋아요 순 정렬
   const sortedProducts = [...products].sort((a, b) => {
     if (order === 'createdAt') {
       return new Date(b.createdAt) - new Date(a.createdAt);
@@ -137,8 +148,8 @@ function App() {
             </ul>
           </div>
         )}
-        {loadingError && <p>{loadingError}</p>}
-        <ProductList products={searchProduct ? searchResults : sortedProducts}/>
+        {loadingError && <span>{loadingError}</span>}
+        <ProductList products={searchProduct ? searchResults : sortedProducts.slice((currentPage - 1) * LIMIT, currentPage * LIMIT)} />
         <Pagination 
           currentPage={currentPage} 
           totalPages={totalPages} 
