@@ -26,17 +26,8 @@ function App() {
   const [currentPageProducts, setCurrentPageProducts] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await getProductList({ order });
-        setProducts(response.list || []);
-      } catch (error) {
-        setLoadingError('상품을 불러오는 데 실패했습니다.');
-      }
-    };
-
-    fetchProducts();
-  }, [order]);
+    handleLoad(currentPage); // 초기 로드 및 페이지 변경 시 로드
+  }, [order, currentPage]);
 
   // 페이지 번호에 따른 상품 목록 업데이트
   const handleLoad = async (page) => {
