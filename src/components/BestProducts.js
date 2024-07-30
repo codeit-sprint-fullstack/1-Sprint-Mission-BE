@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './BestProducts.css';
 import { getProductList } from '../api/api';
 import ProductListItem from './ProductListItem';
 
