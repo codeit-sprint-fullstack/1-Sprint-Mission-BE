@@ -9,21 +9,14 @@ function useProductList(order, initialCursor) {
   const [loadingError, setLoadingError] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [cursor, setCursor] = useState(initialCursor);
-  const [currentPageProducts, setCurrentPageProducts] = useState([]);
 
   const fetchProducts = async (page) => {
     try {
       setLoadingError(null);
       const response = await getProductList({ order, cursor, limit: LIMIT });
-      const { paging, list, totalCount } = response; 
+      const { paging, list, totalCount } = response;
 
-      if (page === 1) {
-        setProducts(list);
-      } else {
-        const startIndex = (page - 1) * LIMIT;
-        const endIndex = page * LIMIT;
-        setCurrentPageProducts(products.slice(startIndex, endIndex));
-      }
+      setProducts(list); // 전체 상품 목록 설정
 
       setCursor(paging ? paging.nextCursor : null);
       setHasNext(paging ? paging.hasNext : false);
