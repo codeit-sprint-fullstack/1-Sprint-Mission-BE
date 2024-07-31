@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getProductList } from '../api/api';
 
 const LIMIT = 5;
@@ -10,7 +10,7 @@ function useProductList(order, initialCursor) {
   const [totalPages, setTotalPages] = useState(1);
   const [cursor, setCursor] = useState(initialCursor);
 
-  const fetchProducts = async (page) => {
+  const fetchProducts = useCallback(async (page) => {
     try {
       setLoadingError(null);
       const response = await getProductList({ order, cursor, limit: LIMIT });
@@ -24,11 +24,11 @@ function useProductList(order, initialCursor) {
     } catch (error) {
       setLoadingError(error.message);
     }
-  };
+  }, [order, cursor]);
 
   useEffect(() => {
     fetchProducts(1); // 초기 로드
-  }, [order, cursor]);
+  }, [order, cursor, fetchProducts]);
 
   return { products, hasNext, loadingError, totalPages, fetchProducts };
 }
