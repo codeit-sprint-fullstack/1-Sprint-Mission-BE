@@ -6,6 +6,18 @@
   .product-list {
     grid-template-columns: repeat(5, 1fr);
   }
+
+  .bestProduct-image{
+    width: 282px;
+    height: 282px;
+  }
+
+  .product-image {
+    width: 221px;
+    height: 221px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
 }
 
 /* Tablet */
@@ -23,12 +35,22 @@
     margin-right: 20px;
   }
 
+  .bestProduct-image{
+    width: 343px;
+    height: 343px;
+  }
+
   .bestProductList {
     grid-template-columns: repeat(2, 1fr);
   }
 
   .product-list {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .product-image{
+    width: 221px;
+    height: 221px;
   }
 
     /* 페이지네이션 */
@@ -65,9 +87,12 @@
   }
 
   /* 상품 */ 
+  .bestProduct-image{
+    width: 343px;
+    height: 343px;
+  }
+
   .best-products{
-    /* width: 100%;
-    margin: 5px auto; */
     max-width: 100%;
     margin: 5px 10px;
     padding: 0;
@@ -82,6 +107,11 @@
     margin-top: 30px;
   }
 
+  .product-image{
+    width: 168px;
+    height: 168px;
+  }
+  
   section.sale-products {
     position: relative; 
     margin-top: 100px !important; 
