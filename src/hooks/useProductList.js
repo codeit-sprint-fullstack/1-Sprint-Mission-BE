@@ -3,12 +3,12 @@ import { getProductList } from '../api/api';
 
 const LIMIT = 5;
 
-function useProductList(order, Cursor) {
+function useProductList(order, initialCursor) {
   const [products, setProducts] = useState([]);
   const [hasNext, setHasNext] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
-  const [cursor, setCursor] = useState(Cursor);
+  const [cursor, setCursor] = useState(initialCursor);
   const [currentPageProducts, setCurrentPageProducts] = useState([]);
 
   const fetchProducts = async (page) => {
