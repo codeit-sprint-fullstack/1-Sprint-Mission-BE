@@ -6,7 +6,6 @@ import './index.css';
 import './styles/Responsive.css'; 
 import BestProducts from './components/BestProducts';
 import ProductList from './components/ProductList';
-import { getProductList } from './api/api';
 import { filterProductsByName } from './api/api';
 import Pagination from './components/Pagination';
 import useProductList from './hooks/useProductList';
