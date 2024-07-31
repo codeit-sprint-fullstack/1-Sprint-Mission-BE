@@ -141,8 +141,7 @@ select::after{
 }
 
 .search-results li {
-  padding: 5px 0;
-  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
 }
 
 .search-results li:last-child {
