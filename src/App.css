@@ -128,7 +128,7 @@ select::after{
   padding: 10px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 30px;
 }
 
 .search-results h3 {
@@ -138,6 +138,7 @@ select::after{
 .search-results ul {
   list-style-type: none;
   padding: 0;
+  color: #1249e2;
 }
 
 .search-results li {
