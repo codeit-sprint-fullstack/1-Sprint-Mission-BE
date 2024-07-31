@@ -9,14 +9,13 @@ import ProductList from './components/ProductList';
 import { getProductList } from './api/api';
 import { filterProductsByName } from './api/api';
 import Pagination from './components/Pagination';
+import useProductList from './hooks/useProductList';
 
 const LIMIT = 5;
 
 function App() {
   const [order, setOrder] = useState('createdAt');
-  const [products, setProducts] = useState([]);
-  const [hasNext, setHasNext] = useState(false);
-  const [loadingError, setLoadingError] = useState(null);
+
   const [cursor, setCursor] = useState(null);
 
   // 검색 기능
@@ -26,8 +25,10 @@ function App() {
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [currentPageProducts, setCurrentPageProducts] = useState([]);
+
+  // 커스텀 훅 호출
+  const { products, hasNext, loadingError, totalPages, fetchProducts } = useProductList(order, cursor);
 
   const handleLoad = async (page) => {
     try {
