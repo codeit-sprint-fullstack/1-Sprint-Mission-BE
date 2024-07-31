@@ -44,6 +44,10 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .bestProductList > *:nth-child(n+3) {
+    display: none; /* 3번째 상품부터 숨김 처리 */
+  }
+
   .product-list {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -102,6 +106,10 @@
     grid-template-columns: 1fr;
   }
 
+  .bestProductList > *:nth-child(n+2) {
+    display: none;
+  }
+
   .product-list {
     grid-template-columns: repeat(2, 1fr);
     margin-top: 30px;
@@ -111,7 +119,7 @@
     width: 168px;
     height: 168px;
   }
-  
+
   section.sale-products {
     position: relative; 
     margin-top: 100px !important; 
