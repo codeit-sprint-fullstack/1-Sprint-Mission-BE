@@ -28,9 +28,6 @@ function App() {
   // 커스텀 훅 호출
   const { products, hasNext, loadingError, totalPages, fetchProducts } = useProductList(order, cursor);
 
-  // 현재 페이지에 맞는 상품 목록 추출
-  const currentPageProducts = sortedProducts.slice((currentPage - 1) * LIMIT, currentPage * LIMIT);
-
   // 페이지네이션 페이지 범위 설정
   const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
   const endPage = Math.min(startPage + 4, totalPages);
@@ -91,6 +88,10 @@ function App() {
     }
     return 0;
   });
+
+  // 현재 페이지에 맞는 상품 목록 추출
+  const currentPageProducts = sortedProducts.slice((currentPage - 1) * LIMIT, currentPage * LIMIT);
+
 
   return (
     <div className='App'>
