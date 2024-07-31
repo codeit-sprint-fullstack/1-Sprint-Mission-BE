@@ -30,35 +30,6 @@ function App() {
   // 커스텀 훅 호출
   const { products, hasNext, loadingError, totalPages, fetchProducts } = useProductList(order, cursor);
 
-  const handleLoad = async (page) => {
-    try {
-      setLoadingError(null);
-      const response = await getProductList({ order, cursor, limit: LIMIT });
-      const { paging, list, totalCount } = response; 
-
-      const actualTotalCount = totalCount !== undefined && totalCount > 0 ? totalCount : list.length;
-
-      console.log('서버에서 받은 전체 상품의 총 개수:', totalCount);
-      console.log('수정된 전체 상품의 총 개수:', actualTotalCount);
-  
-      if (page === 1) {
-        setProducts(list);
-      } else {
-        const startIndex = (page - 1) * LIMIT;
-        const endIndex = page * LIMIT;
-        setCurrentPageProducts(products.slice(startIndex, endIndex));
-      }
-
-      // 다음 페이지를 위한 커서를 업데이트
-      setCursor(paging ? paging.nextCursor : null);
-      //다음 페이지가 있는지 여부를 업데이트
-      setHasNext(paging ? paging.hasNext : false);
-      setTotalPages(totalCount ? Math.ceil(totalCount / LIMIT) : 5); // 총 페이지 수 설정
-    } catch (error) {
-      setLoadingError(error.message);
-    }
-  };
-
   // 페이지네이션 페이지 범위 설정
   const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
   const endPage = Math.min(startPage + 4, totalPages);
