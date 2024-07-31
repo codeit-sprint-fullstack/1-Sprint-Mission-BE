@@ -68,6 +68,13 @@ function App() {
     setCursor(null); // 정렬 순서 변경 시 커서 초기화
   };
 
+  /* 엔터키로 검색 입력 */
+  const handleKeyDown = (e) =>{
+    if(e.key === 'Enter'){
+      handleSearchClick();
+    }
+  }
+
   const handleSearchChange = (event) => {
     setSearchProduct(event.target.value);
   };
@@ -128,6 +135,7 @@ function App() {
               style={{ backgroundImage: `url(${searchIcon})` }}
               value={searchProduct}
               onChange={handleSearchChange}
+              onKeyDown={handleKeyDown}
             />
             <button onClick={handleSearchClick} className="search-button">검색</button>
             <button className='addProductBotton'>상품 등록하기</button>
