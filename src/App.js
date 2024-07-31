@@ -37,7 +37,7 @@ function App() {
   const handleOrderChange = (event) => {
     setOrder(event.target.value);
     setCurrentPage(1); // 정렬 순서 변경 시 첫 페이지로 이동
-    setCursor(null); // 정렬 순서 변경 시 커서 초기화
+    fetchProducts(1);
   };
 
   /* 엔터키로 검색 입력 */
@@ -74,11 +74,11 @@ function App() {
 
   const handlePageClick = (page) => {
     setCurrentPage(page);
-    handleLoad(page);
+    fetchProducts(page);
   };
 
   useEffect(() => {
-    handleLoad(currentPage); // 초기 로드 및 페이지 변경 시 로드
+    fetchProducts(currentPage); // 초기 로드 및 페이지 변경 시 로드
   }, [order, currentPage]);
 
   // 최신순 좋아요 순 정렬
