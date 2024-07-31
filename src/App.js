@@ -15,8 +15,6 @@ const LIMIT = 5;
 function App() {
   const [order, setOrder] = useState('createdAt');
 
-  const [cursor, setCursor] = useState(null);
-
   // 검색 기능
   const [searchProduct, setSearchProduct] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -26,7 +24,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
 
   // 커스텀 훅 호출
-  const { products, hasNext, loadingError, totalPages, fetchProducts } = useProductList(order, cursor);
+  const { products, hasNext, loadingError, totalPages, fetchProducts } = useProductList(order, null);
 
   const handleOrderChange = (event) => {
     setOrder(event.target.value);
