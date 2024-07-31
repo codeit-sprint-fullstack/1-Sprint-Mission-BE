@@ -25,10 +25,12 @@ function App() {
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentPageProducts, setCurrentPageProducts] = useState([]);
 
   // 커스텀 훅 호출
   const { products, hasNext, loadingError, totalPages, fetchProducts } = useProductList(order, cursor);
+
+  // 현재 페이지에 맞는 상품 목록 추출
+  const currentPageProducts = sortedProducts.slice((currentPage - 1) * LIMIT, currentPage * LIMIT);
 
   // 페이지네이션 페이지 범위 설정
   const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
@@ -129,7 +131,7 @@ function App() {
           </div>
         )}
         {loadingError && <span>{loadingError}</span>}
-        <ProductList products={searchProduct ? searchResults : sortedProducts.slice((currentPage - 1) * LIMIT, currentPage * LIMIT)} />
+        <ProductList products={searchProduct ? searchResults : currentPageProducts} />
         <Pagination 
           currentPage={currentPage} 
           totalPages={totalPages} 
