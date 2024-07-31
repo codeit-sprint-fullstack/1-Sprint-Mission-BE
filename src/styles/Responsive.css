@@ -18,6 +18,10 @@
     border-radius: 8px;
     object-fit: cover;
   }
+
+  .search-error {
+    margin-top: 50px;
+  }
 }
 
 /* Tablet */
@@ -55,6 +59,10 @@
   .product-image{
     width: 221px;
     height: 221px;
+  }
+
+  .search-error {
+    margin-top: 50px;
   }
 
     /* 페이지네이션 */
