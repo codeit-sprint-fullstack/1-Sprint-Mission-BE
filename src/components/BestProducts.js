@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './BestProducts.css';
 import { getProductList } from '../api/api';
-import ProductListItem from './ProductListItem';
+import BestProductItem from './BestProductItem';
 
 function BestProducts() {
   const [products, setProducts] = useState([]);
@@ -28,7 +28,7 @@ function BestProducts() {
     <section className="best-products">
       <div className="bestProductList">
         {topProducts.map(product => (
-          <ProductListItem key={product.id} product={product} />
+          <BestProductItem key={product.id} product={product} />
         ))}
       </div>
     </section>
