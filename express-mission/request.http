@@ -1,0 +1,34 @@
+GET  http://localhost:3000/products
+
+###
+
+GET  http://localhost:3000/products?keyword=테스트
+
+###
+
+GET http://localhost:3000/products/66ac4672cad1516f2b7dbefa
+
+###
+
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+    "name": "테스트",
+    "description": "테스트 진행중입니다",
+    "price": 500,
+    "tags": "테스트"
+}
+
+###
+
+PATCH http://localhost:3000/products/66ac4709646d06144d07f7c4
+Content-Type: application/json
+
+{
+    "favoriteCount": 8
+}
+
+###
+
+DELETE http://localhost:3000/products/66ac4709646d06144d07f7c4
