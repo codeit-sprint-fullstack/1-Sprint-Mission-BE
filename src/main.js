@@ -128,6 +128,23 @@ app.patch("/products/:id", async (req, res) => {
   res.json(result);
 });
 
+/** Product DELETE /products/:id - 테스트 완 - 임시 테이블에 연결 */
+app.delete("/products/:id", async (req, res) => {
+  const { id } = req.params;
+  const castId = Number(id);
+
+  const result = await SampleData.findByIdAndDelete({ _id: castId });
+
+  if (result) {
+    res.status(200);
+  } else {
+    res.status(404);
+    result = { message: "Not Found" };
+  }
+
+  res.json(result);
+});
+
 mongoose
   .connect(`${DB_URL}`)
   .then(() => {
