@@ -2,7 +2,7 @@ GET  http://localhost:3000/products
 
 ###
 
-GET  http://localhost:3000/products?keyword=테스트
+GET  http://localhost:3000/products?keyword=
 
 ###
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/products/66ac4709646d06144d07f7c4
+PATCH http://localhost:3000/products/66ac7c42950bd6528696b9c7
 Content-Type: application/json
 
 {
@@ -31,4 +31,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/products/66ac4709646d06144d07f7c4
+DELETE http://localhost:3000/products/66ac7c42950bd6528696b9c7

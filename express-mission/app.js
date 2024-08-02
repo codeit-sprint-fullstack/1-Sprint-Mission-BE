@@ -47,20 +47,21 @@ app.get(
     const orderOption =
       order === "favorite" ? { favoriteCount: "desc" } : { createdAt: "desc" };
 
-    const newData = await Product.find({
+    const findOption = {
       $or: [
         { name: { $regex: `${keyWord}`, $options: "i" } },
         { description: { $regex: `${keyWord}`, $options: "i" } },
       ],
-    })
+    };
+
+    const newData = await Product.find(findOption)
       .sort(orderOption)
       .skip(offSet)
       .limit(pageSize);
 
-    const totalCount = await Product.find().countDocuments()
+    const totalCount = await Product.find(findOption).countDocuments();
 
-
-    res.send([...newData, {"totalCount": totalCount}]);
+    res.send({ list: newData, totalCount: totalCount });
   })
 );
 
