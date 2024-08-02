@@ -5,5 +5,13 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
-  }
+  },
+  "scripts": {
+    "server": "set NODE_ENV=local && node src/main.js",
+    "nodemon": "set NODE_ENV=local && nodemon src/main.js",
+    "seed": "node data/seed.js",
+    "seed-l": "set NODE_ENV=local && node data/seed.js",
+    "seed-p": "set NODE_ENV=production && node data/seed.js"
+  },
+  "type": "module"
 }
