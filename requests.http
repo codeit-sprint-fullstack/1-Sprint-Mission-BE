@@ -23,3 +23,20 @@ GET http://localhost:3000/products?page=1&pageSize=2&orderBy=recent
 
 ###
 GET http://localhost:3000/products/134
+
+###
+PATCH http://localhost:3000/products/134
+Content-Type : application/json
+Authorization : 98
+
+{
+  "images": [
+    "https://www.psu.com/wp/wp-content/uploads/2020/06/ps5-console-design-horizontal-768x432.jpg"
+  ],
+  "tags": [
+    "콘솔"
+  ],
+  "price": 480000,
+  "description": "구독제 끝까지 다 즐기고 보내주려고 합니다",
+  "name": "플스5(2018a)"
+}

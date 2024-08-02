@@ -102,6 +102,32 @@ app.get("/products/:id", async (req, res) => {
   res.json(result);
 });
 
+/** Product PATCH /products/:id - 테스트 완 - 임시 테이블에 연결 */
+// 이건 문제가 body를 분해 안해서 다른 속성도 마음껏 수정되는 문제가 있음
+app.patch("/products/:id", async (req, res) => {
+  const { id } = req.params;
+  const { authorization } = req.headers;
+  const updateData = req.body;
+  const castId = Number(id);
+
+  // 임시
+  const ownerId = await SampleData.findById(castId).ownerId;
+
+  let result = null;
+
+  if (authorization === ownerId) {
+    result = await SampleData.findByIdAndUpdate({ _id: castId }, updateData);
+    if (result) {
+      res.status(200);
+    }
+  } else {
+    res.status(401);
+    result = { message: "Unauthorized" };
+  }
+
+  res.json(result);
+});
+
 mongoose
   .connect(`${DB_URL}`)
   .then(() => {
