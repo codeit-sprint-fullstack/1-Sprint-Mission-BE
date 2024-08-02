@@ -83,6 +83,25 @@ app.get("/products", async (req, res) => {
   res.json(filterData);
 });
 
+/** Product GET /products/:id - 테스트 완 - 임시 테이블에 연결*/
+app.get("/products/:id", async (req, res) => {
+  const { id } = req.params;
+  const castId = Number(id);
+
+  const product = await SampleData.findById(castId);
+
+  let result = product;
+
+  if (product) {
+    res.status(200);
+  } else {
+    res.status(404);
+    result = { message: "Not Found" };
+  }
+
+  res.json(result);
+});
+
 mongoose
   .connect(`${DB_URL}`)
   .then(() => {
