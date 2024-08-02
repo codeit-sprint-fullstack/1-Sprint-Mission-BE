@@ -45,6 +45,44 @@ app.post("/products", async (req, res) => {
   res.json(result);
 });
 
+/** Product GET /Products - 테스트 완 - 임시 테이블에 연결*/
+app.get("/products", async (req, res) => {
+  const { page, pageSize, orderBy, keyword } = req.query;
+
+  let filterData = await SampleData.find({});
+
+  let filterPage = 0;
+  let filterPageSize = 10;
+
+  if (keyword) {
+    const castStringKeyword = keyword.toString();
+
+    filterData = filterData.filter(
+      (product) => product?.name?.toString().indexOf(castStringKeyword) === true
+    );
+  }
+
+  if (orderBy && orderBy.toString() === "favorite") {
+    filterData = filterData.toSorted(
+      (a, b) => b.favoriteCount - a.favoriteCount
+    );
+  } else {
+    filterData = filterData.toSorted((a, b) => b.createdAt - a.createdAt);
+  }
+
+  if (page) {
+    filterPage = Number(page) - 1;
+  }
+
+  if (pageSize) {
+    filterPageSize = Number(pageSize);
+  }
+
+  filterData = filterData.slice(filterPage * filterPageSize, filterPageSize);
+
+  res.json(filterData);
+});
+
 mongoose
   .connect(`${DB_URL}`)
   .then(() => {

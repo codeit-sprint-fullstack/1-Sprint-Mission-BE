@@ -14,3 +14,9 @@ Authorization : 99
   "description": "2년 구독 끝까지 다 즐기고 보내주려고 합니다",
   "name": "PS5(2018a)"
 }
+
+###
+GET http://localhost:3000/products
+
+###
+GET http://localhost:3000/products?page=1&pageSize=2&orderBy=recent
