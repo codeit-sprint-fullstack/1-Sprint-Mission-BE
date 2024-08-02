@@ -57,7 +57,10 @@ app.get(
       .skip(offSet)
       .limit(pageSize);
 
-    res.send(newData);
+    const totalCount = await Product.find().countDocuments()
+
+
+    res.send([...newData, {"totalCount": totalCount}]);
   })
 );
 
