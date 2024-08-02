@@ -40,3 +40,6 @@ Authorization : 98
   "description": "구독제 끝까지 다 즐기고 보내주려고 합니다",
   "name": "플스5(2018a)"
 }
+
+###
+DELETE http://localhost:3000/products/134
