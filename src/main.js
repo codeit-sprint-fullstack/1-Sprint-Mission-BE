@@ -155,17 +155,20 @@ mongoose
     });
 
     const shutdown = () => {
-      mongoose
-        .disconnect()
-        .then(() => {
-          console.log("Disconnected from MongoDB");
-          server.close(() => {
-            console.log("HTTP server closed");
+      server.close(() => {
+        console.log("Server closed");
+
+        mongoose
+          .disconnect()
+          .then(() => {
+            console.log("Disconnected from DB");
+            process.exit(0);
+          })
+          .catch((err) => {
+            console.error("Error disconnecting from DB", err);
+            process.exit(1);
           });
-        })
-        .catch((err) => {
-          console.error("Error disconnecting from MongoDB", err);
-        });
+      });
     };
 
     process.on("SIGINT", shutdown);

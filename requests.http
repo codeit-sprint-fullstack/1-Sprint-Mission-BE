@@ -27,7 +27,7 @@ GET http://localhost:3000/products/134
 ###
 PATCH http://localhost:3000/products/134
 Content-Type : application/json
-Authorization : 98
+Authorization : 99
 
 {
   "images": [

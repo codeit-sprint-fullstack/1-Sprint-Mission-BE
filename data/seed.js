@@ -3,7 +3,7 @@ import { DB_URL } from "../src/config.js";
 import mongoose from "mongoose";
 import { productsData_origin } from "./mock.js";
 import {
-  SampleDate,
+  SampleData,
   Product,
   User,
   UserFavorites,
@@ -14,8 +14,8 @@ try {
   await mongoose.connect(`${DB_URL}`);
   console.log("success connect mongoose");
 
-  await SampleDate.deleteMany({});
-  await SampleDate.insertMany(productsData_origin);
+  await SampleData.deleteMany({});
+  await SampleData.insertMany(productsData_origin);
 } catch (err) {
   console.log("fail connect mongoose " + err.name);
   console.log(err);
