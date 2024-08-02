@@ -1,0 +1,16 @@
+###
+POST http://localhost:3000/products
+Content-Type : application/json
+Authorization : 99
+
+{
+  "images": [
+    "https://as1.ftcdn.net/v2/jpg/05/72/80/66/1000_F_572806675_TcLAScY4KfbV5tL0PAdWmeo42TBpzh6f.jpg"
+  ],
+  "tags": [
+    "전자제품"
+  ],
+  "price": 450000,
+  "description": "2년 구독 끝까지 다 즐기고 보내주려고 합니다",
+  "name": "PS5(2018a)"
+}
