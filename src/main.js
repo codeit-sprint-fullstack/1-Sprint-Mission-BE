@@ -49,38 +49,42 @@ app.post("/products", async (req, res) => {
 app.get("/products", async (req, res) => {
   const { page, pageSize, orderBy, keyword } = req.query;
 
-  let filterData = await SampleData.find({});
-
-  let filterPage = 0;
-  let filterPageSize = 10;
+  let keywordOption = {};
+  const orderByOption = {};
+  let pageOption = 0;
+  let pageSizeOption = 10;
 
   if (keyword) {
     const castStringKeyword = keyword.toString();
 
-    filterData = filterData.filter(
-      (product) => product?.name?.toString().indexOf(castStringKeyword) === true
-    );
+    keywordOption = {
+      $or: [
+        { name: { $regex: castStringKeyword, $options: "i" } },
+        { description: { $regex: castStringKeyword, $options: "i" } },
+      ],
+    };
   }
 
   if (orderBy && orderBy.toString() === "favorite") {
-    filterData = filterData.toSorted(
-      (a, b) => b.favoriteCount - a.favoriteCount
-    );
+    orderByOption.favoriteCount = -1;
   } else {
-    filterData = filterData.toSorted((a, b) => b.createdAt - a.createdAt);
-  }
-
-  if (page) {
-    filterPage = Number(page) - 1;
+    orderByOption.createdAt = -1;
   }
 
   if (pageSize) {
-    filterPageSize = Number(pageSize);
+    pageSizeOption = Number(pageSize);
   }
 
-  filterData = filterData.slice(filterPage * filterPageSize, filterPageSize);
+  if (page) {
+    pageOption = (Number(page) - 1) * pageSizeOption;
+  }
 
-  res.json(filterData);
+  const result = await SampleData.find(keywordOption)
+    .sort(orderByOption)
+    .skip(pageOption)
+    .limit(pageSizeOption);
+
+  res.json(result);
 });
 
 /** Product GET /products/:id - 테스트 완 - 임시 테이블에 연결*/
@@ -103,7 +107,6 @@ app.get("/products/:id", async (req, res) => {
 });
 
 /** Product PATCH /products/:id - 테스트 완 - 임시 테이블에 연결 */
-// 이건 문제가 body를 분해 안해서 다른 속성도 마음껏 수정되는 문제가 있음
 app.patch("/products/:id", async (req, res) => {
   const { id } = req.params;
   const { authorization } = req.headers;
@@ -119,6 +122,9 @@ app.patch("/products/:id", async (req, res) => {
     result = await SampleData.findByIdAndUpdate({ _id: castId }, updateData);
     if (result) {
       res.status(200);
+    } else {
+      res.status(404);
+      result = { message: "Not Found" };
     }
   } else {
     res.status(401);
