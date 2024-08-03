@@ -123,25 +123,35 @@ app.get("/products/:id", async (req, res) => {
 app.patch("/products/:id", async (req, res) => {
   const { id } = req.params;
   const { authorization } = req.headers;
+  const editableProperties = ["images", "tags", "price", "description", "name"];
   const updateData = req.body;
+  let updateDataCopy = JSON.parse(JSON.stringify(updateData));
+  let result = null;
   const castId = Number(id);
 
-  // 임시
-  const ownerId = await SampleData.findById(castId).ownerId;
+  for (const key of editableProperties) {
+    delete updateDataCopy[`${key}`];
+  }
 
-  let result = null;
-
-  if (authorization === ownerId) {
-    result = await SampleData.findByIdAndUpdate({ _id: castId }, updateData);
-    if (result) {
-      res.status(200);
-    } else {
-      res.status(404);
-      result = { message: "Not Found" };
-    }
+  if (Object.keys(updateDataCopy).length > 0) {
+    res.status(400);
+    result = { message: "Bad Request" };
   } else {
-    res.status(401);
-    result = { message: "Unauthorized" };
+    // 임시
+    const ownerId = await SampleData.findById(castId).ownerId;
+
+    if (authorization === ownerId) {
+      result = await SampleData.findByIdAndUpdate({ _id: castId }, updateData);
+      if (result) {
+        res.status(200);
+      } else {
+        res.status(404);
+        result = { message: "Not Found" };
+      }
+    } else {
+      res.status(401);
+      result = { message: "Unauthorized" };
+    }
   }
 
   res.json(result);
