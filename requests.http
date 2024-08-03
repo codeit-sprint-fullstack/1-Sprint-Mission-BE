@@ -24,7 +24,6 @@ GET http://localhost:3000/products?page=1&pageSize=2&orderBy=recent
 ###
 GET http://localhost:3000/products?keyword=PS5
 
-
 ###
 GET http://localhost:3000/products/134
 

@@ -79,10 +79,19 @@ app.get("/products", async (req, res) => {
     pageOption = (Number(page) - 1) * pageSizeOption;
   }
 
-  const result = await SampleData.find(keywordOption)
+  const product = await SampleData.find(keywordOption)
     .sort(orderByOption)
     .skip(pageOption)
     .limit(pageSizeOption);
+
+  let result = product;
+  if (result[0]._id) {
+    for (const element of result) {
+      element.ownerId = undefined;
+      element.updatedAt = undefined;
+      element.__v = undefined;
+    }
+  }
 
   res.json(result);
 });
@@ -97,6 +106,10 @@ app.get("/products/:id", async (req, res) => {
   let result = product;
 
   if (product) {
+    result.ownerId = undefined;
+    result.updatedAt = undefined;
+    result.__v = undefined;
+
     res.status(200);
   } else {
     res.status(404);
