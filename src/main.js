@@ -160,12 +160,22 @@ app.patch("/products/:id", async (req, res) => {
 /** Product DELETE /products/:id - 테스트 완 - 임시 테이블에 연결 */
 app.delete("/products/:id", async (req, res) => {
   const { id } = req.params;
+  const { authorization } = req.headers;
   const castId = Number(id);
+  let result = null;
 
-  const result = await SampleData.findByIdAndDelete({ _id: castId });
+  const product = await SampleData.findById(castId);
 
-  if (result) {
-    res.status(200);
+  if (product.ownerId) {
+    console.log("product.ownerId : " + product.ownerId);
+    if (authorization == Number(product.ownerId)) {
+      console.log("???");
+      res.status(200);
+      result = await SampleData.findByIdAndDelete({ _id: castId });
+    } else {
+      res.status(401);
+      result = { message: "Unauthorized" };
+    }
   } else {
     res.status(404);
     result = { message: "Not Found" };
@@ -184,18 +194,23 @@ mongoose
     });
 
     const shutdown = () => {
+      // server.close(async () => {
       server.close(() => {
         console.log("Server closed");
 
+        // try {
+        //   await mongoose.disconnect();
+        //   console.log("Disconnected from DB");
+        // } catch (err) {
+        //   console.error("Error disconnecting from DB", err);
+        // }
         mongoose
           .disconnect()
           .then(() => {
             console.log("Disconnected from DB");
-            process.exit(0);
           })
           .catch((err) => {
             console.error("Error disconnecting from DB", err);
-            process.exit(1);
           });
       });
     };
@@ -205,5 +220,4 @@ mongoose
   })
   .catch((err) => {
     console.log(`Error connecting DB : ${err.name}`);
-    process.exit(1);
   });

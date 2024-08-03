@@ -46,3 +46,4 @@ Authorization : 99
 
 ###
 DELETE http://localhost:3000/products/134
+Authorization : 99
