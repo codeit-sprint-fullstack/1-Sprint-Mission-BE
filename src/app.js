@@ -1,11 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
-dotenv.config();
+import cors from "cors";
 import Product from "./models/product.js";
 
-const app = express();
+dotenv.config();
 
+const app = express();
+app.use(cors());
 app.use(express.json());
 
 function asyncHandler(handler) {
