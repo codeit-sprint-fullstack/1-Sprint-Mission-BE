@@ -1,3 +1,7 @@
+
+GET http://localhost:3000/products/66b073b7f091c1212931ee68
+
+###
 POST http://localhost:3000/products
 Content-Type: application/json
 
@@ -6,4 +10,13 @@ Content-Type: application/json
   "description": "post-description",
   "price": "10000",
   "tags": ["post1", "post2"]
+}
+
+###
+PATCH http://localhost:3000/products/66b081528a869370be9119bb
+Content-Type: application/json
+
+{
+  "name": "patch-name",
+  "price": "30000"
 }

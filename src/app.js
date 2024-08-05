@@ -28,7 +28,18 @@ function asyncHandler(handler) {
 //   const sort = req.query.sort;
 // }))
 // 상품 상세 조회
-
+app.get(
+  "/products/:id",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const product = await Product.findById(id);
+    if (product) {
+      res.send(product);
+    } else {
+      res.status(404).send({ message: "cannot find given id." });
+    }
+  })
+);
 // 상품 등록
 app.post(
   "/products",
@@ -36,6 +47,23 @@ app.post(
     const newProduct = await Product.create(req.body);
 
     res.status(201).send(newProduct);
+  })
+);
+// 상품 수정
+app.patch(
+  "/products/:id",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const product = await Product.findById(id);
+    if (product) {
+      Object.keys(req.body).forEach((key) => {
+        product[key] = req.body[key];
+      });
+      await product.save();
+      res.send(product);
+    } else {
+      res.status(404).send({ message: "cannot find given id." });
+    }
   })
 );
 
