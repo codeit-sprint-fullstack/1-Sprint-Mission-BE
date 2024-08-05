@@ -1,4 +1,4 @@
-const data = [
+const productData = [
   {
     name: "Product 1",
     description: "Description for product 1",
@@ -18,3 +18,5 @@ const data = [
     tags: ["tag5", "tag6"],
   },
 ];
+
+export default productData;
