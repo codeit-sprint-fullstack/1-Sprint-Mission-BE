@@ -6,7 +6,7 @@ GET  http://localhost:3000/products?keyword=
 
 ###
 
-GET http://localhost:3000/products/66ac4672cad1516f2b7dbefa
+GET http://localhost:3000/products/66ac9bfb1c9b66ae158b935a
 
 ###
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/products/66ac7c42950bd6528696b9c7
+PATCH http://localhost:3000/products/66ac9bfb1c9b66ae158b935a
 Content-Type: application/json
 
 {
@@ -31,4 +31,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/products/66ac7c42950bd6528696b9c7
+DELETE http://localhost:3000/products/66ac9c4e1c9b66ae158b935e

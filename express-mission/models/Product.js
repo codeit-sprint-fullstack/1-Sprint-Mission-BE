@@ -20,9 +20,8 @@ const ProductSchema = new mongoose.Schema(
       min: 0,
     },
     tags: {
-      type: String,
+      type: [String],
       required: true,
-      maxLength: 5,
     },
     images: {
       type: [String],
