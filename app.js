@@ -56,10 +56,11 @@ app.get(
       .sort(sortOption)
       .skip(offset)
       .limit(count);
+    const totalCount = await Product.countDocuments();
     if (products) {
       const responseData = {
         list: products,
-        totalCount: products.length,
+        totalCount: totalCount,
       };
       res.send(responseData);
     } else {
