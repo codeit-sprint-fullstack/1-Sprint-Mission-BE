@@ -9,6 +9,7 @@
     "nodemon": "^3.1.4"
   },
   "scripts": {
+    "start": "node src/main.js",
     "server": "set NODE_ENV=local && node src/main.js",
     "nodemon": "set NODE_ENV=local && nodemon src/main.js",
     "seed": "node data/seed.js",
