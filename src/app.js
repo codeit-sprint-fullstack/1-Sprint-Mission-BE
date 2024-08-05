@@ -29,16 +29,16 @@ function asyncHandler(handler) {
 app.get(
   "/products",
   asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10, search = "" } = req.query;
-    const offset = (page - 1) * limit;
+    const { page = 1, pageSize = 10, keyword = "" } = req.query;
+    const offset = (page - 1) * pageSize;
     const sort = "recent"; // 최신순만 구현
     const sortOption = { createdAt: sort === "recent" ? "desc" : "asc" };
 
-    const searchQuery = search
+    const searchQuery = keyword
       ? {
           $or: [
-            { name: { $regex: search } },
-            { description: { $regex: search } },
+            { name: { $regex: keyword } },
+            { description: { $regex: keyword } },
           ],
         }
       : {};
@@ -46,7 +46,7 @@ app.get(
     const products = await Product.find(searchQuery)
       .sort(sortOption)
       .skip(offset)
-      .limit(Number(limit))
+      .limit(Number(pageSize))
       .select("id name price createdAt");
 
     const result = await res.send(products);
