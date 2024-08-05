@@ -57,7 +57,11 @@ app.get(
       .skip(offset)
       .limit(count);
     if (products) {
-      res.send(products);
+      const responseData = {
+        list: products,
+        totalCount: products.length,
+      };
+      res.send(responseData);
     } else {
       res.status(404).send({ message: "등록된 상품이 없습니다." });
     }
