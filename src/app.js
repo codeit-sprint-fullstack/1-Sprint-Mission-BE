@@ -24,9 +24,32 @@ function asyncHandler(handler) {
   };
 }
 // 상품 목록 조회
-// app.get("/products", asyncHandler(async (req, res) => {
-//   const sort = req.query.sort;
-// }))
+app.get(
+  "/products",
+  asyncHandler(async (req, res) => {
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+    const sort = "recent"; // 최신순만 구현
+    const sortOption = { createdAt: sort === "recent" ? "desc" : "asc" };
+
+    const searchQuery = search
+      ? {
+          $or: [
+            { name: { $regex: search } },
+            { description: { $regex: search } },
+          ],
+        }
+      : {};
+
+    const products = await Product.find(searchQuery)
+      .sort(sortOption)
+      .skip(offset)
+      .limit(Number(limit))
+      .select("id name price createdAt");
+
+    const result = await res.send(products);
+  })
+);
 // 상품 상세 조회
 app.get(
   "/products/:id",
