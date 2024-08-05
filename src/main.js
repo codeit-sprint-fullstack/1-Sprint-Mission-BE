@@ -55,6 +55,8 @@ app.get("/products", async (req, res) => {
   const orderByOption = {};
   let pageOption = 0;
   let pageSizeOption = 10;
+  let list = null;
+  let result = null;
 
   if (keyword) {
     const castStringKeyword = keyword.toString();
@@ -81,14 +83,16 @@ app.get("/products", async (req, res) => {
     pageOption = (Number(page) - 1) * pageSizeOption;
   }
 
-  const product = await SampleData.find(keywordOption)
+  const products = await SampleData.find(keywordOption)
     .sort(orderByOption)
     .skip(pageOption)
     .limit(pageSizeOption);
 
-  let result = product;
-  if (result[0]._id) {
-    for (const element of result) {
+  list = products;
+  const totalCount = await SampleData.find(keywordOption).countDocuments();
+
+  if (list[0]._id) {
+    for (const element of list) {
       element.ownerId = undefined;
       element.description = undefined;
       element.tag = undefined;
@@ -97,6 +101,11 @@ app.get("/products", async (req, res) => {
       element.__v = undefined;
     }
   }
+
+  result = {
+    list: list,
+    totalCount: totalCount,
+  };
 
   res.json(result);
 });
