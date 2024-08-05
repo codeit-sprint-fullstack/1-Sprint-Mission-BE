@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { DB_URL, PORT } from "../src/config.js";
 import mongoose from "mongoose";
 import {
@@ -11,6 +12,7 @@ import {
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 /** Product POST /Products -테스트 완 - 임시 테이블에 연결*/
