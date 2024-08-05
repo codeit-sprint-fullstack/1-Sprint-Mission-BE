@@ -35,20 +35,29 @@ app.get(
       page = 1,
       keyword = "",
       minPrice = 0,
-      maxPrice = minPrice,
+      maxPrice = Infinity,
+      date = "",
     } = req.query;
+
     const offset = (page - 1) * count; //page가 3이면 3-1 = 2 * count 만큼 스킵
     const regex = new RegExp(keyword, "i"); // 대소문자 구분 안 함
+    const dateQuery = {};
+    if (date) {
+      const startDate = new Date(date);
+      dateQuery.createAt = { $gt: startDate.getTime() };
+    }
     const sortOption = { createAt: sort === "recent" ? "asc" : "desc" };
-    const product = await Product.find({
+
+    const products = await Product.find({
       $or: [{ name: regex }, { description: regex }],
       price: { $gt: Number(minPrice), $lt: Number(maxPrice) },
+      ...dateQuery,
     })
       .sort(sortOption)
       .skip(offset)
       .limit(count);
-    if (product) {
-      res.send(product);
+    if (products) {
+      res.send(products);
     } else {
       res.status(404).send({ message: "등록된 상품이 없습니다." });
     }
