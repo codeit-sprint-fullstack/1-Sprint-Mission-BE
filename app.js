@@ -30,8 +30,8 @@ app.get(
   "/products",
   asyncHandel(async (req, res) => {
     const {
-      sort,
-      count = 10,
+      order,
+      pageSize = 10,
       page = 1,
       keyword = "",
       minPrice = 0,
@@ -39,23 +39,23 @@ app.get(
       date = "",
     } = req.query;
 
-    const offset = (page - 1) * count; //page가 3이면 3-1 = 2 * count 만큼 스킵
+    const offset = (page - 1) * pageSize; //page가 3이면 3-1 = 2 * count 만큼 스킵
     const regex = new RegExp(keyword, "i"); // 대소문자 구분 안 함
     const dateQuery = {};
     if (date) {
       const startDate = new Date(date);
       dateQuery.createAt = { $gt: startDate.getTime() };
     }
-    const sortOption = { createAt: sort === "recent" ? "asc" : "desc" };
+    const orderOption = { createAt: order === "recent" ? "asc" : "desc" };
 
     const products = await Product.find({
       $or: [{ name: regex }, { description: regex }],
       price: { $gt: Number(minPrice), $lt: Number(maxPrice) },
       ...dateQuery,
     })
-      .sort(sortOption)
+      .sort(orderOption)
       .skip(offset)
-      .limit(count);
+      .limit(pageSize);
     const totalCount = await Product.countDocuments();
     if (products) {
       const responseData = {
