@@ -55,7 +55,6 @@ app.get("/products", async (req, res) => {
   const orderByOption = {};
   let pageOption = 0;
   let pageSizeOption = 10;
-  let list = null;
   let result = null;
 
   if (keyword) {
@@ -88,11 +87,10 @@ app.get("/products", async (req, res) => {
     .skip(pageOption)
     .limit(pageSizeOption);
 
-  list = products;
   const totalCount = await SampleData.find(keywordOption).countDocuments();
 
-  if (list[0]._id) {
-    for (const element of list) {
+  if (products[0]._id) {
+    for (const element of products) {
       element.ownerId = undefined;
       element.description = undefined;
       element.tag = undefined;
@@ -103,7 +101,7 @@ app.get("/products", async (req, res) => {
   }
 
   result = {
-    list: list,
+    list: products,
     totalCount: totalCount,
   };
 
