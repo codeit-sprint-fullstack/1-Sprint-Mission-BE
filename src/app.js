@@ -66,6 +66,19 @@ app.patch(
     }
   })
 );
+// 상품 삭제
+app.delete(
+  "/products/:id",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const product = await Product.findByIdAndDelete(id);
+    if (product) {
+      res.sendStatus(204);
+    } else {
+      res.status(404).send({ message: "cannot find given id." });
+    }
+  })
+);
 
 app.listen(process.env.PORT || 3000, () => console.log("Server Started"));
 mongoose

@@ -20,3 +20,6 @@ Content-Type: application/json
   "name": "patch-name",
   "price": "30000"
 }
+
+###
+DELETE http://localhost:3000/products/66b080c88b0f12a10cb91090
