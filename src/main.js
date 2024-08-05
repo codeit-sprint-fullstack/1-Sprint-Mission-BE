@@ -88,6 +88,9 @@ app.get("/products", async (req, res) => {
   if (result[0]._id) {
     for (const element of result) {
       element.ownerId = undefined;
+      element.description = undefined;
+      element.tag = undefined;
+      element.createdAt = undefined;
       element.updatedAt = undefined;
       element.__v = undefined;
     }
