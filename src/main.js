@@ -85,23 +85,33 @@ app.get("/products", async (req, res) => {
   const products = await SampleData.find(keywordOption)
     .sort(orderByOption)
     .skip(pageOption)
-    .limit(pageSizeOption);
+    .limit(pageSizeOption)
+    .lean();
 
   const totalCount = await SampleData.find(keywordOption).countDocuments();
 
-  if (products[0]._id) {
-    for (const element of products) {
-      element.ownerId = undefined;
-      element.description = undefined;
-      element.tag = undefined;
-      element.createdAt = undefined;
-      element.updatedAt = undefined;
-      element.__v = undefined;
-    }
-  }
+  // if (products[0]._id) {
+  //   for (const element of products) {
+  //     // element.ownerId = undefined;
+  //     // element.description = undefined;
+  //     element.tag = undefined;
+  //     element.createdAt = undefined;
+  //     element.updatedAt = undefined;
+  //     element.__v = undefined;
+
+  //     delete element.ownerId;
+  //     delete element.description;
+  //   }
+  // }
+
+  const newList = products.map((item) => {
+    const { ownerId, description, tag, createdAt, updatedAt, __v, ...rest } =
+      item;
+    return rest;
+  });
 
   result = {
-    list: products,
+    list: newList,
     totalCount: totalCount,
   };
 
@@ -112,15 +122,13 @@ app.get("/products", async (req, res) => {
 app.get("/products/:id", async (req, res) => {
   const { id } = req.params;
   const castId = Number(id);
+  let result = null;
 
-  const product = await SampleData.findById(castId);
-
-  let result = product;
+  const product = await SampleData.findById(castId).lean();
 
   if (product) {
-    result.ownerId = undefined;
-    result.updatedAt = undefined;
-    result.__v = undefined;
+    const { ownerId, updatedAt, __v, ...rest } = product;
+    result = rest;
 
     res.status(200);
   } else {
@@ -223,6 +231,9 @@ mongoose
           })
           .catch((err) => {
             console.error("Error disconnecting from DB", err);
+          })
+          .finally(() => {
+            console.log("fianl");
           });
       });
     };
