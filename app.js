@@ -1,10 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
-import { DATABASE_URL } from "./env.js";
+import dotenv from "dotenv";
 import Product from "./models/Product.js";
 import cors from "cors";
 
-mongoose.connect(DATABASE_URL).then(() => {
+dotenv.config();
+console.log(process.env.DATABASE_URL);
+console.log("testtesttest");
+mongoose.connect(process.env.DATABASE_URL).then(() => {
   console.log("Database connected");
 });
 const app = express();
@@ -72,6 +75,6 @@ app.delete(
   })
 );
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Server started on port 3000");
 });
