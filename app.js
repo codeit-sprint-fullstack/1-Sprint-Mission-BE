@@ -48,15 +48,32 @@ app.get(
     }
     const orderOption = { createAt: order === "recent" ? "asc" : "desc" };
 
-    const products = await Product.find({
-      $or: [{ name: regex }, { description: regex }],
-      price: { $gt: Number(minPrice), $lt: Number(maxPrice) },
-      ...dateQuery,
-    })
-      .sort(orderOption)
-      .skip(offset)
-      .limit(pageSize);
-    const totalCount = await Product.countDocuments();
+    //1차 시도 하지만 await를 2번하여 느리다.
+    // const products = await Product.find({
+    //   $or: [{ name: regex }, { description: regex }],
+    //   price: { $gt: Number(minPrice), $lt: Number(maxPrice) },
+    //   ...dateQuery,
+    // })
+    //   .sort(orderOption)
+    //   .skip(offset)
+    //   .limit(pageSize);
+    // const totalCount = await Product.countDocuments();
+
+    //promise.all를 사용해서 동시에 기다려보자...
+    const [products, totalCount] = await Promise.all([
+      Product.find({
+        $or: [{ name: regex }, { description: regex }],
+        price: { $gt: Number(minPrice), $lt: Number(maxPrice) },
+        ...dateQuery,
+      })
+        .sort(orderOption)
+        .skip(offset)
+        .limit(pageSize),
+      Product.countDocuments({
+        $or: [{ name: regex }, { description: regex }],
+      }),
+    ]);
+
     if (products) {
       const responseData = {
         list: products,
