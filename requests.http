@@ -1,0 +1,9 @@
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "post-name",
+  "description": "post-description",
+  "price": "10000",
+  "tags": ["post1", "post2"]
+}
