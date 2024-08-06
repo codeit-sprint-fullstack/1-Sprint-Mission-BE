@@ -3,6 +3,7 @@ dotenv.config(); // 환경 변수 설정
 
 import express from 'express';
 import mongoose from 'mongoose';
+import Product from './models/Product.js'; 
 
 const app = express();
 app.use(express.json());
@@ -60,4 +61,4 @@ app.get('/api/products/:id', async (req, res) => {
     }
   });
   
-  app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
+app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
