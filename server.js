@@ -84,5 +84,28 @@ app.post('/api/products', async (req, res) => {
       res.status(500).send({ error: error.message });
     }
   });
+
+// 상품 수정 API
+app.patch('/api/products/:id', async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      // 상품을 찾고 업데이트
+      const product = await Product.findByIdAndUpdate(id, req.body, 
+        {
+        new: true, 
+        runValidators: true, // 유효성 검사
+      });
+  
+      if (!product) {
+        return res.status(404).send({ message: '상품을 찾을 수 없습니다.' });
+      }
+  
+      res.status(200).send(product);
+    } catch (error) {
+      console.error('상품 수정 중 오류 발생:', error);
+      res.status(500).send({ error: '상품을 수정하는 데 실패했습니다' });
+    }
+  });  
   
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
