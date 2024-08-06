@@ -30,7 +30,8 @@ app.get(
   asyncHandler(async (req, res) => {
     try {
       const product = await Product.find();
-      res.send(product);
+      const totalCount = await Product.countDocuments();
+      res.send(product, totalCount);
     } catch (e) {
       res.status(500).send({ message: e.message });
     }
