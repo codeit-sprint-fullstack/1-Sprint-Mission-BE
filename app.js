@@ -21,14 +21,14 @@ function resHandle(callback) {
   };
 }
 
-const asyncHandel = (handle) => (req, res, next) => {
-  handle(req, res, next).catch();
+const asyncHandle = (handle) => (req, res, next) => {
+  handle(req, res, next).catch(next);
 };
 
 //product
 app.get(
   "/products",
-  asyncHandel(async (req, res) => {
+  asyncHandle(async (req, res) => {
     const {
       order,
       pageSize = 10,
@@ -88,7 +88,7 @@ app.get(
 
 app.get(
   "/products/:id",
-  asyncHandel(async (req, res) => {
+  asyncHandle(async (req, res) => {
     const id = req.params.id;
     const product = await Product.findById(id);
     if (product) {
@@ -101,7 +101,7 @@ app.get(
 
 app.post(
   "/products",
-  resHandle(async (req, res) => {
+  asyncHandle(async (req, res) => {
     const product = await Product.create(req.body);
     res.status(201).send(product);
   })
@@ -109,7 +109,7 @@ app.post(
 
 app.patch(
   "/products/:id",
-  asyncHandel(async (req, res) => {
+  asyncHandle(async (req, res) => {
     const id = req.params.id;
     const object = req.body;
     const product = await Product.findById(id);
@@ -124,5 +124,14 @@ app.patch(
     }
   })
 );
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  if (err.name === "ValidationError") {
+    res.status(400).send({ message: err.message });
+  } else {
+    res.status(500).send({ message: "internal server error" });
+  }
+});
 
 app.listen(PORT, () => console.log("Server Started"));
