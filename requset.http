@@ -22,3 +22,6 @@ Content-Type: application/json
 {
   "price": 26000
 }
+
+### 상품 삭제
+DELETE http://localhost:3000/api/products/66b1b7c15e3b2fd5a36d7efd
