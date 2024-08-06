@@ -3,10 +3,13 @@ dotenv.config(); // 환경 변수 설정
 
 import express from 'express';
 import mongoose from 'mongoose';
-import Product from './models/Product.js'; 
+import Product from './models/Product.js';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+
+app.use(cors());
 
 console.log('Database_URL:', process.env.DATABASE_URL);
 
@@ -124,5 +127,5 @@ app.delete('/api/products/:id', async (req, res) => {
       res.status(500).send({ error: '상품을 삭제하는 데 실패했습니다' });
     }
   });
-  
+
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
