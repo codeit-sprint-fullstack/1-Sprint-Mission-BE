@@ -60,5 +60,29 @@ app.get('/api/products/:id', async (req, res) => {
       res.status(500).send({ error: '상품을 불러오는 데 실패했습니다' });
     }
   });
+
+// 상품 등록
+app.post('/api/products', async (req, res) => {
+    const { name, description, price, tags } = req.body;
+  
+    // 데이터 검증
+    if (!name || !description || !price) {
+      return res.status(400).send({ error: '상품 이름과 설명, 판매가격은 필수로 적어주세요.' });
+    }
+  
+    try {
+      const newProduct = new Product({
+        name,
+        description,
+        price,
+        tags,
+      });
+  
+      await newProduct.save();
+      res.status(201).send(newProduct);
+    } catch (error) {
+      res.status(500).send({ error: error.message });
+    }
+  });
   
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
