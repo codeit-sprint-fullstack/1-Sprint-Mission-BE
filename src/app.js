@@ -50,7 +50,7 @@ app.get(
       .sort(sortOption)
       .skip(offset)
       .limit(Number(pageSize))
-      .select("id name price createdAt");
+      .select("id name description price createdAt");
 
     const result = await res.send(products);
   })
