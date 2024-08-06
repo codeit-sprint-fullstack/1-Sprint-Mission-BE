@@ -23,7 +23,7 @@ app.use("/products", deleteProduct);
 const mongoURI = process.env.MONGO_URI || "your-mongodb-uri-here";
 
 mongoose
-  .connect(mongoURI)
+  .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("Connected to MongoDB");
   })
