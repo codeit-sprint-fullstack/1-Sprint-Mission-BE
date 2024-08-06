@@ -40,5 +40,5 @@
 ### 🎈 배포
 
 - 배포 플랫폼: render.com
-- 배포 URL: example.render.com
+- 배포 URL: https://one-sprint-mission-be-7s66.onrender.com
 
