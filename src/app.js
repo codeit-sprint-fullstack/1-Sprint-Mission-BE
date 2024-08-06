@@ -25,6 +25,9 @@ function asyncHandler(handler) {
     }
   };
 }
+app.get("/", (req, res) => {
+  res.send("default path");
+});
 // 상품 목록 조회
 app.get(
   "/products",
