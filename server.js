@@ -107,5 +107,22 @@ app.patch('/api/products/:id', async (req, res) => {
       res.status(500).send({ error: '상품을 수정하는 데 실패했습니다' });
     }
   });  
+
+// 상품 삭제 API
+app.delete('/api/products/:id', async (req, res) => {
+    const { id } = req.params; // 수정된 부분: ID를 문자열로 사용
+  
+    try {
+      const product = await Product.findByIdAndDelete(id);
+      if (!product) {
+        return res.status(404).send({ message: '상품을 찾을 수 없습니다.' });
+      }
+  
+      res.status(200).send({ message: '상품이 성공적으로 삭제되었습니다.' });
+    } catch (error) {
+      console.error('상품 삭제 중 오류 발생:', error);
+      res.status(500).send({ error: '상품을 삭제하는 데 실패했습니다' });
+    }
+  });
   
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
