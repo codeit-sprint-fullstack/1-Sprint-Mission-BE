@@ -31,7 +31,7 @@ app.get(
     try {
       const product = await Product.find();
       const totalCount = await Product.countDocuments();
-      res.send(product, totalCount);
+      res.send({ product, totalCount });
     } catch (e) {
       res.status(500).send({ message: e.message });
     }
