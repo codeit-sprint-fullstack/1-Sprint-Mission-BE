@@ -31,7 +31,9 @@ app.get(
     try {
       const product = await Product.find();
       const totalCount = await Product.countDocuments();
-      res.send({ product, totalCount });
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      res.send({ product, totalCount, page, limit });
     } catch (e) {
       res.status(500).send({ message: e.message });
     }
