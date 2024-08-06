@@ -114,6 +114,19 @@ app.patch(
   })
 );
 
+app.delete(
+  "/products/:id",
+  asyncHandle(async (req, res) => {
+    const id = req.params.id;
+    const product = await Product.findByIdAndDelete(id);
+    if (product) {
+      res.status(204).send({ message: "상품을 삭제했습니다" });
+    } else {
+      res.status(404).send({ message: "등록된 상품이 없습니다." });
+    }
+  })
+);
+
 app.use((err, req, res, next) => {
   console.log(err);
   if (err.name === "ValidationError") {
