@@ -10,17 +10,6 @@ app.use(express.json());
 
 mongoose.connect(DATABASE_URL).then(() => console.log("Connected to DB"));
 
-function resHandle(callback) {
-  return async function (req, res) {
-    try {
-      await callback(req, res);
-    } catch (error) {
-      console.log(error);
-      console.log(error.message);
-    }
-  };
-}
-
 const asyncHandle = (handle) => (req, res, next) => {
   handle(req, res, next).catch(next);
 };
