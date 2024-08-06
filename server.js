@@ -12,8 +12,6 @@ app.use(express.json());
 // cors 설정( 일단, 모든 도메인에서의 요청을 허용해놓음 )
 app.use(cors());
 
-console.log('Database_URL:', process.env.DATABASE_URL);
-
 // MongoDB 연결
 mongoose.connect(process.env.DATABASE_URL)
   .then(() => console.log('MongoDB Connected'))
