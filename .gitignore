@@ -1,8 +1,13 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 /.github
+
 package-lock.json
+
 .env
+
+# Ignore request.http file
+requset.http
 
 # dependencies
 /node_modules
