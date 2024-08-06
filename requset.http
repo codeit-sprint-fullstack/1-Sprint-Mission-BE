@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/products
 
 ### 상품 상세 조회
-GET http://localhost:3000/api/products/id
+GET http://localhost:3000/api/products/66b1b0b387dc5032c2ca9f19
 
 ### 상품 등록
 POST http://localhost:3000/api/products
