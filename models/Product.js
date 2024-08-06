@@ -20,7 +20,6 @@ const ProductSchema = new mongoose.Schema(
     },
     tag: {
       type: String,
-      required: true,
       maxLength: 5,
     },
   },

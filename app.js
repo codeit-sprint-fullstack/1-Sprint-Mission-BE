@@ -29,11 +29,16 @@ app.get(
   "/product",
   asyncHandler(async (req, res) => {
     try {
-      const product = await Product.find();
-      const totalCount = await Product.countDocuments();
       const page = parseInt(req.query.page) || 1;
       const limit = parseInt(req.query.limit) || 10;
-      res.send({ product, totalCount, page, limit });
+
+      const startIndex = (page - 1) * limit;
+
+      const products = await Product.find().skip(startIndex).limit(limit);
+
+      const totalCount = await Product.countDocuments();
+
+      res.send({ product: products, totalCount, page, limit });
     } catch (e) {
       res.status(500).send({ message: e.message });
     }
