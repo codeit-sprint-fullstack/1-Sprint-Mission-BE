@@ -4,3 +4,13 @@ GET http://localhost:3000/api/products
 ### 상품 상세 조회
 GET http://localhost:3000/api/products/id
 
+### 상품 등록
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+  "name": "레인 부츠",
+  "description": "새로 추가한 상품입니다",
+  "price": 55000,
+  "tags": ["신발", "레인부츠"]
+}
