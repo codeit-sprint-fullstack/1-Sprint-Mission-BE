@@ -1,0 +1,14 @@
+{
+  "name": "sprint6-be",
+  "version": "1.0.0",
+  "description": "스프린트 미션 6(BE)은 MongoDB를 활용하여 API를 구현하고, 데이터베이스 작업을 처리하도록 구현하였습니다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
