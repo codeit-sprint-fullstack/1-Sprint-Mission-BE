@@ -31,12 +31,19 @@ app.get(
     try {
       const page = parseInt(req.query.page) || 1;
       const limit = parseInt(req.query.limit) || 10;
+      const keyword = req.query.keyword || "";
 
       const startIndex = (page - 1) * limit;
 
-      const products = await Product.find().skip(startIndex).limit(limit);
+      const searchQuery = keyword
+        ? { name: { $regex: keyword, $options: "i" } }
+        : {};
 
-      const totalCount = await Product.countDocuments();
+      const products = await Product.find(searchQuery)
+        .skip(startIndex)
+        .limit(limit);
+
+      const totalCount = await Product.countDocuments(searchQuery);
 
       res.send({ product: products, totalCount, page, limit });
     } catch (e) {
