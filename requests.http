@@ -12,7 +12,7 @@ Content-Type: application/json
 
 ###
 // 상품 상세 조회 API 확인
-GET http://localhost:3000/products/66b2c717f84a2c6fff728421
+GET http://localhost:3000/products/66b2f9f19f40463f0c1be515
 
 
 ###
