@@ -1,11 +1,14 @@
-import createProduct from "./routes/createProduct.js";
-import getProducts from "./routes/getProducts.js";
-import updateProduct from "./routes/updateProduct.js";
-import deleteProduct from "./routes/deleteProduct.js";
+import express from "express";
+import createProduct from "./createProduct.js";
+import getProducts from "./getProducts.js";
+import updateProduct from "./updateProduct.js";
+import deleteProduct from "./deleteProduct.js";
 
-export default function products() {
-  app.use("/", createProduct);
-  app.use("/", getProducts);
-  app.use("/", updateProduct);
-  app.use("/", deleteProduct);
-}
+const router = express.Router();
+
+router.post("/", createProduct);
+router.get("/", getProducts);
+router.put("/:id", updateProduct);
+router.delete("/:id", deleteProduct);
+
+export default router;

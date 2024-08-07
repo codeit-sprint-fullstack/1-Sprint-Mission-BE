@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import products from "./routes/products";
+import products from "./routes/products.js";
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use("/products", products);
 
-const mongoURI = process.env.MONGO_URI || "your-mongodb-uri-here";
+const mongoURI = process.env.MONGO_URI;
 
 mongoose
   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
