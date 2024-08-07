@@ -4,8 +4,8 @@ import updateProduct from "./routes/updateProduct.js";
 import deleteProduct from "./routes/deleteProduct.js";
 
 export default function products() {
-  app.use("/products", createProduct);
-  app.use("/products", getProducts);
-  app.use("/products", updateProduct);
-  app.use("/products", deleteProduct);
+  app.use("/", createProduct);
+  app.use("/", getProducts);
+  app.use("/", updateProduct);
+  app.use("/", deleteProduct);
 }

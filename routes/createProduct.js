@@ -6,14 +6,14 @@ const router = Router();
 // 상품 등록 API
 router.post("/", async (req, res) => {
   try {
-    console.log("Request body:", req.body); // 요청 본문 로그 추가
+    console.log("Request body:", req.body);
     const { name, description, price, tags } = req.body;
     if (!name || !description || !price || !tags) {
       return res.status(400).json({ error: "Invalid request data" });
     }
-    const id = await getNextSequenceValue("productId"); // 시퀀스에서 다음 ID 가져오기
+    const id = await getNextSequenceValue("productId");
     const product = new Product({
-      _id: id.toString(), // 수정: id를 문자열로 변환
+      _id: id.toString(),
       name,
       description,
       price,
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
     await product.save();
     res.status(201).json(product);
   } catch (error) {
-    console.error("Error saving product:", error); // 에러 로그 추가
+    console.error("Error saving product:", error);
     res.status(400).json({ error: error.message });
   }
 });

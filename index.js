@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json()); // JSON 파싱을 위한 미들웨어 추가
+app.use(express.json());
 
 app.use("/products", products);
 
