@@ -1,13 +1,29 @@
 import mongoose from 'mongoose';
 import Product from '../models/Product.mjs';
 
-export const getAllProduct = async (req, res) => {
-  const sort = req.query.sort;
-  const sortOption = { createdAt: sort === 'recent' ? 'desc' : 'asc' };
+//get products by queries
+// query parameter: orderBy, page, pageSize, keyword
+export const getProducts = async (req, res) => {
+  const { orderBy } = req.query;
+  const page = parseInt(req.query.page) * 1 || 1;
+  const pageSize = parseInt(req.query.pagesize) * 1 || 10;
+  const keyword = req.query.keyword || '';
 
-  const products = await Product.find().sort(sortOption);
+  const offset = (page - 1) * pageSize;
+  const sortOption = { createdAt: orderBy === 'recent' ? 'desc' : 'asc' };
 
-  res.send(products);
+  const searchQuery = {
+    $or: [{ name: new RegExp(keyword) }, { description: new RegExp(keyword) }],
+  };
+
+  const products = await Product.find(searchQuery)
+    .sort(sortOption)
+    .limit(pageSize)
+    .skip(offset);
+
+  const totalCount = await Product.countDocuments(searchQuery);
+
+  res.send({ totalCount, list: products });
 };
 
 //get product by id
@@ -19,7 +35,10 @@ export const getProductById = async (req, res) => {
     return res.status(400).send({ message: 'Invalid ID format.' });
   }
 
-  const product = await Product.findById(id);
+  const product = await Product.findById(
+    id,
+    '_id name description price tags createdAt'
+  );
 
   if (product) {
     res.send(product);

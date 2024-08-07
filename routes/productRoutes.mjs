@@ -1,5 +1,6 @@
 import express from 'express';
 import * as product from '../controllers/productControllers.mjs';
+
 const router = express.Router();
 
 // try-catch asyncHandler
@@ -19,7 +20,7 @@ function asyncHandler(handler) {
   };
 }
 
-router.get('/', asyncHandler(product.getAllProduct));
+router.get('/', asyncHandler(product.getProducts));
 router.get('/:id', asyncHandler(product.getProductById));
 router.post('/', asyncHandler(product.createProduct));
 router.patch('/:id', asyncHandler(product.updateProductById));
