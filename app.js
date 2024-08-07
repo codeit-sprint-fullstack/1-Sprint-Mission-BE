@@ -9,10 +9,6 @@ mongoose.connect(process.env.DATABASE_URL).then(() => console.log('Connected to 
 
 const app = express();
 
-// const corsOptions = {
-//   origin: ['http://127.0.0.1:3000', 'https://myProducts.com'],
-// };
-
 app.use(cors());
 app.use(express.json());
 
@@ -86,7 +82,7 @@ app.get(
       .sort(sortOption)
       .skip(offset)
       .limit(Number(limit))
-      .select('id name description images price tags createdAt');
+      .select('id name description price tags images createdAt');
 
     const totalProducts = await Product.countDocuments(searchQuery);
 
