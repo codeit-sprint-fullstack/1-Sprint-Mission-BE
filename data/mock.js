@@ -104,6 +104,15 @@ const data = [
     createdAt: new Date('2024-08-06T05:45:03.249Z'),
     updatedAt: new Date('2024-08-06T05:45:03.249Z'),
   },
+  {
+    name: '스피커',
+    description: '에디파이어 스튜디오 모니터 스피커 MR4',
+    price: 36000,
+    tags: ['에디파이어', '스피커', 'MR4', '밸런스'],
+    imgs: ['https://sitem.ssgcdn.com/66/05/10/item/1000547100566_i1_750.jpg'],
+    createdAt: new Date('2024-08-07T09:20:03.249Z'),
+    updatedAt: new Date('2024-08-07T09:20:03.249Z'),
+  },
 ];
 
 export default data;
