@@ -14,4 +14,24 @@ app.post('/products', async (req, res) => {
   res.status(201).send(newProduct);
 });
 
+// 상품 상세 조회 API
+app.get('/products/:id', async (req, res) => {
+  const id = req.params.id;
+  const product = await Product.findById(id);
+
+  if (product) {
+    // 응답에 필요한 필드만 선택해서 보냄
+    res.send({
+      id: product._id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      tags: product.tags,
+      createdAt: product.createdAt,
+    });
+  } else {
+    res.status(404).send({ message: 'Cannot find given id.' });
+  }
+});
+
 app.listen(3000, () => console.log('Sever started!!'));
