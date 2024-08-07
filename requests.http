@@ -17,7 +17,7 @@ GET http://localhost:3000/products/66b2f9f19f40463f0c1be515
 
 ###
 // 상품 목록 조회 API 확인
-GET http://localhost:3000/products?limit=2&sort=recent&search=apple
+GET http://localhost:3000/products?pageSize=3
 
 ###
 // 상품 수정 API 확인
