@@ -45,7 +45,18 @@ app.patch('/products/:id', async (req, res) => {
     await product.save();
     res.send(product);
   } else {
-    res.status(404).send({ message: 'Cannot find give id.' });
+    res.status(404).send({ message: 'Cannot find given id.' });
+  }
+});
+
+// 상품 삭제 API
+app.delete('/products/:id', async (req, res) => {
+  const id = req.params.id;
+  const product = await Product.findByIdAndDelete(id);
+  if (product) {
+    res.sendStatus(204);
+  } else {
+    res.status(404).send({ message: 'Cannot find given id.' });
   }
 });
 

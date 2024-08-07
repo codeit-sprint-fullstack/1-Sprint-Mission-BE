@@ -24,3 +24,8 @@ Content-Type: application/json
   "price": 460000,
   "tags": ["apple", "iPad", "포터블", "태블릿"]
 }
+
+
+###
+// 상품 삭제 API
+DELETE http://localhost:3000/products/66b2c82b5713df90494dabec
