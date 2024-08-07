@@ -1,0 +1,11 @@
+// 상품 등록 api 확인
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "마사지건",
+  "description": "미니 진동 휴대용 마사지건 365g",
+  "price": 30000,
+  "tag": ["마사지건", "미니", "소형"],
+  "images": ["https://kingguide.co.kr/wp-content/uploads/2023/12/%EB%AF%B8%EB%8B%88-%EC%A7%84%EB%8F%99-%ED%9C%B4%EB%8C%80%EC%9A%A9-%EB%A7%88%EC%82%AC%EC%A7%80%EA%B1%B4-365g.webp"]
+}
