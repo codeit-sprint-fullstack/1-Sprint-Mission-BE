@@ -35,7 +35,29 @@ export const createProduct = async (req, res) => {
 };
 
 // patch existed product with id
-export const updateProduct = async (req, res) => {
+export const updateProductById = async (req, res) => {
+  const { id } = req.params;
+  const updateInfo = req.body;
+  const isValidIdFormat = mongoose.Types.ObjectId.isValid(id);
+
+  if (!isValidIdFormat) {
+    return res.status(400).send({ message: 'Invalid ID format.' });
+  }
+
+  const updateProduct = await Product.findByIdAndUpdate(id, updateInfo, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (updateProduct) {
+    return res.status(200).send(updateProduct);
+  } else {
+    return res.status(404).send({ message: 'Cannot find given id.' });
+  }
+};
+
+// delete a product by id
+export const deleteProductById = async (req, res) => {
   const { id } = req.params;
   const isValidIdFormat = mongoose.Types.ObjectId.isValid(id);
 
@@ -43,14 +65,10 @@ export const updateProduct = async (req, res) => {
     return res.status(400).send({ message: 'Invalid ID format.' });
   }
 
-  const product = await Product.findById(id);
+  const deleteProduct = await Product.findByIdAndDelete(id);
 
-  if (product) {
-    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    return res.send(updatedProduct);
+  if (deleteProduct) {
+    return res.status(200).send({ message: 'Product deleted successfully.' });
   } else {
     return res.status(404).send({ message: 'Cannot find given id.' });
   }

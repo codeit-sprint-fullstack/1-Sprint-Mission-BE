@@ -22,6 +22,7 @@ function asyncHandler(handler) {
 router.get('/', asyncHandler(product.getAllProduct));
 router.get('/:id', asyncHandler(product.getProductById));
 router.post('/', asyncHandler(product.createProduct));
-router.patch('/:id', asyncHandler(product.updateProduct));
+router.patch('/:id', asyncHandler(product.updateProductById));
+router.delete('/:id', asyncHandler(product.deleteProductById));
 
 export default router;
