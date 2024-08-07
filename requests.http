@@ -1,7 +1,7 @@
 GET http://localhost:3000/products
 
 ###
-GET http://localhost:3000/products?page=1&pageSize=10&keyword=post
+GET http://localhost:3000/products?page=1&pageSize=10&search=post
 
 ###
 GET http://localhost:3000/products/66b073b7f091c1212931ee68
@@ -11,10 +11,10 @@ POST http://localhost:3000/products
 Content-Type: application/json
 
 {
-  "name": "post-name",
-  "description": "post-description",
-  "price": "10000",
-  "tags": ["post1", "post2"]
+  "name": "name1",
+  "description": "description1",
+  "price": "1000",
+  "tags": ["태그2", "태그3"]
 }
 
 ###

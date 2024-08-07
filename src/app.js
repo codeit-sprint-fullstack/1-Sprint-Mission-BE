@@ -46,13 +46,14 @@ app.get(
         }
       : {};
 
+    const totalProducts = await Product.countDocuments(searchQuery);
     const products = await Product.find(searchQuery)
       .sort(sortOption)
       .skip(offset)
       .limit(Number(pageSize))
       .select("id name description price createdAt");
 
-    const result = await res.send(products);
+    const result = await res.send({ totalProducts, products });
   })
 );
 // 상품 상세 조회
