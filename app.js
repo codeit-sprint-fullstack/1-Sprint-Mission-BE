@@ -34,6 +34,38 @@ app.get('/products/:id', async (req, res) => {
   }
 });
 
+// 상품 목록 조회 API
+app.get('/products', async (req, res) => {
+  const { page = 1, limit = 10, sort = '', search = '' } = req.query;
+
+  // 페이지네이션 및 정렬 설정
+  const offset = (page - 1) * limit;
+  const sortOption = { createdAt: sort === 'recent' ? 'desc' : 'asc' };
+
+  // 검색 조건 설정
+  const searchQuery = search
+    ? {
+        $or: [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }],
+      }
+    : {};
+
+  // DB에서 상품 목록 조회
+  const products = await Product.find(searchQuery)
+    .sort(sortOption)
+    .skip(offset)
+    .limit(Number(limit))
+    .select('id name price createdAt');
+
+  const totalProducts = await Product.countDocuments(searchQuery);
+
+  res.send({
+    total: totalProducts,
+    page: parseInt(page),
+    limit: parseInt(limit),
+    products: products,
+  });
+});
+
 // 상품 수정 API
 app.patch('/products/:id', async (req, res) => {
   const id = req.params.id;
