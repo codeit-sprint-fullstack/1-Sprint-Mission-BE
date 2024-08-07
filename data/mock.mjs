@@ -31,7 +31,7 @@ const data = [
   {
     name: '가죽 지갑',
     description: '다양한 수납 공간이 있는 정품 가죽 지갑, 스타일리시한 디자인.',
-    price: 39.99,
+    price: 39000,
     tags: ['패션', '액세서리'],
     favoriteCount: 75,
   },
