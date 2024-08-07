@@ -2,10 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import createProduct from "./routes/createProduct.js";
-import getProducts from "./routes/getProducts.js";
-import updateProduct from "./routes/updateProduct.js";
-import deleteProduct from "./routes/deleteProduct.js";
+import products from "./routes/products";
 
 dotenv.config();
 
@@ -15,10 +12,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json()); // JSON 파싱을 위한 미들웨어 추가
 
-app.use("/products", createProduct);
-app.use("/products", getProducts);
-app.use("/products", updateProduct);
-app.use("/products", deleteProduct);
+app.use("/products", products);
 
 const mongoURI = process.env.MONGO_URI || "your-mongodb-uri-here";
 
