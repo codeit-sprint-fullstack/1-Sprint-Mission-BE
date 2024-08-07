@@ -17,9 +17,18 @@ const ProductSchema = new mongoose.Schema(
     tags: {
       type: [String],
     },
+    favoriteCount: {
+      type: Number,
+    },
   },
   {
     timestamps: true,
+    toJSON: {
+      transform: (doc, ret) => {
+        delete ret.__v; // 응답에서 __v 필드 제거
+        return ret;
+      },
+    },
   }
 );
 

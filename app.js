@@ -7,9 +7,9 @@ dotenv.config();
 
 const app = express();
 
-const corsOptions = {
-  origin: ['http://127.0.0.1:5500', 'https://my-todo.com'],
-};
+// const corsOptions = {
+//   origin: ['http://127.0.0.1:5500', 'https://my-todo.com'],
+// };
 
 app.use(cors());
 app.use(express.json());
@@ -34,24 +34,30 @@ function asyncHandler(handler) {
   };
 }
 
-app.get(
-  '/products',
-  asyncHandler(async (req, res) => {
-    const sort = req.query.sort;
-    const count = Number(req.query.count) || 0;
+//전체조회, 페이지사이즈별로 조회, 키워드조회
+app.get('/products', async (req, res) => {
+  const pageSize = Number(req.query.pageSize) || 5;
+  const orderBy = req.query.orderBy;
 
-    const sortOption = { createdAt: sort === 'oldest' ? 'asc' : 'desc' };
-    const products = await Product.find().sort(sortOption).limit(count);
+  console.log('pageSize:', pageSize);
+  console.log('orderBy:', orderBy);
 
-    res.send(products);
-  })
-);
+  const orderByOption =
+    orderBy === 'favorite'
+      ? { favoriteCount: -1 } // 내림차순 정렬
+      : { createdAt: -1 }; // 기본값으로 최신순 정렬
+
+  const products = await Product.find().sort(orderByOption).limit(pageSize);
+
+  res.send(products);
+});
 
 app.get(
   '/products/:id',
   asyncHandler(async (req, res) => {
     const id = req.params.id;
     const task = await Product.findById(id);
+
     if (task) {
       res.send(task);
     } else {
