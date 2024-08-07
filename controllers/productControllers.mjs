@@ -15,15 +15,16 @@ export const getProductById = async (req, res) => {
   const { id } = req.params;
   const isValidIdFormat = mongoose.Types.ObjectId.isValid(id);
 
-  if (isValidIdFormat) {
-    const product = await Product.findById(id);
-    if (product) {
-      res.send(product);
-    } else {
-      res.status(404).send({ message: 'Cannot find given id.' });
-    }
+  if (!isValidIdFormat) {
+    return res.status(400).send({ message: 'Invalid ID format.' });
+  }
+
+  const product = await Product.findById(id);
+
+  if (product) {
+    res.send(product);
   } else {
-    res.status(400).send({ message: 'Invalid ID format.' });
+    res.status(404).send({ message: 'Cannot find given id.' });
   }
 };
 
@@ -38,20 +39,19 @@ export const updateProduct = async (req, res) => {
   const { id } = req.params;
   const isValidIdFormat = mongoose.Types.ObjectId.isValid(id);
 
-  if (isValidIdFormat) {
-    const product = await Product.findById(id);
+  if (!isValidIdFormat) {
+    return res.status(400).send({ message: 'Invalid ID format.' });
+  }
 
-    if (product) {
-      Object.keys(req.body).forEach((key) => {
-        product[key] = req.body[key];
-      });
+  const product = await Product.findById(id);
 
-      await product.save();
-      return res.send(product);
-    } else {
-      res.status(404).send({ message: 'Cannot find given id.' });
-    }
+  if (product) {
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    return res.send(updatedProduct);
   } else {
-    res.status(400).send({ message: 'Invalid Id format.' });
+    return res.status(404).send({ message: 'Cannot find given id.' });
   }
 };

@@ -11,7 +11,7 @@ function asyncHandler(handler) {
       if (err.name === 'ValidateError') {
         return res.status(400).send({ message: err.message });
       } else if (err.name === 'CastError') {
-        res.status(404).send({ message: 'Cannot find given id' });
+        res.status(404).send({ message: err.message });
       } else {
         res.status(500).send({ message: err.message });
       }
