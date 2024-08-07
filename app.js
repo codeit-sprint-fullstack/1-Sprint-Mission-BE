@@ -34,4 +34,19 @@ app.get('/products/:id', async (req, res) => {
   }
 });
 
+// 상품 수정 API
+app.patch('/products/:id', async (req, res) => {
+  const id = req.params.id;
+  const product = await Product.findById(id);
+  if (product) {
+    Object.keys(req.body).forEach((key) => {
+      product[key] = req.body[key];
+    });
+    await product.save();
+    res.send(product);
+  } else {
+    res.status(404).send({ message: 'Cannot find give id.' });
+  }
+});
+
 app.listen(3000, () => console.log('Sever started!!'));

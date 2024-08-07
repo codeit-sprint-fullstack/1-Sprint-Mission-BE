@@ -13,3 +13,14 @@ Content-Type: application/json
 ###
 // 상품 상세 조회 API 확인
 GET http://localhost:3000/products/66b2c717f84a2c6fff728432
+
+
+###
+// 상품 수정 API
+PATCH http://localhost:3000/products/66b2c717f84a2c6fff728432
+Content-Type: application/json
+
+{
+  "price": 460000,
+  "tags": ["apple", "iPad", "포터블", "태블릿"]
+}
