@@ -86,7 +86,7 @@ app.get(
       .sort(sortOption)
       .skip(offset)
       .limit(Number(limit))
-      .select('id name price createdAt');
+      .select('id name description images price tags createdAt');
 
     const totalProducts = await Product.countDocuments(searchQuery);
 

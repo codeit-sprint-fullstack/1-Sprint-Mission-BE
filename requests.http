@@ -12,12 +12,12 @@ Content-Type: application/json
 
 ###
 // 상품 상세 조회 API 확인
-GET http://localhost:3000/products/66b2f9f19f40463f0c1be515
+GET http://localhost:3000/products/66b31d78279cdcd60918557d
 
 
 ###
 // 상품 목록 조회 API 확인
-GET http://localhost:3000/products?pageSize=3
+GET http://localhost:3000/products?limit=3
 
 ###
 // 상품 수정 API 확인

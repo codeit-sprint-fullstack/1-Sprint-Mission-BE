@@ -44,7 +44,6 @@ const ProductSchema = new mongoose.Schema(
     },
     images: {
       type: Array,
-      required: false,
     },
   },
   { timestamps: true }
