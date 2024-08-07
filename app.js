@@ -30,7 +30,7 @@ function asyncHandler(handler) {
 
 // 상품 등록 API
 app.post(
-  '/products',
+  '/registration',
   asyncHandler(async (req, res) => {
     const newProduct = await Product.create(req.body);
     res.status(201).send(newProduct);
