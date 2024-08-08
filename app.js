@@ -35,42 +35,89 @@ function asyncHandler(handler) {
 }
 
 //전체조회, 페이지사이즈별로 조회, 키워드조회
-app.get('/products', async (req, res) => {
-  const pageSize = Number(req.query.pageSize) || 5;
-  const orderBy = req.query.orderBy;
-
-  console.log('pageSize:', pageSize);
-  console.log('orderBy:', orderBy);
-
-  const orderByOption =
-    orderBy === 'favorite'
-      ? { favoriteCount: -1 } // 내림차순 정렬
-      : { createdAt: -1 }; // 기본값으로 최신순 정렬
-
-  const products = await Product.find().sort(orderByOption).limit(pageSize);
-
-  res.send(products);
-});
-
 app.get(
-  '/products/:id',
+  '/products',
   asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const task = await Product.findById(id);
+    const page = Number(req.query.page) || 1;
+    const pageSize = Number(req.query.pageSize) || 10;
+    const orderBy = req.query.orderBy || 'recent';
+    const keyword = req.query.keyword
+      ? req.query.keyword.replace(/"/g, '')
+      : '';
 
-    if (task) {
-      res.send(task);
-    } else {
-      res.status(404).send({ message: `아이디 ㄴㄴ ㅠㅠ` });
-    }
+    console.log('pageSize:', pageSize);
+    console.log('orderBy:', orderBy);
+
+    const orderByOption =
+      orderBy === 'favorite'
+        ? { favoriteCount: -1 } // 내림차순 정렬
+        : { createdAt: -1 }; // 기본값으로 최신순 정렬
+
+    const searchCondition = keyword
+      ? {
+          $or: [
+            { name: { $regex: keyword, $options: 'i' } },
+            { description: { $regex: keyword, $options: 'i' } },
+          ],
+        }
+      : {};
+
+    console.log('keyword:', searchCondition);
+
+    const totalCount = await Product.countDocuments(searchCondition);
+
+    console.log('totalCount:', totalCount);
+
+    const products = await Product.find(searchCondition)
+      .sort(orderByOption)
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    res.json({
+      totalCount,
+      products,
+    });
   })
 );
+
+// 상품 상세 조회
+// app.get(
+//   '/products/:id',
+//   asyncHandler(async (req, res) => {
+//     const id = req.params._id;
+//     const task = await Product.findById(id);
+
+//     if (task) {
+//       res.send(task);
+//     } else {
+//       res.status(404).send({ message: `아이디 ㄴㄴ ㅠㅠ` });
+//     }
+//   })
+// );
 
 app.post(
   '/products',
   asyncHandler(async (req, res) => {
-    const newTask = await Product.create(req.body);
-    res.status(201).send(newTask);
+    const newProduct = await Product.create(req.body);
+    res.status(201).send(newProduct);
+
+    const { name, description, price, tags } = req.body;
+    const goods = await Goods.find({ goodsId });
+
+    if (goods.length) {
+      return res
+        .status(400)
+        .json({ success: false, errorMessage: '이미 있는 데이터입니다.' });
+    }
+
+    const createdGoods = await Goods.create({
+      goodsId,
+      name,
+      thumbnailUrl,
+      category,
+      price,
+    });
+    res.json({ goods: createdGoods });
   })
 );
 
