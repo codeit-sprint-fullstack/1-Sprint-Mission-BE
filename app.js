@@ -36,7 +36,11 @@ app.get(
       const startIndex = (page - 1) * limit;
 
       const searchQuery = keyword
-        ? { name: { $regex: keyword, $options: "i" } }
+        ? {
+            name: { $regex: keyword, $options: "i" } || {
+              description: { $regex: keyword, $options: "i" },
+            },
+          }
         : {};
 
       const products = await Product.find(searchQuery)
