@@ -19,7 +19,7 @@ mongoose.connect(process.env.DATABASE_URL)
 
 // 상품 목록 조회
 app.get('/api/products', async (req, res) => {
-    const { sort = 'recent', offset = 0, limit = 5, search = '' } = req.query;
+    const { sort = 'recent', offset = 0, limit = 10, search = '' } = req.query;
   
     try {
       // 정렬 옵션 설정
