@@ -19,7 +19,7 @@ const ProductSampleSchema = new mongoose.Schema(
       type: Number,
       require: true,
     },
-    tag: [
+    tags: [
       {
         type: String,
         min: 1,

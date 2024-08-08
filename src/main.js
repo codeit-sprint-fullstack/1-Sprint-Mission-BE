@@ -17,7 +17,7 @@ app.use(express.json());
 
 /** Product POST /Products -테스트 완 - 임시 테이블에 연결*/
 app.post("/products", async (req, res) => {
-  const { images, tags, price, description, name } = req.body;
+  const { images, tag, price, description, name } = req.body;
   // 임시로 사용자 id를 Authorization 값 사용
   const { authorization } = req.headers;
 
@@ -29,7 +29,7 @@ app.post("/products", async (req, res) => {
     name: name,
     description: description,
     price: price,
-    tag: tags,
+    tag: tag,
     images: images,
     ownerId: authorization,
     favoriteCount: 0,
@@ -143,7 +143,7 @@ app.get("/products/:id", async (req, res) => {
 app.patch("/products/:id", async (req, res) => {
   const { id } = req.params;
   const { authorization } = req.headers;
-  const editableProperties = ["images", "tags", "price", "description", "name"];
+  const editableProperties = ["images", "tag", "price", "description", "name"];
   const updateData = req.body;
   let updateDataCopy = JSON.parse(JSON.stringify(updateData));
   let result = null;
