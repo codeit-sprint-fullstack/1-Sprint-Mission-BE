@@ -1,10 +1,21 @@
 import mongoose from "mongoose";
-import { DATABASE_URL } from "./env.js";
 import express from "express";
+import * as dotenv from "dotenv";
+import cors from "cors";
 import Product from "./models/Product.js";
 
-mongoose.connect(DATABASE_URL).then(() => console.log("Connected to DB"));
+dotenv.config();
+
+mongoose
+  .connect(process.env.DATABASE_URL)
+  .then(() => console.log("Connected to DB"));
 const app = express();
+
+// const corsOptions = {
+//   origin: ["http://127.0.0.1:5500", "https://my-todo.com"],
+// };
+
+app.use(cors());
 app.use(express.json());
 
 // 에러 처리 함수
@@ -36,13 +47,25 @@ app.post(
 app.get(
   "/products",
   asyncHandler(async (req, res) => {
-    const sort = req.query.sort;
-    const count = Number(req.query.count) || 0;
+    const sort = req.query.sort === "recent" ? "desc" : "asc";
+    const page = Number(req.query.page) || 1;
+    const pageSize = Number(req.query.pageSize) || 10;
+    const search = req.query.search || "";
 
-    const sortOption = { createdAt: sort === "recent" ? "asc" : "desc" };
-    const products = await Product.find().sort(sortOption).limit(count);
+    const query = {
+      $or: [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ],
+    };
 
-    res.send(products);
+    const totalCount = await Product.countDocuments(query);
+    const products = await Product.find(query)
+      .sort({ createdAt: sort })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    res.send({ list: products, totalCount });
   })
 );
 
@@ -89,4 +112,4 @@ app.delete(
   })
 );
 
-app.listen(3000, () => console.log("Server Started"));
+app.listen(process.env.PORT || 3000, () => console.log("Server Started"));
