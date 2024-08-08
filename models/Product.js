@@ -20,6 +20,9 @@ const ProductSchema = new mongoose.Schema(
     favoriteCount: {
       type: Number,
     },
+    images: {
+      type: ['string'],
+    },
   },
   {
     timestamps: true,
