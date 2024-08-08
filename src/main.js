@@ -17,7 +17,7 @@ app.use(express.json());
 
 /** Product POST /Products -테스트 완 - 임시 테이블에 연결*/
 app.post("/products", async (req, res) => {
-  const { images, tag, price, description, name } = req.body;
+  const { images, tags, price, description, name } = req.body;
   // 임시로 사용자 id를 Authorization 값 사용
   const { authorization } = req.headers;
 
@@ -29,7 +29,7 @@ app.post("/products", async (req, res) => {
     name: name,
     description: description,
     price: price,
-    tag: tag,
+    tags: tags,
     images: images,
     ownerId: authorization,
     favoriteCount: 0,
@@ -94,7 +94,7 @@ app.get("/products", async (req, res) => {
   //   for (const element of products) {
   //     // element.ownerId = undefined;
   //     // element.description = undefined;
-  //     element.tag = undefined;
+  //     element.tags = undefined;
   //     element.createdAt = undefined;
   //     element.updatedAt = undefined;
   //     element.__v = undefined;
@@ -105,7 +105,7 @@ app.get("/products", async (req, res) => {
   // }
 
   const newList = products.map((item) => {
-    const { ownerId, description, tag, createdAt, updatedAt, __v, ...rest } =
+    const { ownerId, description, tags, createdAt, updatedAt, __v, ...rest } =
       item;
     return rest;
   });
@@ -143,7 +143,7 @@ app.get("/products/:id", async (req, res) => {
 app.patch("/products/:id", async (req, res) => {
   const { id } = req.params;
   const { authorization } = req.headers;
-  const editableProperties = ["images", "tag", "price", "description", "name"];
+  const editableProperties = ["images", "tags", "price", "description", "name"];
   const updateData = req.body;
   let updateDataCopy = JSON.parse(JSON.stringify(updateData));
   let result = null;
