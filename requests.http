@@ -1,0 +1,33 @@
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "아이폰15",
+  "description": "지금 사고 싶은 레전드 아이폰입니다",
+  "price": 1500000,
+  "tag": "전자기기"
+}
+
+###
+
+GET http://localhost:3000/products
+
+###
+
+GET http://localhost:3000/products/66b344b61d97a98c58ed4516
+
+###
+
+PATCH http://localhost:3000/products/66b344b61d97a98c58ed4516
+Content-Type: application/json
+
+{
+  "name": "아이폰7",
+  "description": "지금은 많이 안쓰는 아이폰이지만, 쓸만합니다.",
+  "price": 150000,
+  "tag": "전자기기"
+}
+
+###
+
+DELETE http://localhost:3000/products/66b344b61d97a98c58ed4516
