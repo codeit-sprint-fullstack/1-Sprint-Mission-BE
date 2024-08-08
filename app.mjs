@@ -6,6 +6,7 @@ import './db/conn.mjs';
 import productRoutes from './routes/productRoutes.mjs';
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 

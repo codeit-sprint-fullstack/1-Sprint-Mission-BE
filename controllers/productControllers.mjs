@@ -6,7 +6,7 @@ import Product from '../models/Product.mjs';
 export const getProducts = async (req, res) => {
   const { orderBy } = req.query;
   const page = parseInt(req.query.page) * 1 || 1;
-  const pageSize = parseInt(req.query.pagesize) * 1 || 10;
+  const pageSize = parseInt(req.query.pageSize) * 1 || 10;
   const keyword = req.query.keyword || '';
 
   const offset = (page - 1) * pageSize;
