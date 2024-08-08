@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "axios": "^1.7.2",
+    "express": "^4.19.2"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
