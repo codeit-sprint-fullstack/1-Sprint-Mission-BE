@@ -66,8 +66,6 @@ app.get(
 
     const totalCount = await Product.countDocuments(searchCondition);
 
-    console.log('totalCount:', totalCount);
-
     const products = await Product.find(searchCondition)
       .sort(orderByOption)
       .skip((page - 1) * pageSize)
@@ -98,57 +96,50 @@ app.get(
 app.post(
   '/products',
   asyncHandler(async (req, res) => {
-    const newProduct = await Product.create(req.body);
-    res.status(201).send(newProduct);
+    // const newProduct = await Product.create(req.body);
+    // res.status(201).send(newProduct);
 
-    const { name, description, price, tags } = req.body;
-    const goods = await Goods.find({ goodsId });
+    const { name, description, price, tags, images } = req.body;
 
-    if (goods.length) {
-      return res
-        .status(400)
-        .json({ success: false, errorMessage: '이미 있는 데이터입니다.' });
-    }
-
-    const createdGoods = await Goods.create({
-      goodsId,
+    const newProduct = await Product.create({
       name,
-      thumbnailUrl,
-      category,
+      description,
       price,
+      tags,
+      images,
     });
-    res.json({ goods: createdGoods });
+    res.json({ Product: newProduct });
   })
 );
 
-app.patch(
-  '/products/:id',
-  asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const task = await Product.findById(id);
-    if (task) {
-      Object.keys(req.body).forEach((key) => {
-        task[key] = req.body[key];
-      });
-      await task.save();
-      res.send(task);
-    } else {
-      res.status(404).send({ message: `아이디 ㄴㄴ ㅠㅠ` });
-    }
-  })
-);
+// app.patch(
+//   '/products/:id',
+//   asyncHandler(async (req, res) => {
+//     const id = req.params.id;
+//     const task = await Product.findById(id);
+//     if (task) {
+//       Object.keys(req.body).forEach((key) => {
+//         task[key] = req.body[key];
+//       });
+//       await task.save();
+//       res.send(task);
+//     } else {
+//       res.status(404).send({ message: `아이디 ㄴㄴ ㅠㅠ` });
+//     }
+//   })
+// );
 
-app.delete(
-  '/products/:id',
-  asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const task = await Product.findByIdAndDelete(id);
-    if (task) {
-      res.sendStatus(204);
-    } else {
-      res.status(404).send({ message: `아이디 ㄴㄴ ㅠㅠ` });
-    }
-  })
-);
+// app.delete(
+//   '/products/:id',
+//   asyncHandler(async (req, res) => {
+//     const id = req.params.id;
+//     const task = await Product.findByIdAndDelete(id);
+//     if (task) {
+//       res.sendStatus(204);
+//     } else {
+//       res.status(404).send({ message: `아이디 ㄴㄴ ㅠㅠ` });
+//     }
+//   })
+// );
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
