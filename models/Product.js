@@ -19,8 +19,7 @@ const ProductSchema = new mongoose.Schema(
       minLength: 1,
     },
     tag: {
-      type: String,
-      maxLength: 5,
+      type: [String],
     },
   },
   {
