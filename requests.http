@@ -26,3 +26,44 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3000/articles/66b080c88b0f12a10cb91090
+
+###
+GET http://localhost:3000/market-comments?articleId=66b073b7f091c1212931ee68
+
+###
+GET http://localhost:3000/market-comments?articleId=66b073b7f091c1212931ee68&take=5&cursor=66b081528a869370be9119bb
+
+### 
+GET http://localhost:3000/board-comments?articleId=66b073b7f091c1212931ee68
+
+###
+GET http://localhost:3000/board-comments?articleId=66b073b7f091c1212931ee68&take=5&cursor=66b081528a869370be9119bb
+
+### 
+POST http://localhost:3000/market-comments
+Content-Type: application/json
+
+{
+  "content": "post market comment",
+  "articleId": "66b073b7f091c1212931ee68"
+}
+
+###
+POST http://localhost:3000/board-comments
+Content-Type: application/json
+
+{
+  "content": "post board comment",
+  "articleId": "66b073b7f091c1212931ee68"
+}
+
+###
+PATCH http://localhost:3000/comments/66b081528a869370be9119bb
+Content-Type: application/json
+
+{
+  "content": "patch comment content"
+}
+
+### 댓글 삭제
+DELETE http://localhost:3000/comments/66b081528a869370be9119bb
