@@ -1,20 +1,21 @@
 import mongoose from "mongoose";
-import Product from "./model/product.js";
-import { DATABASE_URL } from "./env.js";
+import Product from "./model/product.js"; // Product 모델 가져오기
+import { DATABASE_URL } from "./env.js"; // 환경변수 가져오기
 
 const seedProducts = [
   {
-    name: "예시 1",
-    description: "10자가 넘어가는 예시 1입니다.",
-    price: 100,
-    tags: ["tag1", "tag2"],
+    name: "상품1",
+    description: "10자가 넘어가는 설명문입니다",
+    price: 1000,
+    tags: ["태그1", "태그2"],
   },
   {
-    name: "예시 2",
-    description: "10자가 넘어가는 예시 2입니다.",
-    price: 200,
-    tags: ["tag3", "tag4"],
+    name: "상품2",
+    description: "10자가 넘어가는 설명문입니다",
+    price: 2000,
+    tags: ["태그3", "태그4"],
   },
+  // 추가 데이터
 ];
 
 const seedDatabase = async () => {
@@ -22,21 +23,20 @@ const seedDatabase = async () => {
     await mongoose.connect(DATABASE_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 10000,
     });
     console.log("Connected to DB");
 
-    await Product.deleteMany({});
-    console.log("Cleared existing data");
+    await Product.deleteMany({}); // 기존 데이터를 삭제
+    console.log("Existing data cleared");
 
-    await Product.insertMany(seedProducts);
+    await Product.insertMany(seedProducts); // 새로운 데이터 삽입
     console.log("Data seeded successfully");
-
-    mongoose.connection.close();
-  } catch (error) {
-    console.error("Error seeding the database:", error);
+  } catch (err) {
+    console.error("Error seeding database:", err);
+  } finally {
     mongoose.connection.close();
   }
 };
 
-// 실행
 seedDatabase();
