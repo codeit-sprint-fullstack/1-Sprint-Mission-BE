@@ -1,6 +1,5 @@
 import { Router } from "express";
 import Product from "../models/product.js";
-import { getNextSequenceValue } from "../models/sequence.js";
 const router = Router();
 
 // 상품 등록 API
