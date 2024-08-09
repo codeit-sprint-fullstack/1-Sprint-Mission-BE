@@ -162,7 +162,7 @@ app.use((err, req, res, next) => {
   } else if (err.name === "CastError") {
     res.status(400).json({ message: "유효하지 않은 ID입니다" });
   } else {
-    res.status(500).json({ message: "서버 내부 오류입니다" });
+    res.status(500).json({ message: "서버 내부 오류입니다, 관리자에게 문의해주세요" });
   }
 });
 
