@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Product from "./model/productAPI.js";
+import Product from "./model/product.js";
 import { DATABASE_URL } from "./env.js";
 
 const seedProducts = [

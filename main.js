@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { DATABASE_URL, PORT } from "./env.js";
 import express from "express";
-import Product from "./model/productAPI.js";
+import Product from "./model/product.js";
 import cors from "cors";
 import { body, validationResult } from "express-validator";
 
@@ -15,7 +15,7 @@ mongoose
   .connect(DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 30000,
+    serverSelectionTimeoutMS: 10000,
   })
   .then(() => console.log("Connected to DB"))
   .catch((err) => console.error("Failed to connect to DB", err));
@@ -30,7 +30,7 @@ app.get(
   "/products",
   asyncHandle(async (req, res) => {
     const {
-      order = "recent",
+      order = "descending",
       pageSize = 10,
       page = 1,
       keyword = "",
@@ -39,10 +39,10 @@ app.get(
       date = "",
     } = req.query;
 
-    const offset = (page - 1) * pageSize;
+    const offset = (parseInt(page) - 1) * parseInt(pageSize);
     const regex = new RegExp(keyword, "i");
     const dateQuery = date ? { createdAt: { $gt: new Date(date) } } : {};
-    const orderOption = { createdAt: order === "recent" ? -1 : 1 };
+    const orderOption = { createdAt: order === "ascending" ? 1 : -1 };
 
     const [products, totalCount] = await Promise.all([
       Product.find({
@@ -52,7 +52,7 @@ app.get(
       })
         .sort(orderOption)
         .skip(offset)
-        .limit(Number(pageSize)),
+        .limit(parseInt(pageSize)),
       Product.countDocuments({
         $or: [{ name: regex }, { description: regex }],
         price: { $gte: Number(minPrice), $lte: Number(maxPrice) },
@@ -162,7 +162,9 @@ app.use((err, req, res, next) => {
   } else if (err.name === "CastError") {
     res.status(400).json({ message: "유효하지 않은 ID입니다" });
   } else {
-    res.status(500).json({ message: "서버 내부 오류입니다, 관리자에게 문의해주세요" });
+    res
+      .status(500)
+      .json({ message: "서버 내부 오류입니다, 관리자에게 문의해주세요" });
   }
 });
 
