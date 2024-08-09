@@ -125,5 +125,8 @@
     "seed": "node prisma/seed.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "prisma-erd-generator": "^1.11.2"
+  }
 }

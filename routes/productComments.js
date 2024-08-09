@@ -53,4 +53,61 @@ router.get("/products/:mongoProductId/comments", async (req, res) => {
   }
 });
 
+// 댓글 수정
+router.patch("/products/:mongoProductId/comments/:id", async (req, res) => {
+  try {
+    const { mongoProductId, id } = req.params;
+    const { content } = req.body;
+
+    const comment = await prisma.productComment.findFirst({
+      where: {
+        id: parseInt(id),
+        productId: mongoProductId,
+      },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    const updatedComment = await prisma.productComment.update({
+      where: { id: comment.id },
+      data: { content },
+    });
+
+    res.status(200).json(updatedComment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.delete("/products/:mongoProductId/comments/:id", async (req, res) => {
+  try {
+    const { mongoProductId, id } = req.params;
+
+    // `mongoProductId`와 `id`가 일치하는 댓글을 찾습니다.
+    const comment = await prisma.productComment.findFirst({
+      where: {
+        id: parseInt(id),
+        productId: mongoProductId,
+      },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    // 댓글을 삭제합니다.
+    await prisma.productComment.delete({
+      where: { id: comment.id }, // 일치하는 `id`로 삭제
+    });
+
+    res.status(204).end(); // No Content 응답
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
