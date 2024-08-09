@@ -13,7 +13,6 @@ router.post("/", async (req, res) => {
     }
     const id = await getNextSequenceValue("productId");
     const product = new Product({
-      _id: id.toString(),
       name,
       description,
       price,
