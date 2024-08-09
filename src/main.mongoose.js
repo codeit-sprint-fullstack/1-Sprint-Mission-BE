@@ -155,9 +155,6 @@ app.post("/products", async (req, res) => {
   const { authorization } = req.headers;
   let result = null;
 
-  // 테스트를 위해 임시로 schema에 _id 추가
-  // let newId = (await Product.find({})).length + 1;
-
   const newProduct = new Product({
     name: name,
     description: description,
@@ -359,19 +356,23 @@ app.delete("/products/:id", async (req, res) => {
     if (product) {
       if (authorization === product.ownerId.toString()) {
         res.status(200);
+        // 해당 상품 삭제
         const deletedProduct = await Product.findByIdAndDelete({
           _id: id,
         });
-        const users_favorite = deletedProduct.favorite_user_id;
-        const users_id = { _id: { $in: users_favorite } };
-        result = deletedProduct;
+        // user에 favorite products 정보 저장시 사용 예정
+        // const users_favorite = deletedProduct.favorite_user_id;
+        // const users_id = { _id: { $in: users_favorite } };
+        // result = deletedProduct;
 
-        // favorite 관련 api 구현 후 테스트 필요
-        await User.updateMany(users_id, {
-          $pull: { favorite_user_id: deletedProduct._id },
-        });
+        // // favorite 관련 api 구현 후 테스트 필요
+        // // favorite_user_id에 저장된 user id를 기반으로 user의
+        // await User.updateMany(users_id, {
+        //   $pull: { favorite_products: deletedProduct._id },
+        // });
 
-        const updatedUser = await User.findByIdAndUpdate(
+        // 상품을 올린 유저의 상품 정보에서 제거
+        await User.findByIdAndUpdate(
           { _id: product.ownerId.toString() },
           { $pull: { products: id } },
           { runValidators: true }
@@ -403,71 +404,15 @@ app.delete("/products/:id", async (req, res) => {
 
 /** /resetProductsOfUser/:id 테스트 용 */
 app.patch("/resetProductsOfUser/:id", async (req, res) => {
-  // const { id } = req.params;
-  // const { authorization } = req.headers;
-  // let result = await User.findByIdAndUpdate(
-  //   { _id: id },
-  //   { products: [] },
-  //   {
-  //     new: true,
-  //   }
-  // );
-
-  // const { id } = req.params;
-  // const { authorization } = req.headers;
-  // let result = null;
-
-  // const product = await Product.findById(id);
-  // const session = await mongoose.startSession();
-  // session.startTransaction();
-
-  // try {
-  //   if (product) {
-  //     if (authorization === product.ownerId.toString()) {
-  //       res.status(200);
-  //       const deletedProduct = await Product.findByIdAndDelete({
-  //         _id: id,
-  //       });
-  //       const users_favorite = deletedProduct.favorite_user_id;
-  //       const users_id = { _id: { $in: users_favorite } };
-
-  //       // favorite 관련 api 구현 후 테스트 필요
-  //       await User.updateMany(users_id, {
-  //         $pull: { favorite_user_id: deletedProduct._id },
-  //       });
-
-  //       const updatedUser = await User.findByIdAndUpdate(
-  //         { _id: product.ownerId.toString() },
-  //         { $pull: { products: id } },
-  //         { runValidators: true }
-  //       );
-
-  //       result = updatedUser;
-  //       const { _id, updatedAt, __v, favorite_user_id, ...rest } = updatedUser;
-  //       const favoriteCount = favorite_user_id.length;
-  //       // result = { ...rest };
-  //       // result = _id;
-  //       // result = { id: _id, favoriteCount: favoriteCount, ...rest };
-  //     }
-  //   }
-  // } catch (err) {}
-
-  // const updatedUser = {
-  //   _id: "66b5ccad2cf6ddb53d85e3a6",
-  //   name: "이진우",
-  //   nickname: "설랑",
-  //   password: "12345678",
-  //   email: "user99@codeit.com",
-  //   image:
-  //     "https://t3.ftcdn.net/jpg/07/59/85/60/240_F_759856080_xuXtGdTBtKKZCqyfsn38ypm1SFVczDIU.jpg",
-  //   createdAt: "2024-07-29T05:45:03.249Z",
-  //   updatedAt: "2024-08-09T14:21:18.296Z",
-  //   products: [],
-  //   __v: 0,
-  // };
-  // const { _id, updatedAt, __v, favorite_user_id, ...rest } = updatedUser;
-  // const favoriteCount = favorite_user_id.length;
-  // let result = { id: _id, favoriteCount: favoriteCount, ...rest };
+  const { id } = req.params;
+  const { authorization } = req.headers;
+  let result = await User.findByIdAndUpdate(
+    { _id: id },
+    { products: [] },
+    {
+      new: true,
+    }
+  );
 
   res.json(result);
 });
