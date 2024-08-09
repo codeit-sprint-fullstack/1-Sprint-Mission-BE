@@ -41,9 +41,6 @@ app.get(
     // ? req.query.keyword.replace(/"/g, '')
     // : '';
 
-    console.log('pageSize:', pageSize);
-    console.log('orderBy:', orderBy);
-
     const orderByOption =
       orderBy === 'favorite' ? { favoriteCount: -1 } : { createdAt: -1 };
 
