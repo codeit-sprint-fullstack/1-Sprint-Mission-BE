@@ -3,11 +3,12 @@ import Product from "../models/product.js";
 const router = Router();
 
 // 상품 수정 API
-router.patch("/:_id", async (req, res) => {
+router.patch("/:id", async (req, res) => {
+  // 경로 변수 `:id`로 수정
   try {
     const { name, description, price, tags } = req.body;
     const product = await Product.findByIdAndUpdate(
-      req.params.id,
+      req.params.id, // `req.params.id`로 수정
       { name, description, price, tags, updatedAt: Date.now() },
       { new: true }
     );
