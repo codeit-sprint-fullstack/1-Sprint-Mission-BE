@@ -120,5 +120,31 @@ app.delete(
     }
   })
 );
+// 중고마켓 댓글 등록
+app.post(
+  "/market-comments",
+  asyncHandler(async (req, res) => {
+    const comment = await prisma.comment.create({
+      data: {
+        ...req.body,
+        category: "MARKET",
+      },
+    });
+    res.status(201).send(comment);
+  })
+);
+// 자유게시판 댓글 등록
+app.post(
+  "/board-comments",
+  asyncHandler(async (req, res) => {
+    const comment = await prisma.comment.create({
+      data: {
+        ...req.body,
+        category: "BOARD",
+      },
+    });
+    res.status(201).send(comment);
+  })
+);
 
 app.listen(process.env.PORT || 3000, () => console.log("Server Started"));
