@@ -5,6 +5,7 @@
     "express": "^4.19.2",
     "is-email": "^1.0.2",
     "is-uuid": "^1.0.2",
+    "postgresql": "^0.0.1",
     "prisma": "^5.18.0",
     "superstruct": "^2.0.2"
   },
@@ -15,5 +16,8 @@
   "scripts": {
     "dev": "nodemon main.js",
     "start": "node main.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }
