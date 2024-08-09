@@ -47,7 +47,6 @@ app.get(
     }
   })
 );
-
 // 게시글 등록
 app.post(
   "/articles",
@@ -58,7 +57,37 @@ app.post(
     res.status(201).send(article);
   })
 );
-
+// 게시글 수정
+app.patch(
+  "/articles/:id",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    try {
+      const article = await prisma.article.update({
+        where: { id: id },
+        data: req.body,
+      });
+      res.send(article);
+    } catch (error) {
+      res.status(404).send({ message: "cannot find given id." });
+    }
+  })
+);
+// 게시글 삭제
+app.delete(
+  "/articles/:id",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    try {
+      const article = await prisma.article.delete({
+        where: { id: id },
+      });
+      res.status(204).send();
+    } catch (error) {
+      res.status(404).send({ message: "Cannot find given id." });
+    }
+  })
+);
 // 상품 목록 조회
 app.get(
   "/products",
@@ -85,37 +114,6 @@ app.get(
       .select("id name description price createdAt");
 
     const result = await res.send({ totalProducts, products });
-  })
-);
-
-// 상품 수정
-app.patch(
-  "/products/:id",
-  asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const product = await Product.findById(id);
-    if (product) {
-      Object.keys(req.body).forEach((key) => {
-        product[key] = req.body[key];
-      });
-      await product.save();
-      res.send(product);
-    } else {
-      res.status(404).send({ message: "cannot find given id." });
-    }
-  })
-);
-// 상품 삭제
-app.delete(
-  "/products/:id",
-  asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const product = await Product.findByIdAndDelete(id);
-    if (product) {
-      res.sendStatus(204);
-    } else {
-      res.status(404).send({ message: "cannot find given id." });
-    }
   })
 );
 
