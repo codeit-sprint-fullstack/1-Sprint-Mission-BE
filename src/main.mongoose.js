@@ -4,7 +4,6 @@ import { DB_URL, PORT } from "./config.js";
 import mongoose from "mongoose";
 import { SampleData, Product, User } from "../data/MongooseSchema.js";
 
-
 const app = express();
 
 app.use(cors());
@@ -157,7 +156,6 @@ app.post("/products", async (req, res) => {
 
   // 테스트를 위해 임시로 schema에 _id 추가
   // let newId = (await Product.find({})).length + 1;
-  const newId = await
 
   const newProduct = new Product({
     name: name,
