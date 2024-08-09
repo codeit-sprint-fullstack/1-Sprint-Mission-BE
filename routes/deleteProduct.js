@@ -3,9 +3,9 @@ import Product from "../models/product.js";
 const router = Router();
 
 // 상품 삭제 API
-router.delete("/:_id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    const product = await Product.findOneAndDelete(req.params._id);
+    const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
