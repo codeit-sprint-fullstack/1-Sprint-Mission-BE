@@ -9,8 +9,9 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN,
+  origin: process.env.CORS_ORIGIN,  // 프론트엔드 주소를 허용하도록 설정
 }));
+
 app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URI, {
@@ -21,7 +22,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 }).catch(err => {
   console.error('MongoDB connection error:', err);
 });
-
 
 app.use('/api', productRoutes);
 
