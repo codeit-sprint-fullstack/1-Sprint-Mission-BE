@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: 'https://chic-valkyrie-a4ac85.netlify.app'
+  origin: 'https://rad-sundae-14d67d.netlify.app'
 }));
 
 app.use(express.json());
