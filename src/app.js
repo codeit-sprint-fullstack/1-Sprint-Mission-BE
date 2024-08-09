@@ -111,7 +111,7 @@ app.delete(
   asyncHandler(async (req, res) => {
     const id = req.params.id;
     try {
-      const article = await prisma.article.delete({
+      await prisma.article.delete({
         where: { id: id },
       });
       res.status(204).send();
@@ -144,6 +144,39 @@ app.post(
       },
     });
     res.status(201).send(comment);
+  })
+);
+// 댓글 수정
+app.patch(
+  "/comments/:id",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+
+    try {
+      const updatedComment = await prisma.comment.update({
+        where: { id: id },
+        data: req.body,
+      });
+      res.send(updatedComment);
+    } catch (error) {
+      res.status(404).send({ message: "Cannot find given id." });
+    }
+  })
+);
+// 댓글 삭제
+app.delete(
+  "/comments/:id",
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+
+    try {
+      await prisma.comment.delete({
+        where: { id: id },
+      });
+      res.status(204).send();
+    } catch (error) {
+      res.status(404).send({ message: "Cannot find given id." });
+    }
   })
 );
 
