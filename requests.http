@@ -1,12 +1,12 @@
 ###
 GET http://localhost:3000/users/me
-Authorizaion : 99
+authorizaion : 66b5ccad2cf6ddb53d85e3a6
 
 
 ###
 POST http://localhost:3000/products
 Content-Type : application/json
-Authorization : 99
+authorization : 66b5ccad2cf6ddb53d85e3a6
 
 {
   "images": [
@@ -27,15 +27,15 @@ GET http://localhost:3000/products
 GET http://localhost:3000/products?page=1&pageSize=9&orderBy=favorite
 
 ###
-GET http://localhost:3000/products?keyword=PS5
+GET http://localhost:3000/products?keyword=구독
 
 ###
-GET http://localhost:3000/products/
+GET http://localhost:3000/products/66b624b6445d51c9e300a524
 
 ###
-PATCH http://localhost:3000/products/
+PATCH http://localhost:3000/products/66b6274a55e7ea80919d693c
 Content-Type : application/json
-Authorization : 99
+authorization : 66b5ccad2cf6ddb53d85e3a6
 
 {
   "images": [
@@ -50,5 +50,9 @@ Authorization : 99
 }
 
 ###
-DELETE http://localhost:3000/products/134
-Authorization : 99
+DELETE http://localhost:3000/products/66b6274a55e7ea80919d693c
+authorization : 66b5ccad2cf6ddb53d85e3a6
+
+###
+PATCH  http://localhost:3000/resetProductsOfUser/66b625de1d15b04c4fde086c
+authorization : 66b5ccad2cf6ddb53d85e3a6

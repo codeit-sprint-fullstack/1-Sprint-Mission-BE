@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const ProductSampleSchema = new mongoose.Schema(
   {
@@ -87,11 +87,14 @@ const ProductSchema = new mongoose.Schema(
       },
     ],
     ownerId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      require: true,
     },
     favorite_user_id: [
       {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
     createdAt: {
@@ -145,6 +148,12 @@ const UserSchema = new mongoose.Schema(
     updatedAt: {
       type: Date,
     },
+    products: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
   },
   {
     collection: "users",

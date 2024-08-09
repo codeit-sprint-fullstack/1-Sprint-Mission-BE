@@ -12,8 +12,8 @@ try {
   // await User.insertMany(userData);
 
   const newMock = productsData.map((product) => {
-    const { _id, ...rest } = product;
-    return rest;
+    const { _id, ownerId, ...rest } = product;
+    return { ownerId: "66b5ccad2cf6ddb53d85e3a6", ...rest };
   });
 
   await Product.deleteMany({});

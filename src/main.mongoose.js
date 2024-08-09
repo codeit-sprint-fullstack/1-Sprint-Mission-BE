@@ -35,11 +35,11 @@ app.get("/users/me", async (req, res) => {
 app.patch("/users/me", async (req, res) => {
   const { image } = req.body;
   // 임시로 사용자 id 토큰으로 사용
-  const { Authorization } = req.headers;
+  const { authorization } = req.headers;
   let result = null;
 
   const user = await User.updateOne(
-    { _id: Authorization },
+    { _id: authorization },
     { image: image },
     { runValidators: true }
   ).lean();
@@ -60,11 +60,11 @@ app.patch("/users/me", async (req, res) => {
 /** User PATCH /user/me/password */
 app.patch("/users/me/password", async (req, res) => {
   const { passwordConfirmation, password, currentPassword } = req.body;
-  const { Authorization } = req.headers;
+  const { authorization } = req.headers;
   let result = null;
 
   if (passwordConfirmation === password) {
-    const user = await User.findById(Authorization).lean();
+    const user = await User.findById(authorization).lean();
 
     res.status(400);
     result = { message: "incorrect password confirmation" };
@@ -72,7 +72,7 @@ app.patch("/users/me/password", async (req, res) => {
     if (user) {
       if (user.password === currentPassword) {
         const user_ = await User.updateOne(
-          { _id: Authorization },
+          { _id: authorization },
           { password: password },
           { runValidators: true }
         );
@@ -98,10 +98,10 @@ app.patch("/users/me/password", async (req, res) => {
 
 /** User GET /user/me/products */
 app.get("/users/me/products", async (req, res) => {
-  const { Authorization } = req.headers;
+  const { authorization } = req.headers;
   let result = null;
 
-  const products = await Product.find({ ownerId: Authorization }).lean();
+  const products = await Product.find({ ownerId: authorization }).lean();
 
   if (products) {
     const totalCount = products.length;
@@ -124,11 +124,11 @@ app.get("/users/me/products", async (req, res) => {
 
 /** User GET /user/me/favorites */
 app.get("/user/me/favorites", async (req, res) => {
-  const { Authorization } = req.headers;
+  const { authorization } = req.headers;
   let result = null;
 
   const favorites = await Product.find({
-    favorite_user_id: { $elemMatch: Authorization },
+    favorite_user_id: { $elemMatch: authorization },
   }).lean();
 
   if (favorites) {
@@ -151,8 +151,9 @@ app.get("/user/me/favorites", async (req, res) => {
 /** Product POST /products -테스트 완*/
 app.post("/products", async (req, res) => {
   const { images, tags, price, description, name } = req.body;
-  // 임시로 사용자 id를 Authorization 값 사용
+  // 임시로 사용자 id를 authorization 값 사용
   const { authorization } = req.headers;
+  let result = null;
 
   // 테스트를 위해 임시로 schema에 _id 추가
   // let newId = (await Product.find({})).length + 1;
@@ -167,13 +168,36 @@ app.post("/products", async (req, res) => {
     favorite_user_id: [],
   });
 
-  const result = await newProduct.save();
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  if (result) {
-    res.status(200);
-  } else {
-    res.status(400);
-    result = { message: "Error" };
+  try {
+    const insertedProduct = await newProduct.save();
+    const { _id, favorite_user_id, updatedAt, __v, ...rest } =
+      insertedProduct.toObject();
+    const favoriteCount = favorite_user_id.length;
+
+    result = { id: _id, favoriteCount: favoriteCount, ...rest };
+    if (result.id) {
+      res.status(200);
+
+      await User.findOneAndUpdate(
+        { _id: authorization },
+        { $push: { products: result._id } },
+        { runValidators: true }
+      );
+    } else {
+      res.status(400);
+      result = { message: "Error" };
+    }
+
+    await session.commitTransaction();
+  } catch (err) {
+    res.status(500);
+    result = { message: err.name };
+    await session.abortTransaction();
+  } finally {
+    session.endSession();
   }
 
   res.json(result);
@@ -259,10 +283,9 @@ app.get("/products", async (req, res) => {
 /** Product GET /products/:id - 테스트 완 */
 app.get("/products/:id", async (req, res) => {
   const { id } = req.params;
-  const castId = Number(id);
   let result = null;
 
-  const product = await Product.findById(castId).lean();
+  const product = await Product.findById(id).lean();
 
   if (product) {
     const { _id, ownerId, updatedAt, favorite_user_id, __v, ...rest } = product;
@@ -296,11 +319,18 @@ app.patch("/products/:id", async (req, res) => {
     result = { message: "Bad Request" };
   } else {
     // 임시
-    const ownerId = await Product.findById(id).ownerId;
+    const product = await Product.findById(id);
 
-    if (authorization === ownerId) {
-      result = await Product.findByIdAndUpdate({ _id: id }, updateData);
-      if (result) {
+    if (authorization === product.ownerId.toString()) {
+      const { _id, favorite_user_id, updatedAt, __v, ...rest } =
+        await Product.findByIdAndUpdate({ _id: id }, updateData, {
+          new: true,
+        }).lean();
+      const favoriteCount = favorite_user_id.length;
+      const newProduct = { id: _id, favoriteCount: favoriteCount, ...rest };
+
+      if (newProduct.id) {
+        result = newProduct;
         res.status(200);
       } else {
         res.status(404);
@@ -322,19 +352,122 @@ app.delete("/products/:id", async (req, res) => {
   let result = null;
 
   const product = await Product.findById(id);
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  if (product) {
-    if (authorization === product.ownerId) {
-      res.status(200);
-      result = await Product.findByIdAndDelete({ _id: id });
+  try {
+    if (product) {
+      if (authorization === product.ownerId.toString()) {
+        res.status(200);
+        const deletedProduct = await Product.findByIdAndDelete({
+          _id: id,
+        });
+        const users_favorite = deletedProduct.favorite_user_id;
+        const users_id = { _id: { $in: users_favorite } };
+        result = deletedProduct;
+
+        // favorite 관련 api 구현 후 테스트 필요
+        await User.updateMany(users_id, {
+          $pull: { favorite_user_id: deletedProduct._id },
+        });
+
+        const updatedUser = await User.findByIdAndUpdate(
+          { _id: product.ownerId.toString() },
+          { $pull: { products: id } },
+          { runValidators: true }
+        );
+        const { _id, updatedAt, __v, favorite_user_id, ...rest } =
+          deletedProduct.toObject();
+        const favoriteCount = favorite_user_id.length;
+
+        result = { id: _id, favoriteCount: favoriteCount, ...rest };
+      } else {
+        res.status(401);
+        result = { message: "Unauthorized" };
+      }
     } else {
-      res.status(401);
-      result = { message: "Unauthorized" };
+      res.status(404);
+      result = { message: "Not Found" };
     }
-  } else {
-    res.status(404);
-    result = { message: "Not Found" };
+    await session.commitTransaction();
+  } catch (err) {
+    res.status(500);
+    result = { message: err.name };
+    await session.abortTransaction();
+  } finally {
+    session.endSession();
   }
+
+  res.json(result);
+});
+
+/** /resetProductsOfUser/:id 테스트 용 */
+app.patch("/resetProductsOfUser/:id", async (req, res) => {
+  // const { id } = req.params;
+  // const { authorization } = req.headers;
+  // let result = await User.findByIdAndUpdate(
+  //   { _id: id },
+  //   { products: [] },
+  //   {
+  //     new: true,
+  //   }
+  // );
+
+  // const { id } = req.params;
+  // const { authorization } = req.headers;
+  // let result = null;
+
+  // const product = await Product.findById(id);
+  // const session = await mongoose.startSession();
+  // session.startTransaction();
+
+  // try {
+  //   if (product) {
+  //     if (authorization === product.ownerId.toString()) {
+  //       res.status(200);
+  //       const deletedProduct = await Product.findByIdAndDelete({
+  //         _id: id,
+  //       });
+  //       const users_favorite = deletedProduct.favorite_user_id;
+  //       const users_id = { _id: { $in: users_favorite } };
+
+  //       // favorite 관련 api 구현 후 테스트 필요
+  //       await User.updateMany(users_id, {
+  //         $pull: { favorite_user_id: deletedProduct._id },
+  //       });
+
+  //       const updatedUser = await User.findByIdAndUpdate(
+  //         { _id: product.ownerId.toString() },
+  //         { $pull: { products: id } },
+  //         { runValidators: true }
+  //       );
+
+  //       result = updatedUser;
+  //       const { _id, updatedAt, __v, favorite_user_id, ...rest } = updatedUser;
+  //       const favoriteCount = favorite_user_id.length;
+  //       // result = { ...rest };
+  //       // result = _id;
+  //       // result = { id: _id, favoriteCount: favoriteCount, ...rest };
+  //     }
+  //   }
+  // } catch (err) {}
+
+  // const updatedUser = {
+  //   _id: "66b5ccad2cf6ddb53d85e3a6",
+  //   name: "이진우",
+  //   nickname: "설랑",
+  //   password: "12345678",
+  //   email: "user99@codeit.com",
+  //   image:
+  //     "https://t3.ftcdn.net/jpg/07/59/85/60/240_F_759856080_xuXtGdTBtKKZCqyfsn38ypm1SFVczDIU.jpg",
+  //   createdAt: "2024-07-29T05:45:03.249Z",
+  //   updatedAt: "2024-08-09T14:21:18.296Z",
+  //   products: [],
+  //   __v: 0,
+  // };
+  // const { _id, updatedAt, __v, favorite_user_id, ...rest } = updatedUser;
+  // const favoriteCount = favorite_user_id.length;
+  // let result = { id: _id, favoriteCount: favoriteCount, ...rest };
 
   res.json(result);
 });
