@@ -22,7 +22,7 @@ app.get("/users/me", async (req, res) => {
     const { name, password, _id, ...rest } = user;
 
     res.status(200);
-    result = { id: _id, rest };
+    result = { id: _id, ...rest };
   } else {
     res.status(404);
     result = { message: "Not Found" };
@@ -48,7 +48,7 @@ app.patch("/users/me", async (req, res) => {
     const { name, email, password, _id, ...rest } = user;
 
     res.status(200);
-    result = { id: _id, rest };
+    result = { id: _id, ...rest };
   } else {
     res.status(400);
     result = { message: "Error" };
@@ -81,7 +81,7 @@ app.patch("/users/me/password", async (req, res) => {
           const { name, email, password, _id, ...rest } = user;
 
           res.status(200);
-          result = { id: _id, rest };
+          result = { id: _id, ...rest };
         } else {
           res.status(404);
           result = { message: "check you account" };
@@ -109,7 +109,7 @@ app.get("/users/me/products", async (req, res) => {
       const { _id, updatedAt, favorite_user_id, ...rest } = product;
       const favoriteCount = favorite_user_id.length;
 
-      return { id: _id, favoriteCount: favoriteCount, rest };
+      return { id: _id, favoriteCount: favoriteCount, ...rest };
     });
 
     res.status(200);
@@ -137,7 +137,7 @@ app.get("/user/me/favorites", async (req, res) => {
       const { _id, updatedAt, favorite_user_id, ...rest } = product;
       const favoriteCount = favorite_user_id.length;
 
-      return { id: _id, favoriteCount: favoriteCount, rest };
+      return { id: _id, favoriteCount: favoriteCount, ...rest };
     });
 
     res.status(200);
@@ -238,7 +238,7 @@ app.get("/products", async (req, res) => {
     } = item;
     const favoriteCount = favorite_user_id.length;
 
-    return { id: _id, favoriteCount: favoriteCount, rest };
+    return { id: _id, favoriteCount: favoriteCount, ...rest };
   });
 
   result = {
@@ -262,7 +262,7 @@ app.get("/products/:id", async (req, res) => {
     const favoriteCount = favorite_user_id.length;
 
     res.status(200);
-    result = { id: _id, favoriteCount: favoriteCount, rest };
+    result = { id: _id, favoriteCount: favoriteCount, ...rest };
   } else {
     res.status(404);
     result = { message: "Not Found" };
