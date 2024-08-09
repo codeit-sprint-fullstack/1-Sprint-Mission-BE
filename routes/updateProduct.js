@@ -6,7 +6,7 @@ const router = Router();
 router.patch("/:_id", async (req, res) => {
   try {
     const { name, description, price, tags } = req.body;
-    const product = await Product.findByIdAndUpdate(
+    const product = await Product.findOneAndUpdate(
       req.params._id,
       { name, description, price, tags, updatedAt: Date.now() },
       { new: true }

@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
 // 상품 상세 조회 API
 router.get("/:_id", async (req, res) => {
   try {
-    const product = await Product.findById(req.params._id);
+    const product = await Product.findOne({ _id: req.params._id });
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
