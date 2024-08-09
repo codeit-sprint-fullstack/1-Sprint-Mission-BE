@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: 'https://newfandamarket.netlify.app'
+  origin: 'https://chic-valkyrie-a4ac85.netlify.app'
 }));
 
 app.use(express.json());
