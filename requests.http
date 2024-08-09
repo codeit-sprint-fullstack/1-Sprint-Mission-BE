@@ -1,30 +1,28 @@
-GET http://localhost:3000/products
+GET http://localhost:3000/articles
 
 ###
-GET http://localhost:3000/products?page=1&pageSize=10&search=post
+GET http://localhost:3000/articles?page=1&pageSize=10&keyword=test
 
 ###
-GET http://localhost:3000/products/66b073b7f091c1212931ee68
+GET http://localhost:3000/articles/66b073b7f091c1212931ee68
 
 ###
-POST http://localhost:3000/products
+POST http://localhost:3000/articles
 Content-Type: application/json
 
 {
-  "name": "name1",
-  "description": "description1",
-  "price": "1000",
-  "tags": ["태그2", "태그3"]
+  "title": "title test1",
+  "content": "content test1"
 }
 
 ###
-PATCH http://localhost:3000/products/66b081528a869370be9119bb
+PATCH http://localhost:3000/articles/66b081528a869370be9119bb
 Content-Type: application/json
 
 {
-  "name": "patch-name",
-  "price": "30000"
+  "title": "patch title",
+  "content": "patch content"
 }
 
 ###
-DELETE http://localhost:3000/products/66b080c88b0f12a10cb91090
+DELETE http://localhost:3000/articles/66b080c88b0f12a10cb91090

@@ -120,6 +120,76 @@ app.delete(
     }
   })
 );
+// 중고마켓 댓글 목록 조회
+app.get(
+  "/market-comments",
+  asyncHandler(async (req, res) => {
+    const { cursor, take = 10, articleId } = req.query;
+
+    const comments = await prisma.comment.findMany({
+      where: {
+        articleId: articleId,
+        category: "MARKET",
+      },
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : 0,
+      take: Number(take),
+    });
+
+    const nextCursor =
+      comments.length === Number(take)
+        ? comments[comments.length - 1].id
+        : null;
+
+    res.send({
+      comments,
+      nextCursor,
+    });
+  })
+);
+// 자유게시판 댓글 목록 조회
+app.get(
+  "/board-comments",
+  asyncHandler(async (req, res) => {
+    const { cursor, take = 10, articleId } = req.query;
+
+    const comments = await prisma.comment.findMany({
+      where: {
+        articleId: articleId,
+        category: "BOARD",
+      },
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : 0,
+      take: Number(take),
+    });
+
+    const nextCursor =
+      comments.length === Number(take)
+        ? comments[comments.length - 1].id
+        : null;
+
+    res.send({
+      comments,
+      nextCursor,
+    });
+  })
+);
 // 중고마켓 댓글 등록
 app.post(
   "/market-comments",
