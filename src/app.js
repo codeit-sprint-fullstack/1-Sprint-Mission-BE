@@ -23,6 +23,38 @@ function asyncHandler(handler) {
 app.get("/", (req, res) => {
   res.send("default path");
 });
+// 게시글 목록 조회
+app.get(
+  "/articles",
+  asyncHandler(async (req, res) => {
+    const { page = 1, pageSize = 10, keyword = "" } = req.query;
+    const offset = (page - 1) * pageSize;
+
+    const searchQuery = keyword
+      ? {
+          OR: [
+            { title: { contains: keyword } },
+            { content: { contains: keyword } },
+          ],
+        }
+      : {};
+
+    const totalArticles = await prisma.article.count({ where: searchQuery });
+    const articles = await prisma.article.findMany({
+      where: searchQuery,
+      orderBy: { createdAt: "desc" },
+      skip: offset,
+      take: Number(pageSize),
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        createdAt: true,
+      },
+    });
+    res.send({ totalArticles, articles });
+  })
+);
 // 게시글 조회
 app.get(
   "/articles/:id",
@@ -88,36 +120,5 @@ app.delete(
     }
   })
 );
-// 상품 목록 조회
-app.get(
-  "/products",
-  asyncHandler(async (req, res) => {
-    const { page = 1, pageSize = 10, keyword = "" } = req.query;
-    const offset = (page - 1) * pageSize;
-    const sort = "recent"; // 최신순만 구현
-    const sortOption = { createdAt: sort === "recent" ? "desc" : "asc" };
-
-    const searchQuery = keyword
-      ? {
-          $or: [
-            { name: { $regex: keyword } },
-            { description: { $regex: keyword } },
-          ],
-        }
-      : {};
-
-    const totalProducts = await Product.countDocuments(searchQuery);
-    const products = await Product.find(searchQuery)
-      .sort(sortOption)
-      .skip(offset)
-      .limit(Number(pageSize))
-      .select("id name description price createdAt");
-
-    const result = await res.send({ totalProducts, products });
-  })
-);
 
 app.listen(process.env.PORT || 3000, () => console.log("Server Started"));
-mongoose
-  .connect(process.env.DATABASE_URL)
-  .then(() => console.log("Connected to DB"));
