@@ -7,10 +7,6 @@ dotenv.config();
 
 const app = express();
 
-// const corsOptions = {
-//   origin: ['http://127.0.0.1:5500', 'https://my-todo.com'],
-// };
-
 app.use(cors());
 app.use(express.json());
 
@@ -41,17 +37,15 @@ app.get(
     const page = Number(req.query.page) || 1;
     const pageSize = Number(req.query.pageSize) || 10;
     const orderBy = req.query.orderBy || 'recent';
-    const keyword = req.query.keyword
-      ? req.query.keyword.replace(/"/g, '')
-      : '';
+    const keyword = req.query.keyword;
+    // ? req.query.keyword.replace(/"/g, '')
+    // : '';
 
     console.log('pageSize:', pageSize);
     console.log('orderBy:', orderBy);
 
     const orderByOption =
-      orderBy === 'favorite'
-        ? { favoriteCount: -1 } // 내림차순 정렬
-        : { createdAt: -1 }; // 기본값으로 최신순 정렬
+      orderBy === 'favorite' ? { favoriteCount: -1 } : { createdAt: -1 };
 
     const searchCondition = keyword
       ? {
@@ -61,8 +55,6 @@ app.get(
           ],
         }
       : {};
-
-    console.log('keyword:', searchCondition);
 
     const totalCount = await Product.countDocuments(searchCondition);
 
@@ -79,67 +71,76 @@ app.get(
 );
 
 // 상품 상세 조회
-// app.get(
-//   '/products/:id',
-//   asyncHandler(async (req, res) => {
-//     const id = req.params._id;
-//     const task = await Product.findById(id);
+app.get(
+  '/products/:id',
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
 
-//     if (task) {
-//       res.send(task);
-//     } else {
-//       res.status(404).send({ message: `아이디 ㄴㄴ ㅠㅠ` });
-//     }
-//   })
-// );
+    const product = await Product.findById(id);
 
+    if (product) {
+      res.send(product);
+    } else {
+      res.status(404).send({ message: `Not Found` });
+    }
+  })
+);
+
+// 상품게시
 app.post(
   '/products',
   asyncHandler(async (req, res) => {
-    // const newProduct = await Product.create(req.body);
-    // res.status(201).send(newProduct);
-
-    const { name, description, price, tags, images } = req.body;
+    const { name, description, price, tags } = req.body;
+    // const images = req.files.map((file) => file.path);
 
     const newProduct = await Product.create({
       name,
       description,
       price,
       tags,
-      images,
+      // images,
     });
+
     res.json({ Product: newProduct });
   })
 );
 
-// app.patch(
-//   '/products/:id',
-//   asyncHandler(async (req, res) => {
-//     const id = req.params.id;
-//     const task = await Product.findById(id);
-//     if (task) {
-//       Object.keys(req.body).forEach((key) => {
-//         task[key] = req.body[key];
-//       });
-//       await task.save();
-//       res.send(task);
-//     } else {
-//       res.status(404).send({ message: `아이디 ㄴㄴ ㅠㅠ` });
-//     }
-//   })
-// );
+//상품 수정
+app.patch(
+  '/products/:id',
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const { name, description, price, tags } = req.body;
 
-// app.delete(
-//   '/products/:id',
-//   asyncHandler(async (req, res) => {
-//     const id = req.params.id;
-//     const task = await Product.findByIdAndDelete(id);
-//     if (task) {
-//       res.sendStatus(204);
-//     } else {
-//       res.status(404).send({ message: `아이디 ㄴㄴ ㅠㅠ` });
-//     }
-//   })
-// );
+    const product = await Product.findById(id).select(
+      'id name description price tags createdAt'
+    );
+
+    if (product) {
+      Object.keys(req.body).forEach((key) => {
+        product[key] = req.body[key];
+      });
+      await product.save();
+      res.send(product);
+    } else {
+      res.status(404).send({ message: `Not Found` });
+    }
+  })
+);
+
+// 상품 삭제
+app.delete(
+  '/products/:id',
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const product = await Product.findByIdAndDelete(id);
+
+    if (product) {
+      res.sendStatus(204);
+    } else {
+      res.status(404).send({ message: `Not Found` });
+    }
+  })
+);
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
