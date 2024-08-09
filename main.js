@@ -9,3 +9,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 const prisma = new PrismaClient();
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Server started on port 3000");
+});
