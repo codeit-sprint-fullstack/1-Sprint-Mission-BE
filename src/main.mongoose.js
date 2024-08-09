@@ -214,11 +214,18 @@ app.get("/products", async (req, res) => {
     pageOption = (Number(page) - 1) * pageSizeOption;
   }
 
-  const product = await Product.find(keywordOption)
-    .sort(orderByOption)
-    .skip(pageOption)
-    .limit(pageSizeOption)
-    .lean();
+  // const product = await Product.find(keywordOption)
+  //   .sort(orderByOption)
+  //   .skip(pageOption)
+  //   .limit(pageSizeOption)
+  //   .lean();
+  const product = await Product.aggregate([
+    { $addFields: { favoriteCount: { $size: "$favorite_user_id" } } },
+    { $match: keywordOption },
+    { $sort: orderByOption },
+    { $skip: pageOption },
+    { $limit: pageSizeOption },
+  ]);
 
   const totalCount = await Product.find(keywordOption)
     .sort(orderByOption)
@@ -236,9 +243,9 @@ app.get("/products", async (req, res) => {
       __v,
       ...rest
     } = item;
-    const favoriteCount = favorite_user_id.length;
+    // const favoriteCount = favorite_user_id.length;
 
-    return { id: _id, favoriteCount: favoriteCount, ...rest };
+    return { id: _id, ...rest };
   });
 
   result = {

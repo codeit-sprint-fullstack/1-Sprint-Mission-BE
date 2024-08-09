@@ -24,7 +24,7 @@ Authorization : 99
 GET http://localhost:3000/products
 
 ###
-GET http://localhost:3000/products?page=1&pageSize=2&orderBy=recent
+GET http://localhost:3000/products?page=1&pageSize=9&orderBy=favorite
 
 ###
 GET http://localhost:3000/products?keyword=PS5
