@@ -1,5 +1,6 @@
 import { Router } from "express";
-import Product from "../models/product.js";
+import Product from "../models/product.js"; // Mongoose 모델 import
+
 const router = Router();
 
 // 상품 목록 조회 API
@@ -36,6 +37,9 @@ router.get("/", async (req, res) => {
 // 상품 상세 조회 API
 router.get("/:_id", async (req, res) => {
   try {
+    // 여기서 _id가 정확히 전달되고 있는지 확인
+    console.log("Received _id:", req.params._id);
+
     const product = await Product.findOne({ _id: req.params._id });
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
