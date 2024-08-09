@@ -34,7 +34,7 @@ router.get("/", async (req, res) => {
 });
 
 // 상품 상세 조회 API
-router.get("/:id", async (req, res) => {
+router.get("/:_id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {

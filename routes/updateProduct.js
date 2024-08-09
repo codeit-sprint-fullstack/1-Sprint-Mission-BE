@@ -3,7 +3,7 @@ import Product from "../models/product.js";
 const router = Router();
 
 // 상품 수정 API
-router.patch("/:id", async (req, res) => {
+router.patch("/:i_d", async (req, res) => {
   try {
     const { name, description, price, tags } = req.body;
     const product = await Product.findByIdAndUpdate(
