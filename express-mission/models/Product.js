@@ -17,6 +17,7 @@ const ProductSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true,
+      minLength: 1,
       min: 0,
     },
     tags: {
