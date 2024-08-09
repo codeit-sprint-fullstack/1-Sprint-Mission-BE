@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN,  // 프론트엔드 주소를 허용하도록 설정
+  origin: 'https://newfandamarket.netlify.app'
 }));
 
 app.use(express.json());
@@ -29,4 +29,5 @@ const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
     console.log(`서버가 포트 ${PORT}에서 실행 중입니다.`);
 });
+
 
