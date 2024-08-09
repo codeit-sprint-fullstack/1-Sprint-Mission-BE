@@ -12,7 +12,11 @@ app.use(express.json());
 
 // MongoDB 연결
 mongoose
-  .connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000,
+  })
   .then(() => console.log("Connected to DB"))
   .catch((err) => console.error("Failed to connect to DB", err));
 
@@ -71,7 +75,7 @@ app.get(
     if (product) {
       res.json(product);
     } else {
-      res.status(404).json({ message: "상품을 찾을 수 없습니다." });
+      res.status(404).json({ message: "해당 상품은 존재하지 않습니다" });
     }
   })
 );
@@ -80,13 +84,16 @@ app.get(
 app.post(
   "/products",
   [
-    body("name").notEmpty().withMessage("상품명은 필수입니다."),
-    body("price").isNumeric().withMessage("가격은 숫자여야 합니다."),
+    body("name").notEmpty().withMessage("상품명은 필수값입니다"),
+    body("price").isNumeric().withMessage("가격은 Number 여야 합니다."),
     body("description")
       .optional()
       .notEmpty()
-      .withMessage("상품 설명은 필수입니다."),
-    body("tags").optional().isArray().withMessage("태그는 배열이어야 합니다."),
+      .withMessage("상품 설명은 필수값입니다"),
+    body("tags")
+      .optional()
+      .isArray()
+      .withMessage("태그는 Array 이어야 합니다."),
   ],
   asyncHandle(async (req, res) => {
     const errors = validationResult(req);
@@ -104,13 +111,16 @@ app.post(
 app.patch(
   "/products/:id",
   [
-    body("name").optional().notEmpty().withMessage("상품명은 필수입니다."),
-    body("price").optional().isNumeric().withMessage("가격은 숫자여야 합니다."),
+    body("name").optional().notEmpty().withMessage("상품명은 필수값입니다"),
+    body("price")
+      .optional()
+      .isNumeric()
+      .withMessage("가격은 Number 여야 합니다"),
     body("description")
       .optional()
       .notEmpty()
-      .withMessage("상품 설명은 필수입니다."),
-    body("tags").optional().isArray().withMessage("태그는 배열이어야 합니다."),
+      .withMessage("상품 설명은 필수값입니다"),
+    body("tags").optional().isArray().withMessage("태그는 Array 이어야 합니다"),
   ],
   asyncHandle(async (req, res) => {
     const errors = validationResult(req);
@@ -126,7 +136,7 @@ app.patch(
     if (product) {
       res.json(product);
     } else {
-      res.status(404).json({ message: "상품을 찾을 수 없습니다." });
+      res.status(404).json({ message: "해당 상품은 존재하지 않습니다" });
     }
   })
 );
@@ -139,7 +149,7 @@ app.delete(
     if (product) {
       res.status(204).send();
     } else {
-      res.status(404).json({ message: "상품을 찾을 수 없습니다." });
+      res.status(404).json({ message: "해당 상품은 존재하지 않습니다" });
     }
   })
 );
@@ -150,9 +160,9 @@ app.use((err, req, res, next) => {
   if (err.name === "ValidationError") {
     res.status(400).json({ message: err.message });
   } else if (err.name === "CastError") {
-    res.status(400).json({ message: "유효하지 않은 ID 형식입니다." });
+    res.status(400).json({ message: "유효하지 않은 ID입니다" });
   } else {
-    res.status(500).json({ message: "서버 오류입니다." });
+    res.status(500).json({ message: "서버 내부 오류입니다" });
   }
 });
 
