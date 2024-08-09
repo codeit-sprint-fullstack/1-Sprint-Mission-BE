@@ -11,5 +11,9 @@
   "devDependencies": {
     "nodemon": "^3.1.4"
   },
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon main.js",
+    "start": "node main.js"
+  }
 }
