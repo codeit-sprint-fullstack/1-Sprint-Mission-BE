@@ -29,4 +29,10 @@ model Comment {
   updatedAt DateTime @updatedAt
   articleId String
   article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  category  Category
+}
+
+enum Category {
+  MARKET
+  BOARD
 }
