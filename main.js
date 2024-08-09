@@ -1,10 +1,11 @@
-import mongoose from "mongoose";
-import { DATABASE_URL, PORT } from "./env.js";
 import express from "express";
-import Product from "./model/product.js";
+import mongoose from "mongoose";
 import cors from "cors";
 import { body, validationResult } from "express-validator";
+import Product from "./model/product.js";
+import { DATABASE_URL, PORT } from "./env.js";
 
+// Express 앱 설정
 const app = express();
 
 app.use(cors());
@@ -20,15 +21,15 @@ mongoose
   .then(() => console.log("Connected to DB"))
   .catch((err) => console.error("Failed to connect to DB", err));
 
-// 비동기 핸들러
-const asyncHandle = (handle) => (req, res, next) => {
-  handle(req, res, next).catch(next);
+// 비동기 핸들러 유틸리티
+const asyncHandler = (fn) => (req, res, next) => {
+  Promise.resolve(fn(req, res, next)).catch(next);
 };
 
 // 상품 목록 조회
 app.get(
   "/products",
-  asyncHandle(async (req, res) => {
+  asyncHandler(async (req, res) => {
     const {
       order = "descending",
       pageSize = 10,
@@ -40,23 +41,23 @@ app.get(
     } = req.query;
 
     const offset = (parseInt(page) - 1) * parseInt(pageSize);
-    const regex = new RegExp(keyword, "i");
-    const dateQuery = date ? { createdAt: { $gt: new Date(date) } } : {};
-    const orderOption = { createdAt: order === "ascending" ? 1 : -1 };
+    const searchRegex = new RegExp(keyword, "i");
+    const dateFilter = date ? { createdAt: { $gt: new Date(date) } } : {};
+    const sortOrder = order === "ascending" ? 1 : -1;
 
     const [products, totalCount] = await Promise.all([
       Product.find({
-        $or: [{ name: regex }, { description: regex }],
+        $or: [{ name: searchRegex }, { description: searchRegex }],
         price: { $gte: Number(minPrice), $lte: Number(maxPrice) },
-        ...dateQuery,
+        ...dateFilter,
       })
-        .sort(orderOption)
+        .sort({ createdAt: sortOrder })
         .skip(offset)
         .limit(parseInt(pageSize)),
       Product.countDocuments({
-        $or: [{ name: regex }, { description: regex }],
+        $or: [{ name: searchRegex }, { description: searchRegex }],
         price: { $gte: Number(minPrice), $lte: Number(maxPrice) },
-        ...dateQuery,
+        ...dateFilter,
       }),
     ]);
 
@@ -70,12 +71,12 @@ app.get(
 // 상품 상세 조회
 app.get(
   "/products/:id",
-  asyncHandle(async (req, res) => {
+  asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
       res.json(product);
     } else {
-      res.status(404).json({ message: "해당 상품은 존재하지 않습니다" });
+      res.status(404).json({ message: "상품을 찾을 수 없습니다." });
     }
   })
 );
@@ -84,26 +85,23 @@ app.get(
 app.post(
   "/products",
   [
-    body("name").notEmpty().withMessage("상품명은 필수값입니다"),
-    body("price").isNumeric().withMessage("가격은 Number 여야 합니다."),
+    body("name").notEmpty().withMessage("상품명은 필수필드 입니다."),
+    body("price").isNumeric().withMessage("가격은 숫자여야 합니다."),
     body("description")
       .optional()
       .notEmpty()
-      .withMessage("상품 설명은 필수값입니다"),
-    body("tags")
-      .optional()
-      .isArray()
-      .withMessage("태그는 Array 이어야 합니다."),
+      .withMessage("상품 설명은 필수입니다."),
+    body("tags").optional().isArray().withMessage("태그는 배열이어야 합니다."),
   ],
-  asyncHandle(async (req, res) => {
+  asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).json(product);
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+    res.status(201).json(newProduct);
   })
 );
 
@@ -111,32 +109,29 @@ app.post(
 app.patch(
   "/products/:id",
   [
-    body("name").optional().notEmpty().withMessage("상품명은 필수값입니다"),
-    body("price")
-      .optional()
-      .isNumeric()
-      .withMessage("가격은 Number 여야 합니다"),
+    body("name").optional().notEmpty().withMessage("상품명은 필수필드 입니다."),
+    body("price").optional().isNumeric().withMessage("가격은 숫자여야 합니다."),
     body("description")
       .optional()
       .notEmpty()
-      .withMessage("상품 설명은 필수값입니다"),
-    body("tags").optional().isArray().withMessage("태그는 Array 이어야 합니다"),
+      .withMessage("상품 설명은 필수입니다."),
+    body("tags").optional().isArray().withMessage("태그는 배열이어야 합니다."),
   ],
-  asyncHandle(async (req, res) => {
+  asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const product = await Product.findByIdAndUpdate(
+    const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       { ...req.body, updatedAt: new Date() },
       { new: true, runValidators: true }
     );
-    if (product) {
-      res.json(product);
+    if (updatedProduct) {
+      res.json(updatedProduct);
     } else {
-      res.status(404).json({ message: "해당 상품은 존재하지 않습니다" });
+      res.status(404).json({ message: "상품을 찾을 수 없습니다." });
     }
   })
 );
@@ -144,28 +139,31 @@ app.patch(
 // 상품 삭제
 app.delete(
   "/products/:id",
-  asyncHandle(async (req, res) => {
-    const product = await Product.findByIdAndDelete(req.params.id);
-    if (product) {
+  asyncHandler(async (req, res) => {
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    if (deletedProduct) {
       res.status(204).send();
     } else {
-      res.status(404).json({ message: "해당 상품은 존재하지 않습니다" });
+      res.status(404).json({ message: "상품을 찾을 수 없습니다." });
     }
   })
 );
 
 // 에러 처리 미들웨어
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error(`[${new Date().toISOString()}] ${err.stack}`);
   if (err.name === "ValidationError") {
-    res.status(400).json({ message: err.message });
+    res
+      .status(400)
+      .json({ message: "잘못된 요청입니다. 필수 필드를 확인해주세요." });
   } else if (err.name === "CastError") {
-    res.status(400).json({ message: "유효하지 않은 ID입니다" });
+    res.status(400).json({ message: "유효하지 않은 ID입니다." });
   } else {
     res
       .status(500)
-      .json({ message: "서버 내부 오류입니다, 관리자에게 문의해주세요" });
+      .json({ message: "서버 내부 오류입니다. 관리자에게 문의해주세요." });
   }
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// 서버 실행
+app.listen(PORT, () => console.log(`서버가 ${PORT} 포트에서 실행 중입니다.`));
