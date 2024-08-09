@@ -5,7 +5,7 @@ const router = Router();
 // 상품 삭제 API
 router.delete("/:_id", async (req, res) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id);
+    const product = await Product.findByIdAndDelete(req.params._id);
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
