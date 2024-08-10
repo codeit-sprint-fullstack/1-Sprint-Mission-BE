@@ -132,6 +132,20 @@ app.delete('/api/products/:id', async (req, res) => {
 
 /*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ미션 7 게시글 APIㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
 
+// 게시글 목록 조회 API
+app.get('/api/articles', async (req, res) => {
+  const { sort = 'recent', offset = 0, limit = 10, search = '' } = req.query;
+
+  try {
+    // 정렬 옵션 설정
+    const orderBy = sort === 'recent' ? { createdAt: 'desc' } : {};
+
+    res.status(200).send(articles);
+  } catch (error) {
+    console.error('게시글 목록 조회 중 오류 발생:', error);
+    res.status(500).send({ error: '게시글 목록을 불러오는 데 실패했습니다.' });
+  }
+});
 
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
