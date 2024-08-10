@@ -12,7 +12,6 @@ router.post("/products/:mongoProductId/comments", async (req, res) => {
     const { mongoProductId } = req.params;
     const { content } = req.body;
 
-    // MongoDB에서 상품 정보 가져오기
     const response = await axios.get(`${baseUrl}/${mongoProductId}`);
     const product = response.data;
 
@@ -20,11 +19,10 @@ router.post("/products/:mongoProductId/comments", async (req, res) => {
       return res.status(404).json({ error: "Product not found in MongoDB" });
     }
 
-    // PostgreSQL에 상품 댓글 저장
     const productComment = await prisma.productComment.create({
       data: {
         content,
-        productId: mongoProductId, // MongoDB 상품 ID 저장
+        productId: mongoProductId,
       },
     });
 
@@ -40,10 +38,9 @@ router.get("/products/:mongoProductId/comments", async (req, res) => {
   try {
     const { mongoProductId } = req.params;
 
-    // PostgreSQL에서 상품 ID로 댓글 조회
     const comments = await prisma.productComment.findMany({
       where: { productId: mongoProductId },
-      orderBy: { createdAt: "desc" }, // 최신순 정렬
+      orderBy: { createdAt: "desc" },
     });
 
     res.status(200).json(comments);
@@ -82,11 +79,11 @@ router.patch("/products/:mongoProductId/comments/:id", async (req, res) => {
   }
 });
 
+// 댓글 삭제
 router.delete("/products/:mongoProductId/comments/:id", async (req, res) => {
   try {
     const { mongoProductId, id } = req.params;
 
-    // `mongoProductId`와 `id`가 일치하는 댓글을 찾습니다.
     const comment = await prisma.productComment.findFirst({
       where: {
         id: parseInt(id),
@@ -98,12 +95,11 @@ router.delete("/products/:mongoProductId/comments/:id", async (req, res) => {
       return res.status(404).json({ error: "Comment not found" });
     }
 
-    // 댓글을 삭제합니다.
     await prisma.productComment.delete({
-      where: { id: comment.id }, // 일치하는 `id`로 삭제
+      where: { id: comment.id },
     });
 
-    res.status(204).end(); // No Content 응답
+    res.status(204).end();
   } catch (error) {
     console.error("Error deleting comment:", error);
     res.status(500).json({ error: error.message });
