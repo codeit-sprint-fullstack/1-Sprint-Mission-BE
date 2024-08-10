@@ -150,6 +150,20 @@ app.get('/api/articles', async (req, res) => {
       }
     : {};
 
+    // 페이지네이션 및 검색 적용
+    const articles = await prisma.article.findMany({
+      where,
+      orderBy,
+      skip: Number(offset),
+      take: Number(limit),
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        createdAt: true,
+      }
+    });
+
     res.status(200).send(articles);
   } catch (error) {
     console.error('게시글 목록 조회 중 오류 발생:', error);
