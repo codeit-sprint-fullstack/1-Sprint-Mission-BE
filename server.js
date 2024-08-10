@@ -273,14 +273,19 @@ app.delete('/api/articles/:id', async (req, res) => {
 
 // 자유게시판 댓글 목록 조회 API
 app.get('/api/board/comments', async (req, res) => {
-  const { offset = 0, limit = 15 } = req.query;
+  const { cursor = '', limit = 20 } = req.query;
 
   try {
+    // cursor가 있는 경우, cursor보다 큰 id를 가진 댓글을 가져옴
+    let query = cursor ? { id: { gt: parseInt(cursor) } } : {};
+
     const comments = await prisma.comment.findMany({
-      orderBy: { id: 'asc' }, // 오름차순 정렬
-      skip: Number(offset),  
-      take: Number(limit),    
-      select: { id: true, content: true, createdAt: true, postId: true }
+      where: {
+        ...query,
+      },
+      orderBy: { id: 'asc' }, // id를 기준으로 오름차순 정렬
+      take: Number(limit),
+      select: { id: true, content: true, createdAt: true, postId: true}
     });
 
     res.status(200).send(comments);
