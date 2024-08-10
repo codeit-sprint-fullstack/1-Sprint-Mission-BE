@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: 'https://rad-sundae-14d67d.netlify.app'
+  origin: 'https://thenewestfandamarket.netlify.app'
 }));
 
 app.use(express.json());
