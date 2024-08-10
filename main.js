@@ -1,15 +1,40 @@
-import { PrismaClient } from "@prisma/client";
+import dotenv from "dotenv";
 import express from "express";
-import cors from "cors";
+import { PrismaClient } from "@prisma/client";
 
-const app = express();
-const corsOptions = {
-  origin: process.env.DATABASE_URL,
-};
-app.use(cors(corsOptions));
-app.use(express.json());
+dotenv.config();
+
 const prisma = new PrismaClient();
+const app = express();
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Server started on port 3000");
+app.use(express.json());
+
+app.get("/article", async (req, res) => {
+  try {
+    const articles = await prisma.article.findMany();
+    res.json(articles);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
+  }
+});
+
+app.post("/article", async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    const article = await prisma.article.create({
+      data: {
+        title,
+        content,
+      },
+    });
+    res.json(article);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
+  }
+});
+
+app.listen(3000, () => {
+  console.log("Server is running");
 });

@@ -9,11 +9,9 @@ datasource db {
 }
 
 model Article{
-  id        String      @id
+  id        String      @id @default(uuid())
   title     String
   content   String  
   createAt  DateTime    @default(now())
   updatedAt DateTime    @updatedAt
-  
-
 }

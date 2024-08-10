@@ -1,1 +1,4 @@
-GET http://localhost:5432/
+GET https://articles-2bks.onrender.com/
+
+
+POST
