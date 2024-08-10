@@ -375,6 +375,8 @@ app.delete('/api/:boardType/comments/:id', async (req, res) => {
   }
 });
 
+/*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ미션 7 중고마켓 게시글 댓글 APIㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+
 // 중고마켓 댓글 목록 조회 API
 app.get('/api/market/comments', async (req, res) => {
   const { cursor = '', limit = 15 } = req.query;
