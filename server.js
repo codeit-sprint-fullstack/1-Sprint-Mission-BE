@@ -5,6 +5,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Product from './models/Product.js';
 import cors from 'cors';
+import { PrismaClient } from '@prisma/client'; // Prisma 클라이언트 설정
+
+const prisma = new PrismaClient();
 
 const app = express();
 app.use(express.json());
@@ -126,5 +129,9 @@ app.delete('/api/products/:id', async (req, res) => {
       res.status(500).send({ error: '상품을 삭제하는 데 실패했습니다' });
     }
   });
+
+/*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ미션 7 게시글 APIㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+
+
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
