@@ -108,13 +108,13 @@ app.delete("/article/:id", async (req, res) => {
 });
 
 app.post("/article/:id/comment", async (req, res) => {
-  const { articleId } = req.params;
+  const { id } = req.params;
   const { content } = req.body;
 
   try {
     const article = await prisma.article.findUnique({
       where: {
-        id: articleId,
+        id: id,
       },
     });
     if (!article) {
@@ -124,7 +124,7 @@ app.post("/article/:id/comment", async (req, res) => {
     const comment = await prisma.articleComment.create({
       data: {
         content,
-        articleId,
+        articleId: id,
       },
     });
     res.status(201).json(comment);
