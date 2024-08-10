@@ -197,4 +197,17 @@ app.get('/api/articles/:id', async (req, res) => {
   }
 });
 
+// 게시글 등록 API
+app.post('/api/articles', async (req, res) => {
+  const { title, content } = req.body;
+
+  // 데이터 검증
+  if (!title || !content) {
+    return res.status(400).send({ error: '게시글 제목과 내용은 필수로 입력해주세요.' });
+  }
+
+
+});
+
+
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
