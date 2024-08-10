@@ -1,4 +1,28 @@
-GET https://articles-2bks.onrender.com/
+
+### 게시글 조회
+GET https://articles-2bks.onrender.com/article
 
 
-POST
+### 게시글 등록
+POST https://articles-2bks.onrender.com/article
+Content-Type: application/json
+
+{
+  "title" : "title 테스트 입니다.",
+  "content" : "content 테스트 입니다."
+}
+
+### 게시글 수정
+
+PATCH https://articles-2bks.onrender.com/article/8824bdb0-e612-495c-ae01-a78b2a217113
+Content-Type: application/json
+
+{
+  "title" : "title 변경 테스트 입니다.",
+  "content" : "content 변경 테스트 입니다."
+}
+### 게시글 삭제
+
+DELETE https://articles-2bks.onrender.com/article/8824bdb0-e612-495c-ae01-a78b2a217113
+
+

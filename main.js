@@ -35,6 +35,41 @@ app.post("/article", async (req, res) => {
   }
 });
 
+app.patch("/article/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const article = await prisma.article.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        content,
+      },
+    });
+    res.json(article);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
+  }
+});
+
+app.delete("/article/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const article = await prisma.article.delete({
+      where: {
+        id,
+      },
+    });
+    res.json(article);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
+  }
+});
+
 app.listen(3000, () => {
   console.log("Server is running");
 });
