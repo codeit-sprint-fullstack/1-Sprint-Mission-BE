@@ -29,6 +29,8 @@ model Comment {
   boardType boardType @default(board)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  @@unique([id, boardType])
 }
 
 // 자유게시판 댓글인지 중고마켓 댓글인지 'board', 'market' 로 구분
