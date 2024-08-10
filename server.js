@@ -282,6 +282,7 @@ app.get('/api/board/comments', async (req, res) => {
     const comments = await prisma.comment.findMany({
       where: {
         ...query,
+        boardType: 'board'
       },
       orderBy: { id: 'asc' }, // id를 기준으로 오름차순 정렬
       take: Number(limit),
