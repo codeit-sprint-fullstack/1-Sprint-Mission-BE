@@ -248,4 +248,25 @@ app.patch('/api/articles/:id', async (req, res) => {
   }
 });
 
+// 게시글 삭제 API
+app.delete('/api/articles/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedArticle = await prisma.article.delete({
+      where: { id: parseInt(id) },
+    });
+
+    res.status(200).send({ message: '게시글이 성공적으로 삭제되었습니다.' });
+  } catch (error) {
+    //게시글 못 찾을때
+    if (!deletedArticle) { 
+      return res.status(404).send({ message: '게시글을 찾을 수 없습니다.' });
+    }
+    
+    console.error('게시글 삭제 중 오류 발생:', error);
+    res.status(500).send({ error: '게시글을 삭제하는 데 실패했습니다.' });
+  }
+});
+
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
