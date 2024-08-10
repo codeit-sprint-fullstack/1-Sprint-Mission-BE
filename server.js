@@ -310,6 +310,7 @@ app.post('/api/board/comments', async (req, res) => {
       data: {
         content,
         postId, 
+        boardType: 'board'
       },
     });
 
