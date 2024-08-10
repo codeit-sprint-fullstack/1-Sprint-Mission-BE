@@ -269,4 +269,27 @@ app.delete('/api/articles/:id', async (req, res) => {
   }
 });
 
+/*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ미션 7 자유게시판 댓글 APIㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+
+// 자유게시판 댓글 목록 조회 API
+app.get('/api/board/comments', async (req, res) => {
+  const { offset = 0, limit = 15 } = req.query;
+
+  try {
+    const comments = await prisma.comment.findMany({
+      orderBy: { id: 'asc' }, // 오름차순 정렬
+      skip: Number(offset),  
+      take: Number(limit),    
+      select: { id: true, content: true, createdAt: true, postId: true }
+    });
+
+    res.status(200).send(comments);
+  } catch (error) {
+    console.error('댓글 목록 조회 중 오류 발생:', error);
+    res.status(500).send({ error: '댓글 목록을 불러오는 데 실패했습니다.' });
+  }
+});
+
+
+
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
