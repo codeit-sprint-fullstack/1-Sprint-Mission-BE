@@ -1,1 +1,7 @@
-# Sprint-Mission 7
+## start
+
+node index.js
+
+## test
+
+postman
