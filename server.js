@@ -137,8 +137,18 @@ app.get('/api/articles', async (req, res) => {
   const { sort = 'recent', offset = 0, limit = 10, search = '' } = req.query;
 
   try {
-    // 정렬 옵션 설정
+    // 정렬 옵션 설정(최신순)
     const orderBy = sort === 'recent' ? { createdAt: 'desc' } : {};
+
+    // 검색 조건 설정
+    const where = search
+    ? {
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } },
+          { content: { contains: search, mode: 'insensitive' } }
+        ]
+      }
+    : {};
 
     res.status(200).send(articles);
   } catch (error) {
