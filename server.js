@@ -353,13 +353,14 @@ app.patch('/api/:boardType/comments/:id', async (req, res) => {
 });
 
 // 자유게시판 댓글 삭제 API
-app.delete('/api/comments/:id', async (req, res) => {
-  const { id } = req.params;
+app.delete('/api/:boardType/comments/:id', async (req, res) => {
+  const { id, boardType } = req.params;
 
   try {
     const deletedComment = await prisma.comment.deleteMany({
       where: { 
         id: parseInt(id),
+        boardType: boardType
       },
     });
 
