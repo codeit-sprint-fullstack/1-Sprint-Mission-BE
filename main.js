@@ -39,6 +39,12 @@ app.get("/article", async (req, res) => {
       },
       skip: (page - 1) * pageSize,
       take: parseInt(pageSize),
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        createAt: true,
+      },
     });
 
     const totalArticles = await prisma.article.count({ where: conditions });
@@ -132,6 +138,83 @@ app.post("/article/:id/comment", async (req, res) => {
     console.error(e);
     res.status(500).json({ error: "internal server error" });
   }
+});
+
+app.patch("/article/:id/comment/:commentId", async (req, res) => {
+  const { id, commentId } = req.params;
+  const { content } = req.body;
+  try {
+    const article = await prisma.article.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!article) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+
+    const comment = await prisma.articleComment.update({
+      where: {
+        id: commentId,
+      },
+      data: {
+        content,
+      },
+    });
+    res.status(200).json(comment);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
+  }
+});
+
+app.delete("/article/:id/comment/:commentId", async (req, res) => {
+  const { id, commentId } = req.params;
+  try {
+    const article = await prisma.article.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!article) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+
+    const comment = await prisma.articleComment.delete({
+      where: {
+        id: commentId,
+      },
+    });
+    res.status(200).json(comment);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
+  }
+});
+
+app.get("/article/:id/comment", async (req, res) => {
+  const { id } = req.params;
+  const { cursor, limit = 10 } = req.query;
+  const comments = await prisma.articleComment.findMany({
+    where: {
+      articleId: id,
+    },
+    take: parseInt(limit),
+    skip: cursor ? 1 : 0,
+    cursor: cursor ? { id: cursor } : undefined,
+    orderBy: {
+      createAt: "asc",
+    },
+    select: {
+      id: true,
+      content: true,
+      createAt: true,
+    },
+  });
+
+  const nextCursor =
+    comments.length > 0 ? comments[comments.length - 1].id : null;
+  res.status(200).json({ data: comments, nextCursor });
 });
 
 app.listen(3000, () => {
