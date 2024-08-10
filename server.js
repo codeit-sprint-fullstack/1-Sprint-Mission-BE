@@ -400,5 +400,28 @@ app.get('/api/market/comments', async (req, res) => {
   }
 });
 
+// 중고마켓 댓글 등록 API
+app.post('/api/market/comments', async (req, res) => {
+  const { content, postId } = req.body;
+
+  if (!content || !postId) {
+    return res.status(400).send({ error: '댓글 내용을 입력해주세요.' });
+  }
+
+  try {
+    const newComment = await prisma.comment.create({
+      data: {
+        content,
+        postId, 
+        boardType: 'market'
+      },
+    });
+
+    res.status(201).send(newComment);
+  } catch (error) {
+    console.error('댓글 등록 중 오류 발생:', error);
+    res.status(500).send({ error: '댓글 등록을 실패했습니다.' });
+  }
+});
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
