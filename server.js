@@ -220,9 +220,32 @@ app.post('/api/articles', async (req, res) => {
     console.error('게시글 등록 중 오류 발생:', error);
     res.status(500).send({ error: '게시글을 등록하는 데 실패했습니다' });
   }
-
-
 });
 
+// 게시글 수정 API
+app.patch('/api/articles/:id', async (req, res) => {
+  const { id } = req.params;
+  const { title, content, likeCount } = req.body;
+
+  try {
+    const updatedArticle = await prisma.article.update({
+      where: { id: parseInt(id) },
+      data: {
+        title,
+        content,
+        likeCount,
+      },
+    });
+
+    if (!updatedArticle) {
+      return res.status(404).send({ message: '게시글을 찾을 수 없습니다.' });
+    }
+
+    res.status(200).send(updatedArticle);
+  } catch (error) {
+    console.error('게시글 수정 중 오류 발생:', error);
+    res.status(500).send({ error: '게시글을 수정하는 데 실패했습니다.' });
+  }
+});
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
