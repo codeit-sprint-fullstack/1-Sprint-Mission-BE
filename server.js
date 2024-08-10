@@ -321,8 +321,9 @@ app.post('/api/board/comments', async (req, res) => {
   }
 });
 
-app.patch('/api/comments/:id', async (req, res) => {
-  const { id } = req.params;
+// 자유게시판 댓글 수정 API
+app.patch('/api/:boardType/comments/:id', async (req, res) => {
+  const { id, boardType } = req.params;
   const { content } = req.body;
 
   if (!content) {
@@ -331,7 +332,12 @@ app.patch('/api/comments/:id', async (req, res) => {
 
   try {
     const updatedComment = await prisma.comment.update({
-      where: { id: parseInt(id) },
+      where: {
+        id_boardType: {
+          id: parseInt(id),
+          boardType: boardType
+        }
+      },
       data: { content },
     });
 
