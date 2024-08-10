@@ -375,6 +375,30 @@ app.delete('/api/:boardType/comments/:id', async (req, res) => {
   }
 });
 
+// 중고마켓 댓글 목록 조회 API
+app.get('/api/market/comments', async (req, res) => {
+  const { cursor = '', limit = 15 } = req.query;
+
+  try {
+    // cursor가 있는 경우, cursor보다 큰 id를 가진 댓글을 가져옵니다.
+    let query = cursor ? { id: { gt: parseInt(cursor) } } : {};
+
+    const comments = await prisma.comment.findMany({
+      where: {
+        ...query,
+        boardType: 'market'
+      },
+      orderBy: { id: 'asc' }, // id를 기준으로 오름차순 정렬
+      take: Number(limit),
+      select: { id: true, content: true, createdAt: true, postId: true}
+    });
+
+    res.status(200).send( comments );
+  } catch (error) {
+    console.error('댓글 목록 조회 중 오류 발생:', error);
+    res.status(500).send({ error: '댓글 목록을 불러오는 데 실패했습니다.' });
+  }
+});
 
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
