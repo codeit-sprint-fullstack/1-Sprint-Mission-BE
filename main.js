@@ -35,7 +35,7 @@ app.get("/article", async (req, res) => {
     const articles = await prisma.article.findMany({
       where: conditions,
       orderBy: {
-        createAt: "rescent",
+        createAt: "asc",
       },
       skip: (page - 1) * pageSize,
       take: parseInt(pageSize),
