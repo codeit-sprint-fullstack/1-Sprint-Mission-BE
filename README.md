@@ -42,9 +42,9 @@ DELETE /articles/:id
 
 **자유게시판 댓글**
 
-GET /articleComments
+GET /articleComments/:articleId
 
-POST /articleComments
+POST /articleComments/:articleId
 
 PATCH /articleComments/:id
 
