@@ -34,3 +34,16 @@ Content-Type: application/json
 {
   "content" : "comment 테스트 입니다."
 }
+### 댓글 수정
+PATCH https://articles-2bks.onrender.com/article/6f664bcf-4573-4e25-8167-60773dcaff3e/comment/94b10748-3cb3-4181-9780-04de0f7a7bd0
+Content-Type: application/json
+
+{
+  "content" : "PATCH comment 테스트 입니다."
+}
+
+### 댓글 조회
+GET https://articles-2bks.onrender.com/article/6f664bcf-4573-4e25-8167-60773dcaff3e/comment
+
+### 댓글 삭제
+DELETE https://articles-2bks.onrender.com/article/6f664bcf-4573-4e25-8167-60773dcaff3e/comment/94b10748-3cb3-4181-9780-04de0f7a7bd0
