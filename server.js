@@ -206,6 +206,21 @@ app.post('/api/articles', async (req, res) => {
     return res.status(400).send({ error: '게시글 제목과 내용은 필수로 입력해주세요.' });
   }
 
+  try {
+    const newArticle = await prisma.article.create({
+      data: {
+        title,
+        content,
+      },
+    });
+
+    res.status(201).send(newArticle);
+
+  } catch (error) {
+    console.error('게시글 등록 중 오류 발생:', error);
+    res.status(500).send({ error: '게시글을 등록하는 데 실패했습니다' });
+  }
+
 
 });
 
