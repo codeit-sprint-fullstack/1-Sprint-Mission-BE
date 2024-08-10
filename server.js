@@ -344,6 +344,28 @@ app.patch('/api/comments/:id', async (req, res) => {
   }
 });
 
+// 자유게시판 댓글 삭제 API
+app.delete('/api/comments/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedComment = await prisma.comment.deleteMany({
+      where: { 
+        id: parseInt(id),
+      },
+    });
+
+    if (deletedComment.count === 0) {
+      return res.status(404).send({ message: '댓글을 찾을 수 없습니다.' });
+    }
+
+    res.status(200).send({ message: '댓글이 성공적으로 삭제되었습니다.' });
+  } catch (error) {
+    console.error('댓글 삭제 중 오류 발생:', error);
+    res.status(500).send({ error: '댓글 삭제를 실패했습니다.' });
+  }
+});
+
 
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
