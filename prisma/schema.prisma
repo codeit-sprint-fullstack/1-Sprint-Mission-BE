@@ -26,6 +26,13 @@ model Comment {
   id        Int       @id @default(autoincrement())
   content   String
   postId    Int
+  boardType boardType @default(board)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+// 자유게시판 댓글인지 중고마켓 댓글인지 'board', 'market' 로 구분
+enum boardType {
+  board
+  market
 }
