@@ -8,10 +8,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Article{
-  id        String      @id @default(uuid())
+model Article {
+  id        String           @id @default(uuid())
   title     String
   content   String  
-  createAt  DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  createAt  DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  comments  ArticleComment[] 
+}
+
+model ArticleComment {
+  id        String   @id @default(uuid())
+  content   String
+  createAt  DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId String   
 }

@@ -35,7 +35,7 @@ app.get("/article", async (req, res) => {
     const articles = await prisma.article.findMany({
       where: conditions,
       orderBy: {
-        createAt: "desc",
+        createAt: "rescent",
       },
       skip: (page - 1) * pageSize,
       take: parseInt(pageSize),
@@ -53,6 +53,22 @@ app.get("/article", async (req, res) => {
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/article", async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    const article = await prisma.article.create({
+      data: {
+        title,
+        content,
+      },
+    });
+    res.json(article);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
   }
 });
 
@@ -85,6 +101,33 @@ app.delete("/article/:id", async (req, res) => {
       },
     });
     res.json(article);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
+  }
+});
+
+app.post("/article/:id/comment", async (req, res) => {
+  const { articleId } = req.params;
+  const { content } = req.body;
+
+  try {
+    const article = await prisma.article.findUnique({
+      where: {
+        id: articleId,
+      },
+    });
+    if (!article) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+
+    const comment = await prisma.articleComment.create({
+      data: {
+        content,
+        articleId,
+      },
+    });
+    res.satus(201).json(comment);
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "internal server error" });
