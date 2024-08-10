@@ -295,6 +295,55 @@ app.get('/api/board/comments', async (req, res) => {
   }
 });
 
+// 자유게시판 댓글 등록 API
+app.post('/api/board/comments', async (req, res) => {
+  const { content, postId } = req.body;
+
+  // 데이터 검증
+  if (!content || !postId) {
+    return res.status(400).send({ error: '댓글 내용을 입력해주세요.' });
+  }
+
+  try {
+    const newComment = await prisma.comment.create({
+      data: {
+        content,
+        postId, 
+      },
+    });
+
+    res.status(201).send(newComment);
+  } catch (error) {
+    console.error('댓글 등록 중 오류 발생:', error);
+    res.status(500).send({ error: '댓글 등록을 실패했습니다.' });
+  }
+});
+
+app.patch('/api/comments/:id', async (req, res) => {
+  const { id } = req.params;
+  const { content } = req.body;
+
+  if (!content) {
+    return res.status(400).send({ error: '댓글 내용을 입력해주세요.' });
+  }
+
+  try {
+    const updatedComment = await prisma.comment.update({
+      where: { id: parseInt(id) },
+      data: { content },
+    });
+
+    res.status(200).send(updatedComment);
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).send({ message: '댓글을 찾을 수 없습니다.' });
+    }
+
+    console.error('댓글 수정 중 오류 발생:', error);
+    res.status(500).send({ error: '댓글 수정을 실패했습니다.' });
+  }
+});
+
 
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
