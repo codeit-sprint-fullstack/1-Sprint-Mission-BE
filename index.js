@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use("/articles", articleRoutes);
 app.use("/articleComments", commentRoutes);
-app.use("/api", productCommentRoutes);
+app.use("/products", productCommentRoutes);
 app.use("/products", products);
 
 const mongoURI = process.env.MONGO_URI;

@@ -7,7 +7,7 @@ const router = express.Router();
 const baseUrl = "https://thrift-shop.onrender.com/products";
 
 // 상품 댓글 등록 API
-router.post("/products/:mongoProductId/comments", async (req, res) => {
+router.post("/:mongoProductId/comments", async (req, res) => {
   try {
     const { mongoProductId } = req.params;
     const { content } = req.body;
@@ -34,7 +34,7 @@ router.post("/products/:mongoProductId/comments", async (req, res) => {
 });
 
 // 상품 댓글 목록 조회 API
-router.get("/products/:mongoProductId/comments", async (req, res) => {
+router.get("/:mongoProductId/comments", async (req, res) => {
   try {
     const { mongoProductId } = req.params;
 
@@ -51,7 +51,7 @@ router.get("/products/:mongoProductId/comments", async (req, res) => {
 });
 
 // 댓글 수정
-router.patch("/products/:mongoProductId/comments/:id", async (req, res) => {
+router.patch("/:mongoProductId/comments/:id", async (req, res) => {
   try {
     const { mongoProductId, id } = req.params;
     const { content } = req.body;
@@ -80,7 +80,7 @@ router.patch("/products/:mongoProductId/comments/:id", async (req, res) => {
 });
 
 // 댓글 삭제
-router.delete("/products/:mongoProductId/comments/:id", async (req, res) => {
+router.delete("/:mongoProductId/comments/:id", async (req, res) => {
   try {
     const { mongoProductId, id } = req.params;
 
