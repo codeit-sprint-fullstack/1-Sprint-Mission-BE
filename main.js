@@ -10,52 +10,39 @@ const app = express();
 app.use(express.json());
 
 app.get("/article", async (req, res) => {
-  const { page = 1, pageSize = 10 } = req.query;
-  const keyword = req.query.keyword || "";
-  try {
-    const articles = await prisma.article.findMany({
-      where: {
-        OR: [
-          {
-            title: {
-              contains: keyword,
-              mode: "insensitive",
-            },
-          },
+  const { keyword, page = 1, pageSize = 10 } = req.query;
 
-          {
-            content: {
-              contains: keyword,
-              mode: "insensitive",
+  try {
+    const conditions = keyword
+      ? {
+          OR: [
+            {
+              title: {
+                contains: keyword,
+                mode: "insensitive",
+              },
             },
-          },
-        ],
-      },
+            {
+              content: {
+                contains: keyword,
+                mode: "insensitive",
+              },
+            },
+          ],
+        }
+      : {};
+
+    const articles = await prisma.article.findMany({
+      where: conditions,
       orderBy: {
-        createdAt: "desc",
+        createAt: "desc",
       },
       skip: (page - 1) * pageSize,
-      take: pageSize,
+      take: parseInt(pageSize),
     });
 
-    const totalArticles = await prisma.article.count({
-      where: {
-        OR: [
-          {
-            title: {
-              contains: keyword,
-              mode: "insensitive",
-            },
-          },
-          {
-            content: {
-              contains: keyword,
-              mode: "insensitive",
-            },
-          },
-        ],
-      },
-    });
+    const totalArticles = await prisma.article.count({ where: conditions });
+
     res.json({
       data: articles,
       total: totalArticles,
@@ -65,23 +52,7 @@ app.get("/article", async (req, res) => {
     });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: "internal server error" });
-  }
-});
-
-app.post("/article", async (req, res) => {
-  try {
-    const { title, content } = req.body;
-    const article = await prisma.article.create({
-      data: {
-        title,
-        content,
-      },
-    });
-    res.json(article);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
