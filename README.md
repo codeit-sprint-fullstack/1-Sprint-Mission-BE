@@ -22,8 +22,6 @@ DELETE /products/:id
 
 GET /products/:mongoProductId/comments
 
-GET /products/:mongoProductId/comments/:id
-
 POST /products/:mongoProductId/comments
 
 PATCH /products/:mongoProductId/comments/:id
@@ -45,8 +43,6 @@ DELETE /articles/:id
 **자유게시판 댓글**
 
 GET /articleComments
-
-GET /articleComments/:id
 
 POST /articleComments
 
