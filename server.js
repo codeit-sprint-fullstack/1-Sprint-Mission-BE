@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: 'https://minminmarket.netlify.app'
+  origin: 'https://rimmarket.netlify.app'
 }));
 
 app.use(express.json());
