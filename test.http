@@ -28,4 +28,9 @@ DELETE https://articles-2bks.onrender.com/article/8824bdb0-e612-495c-ae01-a78b2a
 
 
 ### 댓글 추가
-POST https://articles-2bks.onrender.com/
+POST https://articles-2bks.onrender.com/article/b7df0d49-8bb3-43fc-af27-5fe98cb8edc1/comment
+Content-Type: application/json
+
+{
+  "content" : "comment 테스트 입니다."
+}

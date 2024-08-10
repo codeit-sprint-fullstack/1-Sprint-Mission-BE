@@ -127,7 +127,7 @@ app.post("/article/:id/comment", async (req, res) => {
         articleId,
       },
     });
-    res.satus(201).json(comment);
+    res.status(201).json(comment);
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "internal server error" });
