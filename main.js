@@ -10,9 +10,59 @@ const app = express();
 app.use(express.json());
 
 app.get("/article", async (req, res) => {
+  const { page = 1, pageSize = 10 } = req.query;
+  const keyword = req.query.keyword || "";
   try {
-    const articles = await prisma.article.findMany();
-    res.json(articles);
+    const articles = await prisma.article.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: keyword,
+              mode: "insensitive",
+            },
+          },
+
+          {
+            content: {
+              contains: keyword,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+
+    const totalArticles = await prisma.article.count({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: keyword,
+              mode: "insensitive",
+            },
+          },
+          {
+            content: {
+              contains: keyword,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+    });
+    res.json({
+      data: articles,
+      total: totalArticles,
+      page: parseInt(page),
+      pageSize: parseInt(pageSize),
+      totalPages: Math.ceil(totalArticles / pageSize),
+    });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "internal server error" });
