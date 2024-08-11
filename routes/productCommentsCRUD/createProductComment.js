@@ -8,7 +8,7 @@ const router = express.Router();
 const baseUrl = "https://thrift-shop.onrender.com/products";
 
 router.post(
-  "/:mongoProductId/comments",
+  "/:mongoProductId",
   asyncHandler(async (req, res) => {
     const { mongoProductId } = req.params;
     const { content } = req.body;

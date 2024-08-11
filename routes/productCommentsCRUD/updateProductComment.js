@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 router.patch(
-  "/:mongoProductId/comments/:id",
+  "/:mongoProductId/:id",
   asyncHandler(async (req, res) => {
     const { mongoProductId, id } = req.params;
     const { content } = req.body;

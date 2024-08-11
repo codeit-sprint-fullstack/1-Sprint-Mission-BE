@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 router.delete(
-  "/:mongoProductId/comments/:id",
+  "/:mongoProductId/:id",
   asyncHandler(async (req, res) => {
     const { mongoProductId, id } = req.params;
 

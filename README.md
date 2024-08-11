@@ -24,13 +24,13 @@ DELETE /products/:id
 
 **중고마켓 댓글**
 
-GET /products/:mongoProductId/comments
+GET /products/:mongoProductId
 
-POST /products/:mongoProductId/comments
+POST /products/:mongoProductId
 
-PATCH /products/:mongoProductId/comments/:id
+PATCH /products/:mongoProductId/:id
 
-DELETE /products/:mongoProductId/comments/:id
+DELETE /products/:mongoProductId/:id
 
 **자유게시판**
 
