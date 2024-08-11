@@ -14,7 +14,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cd server && nodemon express.js",
+    "start": "node server/express.js",
     "server": "cd server && nodemon express.js"
   },
   "browserslist": {
