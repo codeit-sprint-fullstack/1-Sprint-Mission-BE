@@ -40,8 +40,9 @@ app.get(
     pagesiZe: 가져 올 갯수
     */
     const order = req.query.order;
-    const pageSize = Number(req.query.pageSize) || 0;
-    const offSet = Number(req.query.offset) || 0;
+    const page = Number(req.query.page) || 1;
+    const pageSize = Number(req.query.pageSize) || 10;
+    const offSet = (page - 1) * pageSize || 0;
     const keyWord = req.query.keyword || "";
 
     const orderOption =
