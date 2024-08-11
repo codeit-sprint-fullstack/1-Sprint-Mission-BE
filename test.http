@@ -1,6 +1,6 @@
 
 ### 게시글 조회
-GET https://articles-2bks.onrender.com/article
+GET https://articles-2bks.onrender.com/article/66b8441c519305ccf5ca1e11
 
 
 ### 게시글 등록
@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 ### 게시글 삭제
 
-DELETE https://articles-2bks.onrender.com/article/8824bdb0-e612-495c-ae01-a78b2a217113
+DELETE https://articles-2bks.onrender.com/article/b7df0d49-8bb3-43fc-af27-5fe98cb8edc1
 
 
 
@@ -47,3 +47,64 @@ GET https://articles-2bks.onrender.com/article/6f664bcf-4573-4e25-8167-60773dcaf
 
 ### 댓글 삭제
 DELETE https://articles-2bks.onrender.com/article/6f664bcf-4573-4e25-8167-60773dcaff3e/comment/94b10748-3cb3-4181-9780-04de0f7a7bd0
+
+
+####################################################
+
+
+
+### 상품조회
+GET http://localhost:3000/product/
+
+### 상세 상품 조회
+GET http://localhost:3000/product/66b8441c519305ccf5ca1e11
+
+### 상품 추가
+POST http://localhost:3000/product
+Content-Type: application/json
+
+{
+  "name" : "여기에 댓글",
+  "description": "댓글  테스트 테스트 테스트",
+  "price" : 300,
+  "tag": "test"
+}
+
+### 수정
+PATCH http://localhost:3000/product/66b04ea33bd0884845ac2da4
+Content-Type: application/json
+
+{
+  "name" : "코딩테스트 변경",
+  "description" : "코딩테스트 변경이다야요요요"
+}
+
+
+### 삭제
+DELETE http://localhost:3000/product/66b854253a0389fcf06d369a
+
+
+
+
+
+### 댓글 추가
+POST http://localhost:3000/product/66b854253a0389fcf06d369a/comment
+Content-Type: application/json
+
+{
+  "content" : "22222 이 내용은 조회 해보는것이다"
+}
+### 댓글 조회
+GET http://localhost:3000/product/66b8441c519305ccf5ca1e11/comment
+
+### 댓글 수정
+
+PATCH http://localhost:3000/product/66b8441c519305ccf5ca1e11/comment/66b84c603a8024345ea57798
+Content-Type: application/json
+
+{
+  "content" : "이 내용을 수정해볼까~"
+}
+
+### 댓글 삭제
+DELETE http://localhost:3000/product/66b8441c519305ccf5ca1e11/comment/66b84c603a8024345ea57798
