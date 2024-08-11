@@ -132,7 +132,7 @@ app.delete(
 );
 
 mongoose
-  .connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(DATABASE_URL)
   .then(() => console.log('Connected to DB'))
   .catch((e) => {
     console.log('err: ' + e);
