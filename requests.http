@@ -1,0 +1,39 @@
+GET http://localhost:3000/tasks
+
+
+###
+
+GET http://localhost:3000/tasks?sort=oldest&count=3
+
+
+###
+
+GET http://localhost:3000/tasks/66b84a40b750775fdf89fd8f
+
+###
+
+POST http://localhost:3000/tasks
+Content-Type: application/json
+
+{
+  "name": "갤럭시 링",
+  "description": "웨어러블 헬스케어 디바이스",
+  "price": "500000",
+  "tags": ["전자제품"]
+}
+
+###
+
+PATCH http://localhost:3000/tasks/21
+Content-Type: application/json
+
+{
+  "name": "삼성 갤럭시 링",
+  "description": "웨어러블 헬스케어 디바이스",
+  "price": "500000",
+  "tags": ["전자제품"]
+}
+
+###
+
+DELETE http://localhost:3000/tasks/21
