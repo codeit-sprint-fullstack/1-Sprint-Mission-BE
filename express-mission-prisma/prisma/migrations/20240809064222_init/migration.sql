@@ -1,0 +1,30 @@
+-- CreateTable
+CREATE TABLE "USER" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "USER_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "NOTICE_BOARD" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "NOTICE_BOARD_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "COMMEND" (
+    "id" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "COMMEND_pkey" PRIMARY KEY ("id")
+);

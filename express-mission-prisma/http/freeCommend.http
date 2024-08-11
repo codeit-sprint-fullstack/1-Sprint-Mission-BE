@@ -1,0 +1,31 @@
+GET  http://localhost:3000/freeCommends
+
+###
+
+GET  http://localhost:3000/freeCommends
+
+###
+
+GET http://localhost:3000/freeCommends/22938169-e14e-4eb4-b2e0-0249d0c874da
+
+###
+
+POST http://localhost:3000/freeCommends
+Content-Type: application/json
+
+{
+    "content": ""
+}
+
+###
+
+PATCH http://localhost:3000/freeCommends/66ac9bfb1c9b66ae158b935a
+Content-Type: application/json
+
+{
+    "content": ""
+}
+
+###
+
+DELETE http://localhost:3000/freeCommends/66ac9c4e1c9b66ae158b935e
