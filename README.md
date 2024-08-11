@@ -2,6 +2,10 @@
 
 node index.js
 
+## seed.js
+
+npx prisma db seed
+
 ## test
 
 postman (http://localhost:5432)
