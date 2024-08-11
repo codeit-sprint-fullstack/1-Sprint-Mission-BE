@@ -30,7 +30,8 @@ const data = [
 ];
 
 async function main() {
-  await prisma.article.deleteMany();
+  await prisma.article.deleteMany({});
+  await prisma.articleComment.deleteMany({});
   await prisma.article.createMany({ data, skipDuplicates: true });
 }
 
