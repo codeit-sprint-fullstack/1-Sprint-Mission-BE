@@ -1,11 +1,13 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import asyncHandler from "../asyncHandler.js";
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
-router.get("/:id", async (req, res) => {
-  try {
+router.get(
+  "/:id",
+  asyncHandler(async (req, res) => {
     const { id } = req.params;
     const article = await prisma.article.findUnique({
       where: { id: parseInt(id) },
@@ -14,13 +16,12 @@ router.get("/:id", async (req, res) => {
       return res.status(404).json({ error: "Article not found" });
     }
     res.status(200).json(article);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+  })
+);
 
-router.get("/", async (req, res) => {
-  try {
+router.get(
+  "/",
+  asyncHandler(async (req, res) => {
     const { page = 1, size = 10, search = "" } = req.query;
     const offset = (page - 1) * size;
     const articles = await prisma.article.findMany({
@@ -47,9 +48,7 @@ router.get("/", async (req, res) => {
       pages: Math.ceil(total / size),
       data: articles,
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+  })
+);
 
 export default router;

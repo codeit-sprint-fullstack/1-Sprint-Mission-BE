@@ -1,11 +1,13 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import asyncHandler from "../asyncHandler.js";
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
-router.delete("/:mongoProductId/comments/:id", async (req, res) => {
-  try {
+router.delete(
+  "/:mongoProductId/comments/:id",
+  asyncHandler(async (req, res) => {
     const { mongoProductId, id } = req.params;
 
     const comment = await prisma.productComment.findFirst({
@@ -24,10 +26,7 @@ router.delete("/:mongoProductId/comments/:id", async (req, res) => {
     });
 
     res.status(204).end();
-  } catch (error) {
-    console.error("Error deleting comment:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
+  })
+);
 
 export default router;

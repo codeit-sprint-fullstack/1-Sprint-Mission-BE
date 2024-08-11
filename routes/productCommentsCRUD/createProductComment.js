@@ -1,13 +1,15 @@
 import express from "express";
 import axios from "axios";
 import { PrismaClient } from "@prisma/client";
+import asyncHandler from "../asyncHandler.js";
 
 const prisma = new PrismaClient();
 const router = express.Router();
 const baseUrl = "https://thrift-shop.onrender.com/products";
 
-router.post("/:mongoProductId/comments", async (req, res) => {
-  try {
+router.post(
+  "/:mongoProductId/comments",
+  asyncHandler(async (req, res) => {
     const { mongoProductId } = req.params;
     const { content } = req.body;
 
@@ -26,10 +28,7 @@ router.post("/:mongoProductId/comments", async (req, res) => {
     });
 
     res.status(201).json(productComment);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
-  }
-});
+  })
+);
 
 export default router;

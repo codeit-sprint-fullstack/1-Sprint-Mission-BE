@@ -1,11 +1,13 @@
 import { Router } from "express";
-import Product from "../../models/product.js"; // Mongoose 모델 import
+import Product from "../../models/product.js";
+import asyncHandler from "../asyncHandler.js";
 
 const router = Router();
 
 // 상품 목록 조회 API
-router.get("/", async (req, res) => {
-  try {
+router.get(
+  "/",
+  asyncHandler(async (req, res) => {
     const { page = 1, limit = 10, search = "" } = req.query;
     const skip = (page - 1) * limit;
 
@@ -29,22 +31,19 @@ router.get("/", async (req, res) => {
       pageSize: products.length,
       products,
     });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+  })
+);
 
 // 상품 상세 조회 API
-router.get("/:id", async (req, res) => {
-  try {
+router.get(
+  "/:id",
+  asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
     res.json(product);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+  })
+);
 
 export default router;

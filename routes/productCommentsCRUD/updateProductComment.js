@@ -1,11 +1,13 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import asyncHandler from "../asyncHandler.js";
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
-router.patch("/:mongoProductId/comments/:id", async (req, res) => {
-  try {
+router.patch(
+  "/:mongoProductId/comments/:id",
+  asyncHandler(async (req, res) => {
     const { mongoProductId, id } = req.params;
     const { content } = req.body;
 
@@ -26,10 +28,7 @@ router.patch("/:mongoProductId/comments/:id", async (req, res) => {
     });
 
     res.status(200).json(updatedComment);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
-  }
-});
+  })
+);
 
 export default router;

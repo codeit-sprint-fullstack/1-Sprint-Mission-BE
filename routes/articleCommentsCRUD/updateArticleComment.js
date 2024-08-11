@@ -1,11 +1,13 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import asyncHandler from "../asyncHandler.js";
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
-router.patch("/:id", async (req, res) => {
-  try {
+router.patch(
+  "/:id",
+  asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { content } = req.body;
     const comment = await prisma.articleComment.update({
@@ -13,9 +15,7 @@ router.patch("/:id", async (req, res) => {
       data: { content },
     });
     res.status(200).json(comment);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+  })
+);
 
 export default router;
