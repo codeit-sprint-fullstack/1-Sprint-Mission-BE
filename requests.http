@@ -11,20 +11,20 @@ POST http://localhost:3000/products
 Content-Type: application/json
 
 {
-  "name": "name1",
-  "description": "description1",
-  "price": "1000",
-  "tags": ["태그2", "태그3"]
+  "name": "휴지",
+  "description": "각휴지",
+  "price": "12000",
+  "tags": ["천연펄프", "중고"]
 }
 
 ###
-PATCH http://localhost:3000/products/66b081528a869370be9119bb
+PATCH http://localhost:3000/products/66b89e1f1224fef1326281b9
 Content-Type: application/json
 
 {
-  "name": "patch-name",
-  "price": "30000"
+  "name": "고급 휴지",
+  "price": "22000"
 }
 
 ###
-DELETE http://localhost:3000/products/66b080c88b0f12a10cb91090
+DELETE http://localhost:3000/products/66b22133f55d6c02edc2b2e0
