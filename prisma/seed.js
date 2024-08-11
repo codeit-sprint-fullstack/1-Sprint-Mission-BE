@@ -3,6 +3,10 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  // data 초기화
+  await prisma.articleComment.deleteMany({});
+  await prisma.article.deleteMany({});
+
   // 게시글 1
   const article1 = await prisma.article.create({
     data: {
