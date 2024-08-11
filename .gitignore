@@ -1,5 +1,5 @@
 # node js와 express gitignore 검색 및 추가
-
+script
 # npm
 node_modules
 package-lock.json
