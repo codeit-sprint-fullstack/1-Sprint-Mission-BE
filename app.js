@@ -30,7 +30,7 @@ function asyncHandler(handler) {
 }
 
 app.get('/products', async (req, res) => {
-  const { sort = 'recent', offset = 0, search = '' } = req.query;
+  const { sort = 'recent', limit, offset = 0, search = '' } = req.query;
 
   const sortOption = {
     createdAt: sort === 'recent' ? 'desc' : 'asc',
@@ -40,7 +40,7 @@ app.get('/products', async (req, res) => {
     $or: [{ name: { $regex: search, $options: 'i' } }, { description: { $regex: search, $options: 'i' } }],
   };
 
-  const products = await Product.find(searchQuery).sort(sortOption).skip(Number(offset)).select('_id name price createdAt');
+  const products = await Product.find(searchQuery).sort(sortOption).limit(limit).skip(Number(offset)).select('_id name price createdAt');
 
   res.send(products);
 });
