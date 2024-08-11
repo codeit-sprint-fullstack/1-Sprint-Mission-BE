@@ -4,18 +4,9 @@ import Data from './DataSchema.js';
 import cors from 'cors';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors());
-
-// React 정적 파일 제공 설정
-app.use(express.static(path.join(__dirname, '../build')));
-
-// 모든 경로에 대해 index.html 반환 (React 라우팅 지원)
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
-});
 
 const DATABASE_URL = process.env.DATABASE_URL;
 
@@ -139,7 +130,7 @@ app.delete(
   })
 );
 
-app.listen(PORT, () => console.log(`PORT :` + PORT));
+app.listen(DATABASE_URL, () => console.log(`PORT :` + DATABASE_URL));
 
 mongoose
   .connect(DATABASE_URL)
