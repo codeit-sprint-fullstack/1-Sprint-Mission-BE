@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
-import Task from './models/Task.js';
+import Product from './models/Product.js';
 
 dotenv.config();
 
@@ -29,28 +29,33 @@ function asyncHandler(handler) {
   };
 }
 
+app.get('/products', async (req, res) => {
+  const { sort = 'recent', offset = 0, limit = 10, search = '' } = req.query;
+
+  const sortOption = {
+    createdAt: sort === 'recent' ? 'desc' : 'asc',
+  };
+
+  const searchQuery = {
+    $or: [{ name: { $regex: search, $options: 'i' } }, { description: { $regex: search, $options: 'i' } }],
+  };
+
+  const products = await Product.find(searchQuery)
+    .sort(sortOption)
+    .skip(Number(offset))
+    .limit(Number(limit))
+    .select('_id name price createdAt');
+
+  res.send(products);
+});
+
 app.get(
-  '/tasks',
-  asyncHandler(async (req, res) => {
-    const sort = req.query.sort;
-    const count = Number(req.query.count) || 0;
-
-    const sortOption = {
-      createdAt: sort === 'oldest' ? 'asc' : 'desc',
-    };
-    const tasks = await Task.find().sort(sortOption).limit(count);
-
-    res.send(tasks);
-  })
-);
-
-app.get(
-  '/tasks/:id',
+  '/products/:id',
   asyncHandler(async (req, res) => {
     const id = req.params.id;
-    const task = await Task.findById(id);
-    if (task) {
-      res.send(task);
+    const product = await Product.findById(id);
+    if (product) {
+      res.send(product);
     } else {
       res.status(404).send({ message: 'Cannot find given id. ' });
     }
@@ -58,24 +63,24 @@ app.get(
 );
 
 app.post(
-  '/tasks',
+  '/products',
   asyncHandler(async (req, res) => {
-    const newTask = await Task.create(req.body);
-    res.status(201).send(newTask);
+    const newProduct = await Product.create(req.body);
+    res.status(201).send(newProduct);
   })
 );
 
 app.patch(
-  '/tasks/:id',
+  '/products/:id',
   asyncHandler(async (req, res) => {
     const id = req.params.id;
-    const task = await Task.findById(id);
-    if (task) {
+    const product = await Product.findById(id);
+    if (product) {
       Object.keys(req.body).forEach((key) => {
-        task[key] = req.body[key];
+        product[key] = req.body[key];
       });
-      await task.save();
-      res.send(task);
+      await product.save();
+      res.send(product);
     } else {
       res.status(404).send({ message: 'Cannot find given id. ' });
     }
@@ -83,11 +88,11 @@ app.patch(
 );
 
 app.delete(
-  '/tasks/:id',
+  '/products/:id',
   asyncHandler(async (req, res) => {
     const id = Number(req.params.id);
-    const task = await Task.findByIdAndDelete(id);
-    if (task) {
+    const product = await Product.findByIdAndDelete(id);
+    if (product) {
       res.sendStatus(204);
     } else {
       res.status(404).send({ message: 'Cannot find given id. ' });

@@ -1,18 +1,18 @@
-GET http://localhost:3000/tasks
+GET http://localhost:3000/products
 
 
 ###
 
-GET http://localhost:3000/tasks?sort=oldest&count=3
+GET http://localhost:3000/products?sort=recent&offset=0&limit=10&search=갤럭시
 
 
 ###
 
-GET http://localhost:3000/tasks/66b84a40b750775fdf89fd8f
+GET http://localhost:3000/products/66b84a40b750775fdf89fd8f
 
 ###
 
-POST http://localhost:3000/tasks
+POST http://localhost:3000/products
 Content-Type: application/json
 
 {
@@ -24,7 +24,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/tasks/21
+PATCH http://localhost:3000/products/21
 Content-Type: application/json
 
 {
@@ -36,4 +36,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/tasks/21
+DELETE http://localhost:3000/products/21
