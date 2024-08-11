@@ -1,18 +1,17 @@
-GET http://localhost:3000/products
+GET https://one-sprint-mission-be-4229.onrender.com/products
 
 
 ###
 
-GET http://localhost:3000/products?sort=recent&offset=0&limit=10&search=갤럭시
-
-
-###
-
-GET http://localhost:3000/products/66b84a40b750775fdf89fd8f
+GET https://one-sprint-mission-be-4229.onrender.com/products?sort=recent&offset=0&limit=10&search=갤럭시
 
 ###
 
-POST http://localhost:3000/products
+GET https://one-sprint-mission-be-4229.onrender.com/products/66b84a40b750775fdf89fd8f
+
+###
+
+POST https://one-sprint-mission-be-4229.onrender.com/products
 Content-Type: application/json
 
 {
@@ -24,7 +23,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/products/21
+PATCH https://one-sprint-mission-be-4229.onrender.com/products/21
 Content-Type: application/json
 
 {
@@ -36,4 +35,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/products/21
+DELETE https://one-sprint-mission-be-4229.onrender.com/products/66b8607da07af26dd544a4c1
