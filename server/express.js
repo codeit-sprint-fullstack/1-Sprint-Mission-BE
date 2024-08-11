@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+const PORT = process.env.PORT || 5000;
 const DATABASE_URL = process.env.DATABASE_URL;
 
 /**에러 핸들러 */
@@ -81,7 +82,7 @@ app.get(
     const data = await Data.findById(id).select(
       'id name description price tags createdAt'
     );
-    if (item) {
+    if (data) {
       res.status(200).send(data);
     } else {
       res.status(404).send({ message: 'Cannot find given id.' });
@@ -130,11 +131,11 @@ app.delete(
   })
 );
 
-app.listen(DATABASE_URL, () => console.log(`PORT :` + DATABASE_URL));
-
 mongoose
-  .connect(DATABASE_URL)
+  .connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to DB'))
   .catch((e) => {
     console.log('err: ' + e);
   });
+
+app.listen(PORT, () => console.log(`PORT :` + PORT));
