@@ -3,11 +3,7 @@ dotenv.config();
 import express from "express";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { assert } from "superstruct";
-import {
-  CreateNoticeBoard,
-  UpsertCommend,
-  PatchNoticeBoard,
-} from "./struct.js";
+import * as s from "./struct.js";
 
 const prisma = new PrismaClient();
 
@@ -91,7 +87,7 @@ app.get(
 app.post(
   "/noticeBoards",
   asyncHandler(async (req, res) => {
-    assert(req.body, CreateNoticeBoard);
+    assert(req.body, s.CreateNoticeBoard);
     const noticeBoard = await prisma.noticeBoard.create({
       data: req.body,
     });
@@ -103,7 +99,7 @@ app.patch(
   "/noticeBoards/:id",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    assert(req.body, PatchNoticeBoard);
+    assert(req.body, s.PatchNoticeBoard);
     const noticeBoard = await prisma.noticeBoard.update({
       where: { id },
       data: req.body,
@@ -170,7 +166,7 @@ app.get(
 app.post(
   "/freeCommends",
   asyncHandler(async (req, res) => {
-    assert(req.body, UpsertCommend);
+    assert(req.body, s.CreateFreeCommend);
     const freeCommend = await prisma.freeCommend.create({
       data: req.body,
     });
@@ -182,7 +178,7 @@ app.patch(
   "/freeCommends/:id",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    assert(req.body, UpsertCommend);
+    assert(req.body, s.PatchCommend);
     const freeCommend = await prisma.freeCommend.update({
       where: { id },
       data: req.body,
@@ -249,7 +245,7 @@ app.get(
 app.post(
   "/usedCommends",
   asyncHandler(async (req, res) => {
-    assert(req.body, UpsertCommend);
+    assert(req.body, s.CreateUsedCommend);
     const usedCommend = await prisma.usedCommend.create({
       data: req.body,
     });
@@ -261,7 +257,7 @@ app.patch(
   "/usedCommends/:id",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    assert(req.body, UpsertCommend);
+    assert(req.body, s.PatchCommend);
     const usedCommend = await prisma.usedCommend.update({
       where: { id },
       data: req.body,

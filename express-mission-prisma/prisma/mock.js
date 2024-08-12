@@ -1,25 +1,30 @@
 export const USERS = [
   {
+    id: "412aab2b-26fe-4d60-9006-8459c869580f",
     name: "zeus",
     createdAt: "2024-07-29T05:45:00.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
   },
   {
+    id: "2089f794-a214-4eff-8cba-9acab7ae7dd0",
     name: "hera",
     createdAt: "2024-07-29T05:45:01.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
   },
   {
+    id: "bd348b26-bbbf-4dd6-87be-f9a14e2a7075",
     name: "modun",
     createdAt: "2024-07-29T05:45:02.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
   },
   {
+    id: "b4187017-6a80-468d-9355-615831e789e4",
     name: "posadon",
     createdAt: "2024-07-29T05:45:03.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
   },
   {
+    id: "f7f6e7fb-897d-404a-81a8-184aa3e9dec1",
     name: "songyoungsub",
     createdAt: "2024-07-29T05:45:04.249Z",
     updatedAt: "2024-07-29T05:45:04.249Z",
@@ -28,132 +33,182 @@ export const USERS = [
 
 export const NOTICEBOARDS = [
   {
+    id: "5fa13fdb-caf1-46b5-bedb-108c66c3adfe",
     title: "게시판의 기본 데이터 1",
     content: "게시판의 기본 데이터입니다. 1",
     createdAt: "2024-07-29T05:45:00.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "f7f6e7fb-897d-404a-81a8-184aa3e9dec1",
   },
   {
+    id: "d18d4842-66c7-4fbd-8530-030dba0cbebd",
     title: "게시판의 기본 데이터 2",
     content: "게시판의 기본 데이터입니다. 2",
     createdAt: "2024-07-29T05:45:01.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "412aab2b-26fe-4d60-9006-8459c869580f",
   },
   {
+    id: "4d0bced8-f4da-4b9b-9e3e-28274c507f9a",
     title: "게시판의 기본 데이터 3",
     content: "게시판의 기본 데이터입니다. 3",
     createdAt: "2024-07-29T05:45:02.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "b4187017-6a80-468d-9355-615831e789e4",
   },
   {
+    id: "6c59262d-ab0e-49cf-9ec4-1d616ee936b4",
     title: "게시판의 기본 데이터 4",
     content: "게시판의 기본 데이터입니다. 4",
     createdAt: "2024-07-29T05:45:03.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "2089f794-a214-4eff-8cba-9acab7ae7dd0",
   },
   {
+    id: "0c5d059b-ee21-4126-87a4-582c6cd39677",
     title: "게시판의 기본 데이터 5",
     content: "게시판의 기본 데이터입니다. 5",
     createdAt: "2024-07-29T05:45:04.249Z",
     updatedAt: "2024-07-29T05:45:04.249Z",
+    userId: "412aab2b-26fe-4d60-9006-8459c869580f",
   },
 ];
 
 export const FREECOMMENDS = [
   {
+    id: "c36c23ad-de45-481d-9016-1b5fec8e39dc",
     content: "자유게시판 댓글의 기본 데이터 1",
     createdAt: "2024-07-29T05:45:00.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "bd348b26-bbbf-4dd6-87be-f9a14e2a7075",
+    noticeBoardId: "5fa13fdb-caf1-46b5-bedb-108c66c3adfe",
   },
   {
+    id: "136bb431-ac7b-42d5-8b9d-f1cd3ce88d89",
     content: "자유게시판 댓글의 기본 데이터 2",
     createdAt: "2024-07-29T05:45:01.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "2089f794-a214-4eff-8cba-9acab7ae7dd0",
+    noticeBoardId: "d18d4842-66c7-4fbd-8530-030dba0cbebd",
   },
   {
+    id: "f0abf893-96ba-4a23-bb29-951ac2f6acbf",
     content: "자유게시판 댓글의 기본 데이터 3",
     createdAt: "2024-07-29T05:45:02.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "f7f6e7fb-897d-404a-81a8-184aa3e9dec1",
+    noticeBoardId: "4d0bced8-f4da-4b9b-9e3e-28274c507f9a",
   },
   {
+    id: "b1bf2d1e-1fb8-4a91-ac44-8c0f89a33cd6",
     content: "자유게시판 댓글의 기본 데이터 4",
     createdAt: "2024-07-29T05:45:03.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "2089f794-a214-4eff-8cba-9acab7ae7dd0",
+    noticeBoardId: "6c59262d-ab0e-49cf-9ec4-1d616ee936b4",
   },
   {
+    id: "1b12a1f0-9246-4f48-99c8-4b1169475520",
     content: "자유게시판 댓글의 기본 데이터 5",
     createdAt: "2024-07-29T05:45:04.249Z",
     updatedAt: "2024-07-29T05:45:04.249Z",
-  },
-];
-
-export const USEDCOMMENDS = [
-  {
-    content: "중고마켓 댓글의 기본 데이터 1",
-    createdAt: "2024-07-29T05:45:00.249Z",
-    updatedAt: "2024-07-29T05:45:03.249Z",
-  },
-  {
-    content: "중고마켓 댓글의 기본 데이터 2",
-    createdAt: "2024-07-29T05:45:01.249Z",
-    updatedAt: "2024-07-29T05:45:03.249Z",
-  },
-  {
-    content: "중고마켓 댓글의 기본 데이터 3",
-    createdAt: "2024-07-29T05:45:02.249Z",
-    updatedAt: "2024-07-29T05:45:03.249Z",
-  },
-  {
-    content: "중고마켓 댓글의 기본 데이터 4",
-    createdAt: "2024-07-29T05:45:03.249Z",
-    updatedAt: "2024-07-29T05:45:03.249Z",
-  },
-  {
-    content: "중고마켓 댓글의 기본 데이터 5",
-    createdAt: "2024-07-29T05:45:04.249Z",
-    updatedAt: "2024-07-29T05:45:04.249Z",
+    userId: "2089f794-a214-4eff-8cba-9acab7ae7dd0",
+    noticeBoardId: "0c5d059b-ee21-4126-87a4-582c6cd39677",
   },
 ];
 
 export const USEDMARKETS = [
   {
+    id: "c8ce69c0-2bc4-44dd-9f90-82df2047919d",
     name: "갤럭시 탭 S7",
     description: "삼성 갤럭시 탭 S7",
     price: 350000,
     tags: ["기본값"],
     createdAt: "2024-07-29T05:45:00.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "2089f794-a214-4eff-8cba-9acab7ae7dd0",
   },
   {
+    id: "9a0f95a9-6781-4d39-a063-520646d97d31",
     name: "보스 헤드폰",
     description: "보스 노이즈 캔슬링 헤드폰 700",
     price: 350000,
     tags: ["기본값"],
     createdAt: "2024-07-29T05:45:01.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "b4187017-6a80-468d-9355-615831e789e4",
   },
   {
+    id: "64d61945-fe94-47ca-8ddf-8be6ae456b32",
     name: "사무용 의자",
     description: "편안한 사무용 의자",
     price: 120000,
     tags: ["가구"],
     createdAt: "2024-07-29T05:45:02.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "2089f794-a214-4eff-8cba-9acab7ae7dd0",
   },
   {
+    id: "a5b2066d-f231-4db6-83a7-81de079d69bc",
     name: "스니커즈",
     description: "편안한 스니커즈 기본값입니다",
     price: 100000,
     tags: ["기본값"],
     createdAt: "2024-07-29T05:45:03.249Z",
     updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "bd348b26-bbbf-4dd6-87be-f9a14e2a7075",
   },
   {
+    id: "9dcc3e94-5313-43be-8a05-740e5c7513b4",
     name: "레노버 노트북",
     description: "레노버 아이디어패드 5",
     price: 800000,
     tags: ["기본값"],
     createdAt: "2024-07-29T05:45:04.249Z",
     updatedAt: "2024-07-29T05:45:04.249Z",
+    userId: "2089f794-a214-4eff-8cba-9acab7ae7dd0",
+  },
+];
+
+export const USEDCOMMENDS = [
+  {
+    id: "0736f0b6-32c8-42ff-b433-91b443b78917",
+    content: "중고마켓 댓글의 기본 데이터 1",
+    createdAt: "2024-07-29T05:45:00.249Z",
+    updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "b4187017-6a80-468d-9355-615831e789e4",
+    usedMarketId: "9dcc3e94-5313-43be-8a05-740e5c7513b4",
+  },
+  {
+    id: "5f04ea72-41d8-4824-92ca-437bffbd4beb",
+    content: "중고마켓 댓글의 기본 데이터 2",
+    createdAt: "2024-07-29T05:45:01.249Z",
+    updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "2089f794-a214-4eff-8cba-9acab7ae7dd0",
+    usedMarketId: 'c8ce69c0-2bc4-44dd-9f90-82df2047919d',
+  },
+  {
+    id: "65ce1576-e3d2-4705-a25f-426ea22f8316",
+    content: "중고마켓 댓글의 기본 데이터 3",
+    createdAt: "2024-07-29T05:45:02.249Z",
+    updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "bd348b26-bbbf-4dd6-87be-f9a14e2a7075",
+    usedMarketId: 'a5b2066d-f231-4db6-83a7-81de079d69bc',
+  },
+  {
+    id: "6ff7e020-88b7-48b7-94ab-c89a5414d947",
+    content: "중고마켓 댓글의 기본 데이터 4",
+    createdAt: "2024-07-29T05:45:03.249Z",
+    updatedAt: "2024-07-29T05:45:03.249Z",
+    userId: "2089f794-a214-4eff-8cba-9acab7ae7dd0",
+    usedMarketId: '9a0f95a9-6781-4d39-a063-520646d97d31',
+  },
+  {
+    id: "784d4cbb-b983-45fe-bca2-6be4a396dea5",
+    content: "중고마켓 댓글의 기본 데이터 5",
+    createdAt: "2024-07-29T05:45:04.249Z",
+    updatedAt: "2024-07-29T05:45:04.249Z",
+    userId: "bd348b26-bbbf-4dd6-87be-f9a14e2a7075",
+    usedMarketId: '64d61945-fe94-47ca-8ddf-8be6ae456b32',
   },
 ];

@@ -22,14 +22,15 @@ async function main() {
     data: seed.FREECOMMENDS,
     skipDuplicates: true,
   });
-  await prisma.usedCommend.createMany({
-    data: seed.USEDCOMMENDS,
-    skipDuplicates: true,
-  });
   await prisma.usedMarket.createMany({
     data: seed.USEDMARKETS,
     skipDuplicates: true,
   });
+  await prisma.usedCommend.createMany({
+    data: seed.USEDCOMMENDS,
+    skipDuplicates: true,
+  });
+  
 }
 
 main()
