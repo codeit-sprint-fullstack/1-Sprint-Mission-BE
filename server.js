@@ -20,5 +20,11 @@ mongoose.connect(process.env.DATABASE_URL)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log('MongoDB connection error:', err));
 
+// 라우터 등록
+app.use('/api/products', productRoutes);
+app.use('/api/articles', articleRoutes);
+app.use('/api/board/comments', boardCommentRoutes);
+app.use('/api/market/comments', marketCommentRoutes);
+
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
