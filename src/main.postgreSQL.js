@@ -41,6 +41,11 @@ app.get("/articles/:id", async (req, res) => {
   res.send(article);
 });
 
+/** /article/:id/comments */
+app.get("/article/:id/comments", async (req, res) => {
+  const { id } = req.headers;
+});
+
 /** /article/:id PATCH */
 app.patch("/articles/:id", async (req, res) => {
   const { id } = req.params;

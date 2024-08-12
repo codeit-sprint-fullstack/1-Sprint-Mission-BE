@@ -13,80 +13,102 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id String @id @default(uuid())
-  name String
-  nickname String @unique
-  password String
-  email String @unique
-  image String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                   String                 @id @default(uuid())
+  name                 String
+  nickname             String                 @unique
+  password             String
+  email                String                 @unique
+  image                String
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  UserProducts         UserProducts[]
+  UserFavoriteProducts UserFavoriteProducts[]
+  Product              Product[]
+  ProductFavoriteUsers ProductFavoriteUsers[]
+  Article              Article[]
+  Comment              Comment[]
 }
 
 model UserProducts {
-  id String @id @default(uuid())
-  userId Int
-  ProductId Int
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model UserFavoriteProducts {
-  id String @id @default(uuid())
-  userId Int
-  ProductId Int
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  ProductId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  productId String
 }
 
 model Product {
-  id String @id @default(uuid())
-  name String
-  description String
-  price Int
-  ownerId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                   String                 @id @default(uuid())
+  name                 String
+  description          String
+  price                Int
+  user                 User                   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId              String
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  UserFavoriteProducts UserFavoriteProducts[]
+  ProductTags          ProductTags[]
+  ProductImages        ProductImages[]
+  ProductFavoriteUsers ProductFavoriteUsers[]
+  UserProducts         UserProducts[]
 }
 
 model ProductTags {
-  id String @id @default(uuid())
-  productId Int
-  tag String
+  id        String  @id @default(uuid())
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  tag       String
 }
 
 model ProductImages {
-  id String @id @default(uuid())
-  productId Int
-  image String
+  id        String  @id @default(uuid())
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  image     String
 }
 
 model ProductFavoriteUsers {
-  id String @id @default(uuid())
-  userId Int
-  ProductId Int
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
 
 model Article {
-  id String @id @default(uuid())
-  userId String 
-  title String
-  content String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  title     String
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Comment   Comment[]
 }
 
-
 model Comment {
-  id String @id @default(uuid())
-  userId String 
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
   articleId String
-  content String
+  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

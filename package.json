@@ -18,5 +18,8 @@
     "seed-l": "set NODE_ENV=local && node data/seed.js",
     "seed-p": "set NODE_ENV=production && node data/seed.js"
   },
+  "prisma": {
+    "seed": "node data/seedPostgreSQL.js"
+  },
   "type": "module"
 }
