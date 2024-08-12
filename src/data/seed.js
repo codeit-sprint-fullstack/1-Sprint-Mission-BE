@@ -13,9 +13,11 @@ async function main() {
   await prisma.article.createMany({
     data: articles,
   });
-  await prisma.comment.createMany({
-    data: comments,
-  });
+  for (let data of comments) {
+    await prisma.comment.create({
+      data: data,
+    });
+  }
 }
 
 main()
