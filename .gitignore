@@ -1,1 +1,6 @@
-node_modules/\n.env\n*.http\n*.log\n*.gz\n.DS_Store
+node_modules/
+.env
+*.http
+*.log
+*.gz
+.DS_Store

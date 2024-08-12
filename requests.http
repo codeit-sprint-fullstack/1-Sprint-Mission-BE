@@ -1,7 +1,7 @@
 GET http://localhost:3000/articles
 
 ###
-GET http://localhost:3000/articles?page=1&pageSize=10&keyword=test
+GET http://localhost:3000/articles?page=1&pageSize=10&keyword=Second
 
 ###
 GET http://localhost:3000/articles/66b073b7f091c1212931ee68
@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3000/articles/66b081528a869370be9119bb
+PATCH http://localhost:3000/articles/6727145b-d2af-4603-8edc-403bfc1c1d79
 Content-Type: application/json
 
 {
@@ -25,16 +25,16 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/articles/66b080c88b0f12a10cb91090
+DELETE http://localhost:3000/articles/da742873-1828-4b6d-8abb-0a22cdad9e4d
 
 ###
-GET http://localhost:3000/market-comments?articleId=66b073b7f091c1212931ee68
+GET http://localhost:3000/market-comments?articleId=dfb3acc6-5e46-4d32-849f-61e853ff0169
 
 ###
 GET http://localhost:3000/market-comments?articleId=66b073b7f091c1212931ee68&take=5&cursor=66b081528a869370be9119bb
 
 ### 
-GET http://localhost:3000/board-comments?articleId=66b073b7f091c1212931ee68
+GET http://localhost:3000/board-comments?articleId=dfb3acc6-5e46-4d32-849f-61e853ff0169
 
 ###
 GET http://localhost:3000/board-comments?articleId=66b073b7f091c1212931ee68&take=5&cursor=66b081528a869370be9119bb
@@ -45,7 +45,7 @@ Content-Type: application/json
 
 {
   "content": "post market comment",
-  "articleId": "66b073b7f091c1212931ee68"
+  "articleId": "6727145b-d2af-4603-8edc-403bfc1c1d79"
 }
 
 ###
@@ -54,7 +54,7 @@ Content-Type: application/json
 
 {
   "content": "post board comment",
-  "articleId": "66b073b7f091c1212931ee68"
+  "articleId": "fb29c5e9-48f0-410c-9bfb-59224da86c16"
 }
 
 ###
