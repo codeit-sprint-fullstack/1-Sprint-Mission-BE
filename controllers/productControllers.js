@@ -59,11 +59,7 @@ export const getProductById = async (req, res) => {
     },
   });
 
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: 'Cannot find given id.' });
-  }
+  res.send(product);
 };
 
 // create new product
@@ -89,7 +85,7 @@ export const updateProductById = async (req, res) => {
 // delete a product by id
 export const deleteProductById = async (req, res) => {
   const { id } = req.params;
-  await prisma.product.delete({ where: id });
+  await prisma.product.delete({ where: { id } });
 
-  res.sendStatus(204);
+  res.status(200).send({ message: 'Product has deleted successfully' });
 };
