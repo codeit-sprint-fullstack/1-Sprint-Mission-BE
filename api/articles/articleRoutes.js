@@ -4,8 +4,8 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const router = express.Router(); // API 경로 정의
 
-  // 게시글 목록 조회 API
-  app.get('/api/articles', async (req, res) => {
+// 게시글 목록 조회 API
+router.get('/api/articles', async (req, res) => {
     const { sort = 'recent', offset = 0, limit = 10, search = '' } = req.query;
   
     try {
@@ -44,7 +44,7 @@ const router = express.Router(); // API 경로 정의
   });
   
   // 게시글 상세 조회 API
-  app.get('/api/articles/:id', async (req, res) => {
+  router.get('/api/articles/:id', async (req, res) => {
     const { id } = req.params;
   
     try {
@@ -70,7 +70,7 @@ const router = express.Router(); // API 경로 정의
   });
   
   // 게시글 등록 API
-  app.post('/api/articles', async (req, res) => {
+  router.post('/api/articles', async (req, res) => {
     const { title, content } = req.body;
   
     // 데이터 검증
@@ -95,7 +95,7 @@ const router = express.Router(); // API 경로 정의
   });
   
   // 게시글 수정 API
-  app.patch('/api/articles/:id', async (req, res) => {
+  router.patch('/api/articles/:id', async (req, res) => {
     const { id } = req.params;
     const { title, content, likeCount } = req.body;
   
@@ -121,7 +121,7 @@ const router = express.Router(); // API 경로 정의
   });
   
   // 게시글 삭제 API
-  app.delete('/api/articles/:id', async (req, res) => {
+  router.delete('/api/articles/:id', async (req, res) => {
     const { id } = req.params;
   
     try {
