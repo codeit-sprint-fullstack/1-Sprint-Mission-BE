@@ -1,7 +1,7 @@
 import express from 'express';
 import * as p from '../controllers/productControllers.js';
 import { asyncHandler } from '../utils/errorHandler.js';
-import { createProductComment } from '../controllers/commentControllers.js';
+import { createProductComment } from '../controllers/commentController.js';
 
 const router = express.Router();
 

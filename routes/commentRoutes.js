@@ -1,5 +1,5 @@
 import express from 'express';
-import * as c from '../controllers/commentControllers.js';
+import * as c from '../controllers/commentController.js';
 import { asyncHandler } from '../utils/errorHandler.js';
 
 const router = express.Router();
