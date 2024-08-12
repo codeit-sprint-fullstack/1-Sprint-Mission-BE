@@ -6,33 +6,54 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
-const data = [
-  {
-    id: uuidv4(),
-    title: "맥북",
-    content: "맥북 입니다",
-  },
-  {
-    id: uuidv4(),
-    title: "맥북2",
-    content: "맥북2 입니다",
-  },
-  {
-    id: uuidv4(),
-    title: "맥북3",
-    content: "맥북3 입니다",
-  },
-  {
-    id: uuidv4(),
-    title: "맥북4",
-    content: "맥북4 입니다",
-  },
-];
-
 async function main() {
   await prisma.article.deleteMany({});
   await prisma.articleComment.deleteMany({});
-  await prisma.article.createMany({ data, skipDuplicates: true });
+
+  const article1 = await prisma.article.create({
+    data: {
+      title: "article1",
+      content: "content1",
+    },
+  });
+  const article2 = await prisma.article.create({
+    data: {
+      title: "article2",
+      content: "content2",
+    },
+  });
+  const article3 = await prisma.article.create({
+    data: {
+      title: "article3",
+      content: "content3",
+    },
+  });
+
+  await prisma.articleComment.create({
+    data: {
+      content: "comment1",
+      articleId: article1.id,
+    },
+  });
+
+  await prisma.articleComment.create({
+    data: {
+      content: "comment2",
+      articleId: article1.id,
+    },
+  });
+  await prisma.articleComment.create({
+    data: {
+      content: "comment3",
+      articleId: article2.id,
+    },
+  });
+  await prisma.articleComment.create({
+    data: {
+      content: "comment4",
+      articleId: article3.id,
+    },
+  });
 }
 
 main()
