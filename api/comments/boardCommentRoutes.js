@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 // 자유게시판 댓글 목록 조회 API
-app.get('/api/board/comments', async (req, res) => {
+router.get('/api/board/comments', async (req, res) => {
   const { cursor = '', limit = 20 } = req.query;
 
   try {
@@ -30,7 +30,7 @@ app.get('/api/board/comments', async (req, res) => {
 });
 
 // 자유게시판 댓글 등록 API
-app.post('/api/board/comments', async (req, res) => {
+router.post('/api/board/comments', async (req, res) => {
   const { content, postId } = req.body;
 
   // 데이터 검증
@@ -55,7 +55,7 @@ app.post('/api/board/comments', async (req, res) => {
 });
 
 // 자유게시판 댓글 수정 API
-app.patch('/api/:boardType/comments/:id', async (req, res) => {
+router.patch('/api/:boardType/comments/:id', async (req, res) => {
   const { id, boardType } = req.params;
   const { content } = req.body;
 
@@ -86,7 +86,7 @@ app.patch('/api/:boardType/comments/:id', async (req, res) => {
 });
 
 // 자유게시판 댓글 삭제 API
-app.delete('/api/:boardType/comments/:id', async (req, res) => {
+router.delete('/api/:boardType/comments/:id', async (req, res) => {
   const { id, boardType } = req.params;
 
   try {
