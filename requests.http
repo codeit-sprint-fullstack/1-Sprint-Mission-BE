@@ -50,7 +50,7 @@ authorization : 66b5ccad2cf6ddb53d85e3a6
 }
 
 ###
-DELETE http://localhost:3000/products/66b6274a55e7ea80919d693c
+DELETE http://localhost:3000/products/66b6372ee4e067bdf043f718
 authorization : 66b5ccad2cf6ddb53d85e3a6
 
 ###

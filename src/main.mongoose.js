@@ -180,7 +180,7 @@ app.post("/products", async (req, res) => {
 
       await User.findOneAndUpdate(
         { _id: authorization },
-        { $push: { products: result._id } },
+        { $push: { products: result.id } },
         { runValidators: true }
       );
     } else {
