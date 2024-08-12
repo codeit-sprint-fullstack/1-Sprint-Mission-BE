@@ -8,16 +8,9 @@ router.post(
   "/",
   asyncHandler(async (req, res) => {
     const { name, description, price, tags } = req.body;
-    if (!name || !description || !price || !tags) {
-      return res.status(400).json({ error: "Invalid request data" });
-    }
-    const product = new Product({
-      name,
-      description,
-      price,
-      tags,
+    const product = await prisma.article.create({
+      data: { name, description, price, tags },
     });
-    await product.save();
     res.status(201).json(product);
   })
 );

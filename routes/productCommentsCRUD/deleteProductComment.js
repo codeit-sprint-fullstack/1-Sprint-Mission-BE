@@ -6,25 +6,12 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 router.delete(
-  "/:mongoProductId/:id",
+  "/:id",
   asyncHandler(async (req, res) => {
-    const { mongoProductId, id } = req.params;
-
-    const comment = await prisma.productComment.findFirst({
-      where: {
-        id: parseInt(id),
-        productId: mongoProductId,
-      },
-    });
-
-    if (!comment) {
-      return res.status(404).json({ error: "Comment not found" });
-    }
-
+    const { id } = req.params;
     await prisma.productComment.delete({
-      where: { id: comment.id },
+      where: { id: parseInt(id) },
     });
-
     res.status(204).end();
   })
 );

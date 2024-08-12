@@ -14,6 +14,9 @@ router.patch(
       where: { id: parseInt(id) },
       data: { title, content },
     });
+    if (!article) {
+      return res.status(404).json({ error: "Article not found" });
+    }
     res.status(200).json(article);
   })
 );

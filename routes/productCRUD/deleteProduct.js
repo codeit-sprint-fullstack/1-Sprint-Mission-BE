@@ -10,15 +10,10 @@ const prisma = new PrismaClient();
 router.delete(
   "/:id",
   asyncHandler(async (req, res) => {
-    // 상품 관련 댓글 삭제(postgresql)
-    await prisma.productComment.deleteMany({
-      where: { productId: req.params.id },
+    const { id } = req.params;
+    await prisma.product.delete({
+      where: { id: parseInt(id) },
     });
-
-    const product = await Product.findByIdAndDelete(req.params.id);
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
     res.status(204).send();
   })
 );

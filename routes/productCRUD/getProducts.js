@@ -1,35 +1,44 @@
-import { Router } from "express";
-import Product from "../../models/product.js";
+import express from "express";
+import { PrismaClient } from "@prisma/client";
 import asyncHandler from "../asyncHandler.js";
 
-const router = Router();
+const router = express.Router();
+const prisma = new PrismaClient();
 
 // 상품 목록 조회 API
 router.get(
   "/",
   asyncHandler(async (req, res) => {
     const { page = 1, limit = 10, search = "" } = req.query;
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * parseInt(limit);
 
-    const query = {
-      $or: [
-        { name: new RegExp(search, "i") },
-        { description: new RegExp(search, "i") },
-      ],
-    };
+    // Prisma에서는 MongoDB의 `$or`과 같은 기능을 `OR` 키워드를 사용하여 구현
+    const products = await prisma.product.findMany({
+      where: {
+        OR: [
+          { name: { contains: search } },
+          { description: { contains: search } },
+        ],
+      },
+      skip: parseInt(skip),
+      take: parseInt(limit),
+      orderBy: { createdAt: "desc" },
+    });
 
-    const products = await Product.find(query)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(parseInt(limit));
+    const total = await prisma.product.count({
+      where: {
+        OR: [
+          { name: { contains: search } },
+          { description: { contains: search } },
+        ],
+      },
+    });
 
-    const total = await Product.countDocuments(query);
-
-    res.json({
+    res.status(200).json({
       total,
       page: parseInt(page),
       pageSize: products.length,
-      products,
+      data: products,
     });
   })
 );
@@ -38,11 +47,14 @@ router.get(
 router.get(
   "/:id",
   asyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
+    const { id } = req.params;
+    const product = await prisma.product.findUnique({
+      where: { id: parseInt(id) },
+    });
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
-    res.json(product);
+    res.status(200).json(product);
   })
 );
 

@@ -6,15 +6,15 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 router.get(
-  "/:mongoProductId",
+  "/:productId",
   asyncHandler(async (req, res) => {
-    const { mongoProductId } = req.params;
-    const { cursor, take = 10 } = req.query;
+    const { productId } = req.params;
+    const { cursor } = req.query;
 
     const comments = await prisma.productComment.findMany({
-      where: { productId: mongoProductId },
+      where: { productId: parseInt(productId) },
       orderBy: { createdAt: "desc" },
-      take: parseInt(take),
+      take: 10,
       skip: cursor ? 1 : 0,
       cursor: cursor ? { id: parseInt(cursor) } : undefined,
     });

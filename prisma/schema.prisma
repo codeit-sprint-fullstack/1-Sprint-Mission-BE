@@ -13,7 +13,7 @@ model Article {
   content   String
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
-  comments  ArticleComment[] @relation("ArticleComments") // 명시적 관계 이름 부여
+  comments  ArticleComment[] @relation("ArticleComments")
 }
 
 model ArticleComment {
@@ -25,10 +25,22 @@ model ArticleComment {
   articleId Int
 }
 
+model Product {
+  id          Int              @id @default(autoincrement())
+  name        String
+  description String
+  price       Int
+  tags        String[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  comments    ProductComment[] @relation("ProductComments")
+}
+
 model ProductComment {
   id        Int      @id @default(autoincrement())
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade, name: "ProductComments")
+  productId Int
 }
