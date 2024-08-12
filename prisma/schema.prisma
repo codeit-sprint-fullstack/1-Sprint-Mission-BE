@@ -20,6 +20,7 @@ model Article {
   likeCount Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  comments  Comment[] @relation("ArticleComments") // 댓글과의 관계 설정
 }
 
 model Comment {
@@ -29,6 +30,8 @@ model Comment {
   boardType boardType @default(board)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  article   Article   @relation("ArticleComments", fields: [postId], references: [id], onDelete: Cascade) // 관계 설정
+
 
   @@unique([id, boardType])
 }
