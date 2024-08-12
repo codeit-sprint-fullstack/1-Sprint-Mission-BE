@@ -1,22 +1,35 @@
-const productData = [
+export const articles = [
   {
-    name: "Product 1",
-    description: "Description for product 1",
-    price: 100,
-    tags: ["tag1", "tag2"],
+    title: "First Article Title",
+    content: "First Article Content",
+    createdAt: new Date(),
   },
   {
-    name: "Product 2",
-    description: "Description for product 2",
-    price: 200,
-    tags: ["tag3", "tag4"],
+    title: "Second Article Title",
+    content: "Second Article Content",
+    createdAt: new Date(),
   },
   {
-    name: "Product 3",
-    description: "Description for product 3",
-    price: 300,
-    tags: ["tag5", "tag6"],
+    title: "Third Article Title",
+    content: "Third Article Content",
+    createdAt: new Date(),
   },
 ];
 
-export default productData;
+export const comments = [
+  {
+    content: "First article Comment",
+    category: "BOARD",
+    createdAt: new Date(),
+  },
+  {
+    content: "Second article Comment",
+    category: "MARKET",
+    createdAt: new Date(),
+  },
+  {
+    content: "Third article Comment",
+    category: "BOARD",
+    createdAt: new Date(),
+  },
+];
