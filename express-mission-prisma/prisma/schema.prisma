@@ -41,3 +41,13 @@ model UsedCommend {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model UsedMarket {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  price       Int
+  tag         String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
