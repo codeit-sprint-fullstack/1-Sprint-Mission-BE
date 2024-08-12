@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import { articles, comments } from "./mockData.js";
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "@prisma/client";
 
 dotenv.config();
 
