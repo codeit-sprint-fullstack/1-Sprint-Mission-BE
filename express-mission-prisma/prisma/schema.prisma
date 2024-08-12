@@ -14,40 +14,58 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String        @id @default(uuid())
+  name        String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  FreeCommends FreeCommend[]
+  UsedCommends UsedCommend[]
+  NoticeBoards NoticeBoard[]
+  UsedMarkets  UsedMarket[]
 }
 
 model NoticeBoard {
-  id        String   @id @default(uuid())
-  title     String
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String        @id @default(uuid())
+  title       String
+  content     String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  FreeCommends FreeCommend[]
 }
 
 model FreeCommend {
-  id        String   @id @default(uuid())
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String      @id @default(uuid())
+  content       String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  noticeBoard   NoticeBoard @relation(fields: [noticeBoardId], references: [id], onDelete: Cascade)
+  noticeBoardId String
 }
 
 model UsedCommend {
-  id        String   @id @default(uuid())
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String     @id @default(uuid())
+  content      String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  usedMarket   UsedMarket @relation(fields: [usedMarketId], references: [id], onDelete: Cascade)
+  usedMarketId String
 }
 
 model UsedMarket {
-  id          String   @id @default(uuid())
-  name        String   @unique
+  id          String        @id @default(uuid())
+  name        String        @unique
   description String
   price       Int
-  tags         String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  tags        String[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  UsedCommends UsedCommend[]
 }
