@@ -7,9 +7,13 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.article.deleteMany({});
-  await prisma.articleComment.deleteMany({});
+  // Clear existing data
+  await prisma.article.deleteMany();
+  await prisma.articleComment.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.productComment.deleteMany();
 
+  // Create articles
   const article1 = await prisma.article.create({
     data: {
       title: "article1",
@@ -29,6 +33,7 @@ async function main() {
     },
   });
 
+  // Create article comments
   await prisma.articleComment.create({
     data: {
       content: "comment1",
@@ -52,6 +57,53 @@ async function main() {
     data: {
       content: "comment4",
       articleId: article3.id,
+    },
+  });
+
+  // Create products
+  const product1 = await prisma.product.create({
+    data: {
+      name: "product1",
+      description: "description1",
+      price: 100,
+      tag: ["tag1", "tag2"],
+    },
+  });
+  const product2 = await prisma.product.create({
+    data: {
+      name: "product2",
+      description: "description2",
+      price: 200,
+      tag: ["tag1", "tag2"],
+    },
+  });
+  const product3 = await prisma.product.create({
+    data: {
+      name: "product3",
+      description: "description3",
+      price: 300,
+      tag: ["tag1", "tag2"],
+    },
+  });
+
+  // Create product comments
+  await prisma.productComment.create({
+    data: {
+      content: "comment1",
+      productId: product1.id,
+    },
+  });
+  await prisma.productComment.create({
+    data: {
+      content: "comment2",
+      productId: product2.id,
+    },
+  });
+
+  await prisma.productComment.create({
+    data: {
+      content: "comment3",
+      productId: product3.id,
     },
   });
 }
