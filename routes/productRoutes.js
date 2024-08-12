@@ -1,6 +1,6 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
-import Product from "../models/product.js";
+import product from "../models/product.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 
 const router = express.Router();
