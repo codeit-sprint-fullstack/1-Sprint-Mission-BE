@@ -1,4 +1,8 @@
 import * as s from 'superstruct';
+import isUuid from 'is-uuid';
+
+//validate id format
+export const Uuid = s.define('Uuid', (value) => isUuid.v4(value));
 
 export const CreateProduct = s.object({
   name: s.size(s.string(), 1, 10),
@@ -15,3 +19,9 @@ export const CreateArticle = s.object({
 });
 
 export const PatchArticle = s.partial(CreateArticle);
+
+export const CreateComment = s.object({
+  content: s.size(s.string(), 1, 200),
+});
+
+export const PatchComment = s.partial(CreateComment);
