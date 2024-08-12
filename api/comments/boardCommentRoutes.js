@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 // 자유게시판 댓글 목록 조회 API
-router.get('/api/board/comments', async (req, res) => {
+router.get('/', async (req, res) => {
   const { cursor = '', limit = 20 } = req.query;
 
   try {
@@ -30,7 +30,7 @@ router.get('/api/board/comments', async (req, res) => {
 });
 
 // 자유게시판 댓글 등록 API
-router.post('/api/board/comments', async (req, res) => {
+router.post('/', async (req, res) => {
   const { content, postId } = req.body;
 
   // 데이터 검증
@@ -55,7 +55,7 @@ router.post('/api/board/comments', async (req, res) => {
 });
 
 // 자유게시판 댓글 수정 API
-router.patch('/api/:boardType/comments/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
   const { id, boardType } = req.params;
   const { content } = req.body;
 
@@ -68,7 +68,7 @@ router.patch('/api/:boardType/comments/:id', async (req, res) => {
       where: {
         id_boardType: {
           id: parseInt(id),
-          boardType: boardType
+          boardType: 'free'
         }
       },
       data: { content },
@@ -86,14 +86,14 @@ router.patch('/api/:boardType/comments/:id', async (req, res) => {
 });
 
 // 자유게시판 댓글 삭제 API
-router.delete('/api/:boardType/comments/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id, boardType } = req.params;
 
   try {
     const deletedComment = await prisma.comment.deleteMany({
       where: { 
         id: parseInt(id),
-        boardType: boardType
+        boardType: 'free'
       },
     });
 
