@@ -68,7 +68,7 @@ router.patch('/:id', async (req, res) => {
       where: {
         id_boardType: {
           id: parseInt(id),
-          boardType: 'free'
+          boardType: 'board'
         }
       },
       data: { content },
@@ -93,7 +93,7 @@ router.delete('/:id', async (req, res) => {
     const deletedComment = await prisma.comment.deleteMany({
       where: { 
         id: parseInt(id),
-        boardType: 'free'
+        boardType: 'board'
       },
     });
 
