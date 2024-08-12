@@ -1,12 +1,29 @@
-import mongoose from "mongoose";
 import * as dotenv from "dotenv";
-import Product from "../models/product.js";
-import data from "./mockData.js";
+import { articles, comments } from "./mockData.js";
+import { PrismaClient } from "@prisma/client/extension";
+
 dotenv.config();
 
-mongoose.connect(process.env.DATABASE_URL);
+const prisma = new PrismaClient();
 
-await Product.deleteMany({});
-await Product.insertMany(data);
+async function main() {
+  await prisma.article.deleteMany({});
+  await prisma.comment.deleteMany({});
 
-mongoose.connection.close();
+  await prisma.article.createMany({
+    data: articles,
+  });
+  await prisma.comment.createMany({
+    data: comments,
+  });
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
