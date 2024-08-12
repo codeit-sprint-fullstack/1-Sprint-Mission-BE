@@ -21,15 +21,24 @@ export const comments = [
     content: "First article Comment",
     category: "BOARD",
     createdAt: new Date(),
+    article: {
+      connect: { title: "First Article Title" },
+    },
   },
   {
     content: "Second article Comment",
     category: "MARKET",
     createdAt: new Date(),
+    article: {
+      connect: { title: "Second Article Title" },
+    },
   },
   {
     content: "Third article Comment",
     category: "BOARD",
     createdAt: new Date(),
+    article: {
+      connect: { title: "Third Article Title" },
+    },
   },
 ];
