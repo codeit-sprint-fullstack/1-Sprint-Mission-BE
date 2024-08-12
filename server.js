@@ -26,5 +26,4 @@ app.use('/api/articles', articleRoutes);
 app.use('/api/board/comments', boardCommentRoutes);
 app.use('/api/market/comments', marketCommentRoutes);
 
-
-app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
+app.listen(process.env.PORT || 8000, () => console.log('Server Started'));
