@@ -25,15 +25,16 @@ router.get(
     const sortOrder = order === "ascending" ? 1 : -1;
 
     const [products, totalCount] = await Promise.all([
-      Product.find({
-        $or: [{ name: searchRegex }, { description: searchRegex }],
-        price: { $gte: Number(minPrice), $lte: Number(maxPrice) },
-        ...dateFilter,
-      })
+      product
+        .find({
+          $or: [{ name: searchRegex }, { description: searchRegex }],
+          price: { $gte: Number(minPrice), $lte: Number(maxPrice) },
+          ...dateFilter,
+        })
         .sort({ createdAt: sortOrder })
         .skip(offset)
         .limit(parseInt(pageSize)),
-      Product.countDocuments({
+      product.countDocuments({
         $or: [{ name: searchRegex }, { description: searchRegex }],
         price: { $gte: Number(minPrice), $lte: Number(maxPrice) },
         ...dateFilter,
@@ -99,7 +100,7 @@ router.patch(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const updatedProduct = await Product.findByIdAndUpdate(
+    const updatedProduct = await product.findByIdAndUpdate(
       req.params.id,
       { ...req.body, updatedAt: new Date() },
       { new: true, runValidators: true }
