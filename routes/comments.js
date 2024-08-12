@@ -27,15 +27,14 @@ app.get(
 
     const comments = await getComments(cursor, limit, id);
 
-    const nextComments = comments.length > limit;
-    const nextCursor = nextComments ? comments[limit - 1].id : null;
-
-    const returnData = {
-      comments: comments.slice(0, limit),
-      Cursor: nextCursor,
-    };
-
     if (comments) {
+      const nextComments = comments.length > limit;
+      const nextCursor = nextComments ? comments[limit - 1].id : null;
+
+      const returnData = {
+        comments: comments.slice(0, limit),
+        Cursor: nextCursor,
+      };
       res.send(returnData);
     } else {
       res.status(404).send({ message: "댓글을 찾을수 없습니다." });

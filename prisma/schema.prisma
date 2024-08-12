@@ -56,7 +56,7 @@ model Comment {
   createAt  DateTime @default(now())
   updateAt  DateTime @updatedAt
   favorite  Int      @default(0)
-  article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  article   Article? @relation(fields: [articleId], references: [id], onDelete: SetNull)
   articleId String?
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String?
