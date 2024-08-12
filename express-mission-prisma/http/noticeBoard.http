@@ -1,12 +1,11 @@
 GET  http://localhost:3000/noticeBoards
-
 ###
 
 GET  http://localhost:3000/noticeBoards
 
 ###
 
-GET http://localhost:3000/noticeBoards/22938169-e14e-4eb4-b2e0-0249d0c874da
+GET http://localhost:3000/noticeBoards/766362d9-638b-4393-91d0-1852b7c6a90e
 
 ###
 

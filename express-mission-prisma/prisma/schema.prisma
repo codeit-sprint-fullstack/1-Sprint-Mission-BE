@@ -44,10 +44,10 @@ model UsedCommend {
 
 model UsedMarket {
   id          String   @id @default(uuid())
-  name        String
+  name        String   @unique
   description String
   price       Int
-  tag         String[]
+  tags         String[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

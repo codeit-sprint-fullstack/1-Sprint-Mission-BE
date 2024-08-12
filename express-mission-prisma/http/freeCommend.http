@@ -2,7 +2,7 @@ GET  http://localhost:3000/freeCommends
 
 ###
 
-GET  http://localhost:3000/freeCommends
+GET  http://localhost:3000/freeCommends/?cursor=136bb431-ac7b-42d5-8b9d-f1cd3ce88d89
 
 ###
 
