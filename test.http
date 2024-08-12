@@ -54,41 +54,41 @@ DELETE https://articles-2bks.onrender.com/article/6f664bcf-4573-4e25-8167-60773d
 
 
 ### 상품조회
-GET http://localhost:3000/product/
-
-### 상세 상품 조회
-GET http://localhost:3000/product/66b8441c519305ccf5ca1e11
+GET http://localhost:3000/product
 
 ### 상품 추가
 POST http://localhost:3000/product
 Content-Type: application/json
 
 {
-  "name" : "여기에 댓글",
-  "description": "댓글  테스트 테스트 테스트",
+  "name" : "여기 게시글",
+  "description": "게시글 테스트 입니다.",
   "price" : 300,
   "tag": "test"
 }
 
 ### 수정
-PATCH http://localhost:3000/product/66b04ea33bd0884845ac2da4
+PATCH http://localhost:3000/product/ed6a11a0-e364-4ef4-9b71-75697f86ee19
 Content-Type: application/json
 
 {
-  "name" : "코딩테스트 변경",
-  "description" : "코딩테스트 변경이다야요요요"
+  "name" : "제목만 변경해보자",
+  "description" : "내용만 변경해보자",
+  "price" : 300,
+  "tag" : ["tag1", "tag2"]
+  
 }
 
 
 ### 삭제
-DELETE http://localhost:3000/product/66b854253a0389fcf06d369a
+DELETE http://localhost:3000/product/b1be12e0-1a43-4b09-bbac-a756b75f1ca7
 
 
 
 
 
 ### 댓글 추가
-POST http://localhost:3000/product/66b854253a0389fcf06d369a/comment
+POST http://localhost:3000/product/b1be12e0-1a43-4b09-bbac-a756b75f1ca7/comment
 Content-Type: application/json
 
 {
@@ -99,7 +99,7 @@ GET http://localhost:3000/product/66b8441c519305ccf5ca1e11/comment
 
 ### 댓글 수정
 
-PATCH http://localhost:3000/product/66b8441c519305ccf5ca1e11/comment/66b84c603a8024345ea57798
+PATCH http://localhost:3000/product/b1be12e0-1a43-4b09-bbac-a756b75f1ca7/comment/af8ebbc8-f73b-40db-9a09-45dc7c8d8219
 Content-Type: application/json
 
 {
@@ -107,4 +107,4 @@ Content-Type: application/json
 }
 
 ### 댓글 삭제
-DELETE http://localhost:3000/product/66b8441c519305ccf5ca1e11/comment/66b84c603a8024345ea57798
+DELETE http://localhost:3000/product/b1be12e0-1a43-4b09-bbac-a756b75f1ca7/comment/af8ebbc8-f73b-40db-9a09-45dc7c8d8219

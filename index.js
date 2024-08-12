@@ -1,18 +1,12 @@
-import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
-import Product from "./models/products.js";
-import Comment from "./models/productsComment.js";
-import cors from "cors";
+import express from "express";
+import { PrismaClient } from "@prisma/client";
+
 dotenv.config();
 
-console.log(process.env.MONGODB_URL);
-mongoose.connect(process.env.MONGODB_URL).then(() => {
-  console.log("Database connected");
-});
-
+const prisma = new PrismaClient();
 const app = express();
-app.use(cors());
+
 app.use(express.json());
 
 function asyncHandler(handler) {
@@ -29,156 +23,182 @@ function asyncHandler(handler) {
 app.get(
   "/product",
   asyncHandler(async (req, res) => {
+    const { keywrod, page = 1, pageSize = 10 } = req.query;
     try {
-      const page = parseInt(req.query.page) || 1;
-      const limit = parseInt(req.query.limit) || 10;
-      const keyword = req.query.keyword || "";
-
-      const startIndex = (page - 1) * limit;
-
-      const searchQuery = keyword
+      const conditions = keywrod
         ? {
-            name: { $regex: keyword, $options: "i" } || {
-              description: { $regex: keyword, $options: "i" },
-            },
+            OR: [
+              {
+                name: {
+                  contains: keywrod,
+                  mode: "insensitive",
+                },
+              },
+              {
+                description: {
+                  contains: keywrod,
+                  mode: "insensitive",
+                },
+              },
+            ],
           }
         : {};
-
-      const products = await Product.find(searchQuery)
-        .skip(startIndex)
-        .limit(limit);
-
-      const totalCount = await Product.countDocuments(searchQuery);
-
-      res.send({ product: products, totalCount, page, limit });
+      const products = await prisma.product.findMany({
+        where: conditions,
+        orderBy: {
+          createAt: "asc",
+        },
+        skip: (page - 1) * pageSize,
+        take: parseInt(pageSize),
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createAt: true,
+        },
+      });
+      const totalProducts = await prisma.product.count({ where: conditions });
+      res.json({
+        data: products,
+        total: totalProducts,
+        page: parseInt(page),
+        pageSize: parseInt(pageSize),
+        totalPages: Math.ceil(totalProducts / pageSize),
+      });
     } catch (e) {
-      res.status(500).send({ message: e.message });
+      console.error(e);
+      res.status(500).json({ error: "internal server error" });
     }
   })
 );
 
-app.get(
-  "/product/:id",
-  asyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id).populate("comment");
-    if (product) {
-      res.send(product);
-    } else {
-      res.status(404).send({ message: "Product not found" });
-    }
-  })
-);
+app.post("/product", async (req, res) => {
+  try {
+    const { name, description, price, tag } = req.body;
+    const product = await prisma.product.create({
+      data: {
+        name,
+        description,
+        price,
+        tag: Array.isArray(tag) ? tag : [tag],
+      },
+    });
+    res.status(201).json(product);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
+  }
+});
 
-app.post(
-  "/product",
-  asyncHandler(async (req, res) => {
-    const product = await Product.create(req.body);
-    res.status(201).send(product);
-  })
-);
+app.patch("/product/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, description, price, tag } = req.body;
+    const product = await prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        description,
+        price,
+        tag: Array.isArray(tag) ? tag : [tag],
+      },
+    });
+    res.status(201).json(product);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
+  }
+});
 
-app.patch(
-  "/product/:id",
-  asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const product = await Product.findById(id);
-    if (product) {
-      Object.keys(req.body).forEach((key) => {
-        product[key] = req.body[key];
-      });
-      await product.save();
-      res.send(product);
-    } else {
-      res.status(404).send({ message: "Product not found" });
-    }
-  })
-);
-
-app.delete(
-  "/product/:id",
-  asyncHandler(async (req, res) => {
-    const id = req.params.id;
-
-    const product = await Product.findByIdAndDelete(id);
-
-    if (product) {
-      await Comment.deleteMany({ productId: id });
-
-      res.send({
-        message: "Product and associated comments deleted successfully",
-      });
-    } else {
-      res.status(404).send({ message: "Product not found" });
-    }
-  })
-);
+app.delete("/product/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+    res.status(201).json(product);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
+  }
+});
 
 app.post("/product/:id/comment", async (req, res) => {
   const { id } = req.params;
   const { content } = req.body;
-  const product = await Product.findById(id);
-  if (product) {
-    const comment = await Comment.create({
-      content,
-      productId: id,
+  try {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: id,
+      },
     });
-    product.comment.push(comment._id);
-    await product.save();
-    res.status(201).json(comment);
-  } else {
-    res.status(404).send({ message: "Product not found" });
+    if (!product) {
+      res.status(404).send({ message: "Product not found" });
+    }
+    const comment = await prisma.productComment.create({
+      data: {
+        content,
+        productId: id,
+      },
+    });
+    res.status(201).send(comment);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
   }
-});
-
-app.get("/product/:id/comment", async (req, res) => {
-  const { id } = req.params;
-  const { cursor, limit = 10 } = req.query;
-  const comments = await Comment.find({
-    productId: id,
-  })
-    .skip(parseInt(cursor) || 0)
-    .limit(parseInt(limit) || 10);
-  res.send(comments);
 });
 
 app.patch("/product/:id/comment/:commentId", async (req, res) => {
   const { id, commentId } = req.params;
   const { content } = req.body;
-  const product = await Product.findById(id);
-  if (product) {
-    const comment = await Comment.findById(commentId);
-    if (comment) {
-      comment.content = content;
-      await comment.save();
-      res.send(comment);
-    } else {
-      res.status(404).send({ message: "Comment not found" });
+  try {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!product) {
+      res.status(404).send({ message: "Product not found" });
     }
-  } else {
-    res.status(404).send({ message: "Product not found" });
+    const comment = await prisma.productComment.update({
+      where: {
+        id: commentId,
+      },
+      data: {
+        content,
+      },
+    });
+    res.status(201).send(comment);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
   }
 });
 
 app.delete("/product/:id/comment/:commentId", async (req, res) => {
   const { id, commentId } = req.params;
-  const product = await Product.findById(id);
-
-  if (product) {
-    const comment = await Comment.findById(commentId);
-    if (comment) {
-      product.comment = product.comment.filter(
-        (cId) => cId.toString() !== commentId
-      );
-      await product.save();
-
-      await Comment.deleteOne({ _id: commentId });
-
-      res.send({ message: "Comment deleted successfully" });
-    } else {
-      res.status(404).send({ message: "Comment not found" });
+  try {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!product) {
+      res.status(404).send({ message: "Product not found" });
     }
-  } else {
-    res.status(404).send({ message: "Product not found" });
+    const comment = await prisma.productComment.delete({
+      where: {
+        id: commentId,
+      },
+    });
+    res.status(201).send(comment);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "internal server error" });
   }
 });
 
