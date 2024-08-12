@@ -5,7 +5,11 @@ const prisma = new PrismaClient();
 
 async function main() {
   // 기존 데이터 삭제
-  await prisma.comment.deleteMany();
+  await prisma.comment.deleteMany({
+    where: {
+      boardType: 'board'
+    }
+  });
 
   // 댓글 초기 데이터 삽입
   await prisma.comment.createMany({
