@@ -6,7 +6,7 @@ import { createComment, updateComment } from "../structs/commentStruct.js";
 const app = express.Router();
 const prisma = new PrismaClient();
 
-const getComments = async (cursor, limit) => {
+const getComments = async (cursor, limit, id) => {
   const data = await prisma.comment.findMany({
     where: { articleId: id },
     take: limit + 1, //추가적인 댓글이 있는지 확인
@@ -25,10 +25,10 @@ app.get(
     const { limit = 5, cursor = "" } = req.query;
     const { id } = req.params;
 
-    const comments = await getComments(cursor, limit);
+    const comments = await getComments(cursor, limit, id);
 
     const nextComments = comments.length > limit;
-    const nextCursor = nextComments ? comments[limit].id : null;
+    const nextCursor = nextComments ? comments[limit - 1].id : null;
 
     const returnData = {
       comments: comments.slice(0, limit),

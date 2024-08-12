@@ -7,6 +7,7 @@ export const createComment = s.object({
   content: s.size(s.string(), 1, 50),
   userId: Uuid,
   articleId: Uuid,
+  productId: Uuid,
 });
 
 export const updateComment = s.partial(createComment);

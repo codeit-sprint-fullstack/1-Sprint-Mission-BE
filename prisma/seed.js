@@ -1,20 +1,25 @@
 import { PrismaClient } from "@prisma/client";
-import { USER, ARTICLE } from "./mock.js";
+import { USER, COMMENT } from "./mock.js";
 
 const prisma = new PrismaClient();
 
 async function main() {
   // 기존 데이터 삭제
-  await prisma.user.deleteMany();
-  await prisma.user.createMany({
-    data: USER,
-    // skipDuplicates: true,
-  });
+  // await prisma.user.deleteMany();
+  // await prisma.user.createMany({
+  //   data: USER,
+  //   // skipDuplicates: true,
+  // });
   // prisma.article.deleteMany();
   // prisma.article.createMany({
   //   data: ARTICLE,
   //   skipDuplicates: true,
   // });
+  await prisma.comment.deleteMany();
+  await prisma.comment.createMany({
+    data: COMMENT,
+    // skipDuplicates: true,
+  });
 }
 
 main()

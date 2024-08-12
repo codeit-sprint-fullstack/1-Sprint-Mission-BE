@@ -51,3 +51,30 @@ export const USER = [
     email: "codeit-3@getPrismaClient.com",
   },
 ];
+
+export const COMMENT = [
+  {
+    content: "댓글을 작성합니다.",
+    articleId: "593eda30-23de-4569-8173-84efda3ebd47",
+  },
+  {
+    content: "댓글을 수정합니다.",
+    articleId: "593eda30-23de-4569-8173-84efda3ebd47",
+  },
+  {
+    content: "댓글을 삭제예정입니다.",
+    articleId: "593eda30-23de-4569-8173-84efda3ebd47",
+  },
+  {
+    content: "댓글을 작성합니다. - 테스트입니다.",
+    articleId: "593eda30-23de-4569-8173-84efda3ebd47",
+  },
+  {
+    content: "댓글을 수정합니다. - 목데이터 입니다.",
+    articleId: "593eda30-23de-4569-8173-84efda3ebd47",
+  },
+  {
+    content: "댓글을 삭제예정입니다. - 페이지네이션을 위한 추가",
+    articleId: "593eda30-23de-4569-8173-84efda3ebd47",
+  },
+];
