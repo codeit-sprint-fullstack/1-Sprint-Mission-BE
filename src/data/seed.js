@@ -13,11 +13,14 @@ async function main() {
   await prisma.article.createMany({
     data: articles,
   });
-  for (let data of comments) {
-    await prisma.comment.create({
-      data: data,
-    });
-  }
+
+  await Promise.all(
+    comments.map((data) =>
+      prisma.comment.create({
+        data: data,
+      })
+    )
+  );
 }
 
 main()
