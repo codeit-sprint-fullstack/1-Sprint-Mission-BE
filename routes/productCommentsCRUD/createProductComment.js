@@ -17,7 +17,7 @@ router.post(
         productId: parseInt(productId),
       },
     });
-    res.status(201).json(productComment);
+    res.status(201).json(comment);
   })
 );
 

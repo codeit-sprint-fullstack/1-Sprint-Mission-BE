@@ -5,9 +5,9 @@ import updateProductComment from "./productCommentsCRUD/updateProductComment.js"
 import deleteProductComment from "./productCommentsCRUD/deleteProductComment.js";
 
 const router = express.Router();
-router.post("/:mongoProductId", createProductComment);
-router.get("/:mongoProductId", getProductComments);
-router.patch("/:mongoProductId/:id", updateProductComment);
-router.delete("/:mongoProductId/:id", deleteProductComment);
+router.post("/:productId", createProductComment);
+router.get("/:productId", getProductComments);
+router.patch("/:id", updateProductComment);
+router.delete("/:id", deleteProductComment);
 
 export default router;

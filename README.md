@@ -1,10 +1,10 @@
-## start
-
-node index.js
-
 ## seed.js
 
 npx prisma db seed
+
+## start
+
+node index.js
 
 ## test
 
@@ -24,13 +24,13 @@ DELETE /products/:id
 
 **중고마켓 댓글**
 
-GET /products/:mongoProductId
+GET /productComments/:productId
 
-POST /products/:mongoProductId
+POST /productComments/:productId
 
-PATCH /products/:mongoProductId/:id
+PATCH /productComments/:id
 
-DELETE /products/:mongoProductId/:id
+DELETE /productComments/:id
 
 **자유게시판**
 

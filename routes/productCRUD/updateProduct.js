@@ -5,7 +5,6 @@ import asyncHandler from "../asyncHandler.js";
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// 상품 수정 API
 router.patch(
   "/:id",
   asyncHandler(async (req, res) => {

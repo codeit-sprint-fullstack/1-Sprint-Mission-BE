@@ -1,5 +1,4 @@
 import { Router } from "express";
-import Product from "../../models/product.js";
 import { PrismaClient } from "@prisma/client";
 import asyncHandler from "../asyncHandler.js";
 
