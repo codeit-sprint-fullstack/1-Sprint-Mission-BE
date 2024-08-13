@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.2"
+  },
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "scripts": {
+    "start": "node app.mjs",
+    "dev": "nodemon app.mjs",
+    "seed": "node data/seed.mjs"
+  }
+}
