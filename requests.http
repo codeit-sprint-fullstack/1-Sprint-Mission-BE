@@ -1,0 +1,38 @@
+GET https://one-sprint-mission-be-4229.onrender.com/products
+
+
+###
+
+GET https://one-sprint-mission-be-4229.onrender.com/products?sort=recent&offset=0&limit=10&search=갤럭시
+
+###
+
+GET https://one-sprint-mission-be-4229.onrender.com/products/66b84a40b750775fdf89fd8f
+
+###
+
+POST https://one-sprint-mission-be-4229.onrender.com/products
+Content-Type: application/json
+
+{
+  "name": "갤럭시 링",
+  "description": "웨어러블 헬스케어 디바이스",
+  "price": "500000",
+  "tags": ["전자제품"]
+}
+
+###
+
+PATCH https://one-sprint-mission-be-4229.onrender.com/products/21
+Content-Type: application/json
+
+{
+  "name": "삼성 갤럭시 링",
+  "description": "웨어러블 헬스케어 디바이스",
+  "price": "500000",
+  "tags": ["전자제품"]
+}
+
+###
+
+DELETE https://one-sprint-mission-be-4229.onrender.com/products/66b8607da07af26dd544a4c1
