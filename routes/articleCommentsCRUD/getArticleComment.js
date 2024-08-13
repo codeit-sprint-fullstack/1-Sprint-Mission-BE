@@ -15,7 +15,6 @@ router.get(
       take: 10,
       skip: cursor ? 1 : 0,
       cursor: cursor ? { id: parseInt(cursor) } : undefined,
-      orderBy: { createdAt: "asc" },
     });
     res.status(200).json(comments);
   })

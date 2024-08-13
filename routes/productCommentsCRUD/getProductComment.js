@@ -13,7 +13,6 @@ router.get(
 
     const comments = await prisma.productComment.findMany({
       where: { productId: parseInt(productId) },
-      orderBy: { createdAt: "desc" },
       take: 10,
       skip: cursor ? 1 : 0,
       cursor: cursor ? { id: parseInt(cursor) } : undefined,
