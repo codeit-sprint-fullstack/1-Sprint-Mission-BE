@@ -1,0 +1,58 @@
+###
+GET http://localhost:3000/users/me
+authorizaion : 66b5ccad2cf6ddb53d85e3a6
+
+
+###
+POST http://localhost:3000/products
+Content-Type : application/json
+authorization : 66b5ccad2cf6ddb53d85e3a6
+
+{
+  "images": [
+    "https://as1.ftcdn.net/v2/jpg/05/72/80/66/1000_F_572806675_TcLAScY4KfbV5tL0PAdWmeo42TBpzh6f.jpg"
+  ],
+  "tags": [
+    "전자제품"
+  ],
+  "price": 450000,
+  "description": "2년 구독 끝까지 다 즐기고 보내주려고 합니다",
+  "name": "PS5(2018a)"
+}
+
+###
+GET http://localhost:3000/products
+
+###
+GET http://localhost:3000/products?page=1&pageSize=9&orderBy=favorite
+
+###
+GET http://localhost:3000/products?keyword=구독
+
+###
+GET http://localhost:3000/products/66b624b6445d51c9e300a524
+
+###
+PATCH http://localhost:3000/products/66b6274a55e7ea80919d693c
+Content-Type : application/json
+authorization : 66b5ccad2cf6ddb53d85e3a6
+
+{
+  "images": [
+    "https://www.psu.com/wp/wp-content/uploads/2020/06/ps5-console-design-horizontal-768x432.jpg"
+  ],
+  "tags": [
+    "콘솔"
+  ],
+  "price": 480000,
+  "description": "구독제 끝까지 다 즐기고 보내주려고 합니다",
+  "name": "플스5(2018a)"
+}
+
+###
+DELETE http://localhost:3000/products/66b6372ee4e067bdf043f718
+authorization : 66b5ccad2cf6ddb53d85e3a6
+
+###
+PATCH  http://localhost:3000/resetProductsOfUser/66b625de1d15b04c4fde086c
+authorization : 66b5ccad2cf6ddb53d85e3a6
