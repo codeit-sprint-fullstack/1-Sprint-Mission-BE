@@ -1,6 +1,2 @@
 node_modules/
-*.http
-*.log
-*.gz
-.DS_Store
 .env

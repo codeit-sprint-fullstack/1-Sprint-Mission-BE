@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/products
+GET https://product-api-shiu.onrender.com/products
 
 ###
 
@@ -30,4 +30,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/products/66b344b61d97a98c58ed4516
+DELETE https://product-api-shiu.onrender.com/products/66b5ad8ab9353e474eca07e3
