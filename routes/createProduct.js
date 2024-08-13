@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Product from "../../models/product.js";
+import Product from "../models/product.js";
 import asyncHandler from "../asyncHandler.js";
 
 const router = Router();
