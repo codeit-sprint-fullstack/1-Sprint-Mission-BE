@@ -26,7 +26,7 @@ function asyncHandler(handler) {
 }
 
 app.get(
-  "/product",
+  "/products",
   asyncHandler(async (req, res) => {
     try {
       const page = parseInt(req.query.page) || 1;
@@ -57,7 +57,7 @@ app.get(
 );
 
 app.post(
-  "/product",
+  "/products",
   asyncHandler(async (req, res) => {
     const product = await Product.create(req.body);
     res.status(201).send(product);
@@ -65,7 +65,7 @@ app.post(
 );
 
 app.patch(
-  "/product/:id",
+  "/products/:id",
   asyncHandler(async (req, res) => {
     const id = req.params.id;
     const product = await Product.findById(id);
@@ -82,7 +82,7 @@ app.patch(
 );
 
 app.delete(
-  "/product/:id",
+  "/products/:id",
   asyncHandler(async (req, res) => {
     const id = req.params.id;
     const product = await Product.findByIdAndDelete(id);
