@@ -15,10 +15,10 @@ datasource db {
 
 model Product {
   id          Int      @id @default(autoincrement()) // @default(autoincrement()) 자동으로 증가하는 값으로 설정
-  name        String   @db.VarChar(10) // @db.VarChar() 글자 수 제한
+  name        String   
   description String
   price       Float
-  tags        String?  @db.VarChar(5)
+  tags        String? 
   createAt    DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
