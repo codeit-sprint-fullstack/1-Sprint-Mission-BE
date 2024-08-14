@@ -1,7 +1,7 @@
 // src/index.js
 import express from "express";
 import articleRoutes from "./routes/articleRoutes.js";
-import commentRoutes from "./routes/commentRoutes.js";
+import commentRoutes from "./routes/marketCommentRoutes.js";
 import marketItemRoutes from "./routes/marketItemRoutes.js";
 import errorHandler from "./middlewares/errorHandler.js";
 

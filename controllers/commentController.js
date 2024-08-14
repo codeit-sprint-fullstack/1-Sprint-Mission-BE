@@ -1,48 +1,42 @@
-import prisma from "../prismaClient.js";
-import asyncHandler from "../middlewares/asyncHandler.js";
-
-// 댓글쓰기
-export const createComment = asyncHandler(async (req, res) => {
-  const { content, articleId, marketItemId } = req.body;
+// 중고마켓 댓글 등록
+export const createMarketComment = asyncHandler(async (req, res) => {
+  const { content, marketItemId } = req.body;
   const comment = await prisma.comment.create({
-    data: { content, articleId, marketItemId },
+    data: { content, marketItemId },
   });
   res.status(201).json(comment);
 });
 
-// 댓글 수정
-export const updateComment = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { content } = req.body;
-  const comment = await prisma.comment.update({
-    where: { id: parseInt(id) },
-    data: { content },
+// 자유게시판 댓글 등록
+export const createArticleComment = asyncHandler(async (req, res) => {
+  const { content, articleId } = req.body;
+  const comment = await prisma.comment.create({
+    data: { content, articleId },
   });
-  res.status(200).json(comment);
+  res.status(201).json(comment);
 });
 
-// 댓글 삭제
-export const deleteComment = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  await prisma.comment.delete({
-    where: { id: parseInt(id) },
-  });
-  res.status(204).send();
-});
-
-// 댓글 목록 나열
-export const listComments = asyncHandler(async (req, res) => {
-  const { articleId, marketItemId, page = 1, size = 10 } = req.query;
-  const skip = (page - 1) * size;
+// 중고마켓 댓글 목록 조회
+export const listMarketComments = asyncHandler(async (req, res) => {
+  const { marketItemId, cursor, size = 10 } = req.query;
   const comments = await prisma.comment.findMany({
-    where: {
-      AND: [
-        { articleId: articleId ? parseInt(articleId) : undefined },
-        { marketItemId: marketItemId ? parseInt(marketItemId) : undefined },
-      ],
-    },
-    skip: parseInt(skip),
+    where: { marketItemId: parseInt(marketItemId) },
     take: parseInt(size),
+    cursor: cursor ? { id: parseInt(cursor) } : undefined,
+    skip: cursor ? 1 : 0,
+    orderBy: { createdAt: "desc" },
+  });
+  res.status(200).json(comments);
+});
+
+// 자유게시판 댓글 목록 조회
+export const listArticleComments = asyncHandler(async (req, res) => {
+  const { articleId, cursor, size = 10 } = req.query;
+  const comments = await prisma.comment.findMany({
+    where: { articleId: parseInt(articleId) },
+    take: parseInt(size),
+    cursor: cursor ? { id: parseInt(cursor) } : undefined,
+    skip: cursor ? 1 : 0,
     orderBy: { createdAt: "desc" },
   });
   res.status(200).json(comments);
