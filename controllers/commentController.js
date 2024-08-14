@@ -1,3 +1,7 @@
+import prisma from "../prismaClient.js";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import CustomError from "../utils/customError.js";
+
 // 중고마켓 댓글 등록
 export const createMarketComment = asyncHandler(async (req, res) => {
   const { content, marketItemId } = req.body;
@@ -14,6 +18,54 @@ export const createArticleComment = asyncHandler(async (req, res) => {
     data: { content, articleId },
   });
   res.status(201).json(comment);
+});
+
+// 중고마켓 댓글 수정
+export const updateMarketComment = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { content } = req.body;
+  const comment = await prisma.comment.update({
+    where: { id: parseInt(id) },
+    data: { content },
+  });
+  res.status(200).json(comment);
+});
+
+// 자유게시판 댓글 수정
+export const updateArticleComment = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { content } = req.body;
+  const comment = await prisma.comment.update({
+    where: { id: parseInt(id) },
+    data: { content },
+  });
+  res.status(200).json(comment);
+});
+
+// 중고마켓 댓글 삭제
+export const deleteMarketComment = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    await prisma.comment.delete({
+      where: { id: parseInt(id) },
+    });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// 자유게시판 댓글 삭제
+export const deleteArticleComment = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    await prisma.comment.delete({
+      where: { id: parseInt(id) },
+    });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 // 중고마켓 댓글 목록 조회
