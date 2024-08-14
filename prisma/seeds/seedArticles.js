@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { articleData } from './Articles.js';
+import { PrismaClient } from "@prisma/client";
+import { articleData } from "./Articles.js";
 
 const prisma = new PrismaClient();
 
@@ -13,7 +13,7 @@ async function main() {
     skipDuplicates: true,
   });
 
-  console.log('게시글 데이터 시딩 작업 완료되었습니다.');
+  console.log("게시글 데이터 시딩 작업 완료되었습니다.");
 }
 
 main()

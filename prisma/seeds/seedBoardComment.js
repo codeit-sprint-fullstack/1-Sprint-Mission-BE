@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { BoardComments } from './BoardComment.js';
+import { PrismaClient } from "@prisma/client";
+import { BoardComments } from "./BoardComment.js";
 
 const prisma = new PrismaClient();
 
@@ -7,8 +7,8 @@ async function main() {
   // 기존 데이터 삭제
   await prisma.comment.deleteMany({
     where: {
-      boardType: 'board'
-    }
+      boardType: "board",
+    },
   });
 
   // 댓글 초기 데이터 삽입
@@ -17,7 +17,7 @@ async function main() {
     skipDuplicates: true,
   });
 
-  console.log('자유게시판 댓글 시딩 작업 완료되었습니다.');
+  console.log("자유게시판 댓글 시딩 작업 완료되었습니다.");
 }
 
 main()
@@ -29,5 +29,3 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
-
-

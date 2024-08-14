@@ -1,14 +1,16 @@
-# 📑 스프린트 미션7 BE | 
+# 📑 스프린트 미션7 BE |
 
 스프린트 미션 7은 PostgreSQL을 사용하여 프론트엔드와 주고받을 자유게시판과 댓글 관련 API를 구현하였습니다.
 
-### 👨‍👩‍👧‍👦 요구사항 
+### 👨‍👩‍👧‍👦 요구사항
 
 #### 기본 요구사항
 
 #### 중고마켓
+
 - [x] mongoDB에서 PostgreSQL을 사용하도록 코드를 마이그레이션 해주세요.
------------------
+
+---
 
 #### 공통
 
@@ -18,7 +20,7 @@
 - [x] 각 API에 적절한 에러 처리를 해 주세요.
 - [x] 각 API 응답에 적절한 상태 코드를 리턴하도록 해 주세요.
 
------------
+---
 
 #### 자유게시판
 
@@ -57,23 +59,22 @@
 
 ### ⏰ 개발 기간
 
-- 2024,08,11 ~ 
+- 2024,08,11 ~
 
 ### ⚙ 기술 스택
+
 - Back
 
-    * JavaScript
-    * Node.js
-    * Express.js
-    * MongoDB
-    * Mongoose
-    * dotenv
-    * CORS
+  - JavaScript
+  - Node.js
+  - Express.js
+  - MongoDB
+  - Mongoose
+  - dotenv
+  - CORS
 
 ### 🖐🏻 오류 처리
 
 - 400 Bad Request: 잘못된 요청
 - 404 Not Found: 요청한 리소스를 찾을 수 없음
 - 500 Internal Server Error: 서버 오류
-
-
