@@ -22,7 +22,6 @@ router.get(
     const { page = 1, limit = 10, search = "" } = req.query;
     const skip = (page - 1) * parseInt(limit);
 
-    // Prisma에서는 MongoDB의 `$or`과 같은 기능을 `OR` 키워드를 사용하여 구현
     const products = await prisma.product.findMany({
       where: {
         OR: [
