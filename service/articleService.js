@@ -1,9 +1,20 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
-import asyncHandler from "../asyncHandler.js";
+import asyncHandler from "../Common/asyncHandler.js";
 
 const router = express.Router();
 const prisma = new PrismaClient();
+
+router.post(
+  "/",
+  asyncHandler(async (req, res) => {
+    const { title, content } = req.body;
+    const article = await prisma.article.create({
+      data: { title, content },
+    });
+    res.status(201).json(article);
+  })
+);
 
 router.get(
   "/:id",
@@ -48,6 +59,33 @@ router.get(
       pages: Math.ceil(total / size),
       data: articles,
     });
+  })
+);
+
+router.patch(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const article = await prisma.article.update({
+      where: { id: parseInt(id) },
+      data: { title, content },
+    });
+    if (!article) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+    res.status(200).json(article);
+  })
+);
+
+router.delete(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    await prisma.article.delete({
+      where: { id: parseInt(id) },
+    });
+    res.status(204).end();
   })
 );
 

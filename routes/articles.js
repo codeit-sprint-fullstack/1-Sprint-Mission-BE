@@ -1,14 +1,11 @@
 import express from "express";
-import createArticle from "./articleCRUD/createArticle.js";
-import getArticle from "./articleCRUD/getArticle.js";
-import updateArticle from "./articleCRUD/updateArticle.js";
-import deleteArticle from "./articleCRUD/deleteArticle.js";
+import articleService from "../service/articleService.js";
 
 const router = express.Router();
-router.post("/", createArticle);
-router.get("/", getArticle);
-router.get("/:id", getArticle);
-router.patch("/:id", updateArticle);
-router.delete("/:id", deleteArticle);
+router.post("/", articleService);
+router.get("/", articleService);
+router.get("/:id", articleService);
+router.patch("/:id", articleService);
+router.delete("/:id", articleService);
 
 export default router;

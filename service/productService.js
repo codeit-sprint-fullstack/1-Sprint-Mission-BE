@@ -1,11 +1,21 @@
-import express from "express";
+import { Router } from "express";
+import asyncHandler from "../Common/asyncHandler.js";
 import { PrismaClient } from "@prisma/client";
-import asyncHandler from "../asyncHandler.js";
 
-const router = express.Router();
+const router = Router();
 const prisma = new PrismaClient();
 
-// 상품 목록 조회 API
+router.post(
+  "/",
+  asyncHandler(async (req, res) => {
+    const { name, description, price, tags } = req.body;
+    const product = await prisma.product.create({
+      data: { name, description, price, tags },
+    });
+    res.status(201).json(product);
+  })
+);
+
 router.get(
   "/",
   asyncHandler(async (req, res) => {
@@ -55,6 +65,33 @@ router.get(
       return res.status(404).json({ error: "Product not found" });
     }
     res.status(200).json(product);
+  })
+);
+
+router.patch(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { name, description, price, tags } = req.body;
+    const product = await prisma.product.update({
+      where: { id: parseInt(id) },
+      data: { name, description, price, tags },
+    });
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.json(product);
+  })
+);
+
+router.delete(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    await prisma.product.delete({
+      where: { id: parseInt(id) },
+    });
+    res.status(204).send();
   })
 );
 
