@@ -66,9 +66,6 @@ app.patch("/users/me/password", async (req, res) => {
   if (passwordConfirmation === password) {
     const user = await User.findById(authorization).lean();
 
-    res.status(400);
-    result = { message: "incorrect password confirmation" };
-
     if (user) {
       if (user.password === currentPassword) {
         const user_ = await User.updateOne(
@@ -91,6 +88,9 @@ app.patch("/users/me/password", async (req, res) => {
         result = { message: "Password incorrect" };
       }
     }
+  } else {
+    res.status(400);
+    result = { message: "incorrect password confirmation" };
   }
 
   res.json(result);
@@ -314,32 +314,41 @@ app.patch("/products/:id", async (req, res) => {
   if (Object.keys(updateDataCopy).length > 0) {
     res.status(400);
     result = { message: "Bad Request" };
-  } else {
-    // 임시
-    const product = await Product.findById(id);
-
-    if (authorization === product.ownerId.toString()) {
-      const { _id, favorite_user_id, updatedAt, __v, ...rest } =
-        await Product.findByIdAndUpdate({ _id: id }, updateData, {
-          new: true,
-        }).lean();
-      const favoriteCount = favorite_user_id.length;
-      const newProduct = { id: _id, favoriteCount: favoriteCount, ...rest };
-
-      if (newProduct.id) {
-        result = newProduct;
-        res.status(200);
-      } else {
-        res.status(404);
-        result = { message: "Not Found" };
-      }
-    } else {
-      res.status(401);
-      result = { message: "Unauthorized" };
-    }
+    res.json(result);
+    return;
   }
 
-  res.json(result);
+  // 임시
+  const product = await Product.findById(id);
+
+  if (authorization !== product.ownerId.toString()) {
+    res.status(401);
+    result = { message: "Unauthorized" };
+    res.json(result);
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    { _id: id },
+    updateData,
+    {
+      new: true,
+    }
+  ).lean();
+
+  const { _id, favorite_user_id, updatedAt, __v, ...rest } = updatedProduct;
+  const favoriteCount = favorite_user_id.length;
+  result = { id: _id, favoriteCount: favoriteCount, ...rest };
+
+  if (result.id) {
+    res.status(200);
+    res.json(result);
+    return;
+  } else {
+    res.status(404);
+    result = { message: "Not Found" };
+    res.json(result);
+    return;
+  }
 });
 
 /** Product DELETE /products/:id - 테스트 완 */
@@ -349,48 +358,53 @@ app.delete("/products/:id", async (req, res) => {
   let result = null;
 
   const product = await Product.findById(id);
+
+  if (!product) {
+    res.status(404);
+    result = { message: "Not Found" };
+    res.send(result);
+    return;
+  }
+
+  if (authorization !== product.ownerId.toString()) {
+    res.status(401);
+    result = { message: "Unauthorized" };
+    res.send(result);
+    return;
+  }
+
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    if (product) {
-      if (authorization === product.ownerId.toString()) {
-        res.status(200);
-        // 해당 상품 삭제
-        const deletedProduct = await Product.findByIdAndDelete({
-          _id: id,
-        });
-        // user에 favorite products 정보 저장시 사용 예정
-        // const users_favorite = deletedProduct.favorite_user_id;
-        // const users_id = { _id: { $in: users_favorite } };
-        // result = deletedProduct;
+    // 해당 상품 삭제
+    const deletedProduct = await Product.findByIdAndDelete({
+      _id: id,
+    });
+    // user에 favorite products 정보 저장시 사용 예정
+    // const users_favorite = deletedProduct.favorite_user_id;
+    // const users_id = { _id: { $in: users_favorite } };
+    // result = deletedProduct;
 
-        // // favorite 관련 api 구현 후 테스트 필요
-        // // favorite_user_id에 저장된 user id를 기반으로 user의
-        // await User.updateMany(users_id, {
-        //   $pull: { favorite_products: deletedProduct._id },
-        // });
+    // // favorite 관련 api 구현 후 테스트 필요
+    // // favorite_user_id에 저장된 user id를 기반으로 user의
+    // await User.updateMany(users_id, {
+    //   $pull: { favorite_products: deletedProduct._id },
+    // });
 
-        // 상품을 올린 유저의 상품 정보에서 제거
-        await User.findByIdAndUpdate(
-          { _id: product.ownerId.toString() },
-          { $pull: { products: id } },
-          { runValidators: true }
-        );
-        const { _id, updatedAt, __v, favorite_user_id, ...rest } =
-          deletedProduct.toObject();
-        const favoriteCount = favorite_user_id.length;
+    // 상품을 올린 유저의 상품 정보에서 제거
+    await User.findByIdAndUpdate(
+      { _id: product.ownerId.toString() },
+      { $pull: { products: id } },
+      { runValidators: true }
+    );
+    const { _id, updatedAt, __v, favorite_user_id, ...rest } =
+      deletedProduct.toObject();
+    const favoriteCount = favorite_user_id.length;
 
-        result = { id: _id, favoriteCount: favoriteCount, ...rest };
-      } else {
-        res.status(401);
-        result = { message: "Unauthorized" };
-      }
-    } else {
-      res.status(404);
-      result = { message: "Not Found" };
-    }
     await session.commitTransaction();
+    res.status(200);
+    result = { id: _id, favoriteCount: favoriteCount, ...rest };
   } catch (err) {
     res.status(500);
     result = { message: err.name };
