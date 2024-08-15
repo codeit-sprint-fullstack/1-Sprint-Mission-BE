@@ -4,9 +4,17 @@
 GET http://localhost:3000/api/articles/03cb17ca-01d2-4b2d-ac70-51b3eb5b072b/comments
 
 
+### get comments list of article pagination
+
+GET http://localhost:3000/api/articles/03cb17ca-01d2-4b2d-ac70-51b3eb5b072b/comments?lastId=f0e3c2b5-8497-4f88-8d98-c2d87b294a2c
+
 ### get comments list of product
 
 GET http://localhost:3000/api/products/a57d8a16-eb82-413b-8726-59b24b80e7e4/comments
+
+### get comments list of product pagination
+
+GET http://localhost:3000/api/products/81ddeb00-a28c-4bac-bfed-b15f46d39896/comments?lastId=76bee06c-f5c8-4c6b-8e1b-2b298f622458
 
 ### create comment on article
 POST http://localhost:3000/api/articles/03cb17ca-01d2-4b2d-ac70-51b3eb5b072b/comments

@@ -1,6 +1,6 @@
 import express from "express";
 import * as a from "../controllers/articleController.js";
-import { asyncHandler } from "../utils/errorHandler.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import {
   getArticleComments,
   createArticleComment,

@@ -31,7 +31,7 @@ Content-Type: application/json
 }
 
 ### update product by id
-PATCH http://localhost:3000/api/products/71f10e0f-5345-4fcd-bb96-89912fe09b47
+PATCH http://localhost:3000/api/products/6527b991-16c4-476c-812d-319e62af2cea
 Content-Type: application/json
 
 {
@@ -41,4 +41,4 @@ Content-Type: application/json
 }
 
 ### delete product by id
-DELETE http://localhost:3000/api/products/71f10e0f-5345-4fcd-bb96-89912fe09b47
+DELETE http://localhost:3000/api/products/6527b991-16c4-476c-812d-319e62af2cea

@@ -1,6 +1,6 @@
 import express from "express";
 import * as p from "../controllers/productController.js";
-import { asyncHandler } from "../utils/errorHandler.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import {
   getProductComments,
   createProductComment,

@@ -17,7 +17,6 @@ export const getProductComments = async (req, res) => {
     take: limit,
     skip: lastId ? 1 : 0,
     cursor: lastId ? { id: lastId } : undefined,
-    queryOptions,
     select: {
       id: true,
       content: true,
