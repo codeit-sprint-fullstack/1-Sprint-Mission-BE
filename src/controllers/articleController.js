@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-import { assert } from 'superstruct';
+import { PrismaClient } from "@prisma/client";
+import { assert } from "superstruct";
 
-import { CreateArticle, PatchArticle } from '../validation/structs.js';
+import { CreateArticle, PatchArticle } from "../validation/structs.js";
 
 const prisma = new PrismaClient();
 
@@ -11,11 +11,11 @@ export const getArticles = async (req, res) => {
   const { orderBy } = req.query;
   const page = parseInt(req.query.page) * 1 || 1;
   const pageSize = parseInt(req.query.pageSize) * 1 || 10;
-  const keyword = req.query.keyword || '';
+  const keyword = req.query.keyword || "";
 
   const offset = (page - 1) * pageSize;
 
-  const sortOption = { createdAt: orderBy === 'recent' ? 'desc' : 'asc' };
+  const sortOption = { createdAt: orderBy === "recent" ? "desc" : "asc" };
 
   const searchQuery = {
     OR: [{ title: { contains: keyword } }, { content: { contains: keyword } }],
@@ -75,5 +75,5 @@ export const deleteArticleById = async (req, res) => {
   const { id } = req.params;
   await prisma.article.delete({ where: { id } });
 
-  res.status(200).send({ message: 'Article has deleted successfully' });
+  res.status(200).send({ message: "Article has deleted successfully" });
 };

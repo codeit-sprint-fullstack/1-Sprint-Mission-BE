@@ -1,0 +1,39 @@
+
+
+### fetch all articles
+GET http://localhost:3000/api/articles
+
+
+### fetch articles with orderBy
+GET http://localhost:3000/api/articles?orderBy=recent
+
+
+### fetch all articles with keyword
+GET http://localhost:3000/api/articles?keyword=맥북
+
+### fetch all articles with page and pageSize
+GET http://localhost:3000/api/articles?page=2&pageSize=4
+
+### fetch article by id
+GET http://localhost:3000/api/articles/5443f45c-28bb-44ac-9702-cbc0a0bc2932
+
+### create new article
+POST http://localhost:3000/api/articles
+Content-Type: application/json
+
+{
+  "title": "맥북 요새 시세 어떰",
+  "content": "중고거래 게시글"
+  
+}
+
+### update article by id
+PATCH http://localhost:3000/api/articles/5443f45c-28bb-44ac-9702-cbc0a0bc2932
+Content-Type: application/json
+
+{
+ "content": "수정된 게시글"
+}
+
+### delete article by id
+DELETE http://localhost:3000/api/articles/5443f45c-28bb-44ac-9702-cbc0a0bc2932

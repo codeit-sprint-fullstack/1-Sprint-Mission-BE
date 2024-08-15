@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-import { assert } from 'superstruct';
+import { PrismaClient } from "@prisma/client";
+import { assert } from "superstruct";
 
-import { CreateProduct, PatchProduct } from '../validation/structs.js';
+import { CreateProduct, PatchProduct } from "../validation/structs.js";
 
 const prisma = new PrismaClient();
 
@@ -11,17 +11,17 @@ export const getProducts = async (req, res) => {
   const { orderBy } = req.query;
   const page = parseInt(req.query.page) * 1 || 1;
   const pageSize = parseInt(req.query.pageSize) * 1 || 10;
-  const keyword = req.query.keyword || '';
+  const keyword = req.query.keyword || "";
 
   const offset = (page - 1) * pageSize;
 
   let sortOption;
-  if (orderBy === 'recent') {
-    sortOption = { createdAt: 'desc' };
-  } else if (orderBy === 'favorite') {
-    sortOption = { favoriteCount: 'desc' };
+  if (orderBy === "recent") {
+    sortOption = { createdAt: "desc" };
+  } else if (orderBy === "favorite") {
+    sortOption = { favoriteCount: "desc" };
   } else {
-    sortOption = { createdAt: 'asc' };
+    sortOption = { createdAt: "asc" };
   }
 
   const searchQuery = {
@@ -87,5 +87,5 @@ export const deleteProductById = async (req, res) => {
   const { id } = req.params;
   await prisma.product.delete({ where: { id } });
 
-  res.status(200).send({ message: 'Product has deleted successfully' });
+  res.status(200).send({ message: "Product has deleted successfully" });
 };
