@@ -1,1 +1,4 @@
 express-mission/node_modules/
+express-mission/.env
+express-mission-prisma/node_modules
+express-mission-prisma/.env
