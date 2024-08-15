@@ -3,10 +3,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mongoose": "^8.5.1",
     "@prisma/client": "^5.4.2",
     "is-email": "^1.0.2",
     "is-uuid": "^1.0.2",
+    "mongoose": "^8.5.1",
     "prisma": "^5.4.2",
     "superstruct": "^1.0.3"
   },
@@ -19,7 +19,7 @@
     "start": "node app.js",
     "seed": "node data/seed.js"
   },
-  "prisma":{
+  "prisma": {
     "seed": "node prisma/seed.js"
   }
 }
