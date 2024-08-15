@@ -12,3 +12,33 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Article {
+  id        String    @id @default(uuid())
+  title     String
+  content   String
+  category  Category
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Comment   Comment[]
+}
+
+model Comment {
+  id        String      @id @default(uuid())
+  content   String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  article   Article     @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId String
+  type      CommentType
+}
+
+enum Category {
+  FREE_BOARD
+  MARKET
+}
+
+enum CommentType {
+  FREE_BOARD_COMMENT
+  MARKET_COMMENT
+}
