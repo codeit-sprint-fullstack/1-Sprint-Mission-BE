@@ -1,0 +1,71 @@
+GET http://localhost:3000/articles
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/articles?offset=1&limit=5
+Content-Type: application/json
+
+###
+
+POST http://localhost:3000/articles
+Content-Type: application/json
+
+{
+ "title" : "4년 사용4년 사용4년 사용4년 사용4년 사용4년 사용4년 사용4년 사용4년 사용4년 사용",
+ "content" : "4년 사용"
+}
+
+###
+
+PATCH http://localhost:3000/articles/c20ede28-5482-46c3-a409-716e37a9c811
+Content-Type: application/json
+
+{
+ "title" : "3년 사용 후기",
+ "content" : "3년 사용"
+}
+
+###
+
+DELETE http://localhost:3000/articles/ddd
+
+
+###
+
+GET http://localhost:3000/articles/d9b56921-c956-4173-b3a0-13f6bce6c902/comments
+Content-Type: application/json
+
+###
+
+POST http://localhost:3000/articles/d9b56921-c956-4173-b3a0-13f6bce6c902/comments
+Content-Type: application/json
+
+{
+ "content" : "not bad"
+}
+
+###
+
+GET http://localhost:3000/products/160477a2-f4f7-4ff5-9f50-1761e2d17899/comments
+Content-Type: application/json
+
+
+###
+POST  http://localhost:3000/products
+Content-Type: application/json
+
+{
+    "name" : "50인치 TV",
+    "description" : "50인치 TV",
+    "price" : 500000,
+    "tags" : "TV"
+}
+
+###
+POST  http://localhost:3000/products/160477a2-f4f7-4ff5-9f50-1761e2d17899/comments
+Content-Type: application/json
+
+{
+ "content" : "not good"
+}

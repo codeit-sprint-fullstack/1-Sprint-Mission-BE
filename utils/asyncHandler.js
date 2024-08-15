@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client';
+
 export default function asyncHandler(handler) {
   return async function (req, res) {
     try {
