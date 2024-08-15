@@ -1,6 +1,6 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
-import { asyncHandler } from "../utils/asyncHandler.js";
+import asyncHandler from "../asyncHandler.js";
 
 const router = express.Router();
 const prisma = new PrismaClient();
