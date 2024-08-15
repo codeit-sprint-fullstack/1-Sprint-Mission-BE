@@ -1,0 +1,30 @@
+POST http://localhost:3000/articles
+Content-Type: application/json
+
+{
+  "title": "게이밍 PC 판매합니다",
+  "content": "고성능 게이밍 PC 판매합니다. CPU는 Ryzen 7, GPU는 RTX 3080, RAM은 32GB입니다. 게임과 작업 모두 원활하게 실행됩니다. 가격은 150만원이며, 직거래만 가능합니다.",
+  "category": "MARKET"
+}
+
+###
+GET http://localhost:3000/articles/d6e5f4g3-7h8i-9j0k-1l2m-3n4o5p6q7r8s
+
+###
+GET http://localhost:3000/articles
+
+
+###
+PATCH http://localhost:3000/articles/e7f6g5h4-8i9j-0k1l-2m3n-4o5p6q7r8s9t
+Content-Type: application/json
+
+{
+  "title": "동네 농구 모임 모집",
+  "content": "주말에 함께 농구할 동네 주민들 모집합니다. 초보자도 환영합니다. 관심 있으신 분들은 댓글 남겨주세요!"
+}
+
+###
+DELETE http://localhost:3000/articles/d6755745-50bd-4ec5-b7a3-cec2f4aec40d
+
+###
+GET http://localhost:3000/articles?order=recent&limit=3&page=1

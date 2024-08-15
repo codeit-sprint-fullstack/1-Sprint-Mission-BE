@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
-import { Category, CommentType, PrismaClient } from "@prisma/client";
+import { Category, CommentType, PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -244,7 +244,7 @@ app.get(
 
 // 댓글 목록 조회 api - 마켓
 app.get(
-  "/free-board/:id/comments",
+  "/market/:id/comments",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { cursor, take = 10 } = req.query;
