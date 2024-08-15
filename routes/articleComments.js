@@ -5,27 +5,22 @@ import { CreateComment, PatchComment } from '../structs.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
 const prisma = new PrismaClient();
-const router = express.Router();
-
-// 게시글 조회 API //id, title, content, createdAt
-router.get(
-  '/:id',
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const article = await prisma.article.findUniqueOrThrow({
-      where: { id },
-    });
-    res.send(article);
-  })
-);
+const router = express.Router({ mergeParams: true });
 
 // 댓글 목록조회 API //id, content, createdAt를 조회합니다. cursor적용
 router.get(
   '/',
   asyncHandler(async (req, res) => {
+    const { articleId } = req.params;
     const { cursor, limit = 10 } = req.query;
     let query = {
       take: parseInt(limit),
+      where: { articleId: articleId },
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+      },
     };
     if (cursor) {
       query.cursor = {
@@ -33,7 +28,7 @@ router.get(
       };
       query.skip = 1;
     }
-    const comment = await prisma.article.findMany(query);
+    const comment = await prisma.comment.findMany(query);
     res.send(comment);
   })
 );
@@ -44,8 +39,15 @@ router.post(
   asyncHandler(async (req, res) => {
     assert(req.body, CreateComment);
     const { content } = req.body;
+    const { articleId } = req.params;
+
     const comment = await prisma.comment.create({
-      data: { content },
+      data: {
+        content,
+        article: {
+          connect: { id: articleId },
+        },
+      },
     });
     res.send(comment);
   })
