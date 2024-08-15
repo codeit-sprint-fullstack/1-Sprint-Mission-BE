@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
   res.send("default path");
 });
 
-app.use("/articles", articleRoutes);
-app.use("/comments", commentRoutes);
+app.use("/articles", articleRoute);
+app.use("/comments", commentRoute);
 
 app.listen(process.env.PORT || 3000, () => console.log("Server Started"));
