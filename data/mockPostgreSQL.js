@@ -35,7 +35,26 @@ export const UserPoducts = [];
 
 export const UserFavoriteProducts = [];
 
-export const Products = [];
+export const Products = [
+  {
+    id: "7890abc1-def2-g345-h6789012345678",
+    name: "first product",
+    description: "first product description",
+    price: 1000,
+    ownerId: "123e4567-e89b-12d3-a456-426614174001",
+    createdAt: "2022-01-01T00:00:00.000Z",
+    updatedAt: "2022-01-02T12:34:56.789Z",
+  },
+  {
+    id: "345e6789-cdef-ghij-klmnop-12345678901",
+    name: "second product",
+    description: "second product description",
+    price: 20000,
+    ownerId: "123e4567-e89b-12d3-a456-426614174001",
+    createdAt: "2022-01-01T00:00:00.000Z",
+    updatedAt: "2022-01-02T12:34:56.789Z",
+  },
+];
 
 export const ProductTags = [];
 
@@ -62,12 +81,12 @@ export const Articles = [
   },
 ];
 
-export const Comments = [
+export const ArticleComments = [
   {
     id: "123e4567-e89b-12d3-a456-426614174005",
     userId: "123e4567-e89b-12d3-a456-426614174001",
     articleId: "123e4567-e89b-12d3-a456-426614174004",
-    content: "This is my first comment!",
+    content: "This is my first article comment!",
     createdAt: "2022-01-05T21:22:23.456Z",
     updatedAt: "2022-01-06T00:03:04.789Z",
   },
@@ -75,7 +94,26 @@ export const Comments = [
     id: "7890abc1-def2-g345-h6789012345682",
     userId: "7890abc1-def2-g345-h6789012345678",
     articleId: "7890abc1-def2-g345-h6789012345679",
-    content: "This is my second comment!",
+    content: "This is my second article comment!",
+    createdAt: "2022-02-07T03:04:05.123Z",
+    updatedAt: "2022-02-08T06:07:08.456Z",
+  },
+];
+
+export const ProductComments = [
+  {
+    id: "123e4567-e89b-12d3-a456-426614174005",
+    userId: "123e4567-e89b-12d3-a456-426614174001",
+    productId: "345e6789-cdef-ghij-klmnop-12345678901",
+    content: "This is my first product comment!",
+    createdAt: "2022-01-05T21:22:23.456Z",
+    updatedAt: "2022-01-06T00:03:04.789Z",
+  },
+  {
+    id: "7890abc1-def2-g345-h6789012345682",
+    userId: "7890abc1-def2-g345-h6789012345678",
+    productId: "345e6789-cdef-ghij-klmnop-12345678901",
+    content: "This is my second product comment!",
     createdAt: "2022-02-07T03:04:05.123Z",
     updatedAt: "2022-02-08T06:07:08.456Z",
   },
