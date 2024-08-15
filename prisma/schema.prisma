@@ -22,7 +22,7 @@ model Product {
   favoriteCount Int       @default(0)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  Comment       Comment[]
+  comments      Comment[]
 }
 
 model Article {
@@ -31,7 +31,7 @@ model Article {
   content   String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  Comment   Comment[]
+  comments  Comment[]
 }
 
 model Comment {

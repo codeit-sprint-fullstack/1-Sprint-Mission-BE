@@ -5,7 +5,7 @@ import { CreateProduct, PatchProduct } from '../validation/structs.js';
 
 const prisma = new PrismaClient();
 
-//get products by queries
+//get products list
 // query parameter: orderBy, page, pageSize, keyword
 export const getProducts = async (req, res) => {
   const { orderBy } = req.query;

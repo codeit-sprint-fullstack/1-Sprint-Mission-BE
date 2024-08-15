@@ -5,6 +5,8 @@ import { CreateArticle, PatchArticle } from '../validation/structs.js';
 
 const prisma = new PrismaClient();
 
+//get article list
+// query parameter: orderBy, page, pageSize, keyword
 export const getArticles = async (req, res) => {
   const { orderBy } = req.query;
   const page = parseInt(req.query.page) * 1 || 1;
@@ -68,7 +70,7 @@ export const updateArticleById = async (req, res) => {
   res.send(article);
 };
 
-// delete a article by id
+// delete an article by id
 export const deleteArticleById = async (req, res) => {
   const { id } = req.params;
   await prisma.article.delete({ where: { id } });
