@@ -3,7 +3,9 @@ function asyncHandler(handler) {
     try {
       await handler(req, res);
     } catch (e) {
+
       res.status(500).send({ message: e.message });
+
     }
   };
 }
