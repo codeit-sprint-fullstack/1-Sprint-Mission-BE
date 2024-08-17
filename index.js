@@ -7,13 +7,13 @@ import productRoutes from "./routes/products.js";
 import productCommentRoutes from "./routes/productComments.js";
 import cors from "cors";
 
-dotenv.config(); // .env 파일 로드
+dotenv.config();
 
 const app = express();
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: process.env.DATABASE_URL, // .env에서 Prisma DB 연결 URL 사용
+      url: process.env.DATABASE_URL,
     },
   },
 });
@@ -32,7 +32,7 @@ app.get("/check-db", async (req, res) => {
     await prisma.$connect();
     res.status(200).json({ message: "Database connected successfully" });
   } catch (error) {
-    console.error("Database connection failed:", error); // 오류 로그 출력
+    console.error("Database connection failed:", error);
     res.status(500).json({ message: "Database connection failed", error });
   } finally {
     await prisma.$disconnect();

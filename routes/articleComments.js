@@ -1,10 +1,16 @@
 import express from "express";
-import articleCommentService from "../service/articleCommentService.js";
+import {
+  createComment,
+  getComments,
+  updateComment,
+  deleteComment,
+} from "../service/articleCommentService.js";
 
 const router = express.Router();
-router.post("/:articleId", articleCommentService);
-router.get("/:articleId", articleCommentService);
-router.patch("/:id", articleCommentService);
-router.delete("/:id", articleCommentService);
+
+router.post("/:articleId", createComment);
+router.get("/:articleId", getComments);
+router.put("/:id", updateComment);
+router.delete("/:id", deleteComment);
 
 export default router;
