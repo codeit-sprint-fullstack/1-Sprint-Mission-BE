@@ -21,6 +21,7 @@ model Product {
   tags        String[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  comments    Comment[] @relation("ProductComments") // Product와 Comment 간의 관계 설정
 }
 
 model Article {
@@ -29,5 +30,17 @@ model Article {
   content     String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  comments    Comment[] @relation("ArticleComments") // Article과 Comment 간의 관계 설정
+}
+
+model Comment {
+  id        Int       @id @default(autoincrement())
+  content   String
+  product   Product?  @relation("ProductComments", fields: [productId], references: [id], onDelete: Cascade)
+  article   Article?  @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
+  productId Int?
+  articleId Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
