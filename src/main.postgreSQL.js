@@ -1,7 +1,12 @@
 import express from "express";
 import cors from "cors";
+// import asyncHandler from "express-async-handler";
+import { Prisma } from "@prisma/client";
+import { assert } from "superstruct";
 import { DB_URL, PORT } from "./config.js";
 import { PrismaClient } from "@prisma/client";
+import { Article } from "./structs/article.js";
+import { Comment } from "./structs/comment.js";
 
 const prisma = new PrismaClient();
 
@@ -10,85 +15,156 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-/** /article POST */
-app.post("/article", async (req, res) => {
-  const { authorization } = req.headers;
-  const { title, content } = req.body;
+function throwUnauthorized() {
+  const error = new Error("Unauthorized");
+  error.status = 401;
+  throw error;
+}
 
-  await prisma.article.create({
-    data: {
-      userId: authorization,
-      title: title,
-      content: content,
-    },
-  });
-});
+const resultArticleFormat = {
+  id: true,
+  userId: true,
+  title: true,
+  content: true,
+  createdAt: true,
+};
+
+function asyncHandler(handler) {
+  return async function (req, res) {
+    try {
+      await handler(req, res);
+    } catch (e) {
+      if (e.status === 401) {
+        res.status(401).send({ message: "Unauthorized" });
+      } else if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        // 유니크 키 제약 위반
+        if (e.code === "P2002") {
+          res.status(409).send({
+            message: "Unique constraint failed on the field: " + e.meta.target,
+          });
+        } else if (e.code === "P2025") {
+          res.status(404).send({ message: "Not Found" });
+        } else {
+          res.status(400).send({ message: e.message });
+        }
+      } else if (
+        e instanceof Prisma.PrismaClientValidationError ||
+        e.name === "StructError"
+      ) {
+        res.status(400).send({ message: "Validation error: " + e.message });
+      } else if (e instanceof Prisma.PrismaClientRustPanicError) {
+        res
+          .status(500)
+          .send({ message: "Internal server error: " + e.message });
+      } else if (e instanceof Prisma.PrismaClientUnknownRequestError) {
+        res
+          .status(500)
+          .send({ message: "Unknown request error: " + e.message });
+      } else if (e instanceof Prisma.PrismaClientInitializationError) {
+        res.status(500).send({ message: "Initialization error: " + e.message });
+      } else {
+        // 기타 예외 처리
+        res.status(500).send({ message: e.message });
+      }
+    }
+  };
+}
+
+/** /article POST */
+app.post(
+  "/article",
+  asyncHandler(async (req, res) => {
+    const { authorization } = req.headers; // 임시 코드 검증 코드 방식 미정
+    assert(req.body, Article);
+    const { title, content } = req.body;
+
+    const result = await prisma.article.create({
+      data: {
+        userId: authorization,
+        title: title,
+        content: content,
+      },
+      select: resultArticleFormat,
+    });
+
+    res.status(201).send(result);
+  })
+);
 
 /** /article GET */
-app.get("/article", async (req, res) => {
-  const articles = await prisma.article.findMany();
-  res.status(200);
-  res.send(articles);
-});
+app.get(
+  "/article",
+  asyncHandler(async (req, res) => {
+    const articles = await prisma.article.findMany({
+      select: resultArticleFormat,
+    });
+
+    res.status(200).send(articles);
+  })
+);
 
 /** /artcile/:id GET */
-app.get("/article/:id", async (req, res) => {
-  const { id } = req.params;
-  const article = await prisma.article.findUnique({
-    where: { id },
-  });
-  res.status(200);
-  res.send(article);
-});
+app.get(
+  "/article/:id",
+  asyncHandler(async (req, res) => {
+    const { id: articleId } = req.params;
+    const article = await prisma.article.findUniqueOrThrow({
+      where: { id: articleId },
+      select: resultArticleFormat,
+    });
+
+    res.status(200).send(article);
+  })
+);
 
 /** /article/:id PATCH */
-app.patch("/articles/:id", async (req, res) => {
-  const { id } = req.params;
-  const { authorization } = req.headers;
-  const updateData = req.body;
-  const editableProperties = ["title", "content"];
-  let updateDataCopy = JSON.parse(JSON.stringify(updateData));
-  let result = null;
+app.patch(
+  "/article/:id",
+  asyncHandler(async (req, res) => {
+    const { id: articleId } = req.params;
+    assert(req.body, Article);
+    const { authorization } = req.headers;
 
-  const origin = await prisma.article.findUnique({ where: { id } });
+    const { userId: userId } = await prisma.article.findUniqueOrThrow({
+      where: { id: articleId },
+    });
 
-  for (const key of editableProperties) {
-    delete updateDataCopy[`${key}`];
-  }
+    if (userId !== authorization) {
+      throwUnauthorized();
+    }
 
-  if (Object.keys(updateDataCopy).length > 0) {
-    res.status(400);
-    result = { message: "Bad Request" };
-  } else if (id === origin.id) {
-    const updated = await prisma.article.update({});
-    result = updated;
-  } else {
-    res.status(401);
-    result = { message: "Unauthorized" };
-  }
+    const result = await prisma.article.update({
+      where: { id: articleId },
+      data: req.body,
+      select: resultArticleFormat,
+    });
 
-  res.send(result);
-});
+    res.status(200).send(result);
+  })
+);
 
 /** /article/:id DELETE */
-app.delete("/article/:id", async (req, res) => {
-  const { id } = req.params;
-  const { authorization } = req.headers;
-  let result = null;
+app.delete(
+  "/article/:id",
+  asyncHandler(async (req, res) => {
+    const { id: articleId } = req.params;
+    const { authorization } = req.headers;
 
-  const origin = await prisma.article.findUnique({ where: { id } });
+    const { userId: userId } = await prisma.article.findUniqueOrThrow({
+      where: { id: articleId },
+    });
 
-  if (authorization === origin.id) {
-    const deleted = await prisma.article.delete({ where: { id } });
-    res.status(200);
-    result = deleted;
-  } else {
-    res.status(401);
-    result = { message: "Unauthorized" };
-  }
+    if (userId !== authorization) {
+      throwUnauthorized();
+    }
 
-  res.send(result);
-});
+    await prisma.article.delete({
+      where: { id: articleId },
+    });
+
+    res.sendStatus(204);
+  })
+);
 
 /** /comment POST */
 app.post("/comment", async (req, res) => {
