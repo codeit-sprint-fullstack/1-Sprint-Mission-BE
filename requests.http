@@ -1,0 +1,26 @@
+### 상품조회
+GET http://localhost:3000/product
+
+### 상품 추가
+POST http://localhost:3000/product
+Content-Type: application/json
+
+{
+  "name" : "8월10일 테스트",
+  "description": "test",
+  "price" : 300,
+  "tag": "test"
+}
+
+### 수정
+PATCH http://localhost:3000/product/66b04ea33bd0884845ac2da4
+Content-Type: application/json
+
+{
+  "name" : "코딩테스트 변경",
+  "description" : "코딩테스트 변경이다야요요요"
+}
+
+
+### 삭제
+DELETE http://localhost:3000/product/66b04ea33bd0884845ac2da4
