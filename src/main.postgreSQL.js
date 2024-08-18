@@ -106,7 +106,14 @@ app.post(
 app.get(
   "/article",
   asyncHandler(async (req, res) => {
+    const { pageSize = 10, page = 1 } = req.query;
+    const castedTake = Number(pageSize);
+    const castedOffset = Number(page) - 1;
+    const skip = castedTake * castedOffset;
     const articles = await prisma.article.findMany({
+      skip: skip,
+      take: castedTake,
+      orderBy: { createdAt: "desc" },
       select: resultArticleFormat,
     });
 

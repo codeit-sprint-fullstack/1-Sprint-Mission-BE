@@ -4,13 +4,13 @@ Content-Type : application/json
 Authorization : 123e4567-e89b-12d3-a456-426614174001
 
 {
-    "title" : "기사제목3",
-    "content" : "기사내용3"
+    "title" : "기사제목6",
+    "content" : "기사내용6"
 }
 
 
 ###
-GET http://localhost:3000/article
+GET http://localhost:3000/article?pageSize=3&page=1
 
 
 ###
