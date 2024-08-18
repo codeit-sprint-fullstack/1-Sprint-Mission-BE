@@ -1,0 +1,43 @@
+###
+//게시글 생성
+POST http://localhost:3000/article
+Content-Type: application/json
+
+{
+  "id": "ac07020c-901e-4638-9188-87d1a858d8ad",
+  "title": "test6",
+  "content": "test6",
+  "userId": "test1"
+}
+
+###
+//게시글 조회
+GET http://localhost:3000/article/3050fa93-9856-432e-8610-d98bee4441b3
+
+###
+//게시글 수정
+PATCH http://localhost:3000/article/3050fa93-9856-432e-8610-d98bee4441b3
+Content-Type: application/json
+
+{
+  "title": "test5",
+  "content": "test5"
+}
+
+###
+//게시판 삭제
+DELETE http://localhost:3000/article/ac07020c-901e-4638-9188-87d1a858d8ad
+
+###
+// 게시판 목록 조회
+GET http://localhost:3000/article
+
+###
+GET http://localhost:3000/article?search=2
+
+###
+GET http://localhost:3000/article?order=newest
+
+###
+GET http://localhost:3000/article?limit=4$offset=1
+
