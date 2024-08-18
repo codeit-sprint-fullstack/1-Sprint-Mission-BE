@@ -1,0 +1,36 @@
+POST http://localhost:3000/products/124/comments
+Content-Type: application/json
+
+{
+  "content": "중고마켓 댓글 테스트"
+}
+
+###
+
+POST http://localhost:3000/articles/2/comments
+Content-Type: application/json
+
+{
+  "content": "자유게시판 댓글 테스트"
+}
+
+###
+
+GET http://localhost:3000/products/124/comments
+
+###
+
+GET http://localhost:3000/articles/2/comments
+
+###
+
+PATCH  http://localhost:3000/comments/2
+Content-Type: application/json
+
+{
+  "content": "자유게시판 댓글 수정 테스트"
+}
+
+###
+
+DELETE http://localhost:3000/comments/2
