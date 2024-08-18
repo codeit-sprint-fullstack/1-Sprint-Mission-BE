@@ -102,6 +102,9 @@ app.get(
     const id = parseInt(req.params.id);
     const product = await prisma.product.findUniqueOrThrow({
       where: { id },
+      include: {
+        comment: true,
+      }
     });
     res.send(product);
   })
@@ -169,9 +172,12 @@ app.get(
 app.get(
   "/articles/:id",
   asyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
     const article = await prisma.article.findUniqueOrThrow({
       where: { id },
+      include: {
+        comment: true,
+      }
     });
     res.send(article);
   })
