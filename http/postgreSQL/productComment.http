@@ -1,0 +1,27 @@
+###
+POST http://localhost:3000/product/123e4567-e89b-12d3-a456-426614174004/comment
+Content-Type : application/json
+Authorization : 123e4567-e89b-12d3-a456-426614174001
+
+{
+    "content" : "댓글 추가"
+}
+
+###
+GET http://localhost:3000/product/123e4567-e89b-12d3-a456-426614174004/comment
+
+###
+GET http://localhost:3000/comment/22078018-0445-4246-8228-4e4286490e5e
+
+###
+PATCH http://localhost:3000/comment/22078018-0445-4246-8228-4e4286490e5e
+Content-Type : application/json
+Authorization : 123e4567-e89b-12d3-a456-426614174001
+
+{
+    "content" : "댓글 수정"
+}
+
+###
+DELETE http://localhost:3000/comment/22078018-0445-4246-8228-4e4286490e5e
+Authorization : 123e4567-e89b-12d3-a456-426614174001

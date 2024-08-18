@@ -23,8 +23,19 @@ function throwUnauthorized() {
 
 const resultArticleFormat = {
   id: true,
-  userId: true,
   title: true,
+  content: true,
+  createdAt: true,
+};
+
+const resultArticleCommentFormat = {
+  id: true,
+  content: true,
+  createdAt: true,
+};
+
+const resultProductCommentFormat = {
+  id: true,
   content: true,
   createdAt: true,
 };
@@ -76,14 +87,14 @@ app.post(
   asyncHandler(async (req, res) => {
     const { authorization } = req.headers; // 임시 코드 검증 코드 방식 미정
     assert(req.body, Article);
-    const { title, content } = req.body;
+
+    const data = {
+      userId: authorization,
+      ...req.body,
+    };
 
     const result = await prisma.article.create({
-      data: {
-        userId: authorization,
-        title: title,
-        content: content,
-      },
+      data: data,
       select: resultArticleFormat,
     });
 
@@ -166,100 +177,104 @@ app.delete(
   })
 );
 
-/** /comment POST */
-app.post("/comment", async (req, res) => {
-  const { authorization } = req.headers;
-  const { articleId, content } = req.body;
+// 기사 댓글 API
+/** /article/:id/comment POST */
+app.post(
+  "/article/:id/comment",
+  asyncHandler(async (req, res) => {
+    const { authorization } = req.headers;
+    assert(req.body, Comment);
+    const { id: articleId } = req.params;
+    const { content } = req.body;
 
-  const data = {
-    userId: authorization,
-    articleId: articleId,
-    content: content,
-  };
+    const data = {
+      userId: authorization,
+      articleId: articleId,
+      content: content,
+    };
 
-  const newArticle = await prisma.article.create({ data: data });
+    const newConment = await prisma.articleComment.create({
+      data: data,
+      select: resultArticleCommentFormat,
+    });
 
-  res.status(200);
-  res.send(newArticle);
-});
+    res.status(201).send(newConment);
+  })
+);
 
-/** /comment GET */
-app.get("/comment", async (req, res) => {
-  const comments = await prisma.comment.findMany();
+/** /article/:id/comment GET */
+app.get(
+  "/article/:id/comment",
+  asyncHandler(async (req, res) => {
+    const { id: articleId } = req.params;
+    const comments = await prisma.articleComment.findMany({
+      where: { articleId: articleId },
+      select: resultArticleCommentFormat,
+    });
 
-  res.status(200);
-  res.send(comments);
-});
+    res.status(200).send(comments);
+  })
+);
 
-/** /article/:id/comment */
-app.get("/article/:id/comment", async (req, res) => {
-  const { id } = req.headers;
-});
+/** /comment/:id */
+app.get(
+  "/article/comment/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const comments = await prisma.articleComment.findUniqueOrThrow({
+      where: { id },
+      select: resultArticleCommentFormat,
+    });
 
-/** /comment/:id GET */
-app.get("/commnet", async (req, res) => {
-  const { id } = req.params;
-
-  const comment = await prisma.comment.findUnique({ where: { id } });
-
-  res.status(200);
-  res.send(comment);
-});
+    res.status(200).send(comments);
+  })
+);
 
 /** /comment/:id PATCH */
-app.patch("/comment/:id", async (req, res) => {
-  const { id } = req.params;
-  const { authorization } = req.headers;
-  const editableProperties = ["content"];
-  const updateData = req.body;
-  let updateDataCopy = JSON.parse(JSON.stringify(updateData));
-  let result = null;
+app.patch(
+  "/article/comment/:id",
+  asyncHandler(async (req, res) => {
+    const { id: commentId } = req.params;
+    const { authorization } = req.headers;
 
-  for (const key of editableProperties) {
-    delete updateDataCopy[`${key}`];
-  }
+    const { userId } = await prisma.articleComment.findUnique({
+      where: { id: commentId },
+    });
 
-  if (Object.keys(updateDataCopy).length > 0) {
-    res.status(400);
-    result = { message: "Bad Request" };
-  } else {
-    const comment = await prisma.article.findUnique({ where: { id } });
-
-    if (authorization === comment.id) {
-      const updated = await prisma.article.update({
-        where: { id },
-        data: updateData,
-      });
-      res.status(200);
-      result = updated;
-    } else {
-      res.status(401);
-      result = { message: "Unauthorized" };
+    if (userId !== authorization) {
+      throwUnauthorized();
     }
-  }
 
-  res.send(result);
-});
+    const result = await prisma.articleComment.update({
+      where: { id: commentId },
+      data: req.body,
+      select: resultArticleCommentFormat,
+    });
+
+    res.status(200).send(result);
+  })
+);
 
 /** /comment/:id DELETE */
-app.delete("/comment/:id", async (req, res) => {
-  const { id } = req.params;
-  const { authorization } = req.header;
-  let result = null;
+app.delete(
+  "/article/comment/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { authorization } = req.headers;
 
-  const comment = await prisma.comment.findUnique({ where: { id } });
+    const { userId } = await prisma.articleComment.findUnique({
+      where: { id },
+    });
 
-  if (authorization === comment.id) {
-    const deleted = await prisma.comment.delete({ where: { id } });
-    res.status(200);
-    result = deleted;
-  } else {
-    res.status(401);
-    result = { message: "Unathorized" };
-  }
+    if (userId !== authorization) {
+      throwUnauthorized();
+    }
 
-  res.send(result);
-});
+    await prisma.articleComment.delete({ where: { id } });
+
+    res.sendStatus(204);
+  })
+);
 
 const server = app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);

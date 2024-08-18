@@ -30,5 +30,4 @@ Authorization : 123e4567-e89b-12d3-a456-426614174001
 DELETE http://localhost:3000/article/123e4567-e89b-12d3-a456-426614174004
 Authorization : 123e4567-e89b-12d3-a456-426614174001
 
-###
-GET http://localhost:3000/comment
+
