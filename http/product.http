@@ -13,7 +13,7 @@ GET http://localhost:3000/products
 
 ###
 
-GET http://localhost:3000/products/128
+GET http://localhost:3000/products/124
 
 
 ###

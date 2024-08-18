@@ -20,7 +20,7 @@ GET http://localhost:3000/articles?order=oldest&offset=1&limit=1
 
 ###
 
-GET http://localhost:3000/articles/7eb34b3b-1785-488b-b376-91583714ff46
+GET http://localhost:3000/articles/7
 
 ###
 
