@@ -2,11 +2,11 @@ GET  http://localhost:3000/usedCommends
 
 ###
 
-GET  http://localhost:3000/usedCommends
+GET  http://localhost:3000/usedCommends?cursor=5f04ea72-41d8-4824-92ca-437bffbd4beb
 
 ###
 
-GET http://localhost:3000/usedCommends/22938169-e14e-4eb4-b2e0-0249d0c874da
+GET http://localhost:3000/usedCommends/5f04ea72-41d8-4824-92ca-437bffbd4beb
 
 ###
 
@@ -14,20 +14,22 @@ POST http://localhost:3000/usedCommends
 Content-Type: application/json
 
 {
-    "content": ""
+    "content": "fg",
+    "userId": "412aab2b-26fe-4d60-9006-8459c869580f",
+    "usedMarketId": "c8ce69c0-2bc4-44dd-9f90-82df2047919d"
 }
 
 
 ###
 
-PATCH http://localhost:3000/usedCommends/66ac9bfb1c9b66ae158b935a
+PATCH http://localhost:3000/usedCommends/c0f7d2fe-bee4-4bbb-9618-70bcc4a820e0
 Content-Type: application/json
 
 {
-    "content": ""
+    "content": "456"
 }
 
 
 ###
 
-DELETE http://localhost:3000/usedCommends/66ac9c4e1c9b66ae158b935e
+DELETE http://localhost:3000/usedCommends/c0f7d2fe-bee4-4bbb-9618-70bcc4a820e0
