@@ -1,0 +1,33 @@
+GET  http://localhost:3000/noticeBoards
+###
+
+GET  http://localhost:3000/noticeBoards
+
+###
+
+GET http://localhost:3000/noticeBoards/766362d9-638b-4393-91d0-1852b7c6a90e
+
+###
+
+POST http://localhost:3000/noticeBoards
+Content-Type: application/json
+
+{
+    "title": "",
+    "content": ""
+}
+
+
+###
+
+PATCH http://localhost:3000/noticeBoards/66ac9bfb1c9b66ae158b935a
+Content-Type: application/json
+
+{
+    "content": ""
+}
+
+
+###
+
+DELETE http://localhost:3000/noticeBoards/66ac9c4e1c9b66ae158b935e
