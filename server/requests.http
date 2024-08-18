@@ -1,0 +1,31 @@
+GET http://localhost:5000/datas
+
+###
+
+POST http://localhost:5000/datas
+Content-Type:application/json
+
+{
+    "name" : "판다인형10",
+    "description" : "판다인형10",
+    "price" : "30000",
+    "tags" : "인형",
+    "isComplete" : false
+}
+
+###
+
+PATCH  http://localhost:5000/datas/66b07458a07a36d9ffc151b8
+Content-Type:application/json
+
+{
+    "name" : "판다인형1",
+    "description" : "판다인형1",
+    "price" : "30000",
+    "tags" : "인형",
+    "isComplete" : false
+}
+
+###
+
+DELETE http://localhost:5000/datas/66b07d4039a0d3a91655f4a7
