@@ -73,3 +73,89 @@ export const COMMENTS = [
     updatedAt: '2024-08-18T06:29:01.602Z',
   },
 ];
+
+export const PRODUCTS = [
+  {
+    id: 'a7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    name: '갤럭시 탭 S7',
+    description: '삼성 갤럭시 탭 S7',
+    price: 350000,
+    tags: ['전자제품', '모바일'],
+    createdAt: '2024-07-29T05:45:03.249Z',
+    updatedAt: '2024-07-29T05:45:03.249Z',
+  },
+  {
+    id: 'b7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    name: '아이폰 13',
+    description: '애플 아이폰 13',
+    price: 1200000,
+    tags: ['전자제품', '모바일'],
+    createdAt: '2024-07-28T04:30:02.123Z',
+    updatedAt: '2024-07-28T04:30:02.123Z',
+  },
+  {
+    id: 'c7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    name: 'LG 그램 17',
+    description: 'LG 그램 17인치 노트북',
+    price: 1800000,
+    tags: ['전자제품', '컴퓨터'],
+    createdAt: '2024-07-27T03:15:01.456Z',
+    updatedAt: '2024-07-27T03:15:01.456Z',
+  },
+  {
+    id: 'd7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    name: '삼성 QLED TV',
+    description: '삼성 65인치 QLED TV',
+    price: 2500000,
+    tags: ['전자제품', '가전'],
+    createdAt: '2024-07-26T02:00:00.789Z',
+    updatedAt: '2024-07-26T02:00:00.789Z',
+  },
+  {
+    id: 'e7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    name: '애플 워치 시리즈 7',
+    description: '애플 워치 시리즈 7',
+    price: 450000,
+    tags: ['전자제품', '모바일'],
+    createdAt: '2024-07-25T01:45:00.012Z',
+    updatedAt: '2024-07-25T01:45:00.012Z',
+  },
+];
+
+export const PRODUCTCOMMENTS = [
+  {
+    id: 'f7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    productId: 'a7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    content: '테스트용 댓글입니다1',
+    createdAt: '2024-08-14T06:32:25.266Z',
+    updatedAt: '2024-08-14T06:29:01.602Z',
+  },
+  {
+    id: 'gdfc1706-a7f6-4c6e-a006-1733a854afbb',
+    productId: 'b7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    content: '테스트용 댓글입니다2',
+    createdAt: '2024-08-15T06:32:25.266Z',
+    updatedAt: '2024-08-15T06:29:01.602Z',
+  },
+  {
+    id: 'h7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    productId: 'c7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    content: '테스트용 댓글입니다3',
+    createdAt: '2024-08-16T06:32:25.266Z',
+    updatedAt: '2024-08-16T06:29:01.602Z',
+  },
+  {
+    id: 'i7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    productId: 'd7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    content: '테스트용 댓글입니다4',
+    createdAt: '2024-08-17T06:32:25.266Z',
+    updatedAt: '2024-08-17T06:29:01.602Z',
+  },
+  {
+    id: 'j7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    productId: 'e7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2',
+    content: '테스트용 댓글입니다5',
+    createdAt: '2024-08-18T06:32:25.266Z',
+    updatedAt: '2024-08-18T06:29:01.602Z',
+  },
+];

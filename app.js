@@ -26,7 +26,7 @@ function asyncHandler(handler) {
   };
 }
 
-// 게시글 등록
+// 게시물 등록
 app.post(
   '/article',
   asyncHandler(async (req, res) => {
@@ -38,7 +38,7 @@ app.post(
   })
 );
 
-// 상세 게시글 조회
+// 상세 게시물 조회
 app.get(
   '/article/:id',
   asyncHandler(async (req, res) => {
@@ -56,7 +56,7 @@ app.get(
   })
 );
 
-// 상세 스터디 수정
+// 상세 게시물 수정
 app.patch(
   '/article/:id',
   asyncHandler(async (req, res) => {
@@ -82,7 +82,7 @@ app.delete(
   })
 );
 
-// 게시글 목록 조회
+// 게시물 목록 조회
 app.get(
   '/article',
   asyncHandler(async (req, res) => {
@@ -131,6 +131,21 @@ app.post(
   })
 );
 
+// 중고마켓 댓글 등록
+app.post(
+  '/product/:id/comment',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const comment = await prisma.productComment.create({
+      data: {
+        ...req.body,
+        productId: id,
+      },
+    });
+    res.status(201).send(comment);
+  })
+);
+
 // 게시물 댓글 수정
 app.patch(
   '/comment/:id',
@@ -156,7 +171,7 @@ app.delete(
   })
 );
 
-// 댓글 목록 조회
+// 자유게시판 댓글 목록 조회
 app.get(
   '/comment',
   asyncHandler(async (req, res) => {
@@ -164,6 +179,31 @@ app.get(
     const parsedLimit = parseInt(limit);
 
     const comments = await prisma.comment.findMany({
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+      },
+      take: parsedLimit,
+      skip: cursor ? 1 : 0,
+      cursor: cursor ? { id: cursor } : undefined,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    res.send(comments);
+  })
+);
+
+// 중고마켓 댓글 목록 조회
+app.get(
+  '/productcomment',
+  asyncHandler(async (req, res) => {
+    const { cursor, limit = 5 } = req.query;
+    const parsedLimit = parseInt(limit);
+
+    const comments = await prisma.productComment.findMany({
       select: {
         id: true,
         content: true,
