@@ -1,3 +1,45 @@
+export const ARTICLES = [
+  {
+    title: "게시글1",
+    content: "게시글입니다.",
+  },
+  {
+    title: "게시글2",
+    content: "게시글입니다.",
+  },
+  {
+    title: "게시글3",
+    content: "게시글입니다.",
+  },
+  {
+    title: "게시글4",
+    content: "게시글입니다.",
+  },
+  {
+    title: "게시글5",
+    content: "게시글입니다.",
+  },
+  {
+    title: "게시글6",
+    content: "늦은 게시글입니다.",
+  },
+];
+
+export const COMMENTS = [
+  {
+    content: "댓글입니다.",
+  },
+  {
+    content: "댓글입니다.1",
+  },
+  {
+    content: "댓글입니다.2",
+  },
+  {
+    content: "댓글입니다.3",
+  },
+];
+
 export const PRODUCTS = [
   {
     name: "랑방 샤워젤 세트",
