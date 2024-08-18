@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 /** /article POST */
-app.post(async (req, res) => {
+app.post("/article", async (req, res) => {
   const { authorization } = req.headers;
   const { title, content } = req.body;
 
@@ -25,25 +25,20 @@ app.post(async (req, res) => {
 });
 
 /** /article GET */
-app.get("/articles", async (req, res) => {
+app.get("/article", async (req, res) => {
   const articles = await prisma.article.findMany();
   res.status(200);
   res.send(articles);
 });
 
 /** /artcile/:id GET */
-app.get("/articles/:id", async (req, res) => {
+app.get("/article/:id", async (req, res) => {
   const { id } = req.params;
   const article = await prisma.article.findUnique({
     where: { id },
   });
   res.status(200);
   res.send(article);
-});
-
-/** /article/:id/comments */
-app.get("/article/:id/comments", async (req, res) => {
-  const { id } = req.headers;
 });
 
 /** /article/:id PATCH */
@@ -76,7 +71,7 @@ app.patch("/articles/:id", async (req, res) => {
 });
 
 /** /article/:id DELETE */
-app.delete("/articles/:id", async (req, res) => {
+app.delete("/article/:id", async (req, res) => {
   const { id } = req.params;
   const { authorization } = req.headers;
   let result = null;
@@ -96,7 +91,7 @@ app.delete("/articles/:id", async (req, res) => {
 });
 
 /** /comment POST */
-app.post("/comments", async (req, res) => {
+app.post("/comment", async (req, res) => {
   const { authorization } = req.headers;
   const { articleId, content } = req.body;
 
@@ -113,15 +108,20 @@ app.post("/comments", async (req, res) => {
 });
 
 /** /comment GET */
-app.get("/comments", async (req, res) => {
+app.get("/comment", async (req, res) => {
   const comments = await prisma.comment.findMany();
 
   res.status(200);
   res.send(comments);
 });
 
+/** /article/:id/comment */
+app.get("/article/:id/comment", async (req, res) => {
+  const { id } = req.headers;
+});
+
 /** /comment/:id GET */
-app.get("/commnets", async (req, res) => {
+app.get("/commnet", async (req, res) => {
   const { id } = req.params;
 
   const comment = await prisma.comment.findUnique({ where: { id } });
@@ -131,7 +131,7 @@ app.get("/commnets", async (req, res) => {
 });
 
 /** /comment/:id PATCH */
-app.patch(async (req, res) => {
+app.patch("/comment/:id", async (req, res) => {
   const { id } = req.params;
   const { authorization } = req.headers;
   const editableProperties = ["content"];
@@ -166,7 +166,7 @@ app.patch(async (req, res) => {
 });
 
 /** /comment/:id DELETE */
-app.delete(async (req, res) => {
+app.delete("/comment/:id", async (req, res) => {
   const { id } = req.params;
   const { authorization } = req.header;
   let result = null;

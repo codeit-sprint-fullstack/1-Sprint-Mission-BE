@@ -4,6 +4,9 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// 필드명 설정 : userId Int @id @default(autoincrement()) @map("user_id")
+// table 명 설정 : 스키마 중괄호 마지막에(중괄호 안에) @@map("push_token")
+
 generator client {
   provider = "prisma-client-js"
 }
