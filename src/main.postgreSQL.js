@@ -213,9 +213,15 @@ app.post(
 app.get(
   "/article/:id/comment",
   asyncHandler(async (req, res) => {
+    const { cursor, pageSize = 10 } = req.query;
+    const castedTake = Number(pageSize);
     const { id: articleId } = req.params;
     const comments = await prisma.articleComment.findMany({
       where: { articleId: articleId },
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : 0,
+      take: castedTake,
+      orderBy: { createdAt: "asc" },
       select: resultArticleCommentFormat,
     });
 
@@ -313,8 +319,14 @@ app.get(
   "/product/:id/comment",
   asyncHandler(async (req, res) => {
     const { id: productId } = req.params;
+    const { cursor, pageSize = 10 } = req.query;
+    const castedTake = Number(pageSize);
     const comments = await prisma.productComment.findMany({
       where: { productId: productId },
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : 0,
+      take: castedTake,
+      orderBy: { createdAt: "asc" },
       select: resultProductCommentFormat,
     });
 

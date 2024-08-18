@@ -4,11 +4,11 @@ Content-Type : application/json
 Authorization : 123e4567-e89b-12d3-a456-426614174001
 
 {
-    "content" : "댓글 추가2"
+    "content" : "댓글 추가9"
 }
 
 ###
-GET http://localhost:3000/article/123e4567-e89b-12d3-a456-426614174004/comment
+GET http://localhost:3000/article/123e4567-e89b-12d3-a456-426614174004/comment?cursor=bb6c360c-9834-4e3b-8957-7cdb0a90e2a5&pageSize=4
 
 ###
 GET http://localhost:3000/article/comment/ef5f6d95-0048-44df-8849-0cdaba5457f7
