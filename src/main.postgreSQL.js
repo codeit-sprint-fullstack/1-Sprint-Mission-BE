@@ -216,7 +216,7 @@ app.get(
   })
 );
 
-/** /comment/:id */
+/** /article/comment/:id */
 app.get(
   "/article/comment/:id",
   asyncHandler(async (req, res) => {
@@ -230,7 +230,7 @@ app.get(
   })
 );
 
-/** /comment/:id PATCH */
+/** /article/comment/:id PATCH */
 app.patch(
   "/article/comment/:id",
   asyncHandler(async (req, res) => {
@@ -255,7 +255,7 @@ app.patch(
   })
 );
 
-/** /comment/:id DELETE */
+/** /article/comment/:id DELETE */
 app.delete(
   "/article/comment/:id",
   asyncHandler(async (req, res) => {
@@ -271,6 +271,105 @@ app.delete(
     }
 
     await prisma.articleComment.delete({ where: { id } });
+
+    res.sendStatus(204);
+  })
+);
+
+// 상품 댓글 API
+/** /product/:id/comment POST */
+app.post(
+  "/product/:id/comment",
+  asyncHandler(async (req, res) => {
+    const { authorization } = req.headers;
+    assert(req.body, Comment);
+    const { id: productId } = req.params;
+    const { content } = req.body;
+
+    const data = {
+      userId: authorization,
+      productId: productId,
+      content: content,
+    };
+
+    const newConment = await prisma.productComment.create({
+      data: data,
+      select: resultProductCommentFormat,
+    });
+
+    res.status(201).send(newConment);
+  })
+);
+
+/** /product/:id/comment GET */
+app.get(
+  "/product/:id/comment",
+  asyncHandler(async (req, res) => {
+    const { id: productId } = req.params;
+    const comments = await prisma.productComment.findMany({
+      where: { productId: productId },
+      select: resultProductCommentFormat,
+    });
+
+    res.status(200).send(comments);
+  })
+);
+
+/** /product/comment/:id */
+app.get(
+  "/product/comment/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const comments = await prisma.productComment.findUniqueOrThrow({
+      where: { id },
+      select: resultProductCommentFormat,
+    });
+
+    res.status(200).send(comments);
+  })
+);
+
+/** /product/comment/:id PATCH */
+app.patch(
+  "/product/comment/:id",
+  asyncHandler(async (req, res) => {
+    const { id: commentId } = req.params;
+    const { authorization } = req.headers;
+
+    const { userId } = await prisma.productComment.findUnique({
+      where: { id: commentId },
+    });
+
+    if (userId !== authorization) {
+      throwUnauthorized();
+    }
+
+    const result = await prisma.productComment.update({
+      where: { id: commentId },
+      data: req.body,
+      select: resultProductCommentFormat,
+    });
+
+    res.status(200).send(result);
+  })
+);
+
+/** /product/comment/:id DELETE */
+app.delete(
+  "/product/comment/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { authorization } = req.headers;
+
+    const { userId } = await prisma.productComment.findUnique({
+      where: { id },
+    });
+
+    if (userId !== authorization) {
+      throwUnauthorized();
+    }
+
+    await prisma.productComment.delete({ where: { id } });
 
     res.sendStatus(204);
   })

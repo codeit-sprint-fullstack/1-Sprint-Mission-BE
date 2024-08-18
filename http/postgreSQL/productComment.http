@@ -1,5 +1,5 @@
 ###
-POST http://localhost:3000/product/123e4567-e89b-12d3-a456-426614174004/comment
+POST http://localhost:3000/product/7890abc1-def2-g345-h6789012345678/comment
 Content-Type : application/json
 Authorization : 123e4567-e89b-12d3-a456-426614174001
 
@@ -8,13 +8,13 @@ Authorization : 123e4567-e89b-12d3-a456-426614174001
 }
 
 ###
-GET http://localhost:3000/product/123e4567-e89b-12d3-a456-426614174004/comment
+GET http://localhost:3000/product/7890abc1-def2-g345-h6789012345678/comment
 
 ###
-GET http://localhost:3000/comment/22078018-0445-4246-8228-4e4286490e5e
+GET http://localhost:3000/product/comment/ff0fbd9a-69ae-4868-a58c-f91a823e6334
 
 ###
-PATCH http://localhost:3000/comment/22078018-0445-4246-8228-4e4286490e5e
+PATCH http://localhost:3000/product/comment/ff0fbd9a-69ae-4868-a58c-f91a823e6334
 Content-Type : application/json
 Authorization : 123e4567-e89b-12d3-a456-426614174001
 
@@ -23,5 +23,5 @@ Authorization : 123e4567-e89b-12d3-a456-426614174001
 }
 
 ###
-DELETE http://localhost:3000/comment/22078018-0445-4246-8228-4e4286490e5e
+DELETE http://localhost:3000/product/comment/ff0fbd9a-69ae-4868-a58c-f91a823e6334
 Authorization : 123e4567-e89b-12d3-a456-426614174001
