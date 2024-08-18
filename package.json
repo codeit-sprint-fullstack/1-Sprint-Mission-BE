@@ -17,6 +17,6 @@
     "start": "node app.js"
   },
   "prisma": {
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seeding/seed.js"
   }
 }

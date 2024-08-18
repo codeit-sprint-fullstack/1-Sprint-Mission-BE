@@ -44,6 +44,12 @@ app.get(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const article = await prisma.article.findUniqueOrThrow({
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        createdAt: true,
+      },
       where: { id },
     });
     res.send(article);
