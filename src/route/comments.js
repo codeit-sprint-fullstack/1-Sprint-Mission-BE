@@ -7,9 +7,10 @@ const prisma = new PrismaClient();
 
 // 중고마켓 댓글 목록 조회
 router.get(
-  "/market",
+  "/market/:articleId/comments",
   asyncHandler(async (req, res) => {
-    const { cursor, take = 10, articleId } = req.query;
+    const { cursor, take = 10 } = req.query;
+    const { articleId } = req.params;
 
     const comments = await prisma.comment.findMany({
       where: {
@@ -43,9 +44,10 @@ router.get(
 
 // 자유게시판 댓글 목록 조회
 router.get(
-  "/board",
+  "/board/:articleId/comments",
   asyncHandler(async (req, res) => {
-    const { cursor, take = 10, articleId } = req.query;
+    const { cursor, take = 10 } = req.query;
+    const { articleId } = req.params;
 
     const comments = await prisma.comment.findMany({
       where: {
@@ -79,11 +81,13 @@ router.get(
 
 // 중고마켓 댓글 등록
 router.post(
-  "/market",
+  "/market/:articleId/comments",
   asyncHandler(async (req, res) => {
+    const { articleId } = req.params;
     const comment = await prisma.comment.create({
       data: {
         ...req.body,
+        articleId: articleId,
         category: "MARKET",
       },
     });
@@ -93,11 +97,13 @@ router.post(
 
 // 자유게시판 댓글 등록
 router.post(
-  "/board",
+  "/board/:articleId/comments",
   asyncHandler(async (req, res) => {
+    const { articleId } = req.params;
     const comment = await prisma.comment.create({
       data: {
         ...req.body,
+        articleId: articleId,
         category: "BOARD",
       },
     });
