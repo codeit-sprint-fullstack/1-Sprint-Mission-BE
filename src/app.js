@@ -4,7 +4,7 @@ import cors from "cors";
 
 import articleRoute from "./route/articles.js";
 import commentRoute from "./route/comments.js";
-
+import productRoute from "./route/product.js";
 
 dotenv.config();
 
@@ -18,6 +18,6 @@ app.get("/", (req, res) => {
 
 app.use("/articles", articleRoute);
 app.use("/comments", commentRoute);
-
+app.use("/products", productRoute);
 
 app.listen(process.env.PORT || 3000, () => console.log("Server Started"));
