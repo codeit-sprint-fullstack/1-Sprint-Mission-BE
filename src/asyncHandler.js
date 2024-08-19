@@ -1,15 +1,9 @@
 function asyncHandler(handler) {
-  return async function (req, res) {
+  return async function (req, res, next) {
     try {
-      await handler(req, res);
+      await handler(req, res, next);
     } catch (e) {
-      if (e.name === "ValidationError") {
-        res.status(400).send({ message: e.message });
-      } else if (e.name === "CastError") {
-        res.status(404).send({ message: "Cannot find given id." });
-      } else {
-        res.status(500).send({ message: e.message });
-      }
+      next(e);
     }
   };
 }
