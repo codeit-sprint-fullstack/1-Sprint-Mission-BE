@@ -47,4 +47,5 @@ model Comment {
 enum Category {
   MARKET
   BOARD
+  PRODUCT
 }

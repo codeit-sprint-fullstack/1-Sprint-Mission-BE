@@ -5,7 +5,7 @@ import asyncHandler from "../asyncHandler.js";
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// 중고마켓 댓글 목록 조회
+// 중고마켓 댓글 목록 조회 (Article)
 router.get(
   "/market/:articleId/comments",
   asyncHandler(async (req, res) => {
@@ -42,7 +42,7 @@ router.get(
   })
 );
 
-// 자유게시판 댓글 목록 조회
+// 자유게시판 댓글 목록 조회 (Article)
 router.get(
   "/board/:articleId/comments",
   asyncHandler(async (req, res) => {
@@ -53,6 +53,43 @@ router.get(
       where: {
         articleId: articleId,
         category: "BOARD",
+      },
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : 0,
+      take: Number(take),
+    });
+
+    const nextCursor =
+      comments.length === Number(take)
+        ? comments[comments.length - 1].id
+        : null;
+
+    res.send({
+      comments,
+      nextCursor,
+    });
+  })
+);
+
+// 상품 댓글 목록 조회 (Product)
+router.get(
+  "/products/:productId/comments",
+  asyncHandler(async (req, res) => {
+    const { cursor, take = 10 } = req.query;
+    const { productId } = req.params;
+
+    const comments = await prisma.comment.findMany({
+      where: {
+        productId: productId,
+        category: "PRODUCT",
       },
       select: {
         id: true,
@@ -105,6 +142,22 @@ router.post(
         ...req.body,
         articleId: articleId,
         category: "BOARD",
+      },
+    });
+    res.status(201).send(comment);
+  })
+);
+
+// 상품 댓글 등록 (Product)
+router.post(
+  "/products/:productId/comments",
+  asyncHandler(async (req, res) => {
+    const { productId } = req.params;
+    const comment = await prisma.comment.create({
+      data: {
+        ...req.body,
+        productId: productId,
+        category: "PRODUCT",
       },
     });
     res.status(201).send(comment);
