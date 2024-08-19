@@ -1,8 +1,9 @@
 import express from "express";
-import Product from "../models/product.js";
+import { PrismaClient } from "@prisma/client";
 import asyncHandler from "../asyncHandler.js";
 
 const router = express.Router();
+const prisma = new PrismaClient();
 
 // 상품 목록 조회
 router.get(
@@ -10,26 +11,33 @@ router.get(
   asyncHandler(async (req, res) => {
     const { page = 1, pageSize = 10, keyword = "" } = req.query;
     const offset = (page - 1) * pageSize;
-    const sort = "recent"; // 최신순만 구현
-    const sortOption = { createdAt: sort === "recent" ? "desc" : "asc" };
+    const sortOption = { createdAt: "desc" };
 
     const searchQuery = keyword
       ? {
-          $or: [
-            { name: { $regex: keyword } },
-            { description: { $regex: keyword } },
+          OR: [
+            { name: { contains: keyword } },
+            { description: { contains: keyword } },
           ],
         }
       : {};
 
-    const totalProducts = await Product.countDocuments(searchQuery);
-    const products = await Product.find(searchQuery)
-      .sort(sortOption)
-      .skip(offset)
-      .limit(Number(pageSize))
-      .select("id name description price createdAt");
+    const totalProducts = await prisma.product.count({ where: searchQuery });
+    const products = await prisma.product.findMany({
+      where: searchQuery,
+      orderBy: sortOption,
+      skip: offset,
+      take: Number(pageSize),
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        createdAt: true,
+      },
+    });
 
-    const result = await res.send({ totalProducts, products });
+    res.send({ totalProducts, products });
   })
 );
 // 상품 상세 조회
@@ -37,7 +45,9 @@ router.get(
   "/:id",
   asyncHandler(async (req, res) => {
     const id = req.params.id;
-    const product = await Product.findById(id);
+    const product = await prisma.product.findUnique({
+      where: { id },
+    });
     if (product) {
       res.send(product);
     } else {
@@ -49,7 +59,9 @@ router.get(
 router.post(
   "/",
   asyncHandler(async (req, res) => {
-    const newProduct = await Product.create(req.body);
+    const newProduct = await prisma.product.create({
+      data: req.body,
+    });
 
     res.status(201).send(newProduct);
   })
@@ -59,15 +71,14 @@ router.patch(
   "/:id",
   asyncHandler(async (req, res) => {
     const id = req.params.id;
-    const product = await Product.findById(id);
-    if (product) {
-      Object.keys(req.body).forEach((key) => {
-        product[key] = req.body[key];
+    try {
+      const updatedProduct = await prisma.product.update({
+        where: { id },
+        data: req.body,
       });
-      await product.save();
-      res.send(product);
-    } else {
-      res.status(404).send({ message: "cannot find given id." });
+      res.send(updatedProduct);
+    } catch (error) {
+      res.status(404).send({ message: "Cannot find given id." });
     }
   })
 );
@@ -76,11 +87,13 @@ router.delete(
   "/:id",
   asyncHandler(async (req, res) => {
     const id = req.params.id;
-    const product = await Product.findByIdAndDelete(id);
-    if (product) {
+    try {
+      await prisma.product.delete({
+        where: { id },
+      });
       res.sendStatus(204);
-    } else {
-      res.status(404).send({ message: "cannot find given id." });
+    } catch (error) {
+      res.status(404).send({ message: "Cannot find given id." });
     }
   })
 );
