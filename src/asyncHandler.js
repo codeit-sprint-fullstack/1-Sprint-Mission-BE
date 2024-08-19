@@ -3,9 +3,13 @@ function asyncHandler(handler) {
     try {
       await handler(req, res);
     } catch (e) {
-
-      res.status(500).send({ message: e.message });
-
+      if (e.name === "ValidationError") {
+        res.status(400).send({ message: e.message });
+      } else if (e.name === "CastError") {
+        res.status(404).send({ message: "Cannot find given id." });
+      } else {
+        res.status(500).send({ message: e.message });
+      }
     }
   };
 }
