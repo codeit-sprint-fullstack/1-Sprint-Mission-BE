@@ -1,6 +1,5 @@
 import prisma from "../prismaClient.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
-import CustomError from "../utils/customError.js";
 
 // 중고마켓 댓글 등록
 export const createMarketComment = asyncHandler(async (req, res) => {

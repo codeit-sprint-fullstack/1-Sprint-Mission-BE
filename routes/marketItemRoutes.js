@@ -6,7 +6,7 @@ import {
   deleteMarketItem,
   listMarketItems,
 } from "../controllers/marketItemController.js";
-import asyncHandler from "../middlewares/asyncHandler.js"; // asyncHandler를 임포트합니다.
+import asyncHandler from "../middlewares/asyncHandler.js";
 
 const router = express.Router();
 

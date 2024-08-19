@@ -11,8 +11,8 @@ app.use(express.json());
 
 app.use("/api/articles", articleRoutes);
 app.use("/api/market-items", marketItemRoutes);
-app.use("/api/article-comments", articleCommentRoutes);
-app.use("/api/market-comments", marketCommentRoutes);
+app.use("/api/articles/:articleId/comments", articleCommentRoutes);
+app.use("/api/market-items/:marketItemId/comments", marketCommentRoutes);
 
 app.use(errorHandler);
 
