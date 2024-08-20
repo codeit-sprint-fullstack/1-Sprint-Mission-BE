@@ -8,6 +8,7 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 const app = express();
+
 app.use(express.json());
 
 function asyncHandler(handler) {
@@ -25,6 +26,7 @@ function asyncHandler(handler) {
     }
   };
 }
+
 
 // 게시물 등록
 app.post(
@@ -145,7 +147,6 @@ app.post(
     res.status(201).send(comment);
   })
 );
-
 // 게시물 댓글 수정
 app.patch(
   '/comment/:id',
@@ -218,6 +219,71 @@ app.get(
     });
 
     res.send(comments);
+
+app.get('/products', async (req, res) => {
+  const { sort = 'recent', limit, offset = 0, search = '' } = req.query;
+
+  const sortOption = {
+    createdAt: sort === 'recent' ? 'desc' : 'asc',
+  };
+
+  const searchQuery = {
+    $or: [{ name: { $regex: search, $options: 'i' } }, { description: { $regex: search, $options: 'i' } }],
+  };
+
+  const products = await Product.find(searchQuery).sort(sortOption).limit(limit).skip(Number(offset)).select('_id name price createdAt');
+
+  res.send(products);
+});
+
+app.get(
+  '/products/:id',
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const product = await Product.findById(id);
+    if (product) {
+      res.send(product);
+    } else {
+      res.status(404).send({ message: 'Cannot find given id. ' });
+    }
+  })
+);
+
+app.post(
+  '/products',
+  asyncHandler(async (req, res) => {
+    const newProduct = await Product.create(req.body);
+    res.status(201).send(newProduct);
+  })
+);
+
+app.patch(
+  '/products/:id',
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const product = await Product.findById(id);
+    if (product) {
+      Object.keys(req.body).forEach((key) => {
+        product[key] = req.body[key];
+      });
+      await product.save();
+      res.send(product);
+    } else {
+      res.status(404).send({ message: 'Cannot find given id. ' });
+    }
+  })
+);
+
+app.delete(
+  '/products/:id',
+  asyncHandler(async (req, res) => {
+    const id = Number(req.params.id);
+    const product = await Product.findByIdAndDelete(id);
+    if (product) {
+      res.sendStatus(204);
+    } else {
+      res.status(404).send({ message: 'Cannot find given id. ' });
+    }
   })
 );
 
