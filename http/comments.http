@@ -1,0 +1,38 @@
+POST http://localhost:3000/article/64d2484a-8551-49b7-932a-10fea223ae0e/comment
+Content-Type: application/json
+
+{
+  "content": "5테스트 댓글입니다",
+  "articleId": "64d2484a-8551-49b7-932a-10fea223ae0e"
+}
+
+###
+
+PATCH http://localhost:3000/comment/cee7ac46-f88c-425d-9c7b-5f6df4ac1dbc
+Content-Type: application/json
+
+{
+  "content": "patch api 테스트 댓글입니다"
+}
+
+###
+
+DELETE http://localhost:3000/comment/cee7ac46-f88c-425d-9c7b-5f6df4ac1dbc
+
+###
+
+GET http://localhost:3000/comment
+
+###
+
+POST http://localhost:3000/product/a7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2/comment
+Content-Type: application/json
+
+{
+  "content": "테스트 댓글입니다",
+  "productId": "a7a6b2e3-8d4c-40ec-b5ac-a1dd9ed93e2"
+}
+
+###
+
+GET  http://localhost:3000/productcomment
