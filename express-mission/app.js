@@ -31,6 +31,26 @@ function asyncHandler(asyncFunc) {
   };
 }
 
+function chackId(newData, method, body = '') {
+  if (newData) {
+    const valuesData = newData;
+
+    if (method === "get") {
+      const valuesStatus = 200;
+      return { valuesData, valuesStatus };
+
+    } else if (method === 'delete') {
+      const valuesStatus = 204
+      return { valuesData, valuesStatus };
+    }
+
+  } else {
+    const valuesStatus = 404;
+    const valuesData = { message: "Cannot find give id" };
+    return { valuesData, valuesStatus };
+  }
+}
+
 app.get(
   "/products",
   asyncHandler(async (req, res) => {
@@ -72,19 +92,22 @@ app.get(
     const id = req.params.id;
     const newData = await Product.findById(id);
 
-    if (newData) {
-      res.send(newData);
-    } else {
-      res.status(404).send({ message: "Cannot find give id" });
-    }
+    const { valuesData, valuesStatus } = chackId(newData, 'get');
+
+    res.status(valuesStatus).send(valuesData);
   })
 );
 
 app.post(
   "/products",
   asyncHandler(async (req, res) => {
-    const newPushData = await Product.create(req.body);
-    res.status(201).send(newPushData);
+    const product = new Product(req.body);
+
+    await product.validate();
+
+    await product.save();
+
+    res.status(201).send(product);
   })
 );
 
@@ -94,15 +117,17 @@ app.patch(
     const id = req.params.id;
     const newData = await Product.findById(id);
 
-    if (newData) {
-      Object.keys(req.body).forEach((key) => {
-        newData[key] = req.body[key];
-      });
-      newData.save();
-      res.send(newData);
-    } else {
-      res.status(404).send({ message: "Cannot find give id" });
+    if (!newData) {
+      return res.status(404).send({ message: "Cannot find give id" })
     }
+
+    Object.assign(newData, req.body)
+
+    await newData.validate()
+    
+    await newData.save()
+
+    res.status(200).send(newData)
   })
 );
 
@@ -112,11 +137,9 @@ app.delete(
     const id = req.params.id;
     const newData = await Product.findByIdAndDelete(id);
 
-    if (newData) {
-      res.sendStatus(204);
-    } else {
-      res.status(404).send({ message: "Cannot find give id" });
-    }
+    const { valuesData, valuesStatus } = chackId(newData, 'delete');
+
+    res.status(valuesStatus).send(valuesData);
   })
 );
 

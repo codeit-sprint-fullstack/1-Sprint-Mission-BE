@@ -1,0 +1,33 @@
+GET  http://localhost:3000/noticeBoards
+###
+
+GET  http://localhost:3000/noticeBoards?keyWord=&page=1&pageSize=2
+
+###
+
+GET http://localhost:3000/noticeBoards/0c5d059b-ee21-4126-87a4-582c6cd39677
+###
+
+POST http://localhost:3000/noticeBoards
+Content-Type: application/json
+
+{
+    "title": "7",
+    "content": "7",
+    "userId": "412aab2b-26fe-4d60-9006-8459c869580f"
+}
+
+
+###
+
+PATCH http://localhost:3000/noticeBoards/22233ea1-005d-4659-9e0d-271b7fcf269e
+Content-Type: application/json
+
+{
+    "content": "sd"
+}
+
+
+###
+
+DELETE http://localhost:3000/noticeBoards/22233ea1-005d-4659-9e0d-271b7fcf269e

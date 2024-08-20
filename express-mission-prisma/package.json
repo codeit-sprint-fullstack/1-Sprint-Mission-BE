@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "@prisma/client": "^5.18.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "is-email": "^1.0.2",
+    "is-uuid": "^1.0.2",
+    "prisma": "^5.18.0",
+    "superstruct": "^1.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  }
+}
