@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_DATABASE_URL")
+}
+
+model User {
+  id       String    @unique @default(uuid())
+  name     String
+  email    String    @unique
+  createAt DateTime  @default(now())
+  updateAt DateTime  @updatedAt
+  article  Article[]
+  comment  Comment[]
+  Product  Product[]
+}
+
+model Article {
+  id       String    @unique @default(uuid())
+  title    String
+  content  String
+  createAt DateTime  @default(now())
+  updateAt DateTime  @updatedAt
+  favorite Int       @default(0)
+  comment  Comment[]
+  user     User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId   String?
+}
+
+model Product {
+  id          String    @unique @default(uuid())
+  name        String
+  description String
+  price       Int
+  tag         String
+  createAt    DateTime  @default(now())
+  updateAt    DateTime  @updatedAt
+  favorite    Int       @default(0)
+  comment     Comment[]
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId      String?
+}
+
+model Comment {
+  id        String   @unique @default(uuid())
+  content   String
+  createAt  DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  favorite  Int      @default(0)
+  article   Article? @relation(fields: [articleId], references: [id], onDelete: SetNull)
+  articleId String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?
+  Product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId String?
+}
