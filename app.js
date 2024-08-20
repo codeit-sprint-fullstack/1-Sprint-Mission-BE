@@ -1,15 +1,11 @@
-import cors from 'cors';
-import express from 'express';
-import mongoose from 'mongoose';
-import Product from './models/Product.js';
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 dotenv.config();
+import express from "express";
+import { Category, CommentType, PrismaClient, Prisma } from "@prisma/client";
 
-mongoose.connect(process.env.DATABASE_URL).then(() => console.log('Connected to DB!!'));
+const prisma = new PrismaClient();
 
 const app = express();
-
-app.use(cors());
 app.use(express.json());
 
 function asyncHandler(handler) {
@@ -17,10 +13,10 @@ function asyncHandler(handler) {
     try {
       await handler(req, res);
     } catch (e) {
-      if (e.name === 'ValidationError') {
+      if (e.name === "StructError" || e instanceof Prisma.PrismaClientValidationError) {
         res.status(400).send({ message: e.message });
-      } else if (e.name === 'CastError') {
-        res.status(404).send({ message: e.message });
+      } else if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2025") {
+        res.sendStatus(404);
       } else {
         res.status(500).send({ message: e.message });
       }
@@ -28,103 +24,249 @@ function asyncHandler(handler) {
   };
 }
 
-// 상품 등록 API
+/***** article *****/
+
+// 게시글 등록 api
 app.post(
-  '/registration',
+  "/articles",
   asyncHandler(async (req, res) => {
-    const newProduct = await Product.create(req.body);
-    res.status(201).send(newProduct);
+    const { title, content, category } = req.body;
+
+    const article = await prisma.article.create({
+      data: {
+        title,
+        content,
+        category,
+      },
+    });
+    res.status(201).send(article);
   })
 );
 
-// 상품 상세 조회 API
+// 게시글 조회 api
 app.get(
-  '/products/:id',
+  "/articles/:id",
   asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const product = await Product.findById(id);
+    const { id } = req.params;
 
-    if (product) {
-      // 응답에 필요한 필드만 선택해서 보냄
-      res.send({
-        id: product._id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        tags: product.tags,
-        createdAt: product.createdAt,
-      });
-    } else {
-      res.status(404).send({ message: 'Cannot find given id.' });
-    }
+    const article = await prisma.article.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        createdAt: true,
+      },
+    });
+
+    res.send(article);
   })
 );
 
-// 상품 목록 조회 API
-app.get(
-  '/products',
+// 게시글 수정 api
+app.patch(
+  "/articles/:id",
   asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10, sort = '', search = '' } = req.query;
+    const { id } = req.params;
+    const { title, content } = req.body;
 
-    // 페이지네이션 및 정렬 설정
-    const offset = (page - 1) * limit;
-    const sortOption = { createdAt: sort === 'recent' ? 'desc' : 'asc' };
+    const article = await prisma.article.update({
+      where: { id },
+      data: {
+        title,
+        content,
+      },
+    });
+    res.send(article);
+  })
+);
 
-    // 검색 조건 설정
-    const searchQuery = search
+// 게시글 삭제 api
+app.delete(
+  "/articles/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    await prisma.article.delete({
+      where: { id },
+    });
+    res.sendStatus(204);
+  })
+);
+
+// 게시글 목록 조회 api
+app.get(
+  "/articles",
+  asyncHandler(async (req, res) => {
+    const { page = 1, limit = 10, search = "", order = "" } = req.query;
+
+    const offset = parseInt(page - 1) * parseInt(limit);
+
+    const where = search
       ? {
-          $or: [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }],
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { content: { contains: search, mode: "insensitive" } },
+          ],
         }
       : {};
 
-    // DB에서 상품 목록 조회
-    const products = await Product.find(searchQuery)
-      .sort(sortOption)
-      .skip(offset)
-      .limit(Number(limit))
-      .select('id name description price tags images createdAt');
+    const orderBy = order === "recent" ? { createdAt: "desc" } : {};
 
-    const totalProducts = await Product.countDocuments(searchQuery);
+    const articles = await prisma.article.findMany({
+      where,
+      skip: parseInt(offset),
+      take: parseInt(limit),
+      orderBy,
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        createdAt: true,
+      },
+    });
+    res.send(articles);
+  })
+);
 
+/***** comment *****/
+
+// 댓글 등록 api -자유게시판
+app.post(
+  "/free-board/:id/comments",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { content } = req.body;
+
+    const article = await prisma.article.findUnique({
+      where: { id },
+    });
+
+    if (!article || article.category !== Category.FREE_BOARD) {
+      return res.status(404).json({ error: "Free board article no found" });
+    }
+
+    const comment = await prisma.comment.create({
+      data: {
+        content,
+        articleId: id,
+        type: CommentType.FREE_BOARD_COMMENT,
+      },
+    });
+    res.status(201).send(comment);
+  })
+);
+
+// 댓글 등록 api - 중고마켓
+app.post(
+  "/market/:id/comments",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { content } = req.body;
+
+    const article = await prisma.article.findUnique({
+      where: { id },
+    });
+
+    if (!article || article.category !== Category.MARKET) {
+      return res.status(404).json({ error: "Market article not found" });
+    }
+
+    const comment = await prisma.comment.create({
+      data: {
+        content,
+        articleId: id,
+        type: CommentType.MARKET_COMMENT,
+      },
+    });
+    res.status(201).send(comment);
+  })
+);
+
+// 댓글 수정 api
+app.patch(
+  "/comments/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { content } = req.body;
+
+    const comment = await prisma.comment.update({
+      where: { id },
+      data: {
+        content,
+      },
+    });
+
+    res.send(comment);
+  })
+);
+
+// 댓글 삭제 api
+app.delete(
+  "/comments/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    await prisma.comment.delete({
+      where: { id },
+    });
+    res.sendStatus(204);
+  })
+);
+
+// 댓글 목록 조회 api - 자유게시판
+app.get(
+  "/free-board/:id/comments",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { cursor, take = 10 } = req.query;
+
+    const comments = await prisma.comment.findMany({
+      where: {
+        articleId: id,
+        type: CommentType.FREE_BOARD_COMMENT,
+      },
+      take: parseInt(take),
+      skip: cursor ? 1 : 0,
+      ...(cursor && { cursor: { id: cursor } }),
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+      },
+    });
+    // 댓글 목록과 함께 다음 커서 정보를 전송
     res.send({
-      total: totalProducts,
-      page: parseInt(page),
-      limit: parseInt(limit),
-      products: products,
+      comments,
+      nextCursor: comments.length > 0 ? comments[comments.length - 1].id : null,
     });
   })
 );
 
-// 상품 수정 API
-app.patch(
-  '/products/:id',
+// 댓글 목록 조회 api - 마켓
+app.get(
+  "/market/:id/comments",
   asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const product = await Product.findById(id);
-    if (product) {
-      Object.keys(req.body).forEach((key) => {
-        product[key] = req.body[key];
-      });
-      await product.save();
-      res.send(product);
-    } else {
-      res.status(404).send({ message: 'Cannot find given id.' });
-    }
+    const { id } = req.params;
+    const { cursor, take = 10 } = req.query;
+
+    const comments = await prisma.comment.findMany({
+      where: { articleId: id, type: CommentType.MARKET_COMMENT },
+      take: take,
+      skip: cursor ? 1 : 0,
+      ...(cursor && { cursor: { id: cursor } }),
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+      },
+    });
+
+    // 댓글 목록과 함께 다음 커서 정보를 전송
+    res.send({
+      comments,
+      nextCursor: comments.length > 0 ? comments[comments.length - 1].id : null,
+    });
   })
 );
 
-// 상품 삭제 API
-app.delete(
-  '/products/:id',
-  asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const product = await Product.findByIdAndDelete(id);
-    if (product) {
-      res.sendStatus(204);
-    } else {
-      res.status(404).send({ message: 'Cannot find given id.' });
-    }
-  })
-);
-
-app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
+app.listen(process.env.PORT || 3000, () => console.log("Server Started"));

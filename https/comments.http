@@ -1,0 +1,35 @@
+
+
+###
+POST http://localhost:3000/free-board/g9h8i7j6-0k1l-2m3n-4o5p-6q7r8s9t0u1v/comments
+Content-Type: application/json
+
+{
+  "content": "무료 나눔 중에 가방이 있나요? 필요합니다."
+}
+
+###
+POST http://localhost:3000/market/05169cbd-e744-46c5-96e2-f58db688bd14/comments
+Content-Type: application/json
+
+{
+  "content": "가격 네고 가능한가요?"
+}
+
+
+###
+PATCH http://localhost:3000/comments/d6d0e247-90f1-4600-957d-0b6700769d4f
+Content-Type: application/json
+
+{
+  "content": "무료 나눔 중에 컴퓨터 책상이 있나요? 필요합니다."
+}
+
+###
+GET http://localhost:3000/free-board/g9h8i7j6-0k1l-2m3n-4o5p-6q7r8s9t0u1v/comments
+
+###
+GET http://localhost:3000/market/h0i9j8k7-1l2m-3n4o-5p6q-7r8s9t0u1v2w/comments
+
+###
+DELETE http://localhost:3000/free-board/l4m3n2o1-5p6q-7r8s-9t0u-1v2w3x4y5z6a/comments
