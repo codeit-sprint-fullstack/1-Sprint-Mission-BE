@@ -1,0 +1,115 @@
+
+export const USERS = [
+  {
+    id: 'test1',
+    password: "test1",
+    email: "test1@naver.com",
+    name: 'test1',
+    createdAt: "2024-08-11T02:43:28.492Z",
+    updatedAt: "2024-08-11T02:46:04.461Z",
+  },
+  {
+    id: 'test2',
+    password: "test2",
+    email: "test2@naver.com",
+    name: 'test2',
+    createdAt: "2024-08-14T02:43:28.492Z",
+    updatedAt: "2024-08-14T02:46:04.461Z"
+  },
+];
+
+export const ARTICLES = [
+  {
+    id: '3050fa93-9856-432e-8610-d98bee4441b3',
+    title: "test1",
+    content: "test1",
+    likes: 1,
+    img: 'https://images.app.goo.gl/QJC2jGB1M8rd7ud46',
+    createdAt: "2024-08-11T02:43:28.492Z",
+    updatedAt: "2024-08-11T02:46:04.461Z",
+    userId: 'test1',
+  },
+  {
+    id: '6c3a18b0-11c5-4d97-9019-9ebe3c4d1317',
+    title: "test2",
+    content: "test2",
+    likes: 7,
+    img: 'https://images.app.goo.gl/QJC2jGB1M8rd7ud46',
+    createdAt: "2024-08-12T02:43:28.492Z",
+    updatedAt: "2024-08-14T02:46:04.461Z",
+    userId: 'test1',
+  },
+  {
+    id: 'fd3ae0a5-8dd5-40b6-b8fd-48870f731db1',
+    title: "test3",
+    content: "test3",
+    likes: 2,
+    img: 'https://images.app.goo.gl/QJC2jGB1M8rd7ud46',
+    createdAt: "2024-08-13T02:43:28.492Z",
+    updatedAt: "2024-08-14T02:46:04.461Z",
+    userId: 'test1',
+  },
+  {
+    id: '70e1e61d-f2ae-4d7d-bf8f-d65eafdb6a45',
+    title: "test4",
+    content: "test4",
+    likes: 4,
+    img: 'https://images.app.goo.gl/QJC2jGB1M8rd7ud46',
+    createdAt: "2024-08-14T02:43:28.492Z",
+    updatedAt: "2024-08-14T02:46:04.461Z",
+    userId: 'test2',
+  },
+  {
+    id: '73cb9639-d8b7-4f11-9a62-53f4187f3f11',
+    title: "test5",
+    content: "test5",
+    likes: 31,
+    img: 'https://images.app.goo.gl/QJC2jGB1M8rd7ud46',
+    createdAt: "2024-08-14T03:43:28.492Z",
+    updatedAt: "2024-08-14T04:46:04.461Z",
+    userId: 'test2',
+  },
+];
+
+export const COMMMENTS = [
+  {
+    id: '1250fa93-9856-432e-8610-d98bee4441b3',
+    content: "test1",
+    createdAt: "2024-08-11T02:43:28.492Z",
+    updatedAt: "2024-08-11T02:46:04.461Z",
+    userId: 'test1',
+    articleId: '70e1e61d-f2ae-4d7d-bf8f-d65eafdb6a45',
+  },
+  {
+    id: '1250fa93-9856-432e-8610-d98bee4441b3',
+    content: "test2",
+    createdAt: "2024-08-11T02:43:28.492Z",
+    updatedAt: "2024-08-11T02:46:04.461Z",
+    userId: 'test1',
+    articleId: '3050fa93-9856-432e-8610-d98bee4441b3',
+  },
+  {
+    id: '8550fa93-1234-432e-8610-d98bee4441b3',
+    content: "test3",
+    createdAt: "2024-08-11T02:43:28.492Z",
+    updatedAt: "2024-08-11T02:46:04.461Z",
+    userId: 'test2',
+    articleId: '70e1e61d-f2ae-4d7d-bf8f-d65eafdb6a45',
+  },
+  {
+    id: '9850fa93-9856-432e-8610-d98bee4441b3',
+    content: "test4",
+    createdAt: "2024-08-11T02:43:28.492Z",
+    updatedAt: "2024-08-11T02:46:04.461Z",
+    userId: 'test2',
+    articleId: '70e1e61d-f2ae-4d7d-bf8f-d65eafdb6a45',
+  },
+  {
+    id: '7550fa93-9856-432e-8610-d98bee4441b3',
+    content: "test5",
+    createdAt: "2024-08-11T02:43:28.492Z",
+    updatedAt: "2024-08-11T02:46:04.461Z",
+    userId: 'test2',
+    articleId: '3050fa93-9856-432e-8610-d98bee4441b3',
+  },
+];

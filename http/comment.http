@@ -1,0 +1,29 @@
+###
+//댓글 생성
+POST http://localhost:3000/article/70e1e61d-f2ae-4d7d-bf8f-d65eafdb6a45/comment
+Content-Type: application/json
+
+{
+  "content": "test89",
+  "userId": "test1"
+}
+
+
+###
+//댓글 수정
+PATCH http://localhost:3000/comment/1250fa93-9856-432e-8610-d98bee4441b3
+Content-Type: application/json
+
+{
+  "content": "testpatch"
+}
+
+###
+//댓글 삭제
+DELETE http://localhost:3000/comment/998c57f0-30a1-4bcb-a013-7abcf2af03f2
+
+###
+//댓글 목록 조회
+GET http://localhost:3000/article/70e1e61d-f2ae-4d7d-bf8f-d65eafdb6a45/comment
+
+
