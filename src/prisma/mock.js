@@ -1,0 +1,390 @@
+export const PRODUCTS = [
+  {
+    id: 'a57d8a16-eb82-413b-8726-59b24b80e7e4',
+    name: '초고화질 TV',
+    description: '55인치 초고화질 TV, 4K 해상도와 스마트 기능 포함.',
+    price: 49900,
+    tags: ['전자제품', '가전'],
+    favoriteCount: 120,
+    createdAt: '2021-02-15T10:30:00Z',
+  },
+  {
+    name: '블루투스 헤드폰',
+    description:
+      '소음 제거 기능이 있는 블루투스 헤드폰, 뛰어난 음질과 긴 배터리 수명.',
+    price: 80000,
+    tags: ['전자제품', '오디오'],
+    favoriteCount: 300,
+    createdAt: '2021-06-25T14:45:00Z',
+  },
+  {
+    name: '유기농 녹차',
+    description: '프리미엄 유기농 녹차, 상쾌한 맛과 많은 건강 효능.',
+    price: 15000,
+    tags: ['식품', '음료'],
+    favoriteCount: 45,
+    createdAt: '2020-11-10T09:20:00Z',
+  },
+  {
+    name: '스마트 워치',
+    description: '피트니스 추적과 알림 기능이 있는 스마트 워치, 세련된 디자인.',
+    price: 200000,
+    tags: ['전자제품', '웨어러블'],
+    favoriteCount: 210,
+    createdAt: '2022-03-12T08:15:00Z',
+  },
+  {
+    name: '가죽 지갑',
+    description: '다양한 수납 공간이 있는 정품 가죽 지갑, 스타일리시한 디자인.',
+    price: 39000,
+    tags: ['패션', '액세서리'],
+    favoriteCount: 75,
+    createdAt: '2023-01-20T11:00:00Z',
+  },
+  {
+    name: '전자책 리더기',
+    description: '가벼운 무게와 높은 해상도의 전자책 리더기.',
+    price: 120000,
+    tags: ['전자제품', '가전'],
+    favoriteCount: 90,
+    createdAt: '2019-07-15T17:45:00Z',
+  },
+  {
+    name: '식물성 단백질 파우더',
+    description: '고품질 식물성 단백질, 운동 후 회복에 좋습니다.',
+    price: 35000,
+    tags: ['식품', '건강'],
+    favoriteCount: 60,
+    createdAt: '2022-08-05T13:30:00Z',
+  },
+  {
+    name: '가전 리모컨',
+    description: '다양한 가전 제품을 제어할 수 있는 범용 리모컨.',
+    price: 25000,
+    tags: ['전자제품', '액세서리'],
+    favoriteCount: 40,
+    createdAt: '2020-12-01T15:50:00Z',
+  },
+  {
+    name: '정통 스웨터',
+    description: '따뜻하고 부드러운 소재의 정통 스웨터.',
+    price: 45000,
+    tags: ['패션', '의류'],
+    favoriteCount: 85,
+    createdAt: '2018-10-25T10:05:00Z',
+  },
+  {
+    name: '스마트폰 케이스',
+    description: '내구성이 뛰어난 스마트폰 케이스, 다양한 색상 제공.',
+    price: 15000,
+    tags: ['패션', '액세서리'],
+    favoriteCount: 130,
+    createdAt: '2021-09-17T19:20:00Z',
+  },
+  {
+    name: '무선 충전기',
+    description: '고속 무선 충전 기능을 갖춘 충전기.',
+    price: 30000,
+    tags: ['전자제품', '액세서리'],
+    favoriteCount: 110,
+    createdAt: '2022-05-11T12:10:00Z',
+  },
+  {
+    name: '디지털 카메라',
+    description: '고해상도의 디지털 카메라, 다양한 촬영 모드 제공.',
+    price: 600000,
+    tags: ['전자제품', '카메라'],
+    favoriteCount: 95,
+    createdAt: '2019-03-30T18:25:00Z',
+  },
+  {
+    name: '캠핑 텐트',
+    description: '내구성이 뛰어나고 넉넉한 공간을 가진 캠핑 텐트.',
+    price: 150000,
+    tags: ['스포츠', '레저'],
+    favoriteCount: 50,
+    createdAt: '2020-07-07T07:45:00Z',
+  },
+  {
+    name: '여성용 손목 시계',
+    description: '우아한 디자인의 여성용 손목 시계.',
+    price: 250000,
+    tags: ['패션', '액세서리'],
+    favoriteCount: 70,
+    createdAt: '2023-02-14T16:40:00Z',
+  },
+  {
+    name: '전자 체중계',
+    description: '정확한 체중 측정을 위한 디지털 체중계.',
+    price: 20000,
+    tags: ['전자제품', '건강'],
+    favoriteCount: 85,
+    createdAt: '2021-12-25T20:10:00Z',
+  },
+  {
+    name: '오디오 스피커',
+    description: '고품질 사운드를 제공하는 오디오 스피커.',
+    price: 120000,
+    tags: ['전자제품', '오디오'],
+    favoriteCount: 210,
+    createdAt: '2018-09-12T21:35:00Z',
+  },
+  {
+    name: '남성용 재킷',
+    description: '세련된 디자인의 남성용 재킷.',
+    price: 70000,
+    tags: ['패션', '의류'],
+    favoriteCount: 95,
+    createdAt: '2022-06-01T09:50:00Z',
+  },
+  {
+    name: '피트니스 밴드',
+    description: '운동 추적과 건강 관리를 위한 피트니스 밴드.',
+    price: 50000,
+    tags: ['전자제품', '웨어러블'],
+    favoriteCount: 130,
+    createdAt: '2020-11-11T13:20:00Z',
+  },
+  {
+    name: '컬러링 북',
+    description: '스트레스를 해소할 수 있는 컬러링 북.',
+    price: 12000,
+    tags: ['문구', '취미'],
+    favoriteCount: 60,
+    createdAt: '2019-05-08T11:15:00Z',
+  },
+  {
+    name: '기계식 키보드',
+    description: '타이핑이 편한 기계식 키보드.',
+    price: 85000,
+    tags: ['전자제품', '액세서리'],
+    favoriteCount: 75,
+    createdAt: '2021-04-22T22:50:00Z',
+  },
+  {
+    name: '아로마 오일',
+    description: '스트레스 완화에 도움을 주는 아로마 오일.',
+    price: 30000,
+    tags: ['화장품', '건강'],
+    favoriteCount: 45,
+    createdAt: '2023-03-03T08:00:00Z',
+  },
+  {
+    name: '자전거 헬멧',
+    description: '안전한 자전거 주행을 위한 헬멧.',
+    price: 40000,
+    tags: ['스포츠', '레저'],
+    favoriteCount: 65,
+    createdAt: '2017-08-19T14:55:00Z',
+  },
+  {
+    name: '요가 매트',
+    description: '편안한 요가와 스트레칭을 위한 매트.',
+    price: 25000,
+    tags: ['스포츠', '건강'],
+    favoriteCount: 80,
+    createdAt: '2021-07-13T19:00:00Z',
+  },
+  {
+    name: '고급 필기구 세트',
+    description: '프리미엄 필기구 세트, 선물용으로 적합.',
+    price: 70000,
+    tags: ['문구', '사무용품'],
+    favoriteCount: 40,
+    createdAt: '2018-12-22T09:30:00Z',
+  },
+  {
+    name: '스마트 전구',
+    description: '스마트폰으로 제어할 수 있는 전구.',
+    price: 20000,
+    tags: ['전자제품', '가전'],
+    favoriteCount: 100,
+    createdAt: '2020-06-18T23:45:00Z',
+  },
+  {
+    name: '베개 커버',
+    description: '부드러운 소재의 베개 커버, 다양한 색상.',
+    price: 12000,
+    tags: ['침구', '가정용품'],
+    favoriteCount: 55,
+    createdAt: '2022-11-27T12:35:00Z',
+  },
+  {
+    name: '미니 냉장고',
+    description: '소형 냉장고, 사무실이나 방에 적합.',
+    price: 120000,
+    tags: ['가전', '가정용품'],
+    favoriteCount: 90,
+    createdAt: '2019-02-14T18:40:00Z',
+  },
+  {
+    name: '휴대용 배터리',
+    description: '휴대폰 및 전자기기를 충전할 수 있는 보조 배터리.',
+    price: 30000,
+    tags: ['전자제품', '액세서리'],
+    favoriteCount: 110,
+    createdAt: '2023-04-07T15:20:00Z',
+  },
+  {
+    name: '명함 지갑',
+    description: '깔끔한 디자인의 명함 지갑.',
+    price: 15000,
+    tags: ['패션', '액세서리'],
+    favoriteCount: 70,
+    createdAt: '2021-03-19T10:10:00Z',
+  },
+  {
+    name: '디지털 온도계',
+    description: '정확한 체온 측정을 위한 디지털 온도계.',
+    price: 25000,
+    tags: ['전자제품', '건강'],
+    favoriteCount: 65,
+    createdAt: '2020-04-12T08:25:00Z',
+  },
+];
+
+export const ARTICLES = [
+  {
+    id: '03cb17ca-01d2-4b2d-ac70-51b3eb5b072b',
+    title: '중고거래 시 환불 경험 있으신가요?',
+    content:
+      '중고 거래로 물건을 샀는데, 문제가 있어서 환불 요청을 했어요. 이런 경우 다들 어떻게 대처하시나요?',
+    createdAt: '2020-03-12T13:20:00.000Z',
+    updatedAt: '2024-08-13T00:45:21.529Z',
+  },
+  {
+    title: '판매 후에 연락이 끊겼어요',
+    content:
+      '물건을 팔고 나서 구매자와 연락이 안 돼요. 이런 경우 어떻게 대처해야 할까요? 다른 거래하시는 분들도 비슷한 경험 있으신가요?',
+    createdAt: '2021-05-22T09:40:00Z',
+  },
+  {
+    title: '중고 거래 시 직거래 vs 택배 거래, 뭐가 나을까요?',
+    content:
+      '중고거래를 처음 하는데, 직거래와 택배 거래 중 어느 쪽이 더 나을까요? 각각의 장단점이 궁금해요.',
+    createdAt: '2023-02-10T16:50:00Z',
+  },
+  {
+    title: '희귀 아이템을 어떻게 거래해야 할까요?',
+    content:
+      '오래된 희귀 아이템을 판매하려고 하는데, 이걸 어떻게 가격을 매기고 거래해야 할지 모르겠어요. 경험 있으신 분들 도움 부탁드려요.',
+    createdAt: '2020-09-30T12:05:00Z',
+  },
+  {
+    title: '중고 거래 사기 당한 경험, 어떻게 해결했나요?',
+    content:
+      '최근 중고 거래에서 사기를 당한 것 같은데, 이걸 어떻게 해결할 수 있을지 모르겠어요. 비슷한 경험 있으신 분들 조언 부탁드립니다.',
+    createdAt: '2021-11-15T14:30:00Z',
+  },
+  {
+    title: '중고 거래 안전하게 하는 법',
+    content:
+      '요즘 중고 거래를 많이 하는데, 안전하게 거래하는 방법이 궁금해요. 사기 안 당하는 팁 좀 알려주세요!',
+    createdAt: '2023-05-10T10:00:00Z',
+  },
+  {
+    title: '내가 사고 싶은 물건 구하는 방법',
+    content:
+      '사고 싶은 중고 물건이 있는데, 어디서 찾아야 할지 모르겠어요. 어떤 사이트나 앱을 추천하나요?',
+    createdAt: '2022-11-20T15:30:00Z',
+  },
+  {
+    title: '판매 시 가격 어떻게 정해야 할까요?',
+    content:
+      '중고로 물건 팔려고 하는데, 가격을 어떻게 정해야 적당할지 모르겠어요. 조언 부탁드립니다!',
+    createdAt: '2021-07-15T08:45:00Z',
+  },
+  {
+    title: '중고거래 시 환불 경험 있으신가요?',
+    content:
+      '중고 거래로 물건을 샀는데, 문제가 있어서 환불 요청을 했어요. 이런 경우 다들 어떻게 대처하시나요?',
+    createdAt: '2020-03-12T13:20:00Z',
+  },
+  {
+    title: '내 물건이 안 팔리는 이유가 뭘까요?',
+    content:
+      '오랫동안 물건을 올려놨는데도 안 팔리고 있어요. 혹시 판매 전략이나 글 작성 팁 있을까요?',
+    createdAt: '2021-12-01T09:10:00Z',
+  },
+];
+
+export const COMMENTS = [
+  {
+    id: 'b9b74c3d-05e4-4e4b-8a0e-84d25f10dfe9',
+    content:
+      '저도 비슷한 경험이 있었어요. 판매자와 대화를 통해 해결했는데, 환불 받는 게 쉽지 않더군요.',
+    createdAt: '2024-08-13T01:00:00.000Z',
+    updatedAt: '2024-08-13T01:00:00.000Z',
+    articleId: '03cb17ca-01d2-4b2d-ac70-51b3eb5b072b',
+  },
+  {
+    id: '6d1b5d2e-14c7-4e8c-9098-bd767b914c87',
+    content:
+      '환불을 요청하긴 했는데, 결국 반품비를 제가 부담하게 됐어요. 다음엔 신중하게 거래해야겠어요.',
+    createdAt: '2024-08-13T01:15:00.000Z',
+    updatedAt: '2024-08-13T01:15:00.000Z',
+    articleId: '03cb17ca-01d2-4b2d-ac70-51b3eb5b072b',
+  },
+  {
+    id: 'f0e3c2b5-8497-4f88-8d98-c2d87b294a2c',
+    content:
+      '판매자가 연락이 안 돼서 환불 못 받았어요. 이런 경우 진짜 답답하죠.',
+    createdAt: '2024-08-13T01:30:00.000Z',
+    updatedAt: '2024-08-13T01:30:00.000Z',
+    articleId: '03cb17ca-01d2-4b2d-ac70-51b3eb5b072b',
+  },
+  {
+    id: 'd5d9a6a7-7ff6-49d8-9f71-57d6e84b2b3f',
+    content:
+      '저는 처음부터 거래 조건을 명확히 하고, 문제가 생기면 바로 신고하는 편이에요. 이번에도 문제 없이 환불 받았습니다.',
+    createdAt: '2024-08-13T01:45:00.000Z',
+    updatedAt: '2024-08-13T01:45:00.000Z',
+    articleId: '03cb17ca-01d2-4b2d-ac70-51b3eb5b072b',
+  },
+  {
+    id: 'e36f34d3-b11d-45e9-9fc9-4a2f84b5d7a5',
+    content:
+      '환불 과정이 복잡해서 그냥 포기한 적도 있어요. 다음엔 정말 조심해야겠다고 다짐했어요.',
+    createdAt: '2024-08-13T02:00:00.000Z',
+    updatedAt: '2024-08-13T02:00:00.000Z',
+    articleId: '03cb17ca-01d2-4b2d-ac70-51b3eb5b072b',
+  },
+  {
+    id: 'bd2b9a2d-2345-41f1-89b0-13245b3a8c9f',
+    content: '이 TV 진짜 화질이 좋네요. 가족들이 다 만족하고 있어요!',
+    createdAt: '2024-08-13T02:10:00.000Z',
+    updatedAt: '2024-08-13T02:10:00.000Z',
+    productId: 'a57d8a16-eb82-413b-8726-59b24b80e7e4',
+  },
+  {
+    id: '1f8b1234-7b23-4fa5-90b8-8b12345e1e9d',
+    content: '가격 대비 성능 최고입니다. 특히 4K 영상이 정말 선명하네요.',
+    createdAt: '2024-08-13T02:20:00.000Z',
+    updatedAt: '2024-08-13T02:20:00.000Z',
+    productId: 'a57d8a16-eb82-413b-8726-59b24b80e7e4',
+  },
+  {
+    id: '2c8d2345-912f-44f9-8b12-8d23b9d7e2a8',
+    content:
+      '스마트 기능이 아주 편리해요. 다양한 앱을 바로 사용할 수 있어서 좋습니다.',
+    createdAt: '2024-08-13T02:30:00.000Z',
+    updatedAt: '2024-08-13T02:30:00.000Z',
+    productId: 'a57d8a16-eb82-413b-8726-59b24b80e7e4',
+  },
+  {
+    id: '3e4a2b12-891e-4a3f-9b23-3b123e45f1c9',
+    content:
+      '배송도 빠르고 설치도 쉬웠어요. 대화면으로 영화 보는 재미가 쏠쏠합니다.',
+    createdAt: '2024-08-13T02:45:00.000Z',
+    updatedAt: '2024-08-13T02:45:00.000Z',
+    productId: 'a57d8a16-eb82-413b-8726-59b24b80e7e4',
+  },
+  {
+    id: '4f9a234d-7e1f-4b8b-9e1c-4f1a23456e78',
+    content:
+      '사용하기 간편하고, 화면 전환도 부드러워요. 친구들에게도 추천하고 싶네요.',
+    createdAt: '2024-08-13T03:00:00.000Z',
+    updatedAt: '2024-08-13T03:00:00.000Z',
+    productId: 'a57d8a16-eb82-413b-8726-59b24b80e7e4',
+  },
+];

@@ -1,0 +1,44 @@
+
+
+### fetch all products
+GET http://localhost:3000/api/products
+
+
+### fetch products with orderBy
+GET http://localhost:3000/api/products?orderBy=recent
+
+### fetch products with orderBy
+GET http://localhost:3000/api/products?orderBy=favorite
+
+
+### fetch all products with keyword
+GET http://localhost:3000/api/products?keyword=녹차
+
+### fetch all products with page and pageSize
+GET http://localhost:3000/api/products?page=2&pageSize=4
+
+### fetch product by id
+GET http://localhost:3000/api/products/10e59bae-854d-4856-bed9-405a67363f63
+
+### create new product
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+  "name": "미키 마우스 머그컵",
+  "price": 5000,
+  "description": "디즈니 랜드에서 구매한 한정 미키 마우스 머그컵"
+}
+
+### update product by id
+PATCH http://localhost:3000/api/products/6527b991-16c4-476c-812d-319e62af2cea
+Content-Type: application/json
+
+{
+  "name": "원목 책상",
+  "price" :10000,
+  "description": "아카시아 나무 너비 1미터 원목책상"
+}
+
+### delete product by id
+DELETE http://localhost:3000/api/products/6527b991-16c4-476c-812d-319e62af2cea
