@@ -1,0 +1,33 @@
+###
+POST http://localhost:3000/article
+Content-Type : application/json
+Authorization : 123e4567-e89b-12d3-a456-426614174001
+
+{
+    "title" : "기사제목6",
+    "content" : "기사내용6"
+}
+
+
+###
+GET http://localhost:3000/article?pageSize=3&page=1
+
+
+###
+GET http://localhost:3000/article/123e4567-e89b-12d3-a456-426614174004
+
+###
+PATCH http://localhost:3000/article/123e4567-e89b-12d3-a456-426614174004
+Content-Type : application/json
+Authorization : 123e4567-e89b-12d3-a456-426614174001
+
+{
+    "title" : "기사제목3수정",
+    "content" : "기사내용3수정"
+}
+
+###
+DELETE http://localhost:3000/article/123e4567-e89b-12d3-a456-426614174004
+Authorization : 123e4567-e89b-12d3-a456-426614174001
+
+

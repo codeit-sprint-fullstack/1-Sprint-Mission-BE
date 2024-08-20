@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// 필드명 설정 : userId Int @id @default(autoincrement()) @map("user_id")
+// table 명 설정 : 스키마 중괄호 마지막에(중괄호 안에) @@map("push_token")
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String                 @id @default(uuid())
+  name                 String
+  nickname             String                 @unique
+  password             String
+  email                String                 @unique
+  image                String
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  UserProducts         UserProducts[]
+  UserFavoriteProducts UserFavoriteProducts[]
+  Product              Product[]
+  ProductFavoriteUsers ProductFavoriteUsers[]
+  Article              Article[]
+  ArticleComment       ArticleComment[]
+  ProductComment       ProductComment[]
+}
+
+model UserProducts {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserFavoriteProducts {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  ProductId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  productId String
+}
+
+model Product {
+  id                   String                 @id @default(uuid())
+  name                 String
+  description          String
+  price                Int
+  user                 User                   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId              String
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  UserFavoriteProducts UserFavoriteProducts[]
+  ProductTags          ProductTags[]
+  ProductImages        ProductImages[]
+  ProductFavoriteUsers ProductFavoriteUsers[]
+  UserProducts         UserProducts[]
+  ProductComment       ProductComment[]
+}
+
+model ProductTags {
+  id        String  @id @default(uuid())
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  tag       String
+}
+
+model ProductImages {
+  id        String  @id @default(uuid())
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  image     String
+}
+
+model ProductFavoriteUsers {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Article {
+  id             String           @id @default(uuid())
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  title          String           @db.VarChar(30)
+  content        String           @db.VarChar(200)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  ArticleComment ArticleComment[]
+}
+
+model ArticleComment {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  Article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId String
+  content   String   @db.VarChar(200)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductComment {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  content   String   @db.VarChar(200)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
