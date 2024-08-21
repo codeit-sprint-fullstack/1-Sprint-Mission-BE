@@ -34,3 +34,9 @@ requset.http
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Prisma migrations lock file
+prisma/migrations/migration_lock.toml
+
+# Prisma environment variables
+prisma/.env

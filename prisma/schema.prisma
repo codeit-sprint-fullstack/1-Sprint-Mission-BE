@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id        Int      @id @default(autoincrement())
+  title     String   
+  content   String
+  likeCount Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  comments  Comment[] @relation("ArticleComments") // 댓글과의 관계 설정
+}
+
+model Comment {
+  id        Int       @id @default(autoincrement())
+  content   String
+  postId    Int
+  boardType boardType @default(board)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  article   Article   @relation("ArticleComments", fields: [postId], references: [id], onDelete: Cascade) // 관계 설정
+
+
+  @@unique([id, boardType])
+}
+
+// 자유게시판 댓글인지 중고마켓 댓글인지 'board', 'market' 로 구분
+enum boardType {
+  board
+  market
+}
