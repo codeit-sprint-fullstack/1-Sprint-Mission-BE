@@ -1,25 +1,27 @@
 import prisma from "../prismaClient.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 
-// 중고마켓 댓글 등록
+// 중고템 댓글 등록
 export const createMarketComment = asyncHandler(async (req, res) => {
-  const { content, marketItemId } = req.body;
+  const { content } = req.body;
+  const { marketItemId } = req; // req.params에서 marketItemId 가져오기
   const comment = await prisma.comment.create({
-    data: { content, marketItemId },
+    data: { content, marketItemId: parseInt(marketItemId) },
   });
   res.status(201).json(comment);
 });
 
-// 자유게시판 댓글 등록
+// 게시판 댓글 등록
 export const createArticleComment = asyncHandler(async (req, res) => {
-  const { content, articleId } = req.body;
+  const { content } = req.body;
+  const { articleId } = req; // req.params에서 articleId 가져오기
   const comment = await prisma.comment.create({
-    data: { content, articleId },
+    data: { content, articleId: parseInt(articleId) },
   });
   res.status(201).json(comment);
 });
 
-// 중고마켓 댓글 수정
+// 중고템 댓글 수정
 export const updateMarketComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { content } = req.body;
@@ -30,7 +32,7 @@ export const updateMarketComment = asyncHandler(async (req, res) => {
   res.status(200).json(comment);
 });
 
-// 자유게시판 댓글 수정
+// 게시판 댓글 수정
 export const updateArticleComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { content } = req.body;
@@ -41,7 +43,7 @@ export const updateArticleComment = asyncHandler(async (req, res) => {
   res.status(200).json(comment);
 });
 
-// 중고마켓 댓글 삭제
+// 중고템 댓글 삭제
 export const deleteMarketComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
@@ -54,7 +56,7 @@ export const deleteMarketComment = asyncHandler(async (req, res) => {
   }
 });
 
-// 자유게시판 댓글 삭제
+// 게시판 댓글 삭제
 export const deleteArticleComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
@@ -67,9 +69,10 @@ export const deleteArticleComment = asyncHandler(async (req, res) => {
   }
 });
 
-// 중고마켓 댓글 목록 조회
+// 중고템 댓글 목록 조회
 export const listMarketComments = asyncHandler(async (req, res) => {
-  const { marketItemId, cursor, size = 10 } = req.query;
+  const { cursor, size = 10 } = req.query;
+  const { marketItemId } = req; // req.params에서 marketItemId 가져오기
   const comments = await prisma.comment.findMany({
     where: { marketItemId: parseInt(marketItemId) },
     take: parseInt(size),
@@ -80,9 +83,10 @@ export const listMarketComments = asyncHandler(async (req, res) => {
   res.status(200).json(comments);
 });
 
-// 자유게시판 댓글 목록 조회
+// 게시판 댓글 목록 조회
 export const listArticleComments = asyncHandler(async (req, res) => {
-  const { articleId, cursor, size = 10 } = req.query;
+  const { cursor, size = 10 } = req.query;
+  const { articleId } = req; // req.params에서 articleId 가져오기
   const comments = await prisma.comment.findMany({
     where: { articleId: parseInt(articleId) },
     take: parseInt(size),

@@ -9,11 +9,33 @@ const app = express();
 
 app.use(express.json());
 
+// 게시글 관련 라우트
 app.use("/api/articles", articleRoutes);
-app.use("/api/market-items", marketItemRoutes);
-app.use("/api/articles/:articleId/comments", articleCommentRoutes);
-app.use("/api/market-items/:marketItemId/comments", marketCommentRoutes);
 
+// 게시글 댓글 관련 라우트
+app.use(
+  "/api/articles/:articleId/comments",
+  (req, res, next) => {
+    req.articleId = req.params.articleId; // articleId를 저장
+    next();
+  },
+  articleCommentRoutes
+);
+
+// 중고템 관련 라우트
+app.use("/api/market-items", marketItemRoutes);
+
+// 중고템 댓글 관련 라우트
+app.use(
+  "/api/market-items/:marketItemId/comments",
+  (req, res, next) => {
+    req.marketItemId = req.params.marketItemId;
+    next();
+  },
+  marketCommentRoutes
+);
+
+// 에러 핸들러
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
