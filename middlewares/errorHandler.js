@@ -1,18 +1,10 @@
-const errorHandler = (err, req, res, next) => {
-  console.error(`[${new Date().toISOString()}] ${err.stack}`);
+import CustomError from "../utils/customError";
 
-  let statusCode = 500;
-  let message = "서버 내부 오류입니다. 관리자에게 문의해주세요.";
-
-  if (err.name === "ValidationError") {
-    statusCode = 400;
-    message = "잘못된 요청입니다. 필수 필드를 확인해주세요.";
-  } else if (err.name === "CastError") {
-    statusCode = 400;
-    message = "유효하지 않은 ID입니다.";
+// 에러 핸들러 미들웨어
+export const errorHandler = (err, req, res, next) => {
+  if (err instanceof CustomError) {
+    return res.status(err.statusCode).json({ error: err.message });
   }
 
-  res.status(statusCode).json({ message });
+  res.status(500).json({ error: "잘못된 요청입니다" });
 };
-
-export default errorHandler;
