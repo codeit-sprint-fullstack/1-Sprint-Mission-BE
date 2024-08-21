@@ -8,7 +8,7 @@ import {
 } from "../service/productService.js";
 
 const router = express.Router();
-
+// http://localhost:5432/products
 router.post("/", createProduct);
 router.get("/", getProducts);
 router.get("/:id", getProductById);

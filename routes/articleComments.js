@@ -7,7 +7,7 @@ import {
 } from "../service/articleCommentService.js";
 
 const router = express.Router();
-
+// http://localhost:5432/articlecomments
 router.post("/:articleId", createComment);
 router.get("/:articleId", getComments);
 router.put("/:id", updateComment);
