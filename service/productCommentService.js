@@ -26,6 +26,7 @@ export const getProductComments = asyncHandler(async (req, res) => {
     take: 10,
     skip: cursor ? 1 : 0,
     cursor: cursor ? { id: parseInt(cursor) } : undefined,
+    orderBy: { id: "asc" },
   });
 
   res.status(200).json(comments);
