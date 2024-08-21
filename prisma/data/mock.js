@@ -75,9 +75,7 @@ export const COMMENTS = [
     createdAt: '2024-08-15T06:55:12.107Z',
     articleId: 'e6c58663-b8db-44e7-baa4-d51624806def',
     userId: '9d141089-1314-435b-80dc-bd6f55c00d79',
-    article: {
-      category: 'MarketplaceComment',
-    },
+    articleCategory: 'MarketplaceComment',
   },
   {
     id: '763877c6-1986-4312-8d21-c4afcc0207c5',
@@ -85,8 +83,6 @@ export const COMMENTS = [
     createdAt: '2024-08-15T06:19:33.896Z',
     articleId: '76611d32-1530-4956-bd74-6a4ee77f6aeb',
     userId: '9d141089-1314-435b-80dc-bd6f55c00d79',
-    article: {
-      category: 'MarketplaceComment',
-    },
+    articleCategory: 'MarketplaceComment',
   },
 ];
