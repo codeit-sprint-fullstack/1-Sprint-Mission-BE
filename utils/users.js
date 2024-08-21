@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from './asyncHandler.js';
+import { CreateUser, PatchUser } from './struct.js';
 
 const router = express.Router();
 const prisma = new PrismaClient();
