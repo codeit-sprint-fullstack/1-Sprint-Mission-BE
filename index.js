@@ -40,8 +40,8 @@ app.get("/check-db", async (req, res) => {
 });
 
 app.use("/articles", articleRoutes);
-app.use("/articleComments", commentRoutes);
-app.use("/productComments", productCommentRoutes);
+app.use("/articlecomments", commentRoutes);
+app.use("/productcomments", productCommentRoutes);
 app.use("/products", productRoutes);
 
 // 서버 실행
