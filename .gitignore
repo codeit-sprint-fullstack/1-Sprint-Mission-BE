@@ -1,3 +1,5 @@
+.env
+
 # node js와 express gitignore 검색 및 추가
 script
 # npm
@@ -144,3 +146,26 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+node_modules/
+yarn-error.log/
+vendor/
+tmp/
+dist/
+.DS_Store
+.idea
+tmp-resolvers
+package-lock.json
+flow-typed
+yarn.lock
+javascript/**/migrations/
+typescript/**/migrations/
+misc/**/migrations/
+databases/**/migrations/
+experimental/**/*.db
+.next
+.vscode/
+.nuxt
+dev.db
+*.env*
+!.env.example
