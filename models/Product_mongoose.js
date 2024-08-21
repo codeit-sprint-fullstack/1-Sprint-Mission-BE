@@ -1,30 +1,27 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     minlength: 1,
-    maxlength: 10,
+    maxlength: 100,
   },
   description: {
     type: String,
     required: true,
     minlength: 10,
-    maxlength: 100,
+    maxlength: 500,
   },
   price: {
     type: Number,
     required: true,
-    minlength: 1,
     min: 0,
   },
-  tags: [
-    {
-      type: String,
-      maxlength: 5,
-    },
-  ],
+  tags: [{
+    type: String,
+    maxlength: 50,
+  }],
   createdAt: {
     type: Date,
     default: Date.now,
@@ -35,6 +32,6 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-const Product = mongoose.model("Product", productSchema);
+const Product = mongoose.model('Product', productSchema);
 
 export default Product;
