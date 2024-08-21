@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id        String    @id @default(uuid())
+  title     String
+  content   String
+  viewCount Int       @default(0) // 조회수 필드를 추가하여 유니크한 기능 제공
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  comments  Comment[] @relation("ArticleComments")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  status    CommentStatus @default(active) // 댓글의 상태(활성, 비활성)를 나타내는 필드를 추가
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId String
+}
+
+model Product {
+  id          String           @id @default(uuid())
+  name        String
+  description String
+  price       Int
+  tags        String[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  comments    ProductComment[] @relation("ProductComments")
+}
+
+model ProductComment {
+  id        String   @id @default(uuid())
+  content   String
+  status    CommentStatus @default(active) // 댓글의 상태(활성, 비활성)를 나타내는 필드를 추가
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+}
+
+enum CommentStatus {
+  active
+  deleted
+  flagged // 댓글이 신고되었을 때 상태를 관리하기 위한 열거형
+}
