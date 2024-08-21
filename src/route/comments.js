@@ -148,22 +148,6 @@ router.post(
   })
 );
 
-// 상품 댓글 등록 (Product)
-router.post(
-  "/products/:productId/comments",
-  asyncHandler(async (req, res) => {
-    const { productId } = req.params;
-    const comment = await prisma.comment.create({
-      data: {
-        ...req.body,
-        productId: productId,
-        category: "PRODUCT",
-      },
-    });
-    res.status(201).send(comment);
-  })
-);
-
 // 댓글 수정
 router.patch(
   "/:id",
