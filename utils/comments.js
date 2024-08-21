@@ -38,12 +38,8 @@ router.get(
       };
     }
 
-    try {
-      const comments = await prisma.comment.findMany(queryOptions);
-      res.json(comments);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to retrieve comments' });
-    }
+    const comments = await prisma.comment.findMany(queryOptions);
+    res.send(comments);
   })
 );
 
@@ -51,10 +47,10 @@ router.get(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const comment = await prisma.comment.findUnique({
+    const comments = await prisma.comment.findUnique({
       where: { id },
     });
-    res.send(comment);
+    res.send(comments);
   })
 );
 
@@ -62,10 +58,10 @@ router.post(
   '/comments',
   asyncHandler(async (req, res) => {
     assert(req.body, CreateComment);
-    const comment = await prisma.comment.create({
+    const comments = await prisma.comment.create({
       data: req.body,
     });
-    res.status(201).send(comment);
+    res.status(201).send(comments);
   })
 );
 
