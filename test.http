@@ -1,0 +1,110 @@
+
+### 게시글 조회
+GET https://articles-2bks.onrender.com/article/66b8441c519305ccf5ca1e11
+
+
+### 게시글 등록
+POST https://articles-2bks.onrender.com/article
+Content-Type: application/json
+
+{
+  "title" : "title 테스트 입니다.",
+  "content" : "content 테스트 입니다."
+}
+
+### 게시글 수정
+
+PATCH https://articles-2bks.onrender.com/article/8824bdb0-e612-495c-ae01-a78b2a217113
+Content-Type: application/json
+
+{
+  "title" : "title 변경 테스트 입니다.",
+  "content" : "content 변경 테스트 입니다."
+}
+### 게시글 삭제
+
+DELETE https://articles-2bks.onrender.com/article/b7df0d49-8bb3-43fc-af27-5fe98cb8edc1
+
+
+
+### 댓글 추가
+POST https://articles-2bks.onrender.com/article/6f664bcf-4573-4e25-8167-60773dcaff3e/comment
+Content-Type: application/json
+
+{
+  "content" : "comment 테스트 입니다."
+}
+### 댓글 수정
+PATCH https://articles-2bks.onrender.com/article/6f664bcf-4573-4e25-8167-60773dcaff3e/comment/94b10748-3cb3-4181-9780-04de0f7a7bd0
+Content-Type: application/json
+
+{
+  "content" : "PATCH comment 테스트 입니다."
+}
+
+### 댓글 조회
+GET https://articles-2bks.onrender.com/article/6f664bcf-4573-4e25-8167-60773dcaff3e/comment
+
+### 댓글 삭제
+DELETE https://articles-2bks.onrender.com/article/6f664bcf-4573-4e25-8167-60773dcaff3e/comment/94b10748-3cb3-4181-9780-04de0f7a7bd0
+
+
+####################################################
+
+
+
+### 상품조회
+GET http://localhost:3000/product
+
+### 상품 추가
+POST http://localhost:3000/product
+Content-Type: application/json
+
+{
+  "name" : "여기 게시글",
+  "description": "게시글 테스트 입니다.",
+  "price" : 300,
+  "tag": "test"
+}
+
+### 수정
+PATCH http://localhost:3000/product/ed6a11a0-e364-4ef4-9b71-75697f86ee19
+Content-Type: application/json
+
+{
+  "name" : "제목만 변경해보자",
+  "description" : "내용만 변경해보자",
+  "price" : 300,
+  "tag" : ["tag1", "tag2"]
+  
+}
+
+
+### 삭제
+DELETE http://localhost:3000/product/b1be12e0-1a43-4b09-bbac-a756b75f1ca7
+
+
+
+
+
+### 댓글 추가
+POST http://localhost:3000/product/b1be12e0-1a43-4b09-bbac-a756b75f1ca7/comment
+Content-Type: application/json
+
+{
+  "content" : "22222 이 내용은 조회 해보는것이다"
+}
+### 댓글 조회
+GET http://localhost:3000/product/66b8441c519305ccf5ca1e11/comment
+
+### 댓글 수정
+
+PATCH http://localhost:3000/product/b1be12e0-1a43-4b09-bbac-a756b75f1ca7/comment/af8ebbc8-f73b-40db-9a09-45dc7c8d8219
+Content-Type: application/json
+
+{
+  "content" : "이 내용을 수정해볼까~"
+}
+
+### 댓글 삭제
+DELETE http://localhost:3000/product/b1be12e0-1a43-4b09-bbac-a756b75f1ca7/comment/af8ebbc8-f73b-40db-9a09-45dc7c8d8219
