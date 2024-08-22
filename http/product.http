@@ -1,0 +1,31 @@
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "독거미 키보드",
+  "description": "친구 추천으로 산 키보드, 키감이 나쁘지 않고 가성비가 괜찮다",
+  "price": 50000
+}
+
+###
+
+GET http://localhost:3000/products
+
+###
+
+GET http://localhost:3000/products/182
+
+
+###
+
+PATCH  http://localhost:3000/products/1
+Content-Type: application/json
+
+{
+"name": "AULA 키보드",
+"price": 56001
+}
+
+###
+
+DELETE http://localhost:3000/products/1

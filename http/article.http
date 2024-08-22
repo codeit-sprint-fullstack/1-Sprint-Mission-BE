@@ -1,0 +1,42 @@
+POST http://localhost:3000/articles
+Content-Type: application/json
+
+{
+  "title": "독거미 좋은거 맞음?",
+  "content": "그 정도로 막 좋다 이거는 아닌 것 같은데..."
+}
+
+###
+
+GET http://localhost:3000/articles
+
+###
+
+GET http://localhost:3000/articles?order=oldest&offset=1
+
+###
+
+GET http://localhost:3000/articles?order=oldest&offset=1&limit=1
+
+###
+
+GET http://localhost:3000/articles/7
+
+###
+
+GET http://localhost:3000/articles/1
+
+
+###
+
+PATCH  http://localhost:3000/articles/1
+Content-Type: application/json
+
+{
+"name": "AULA 키보드",
+"price": 56001
+}
+
+###
+
+DELETE http://localhost:3000/articles/1
