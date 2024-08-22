@@ -31,16 +31,16 @@ model Product {
   description String
   price       Int
   tag         String[]
-  createAt    DateTime         @default(now())
-  updateAt    DateTime         @updatedAt
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
   comments    ProductComment[]
 }
 
 model ProductComment {
   id          String    @id @default(uuid())
   content     String
-  createAt    DateTime  @default(now())
-  updateAt    DateTime  @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId   String
 }
