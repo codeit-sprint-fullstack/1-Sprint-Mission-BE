@@ -105,7 +105,7 @@ app.patch("/product/:id", async (req, res) => {
         tag: Array.isArray(tag) ? tag : [tag],
       },
     });
-    res.status(201).json(product);
+    res.status(200).json(product);
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "internal server error" });
