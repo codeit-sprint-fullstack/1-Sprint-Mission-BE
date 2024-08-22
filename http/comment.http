@@ -1,8 +1,8 @@
-POST http://localhost:3000/products/124/comments
+POST http://localhost:3000/products/182/comments
 Content-Type: application/json
 
 {
-  "content": "중고마켓 댓글 테스트"
+  "content": "중고마켓 댓글 테스트 삽입"
 }
 
 ###
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/products/124/comments
+GET http://localhost:3000/products/182/comments
 
 ###
 
