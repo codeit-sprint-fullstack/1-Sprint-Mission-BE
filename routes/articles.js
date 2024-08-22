@@ -33,11 +33,11 @@ router.get(
     let orderBy;
     switch (order) {
       case 'old':
-        orderBy = { createdAt: 'desc' };
+        orderBy = { createdAt: 'asc' };
         break;
       case 'recent':
       default:
-        orderBy = { createdAt: 'asc' };
+        orderBy = { createdAt: 'desc' };
     }
     const article = await prisma.article.findMany({
       skip: parseInt(offset),

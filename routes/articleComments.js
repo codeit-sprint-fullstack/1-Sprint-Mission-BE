@@ -49,7 +49,7 @@ router.post(
         },
       },
     });
-    res.send(comment);
+    res.status(201);
   })
 );
 
@@ -75,7 +75,7 @@ router.delete(
     await prisma.comment.delete({
       where: { id },
     });
-    res.send(204);
+    res.sendStatus(204);
   })
 );
 
