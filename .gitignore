@@ -1,2 +1,4 @@
 node_modules
-env.js
+# Keep environment variables out of version control
+.env
+.http

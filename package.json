@@ -1,35 +1,28 @@
 {
-  "name": "panda-react",
-  "version": "0.1.0",
-  "type": "module",
-  "private": true,
+  "name": "1-sprint-mission-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.7.2",
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "mongoose": "^8.5.2",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "node server/express.js",
-    "server": "cd server && nodemon express.js"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "@prisma/client": "^5.4.2",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "is-email": "^1.0.2",
+    "is-uuid": "^1.0.2",
+    "prisma": "^5.4.2",
+    "superstruct": "^1.0.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.0.1"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }
