@@ -6,7 +6,7 @@ import { asyncHandle } from "../errorUtils.js";
 const app = express.Router();
 
 app.get(
-  "/products",
+  "/",
   asyncHandle(async (req, res) => {
     const {
       order,
@@ -17,7 +17,6 @@ app.get(
       maxPrice = Infinity,
       date = "",
     } = req.query;
-
     const offset = (page - 1) * pageSize; //page가 3이면 3-1 = 2 * count 만큼 스킵
     const regex = new RegExp(keyword, "i"); // 대소문자 구분 안 함
     const dateQuery = {};
@@ -66,7 +65,7 @@ app.get(
 );
 
 app.get(
-  "/products/:id",
+  "/:id",
   asyncHandle(async (req, res) => {
     const id = req.params.id;
     const product = await Product.findById(id);
@@ -79,7 +78,7 @@ app.get(
 );
 
 app.post(
-  "/products",
+  "/",
   asyncHandle(async (req, res) => {
     const product = await Product.create(req.body);
     res.status(201).send(product);
@@ -87,7 +86,7 @@ app.post(
 );
 
 app.patch(
-  "/products/:id",
+  "//:id",
   asyncHandle(async (req, res) => {
     const id = req.params.id;
     const object = req.body;
@@ -105,7 +104,7 @@ app.patch(
 );
 
 app.delete(
-  "/products/:id",
+  "/:id",
   asyncHandle(async (req, res) => {
     const id = req.params.id;
     const product = await Product.findByIdAndDelete(id);

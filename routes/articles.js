@@ -10,9 +10,11 @@ const prisma = new PrismaClient();
 app.get(
   "/",
   asyncHandle(async (req, res) => {
-    const { orderby = "", offset = 0, limit = 5, keyword = "" } = req.query;
+    const { orderBy = "", keyword = "" } = req.query;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = parseInt(req.query.offset) || 0;
     let orderbyQuery;
-    switch (orderby) {
+    switch (orderBy) {
       case "title":
         orderbyQuery = { title: "asc" };
         break;
@@ -23,7 +25,7 @@ app.get(
         orderbyQuery = { createAt: "desc" };
         break;
       case "favorite":
-        orderbyQuery = { favorite: "asc" };
+        orderbyQuery = { favorite: "desc" };
         break;
       default:
         orderbyQuery = { createAt: "asc" };
@@ -35,23 +37,26 @@ app.get(
         { content: { contains: keyword, mode: "insensitive" } },
       ];
     }
-    const data = await prisma.article.findMany({
-      where: whereConditions,
-      skip: offset * limit,
-      take: limit,
-      orderBy: orderbyQuery,
-      include: {
-        user: {
-          select: {
-            name: true,
-            id: true,
+    const [totalCount, data] = await prisma.$transaction([
+      prisma.article.count(whereConditions),
+      prisma.article.findMany({
+        where: whereConditions,
+        skip: offset * limit,
+        take: limit,
+        orderBy: orderbyQuery,
+        include: {
+          user: {
+            select: {
+              name: true,
+              id: true,
+            },
           },
         },
-      },
-    });
+      }),
+    ]);
 
     if (data) {
-      res.send(data);
+      res.send({ totalCount, list: data });
     } else {
       res.status(404).send({ message: "게시글을 찾을수 없습니다." });
     }
