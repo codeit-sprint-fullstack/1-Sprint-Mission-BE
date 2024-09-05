@@ -35,6 +35,12 @@ async function main() {
       favorite: 10,
     },
   });
+  const article4 = await prisma.article.create({
+    data: {
+      title: "네 번째 게시글",
+      content: "이것은 네 번째 게시글의 내용입니다.",
+    },
+  });
 
   const articleComment1 = await prisma.articleComment.create({
     data: {

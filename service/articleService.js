@@ -16,13 +16,6 @@ export const getArticleById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const article = await prisma.article.findUnique({
     where: { id: parseInt(id) },
-    select: {
-      id: true,
-      title: true,
-      content: true,
-      favorite: true,
-      createdAt: true,
-    },
   });
   if (!article) {
     return res.status(404).json({ error: "Article not found" });
@@ -44,13 +37,6 @@ export const getArticles = asyncHandler(async (req, res) => {
   const articles = await prisma.article.findMany({
     where: {
       OR: [{ title: { contains: search } }],
-    },
-    select: {
-      id: true,
-      title: true,
-      content: true,
-      favorite: true,
-      createdAt: true,
     },
     skip: parseInt(offset),
     take: parseInt(size),
