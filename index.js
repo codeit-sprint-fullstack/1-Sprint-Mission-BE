@@ -26,7 +26,6 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-// Prisma Client를 통해 데이터베이스 연결 확인
 app.get("/check-db", async (req, res) => {
   try {
     await prisma.$connect();
