@@ -40,7 +40,6 @@
     "finalhandler": "^1.2.0",
     "forwarded": "^0.2.0",
     "fresh": "^0.5.2",
-    "fsevents": "^2.3.3",
     "function-bind": "^1.1.2",
     "get-intrinsic": "^1.2.4",
     "glob-parent": "^5.1.2",
@@ -116,6 +115,9 @@
     "webidl-conversions": "^7.0.0",
     "whatwg-url": "^13.0.0",
     "yarn": "^1.22.22"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
