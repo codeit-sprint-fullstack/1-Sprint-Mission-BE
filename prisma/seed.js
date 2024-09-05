@@ -14,6 +14,7 @@ async function main() {
     data: {
       title: "첫 번째 게시글",
       content: "이것은 첫 번째 게시글의 내용입니다.",
+      favorite: 1,
     },
   });
 
@@ -22,6 +23,7 @@ async function main() {
     data: {
       title: "두 번째 게시글",
       content: "이것은 두 번째 게시글의 내용입니다.",
+      favorite: 30,
     },
   });
 
@@ -30,6 +32,7 @@ async function main() {
     data: {
       title: "세 번째 게시글",
       content: "이것은 세 번째 게시글의 내용입니다.",
+      favorite: 10,
     },
   });
 

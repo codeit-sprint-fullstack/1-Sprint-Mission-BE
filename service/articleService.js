@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export const createArticle = asyncHandler(async (req, res) => {
   const { title, content } = req.body;
   const article = await prisma.article.create({
-    data: { title, content },
+    data: { title, content, favorite },
   });
   res.status(201).json(article);
 });
@@ -27,21 +27,20 @@ export const getArticles = asyncHandler(async (req, res) => {
   const { page = 1, size = 10, search = "", sort = "createdAt" } = req.query;
   const offset = (page - 1) * size;
 
-  // 정렬 기준 설정: 최신순('createdAt') 또는 좋아요순('favorite')
   let orderBy;
   if (sort === "favorite") {
-    orderBy = { favorite: "desc" }; // 좋아요순으로 정렬
+    orderBy = { favorite: "desc" };
   } else {
-    orderBy = { createdAt: "desc" }; // 최신순으로 정렬 (기본값)
+    orderBy = { createdAt: "desc" };
   }
 
   const articles = await prisma.article.findMany({
     where: {
-      OR: [{ title: { contains: search } }, { content: { contains: search } }],
+      OR: [{ title: { contains: search } }],
     },
     skip: parseInt(offset),
     take: parseInt(size),
-    orderBy, // 동적 정렬 적용
+    orderBy,
   });
 
   const total = await prisma.article.count({
