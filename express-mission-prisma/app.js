@@ -67,6 +67,9 @@ app.get(
       skip: parseInt(offset),
       take: parseInt(pageSizeNum),
       where: whereOr,
+      include: {
+        user: true
+      }
     });
     const count = await prisma.noticeBoard.count({ where: whereOr });
     const [list, total] = await Promise.all([noticeBoard, count]);
@@ -81,6 +84,9 @@ app.get(
     const { id } = req.params;
     const noticeBoard = await prisma.noticeBoard.findUniqueOrThrow({
       where: { id },
+      include: {
+        user: true
+      }
     });
     res.send(noticeBoard);
   })
@@ -92,6 +98,9 @@ app.post(
     assert(req.body, s.CreateNoticeBoard);
     const noticeBoard = await prisma.noticeBoard.create({
       data: req.body,
+      include: {
+        user: true
+      }
     });
     res.status(201).send(noticeBoard);
   })
@@ -105,6 +114,9 @@ app.patch(
     const noticeBoard = await prisma.noticeBoard.update({
       where: { id },
       data: req.body,
+      include: {
+        user: true
+      }
     });
     res.status(201).send(noticeBoard);
   })
@@ -131,6 +143,9 @@ app.get(
       orderBy: { createdAt: "desc" },
       skip: parseInt(skipInt),
       take: parseInt(pageSize),
+      include: {
+        user: true
+      }
     };
     const findValue =
       cursor !== ""
@@ -171,6 +186,9 @@ app.post(
     assert(req.body, s.CreateFreeCommend);
     const freeCommend = await prisma.freeCommend.create({
       data: req.body,
+      include: {
+        user: true
+      }
     });
     res.status(201).send(freeCommend);
   })
@@ -184,6 +202,9 @@ app.patch(
     const freeCommend = await prisma.freeCommend.update({
       where: { id },
       data: req.body,
+      include: {
+        user: true
+      }
     });
     res.status(201).send(freeCommend);
   })

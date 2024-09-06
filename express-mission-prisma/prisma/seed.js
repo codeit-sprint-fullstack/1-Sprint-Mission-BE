@@ -30,7 +30,6 @@ async function main() {
     data: seed.USEDCOMMENDS,
     skipDuplicates: true,
   });
-  
 }
 
 main()
