@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import {
-  Users,
-  Products,
-  Articles,
-  ArticleComments,
-  ProductComments,
+  User,
+  Product,
+  Article,
+  ArticleFavoriteUser,
+  ArticleComment,
+  ProductComment,
 } from "./mockPostgreSQL.js";
 
 const prisma = new PrismaClient();
@@ -12,23 +13,27 @@ const prisma = new PrismaClient();
 async function main() {
   await prisma.user.deleteMany();
   await prisma.user.createMany({
-    data: Users,
+    data: User,
   });
   await prisma.product.deleteMany();
   await prisma.product.createMany({
-    data: Products,
+    data: Product,
   });
   await prisma.article.deleteMany();
   await prisma.article.createMany({
-    data: Articles,
+    data: Article,
+  });
+  await prisma.articleFavoriteUser.deleteMany();
+  await prisma.articleFavoriteUser.createMany({
+    data: ArticleFavoriteUser,
   });
   await prisma.articleComment.deleteMany();
   await prisma.articleComment.createMany({
-    data: ArticleComments,
+    data: ArticleComment,
   });
   await prisma.productComment.deleteMany();
   await prisma.productComment.createMany({
-    data: ProductComments,
+    data: ProductComment,
   });
 }
 

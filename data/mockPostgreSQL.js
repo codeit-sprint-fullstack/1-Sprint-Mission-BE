@@ -1,4 +1,4 @@
-export const Users = [
+export const User = [
   {
     id: "123e4567-e89b-12d3-a456-426614174001",
     name: "John Smith",
@@ -31,17 +31,17 @@ export const Users = [
   },
 ];
 
-export const UserPoducts = [];
+export const UserPoduct = [];
 
-export const UserFavoriteProducts = [];
+export const UserFavoriteProduct = [];
 
-export const Products = [
+export const Product = [
   {
     id: "7890abc1-def2-g345-h6789012345678",
     name: "first product",
     description: "first product description",
     price: 1000,
-    ownerId: "123e4567-e89b-12d3-a456-426614174001",
+    userId: "123e4567-e89b-12d3-a456-426614174001",
     createdAt: "2022-01-01T00:00:00.000Z",
     updatedAt: "2022-01-02T12:34:56.789Z",
   },
@@ -50,7 +50,7 @@ export const Products = [
     name: "second product",
     description: "second product description",
     price: 20000,
-    ownerId: "123e4567-e89b-12d3-a456-426614174001",
+    userId: "123e4567-e89b-12d3-a456-426614174001",
     createdAt: "2022-01-01T00:00:00.000Z",
     updatedAt: "2022-01-02T12:34:56.789Z",
   },
@@ -60,14 +60,15 @@ export const ProductTags = [];
 
 export const ProductImages = [];
 
-export const ProductFavoriteUsers = [];
+export const ProductFavoriteUser = [];
 
-export const Articles = [
+export const Article = [
   {
     id: "123e4567-e89b-12d3-a456-426614174004",
     userId: "123e4567-e89b-12d3-a456-426614174001",
     title: "My First Article",
     content: "This is my first article!",
+    favorite: 1,
     createdAt: "2022-01-01T00:00:00.000Z",
     updatedAt: "2022-01-02T12:34:56.789Z",
   },
@@ -76,12 +77,23 @@ export const Articles = [
     userId: "7890abc1-def2-g345-h6789012345678",
     title: "My Second Article",
     content: "This is my second article!",
+    favorite: 0,
     createdAt: "2022-02-03T15:16:17.890Z",
     updatedAt: "2022-02-04T18:19:20.123Z",
   },
 ];
 
-export const ArticleComments = [
+export const ArticleFavoriteUser = [
+  {
+    id: "7890a001-def2-g345-h6789012345682",
+    userId: "7890abc1-def2-g345-h6789012345678",
+    articleId: "123e4567-e89b-12d3-a456-426614174004",
+    createdAt: "2024-02-03T15:16:17.890Z",
+    updatedAt: "2024-02-03T15:16:17.890Z",
+  },
+];
+
+export const ArticleComment = [
   {
     id: "123e4567-e89b-12d3-a456-426614174005",
     userId: "123e4567-e89b-12d3-a456-426614174001",
@@ -100,7 +112,7 @@ export const ArticleComments = [
   },
 ];
 
-export const ProductComments = [
+export const ProductComment = [
   {
     id: "123e4567-e89b-12d3-a456-426614174005",
     userId: "123e4567-e89b-12d3-a456-426614174001",
