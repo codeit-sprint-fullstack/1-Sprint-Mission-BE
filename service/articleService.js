@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export const createArticle = asyncHandler(async (req, res) => {
   const { title, content } = req.body;
   const article = await prisma.article.create({
-    data: { title, content, favorite },
+    data: { title, content },
   });
   res.status(201).json(article);
 });
