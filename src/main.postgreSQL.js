@@ -123,7 +123,7 @@ app.get(
     let articles = undefined;
     let totalCount = 0;
 
-    if (!keyword) {
+    if (keyword) {
       articles = await prisma.article.findMany({
         where: { title: { contains: keyword } },
         skip: skip,
@@ -132,7 +132,7 @@ app.get(
         select: resultArticleFormat,
       });
 
-      totalCount = await prisma.study.count({
+      totalCount = await prisma.article.count({
         where: { title: { contains: keyword } },
       });
     } else {
@@ -143,7 +143,7 @@ app.get(
         select: resultArticleFormat,
       });
 
-      totalCount = await prisma.study.count();
+      totalCount = await prisma.article.count();
     }
 
     const result = { totalCount, articles };
