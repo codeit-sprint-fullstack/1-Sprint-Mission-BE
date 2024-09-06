@@ -20,7 +20,7 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   article   Article[]
-  comment   Comment[]
+  Comment   Comment[]
 }
 
 model Article {
@@ -46,6 +46,6 @@ model Comment {
 }
 
 enum BoardType {
-  MarketplaceComment
-  FreeboardComment
+  fleamarket
+  freeboard
 }

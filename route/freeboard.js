@@ -2,7 +2,6 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from './asyncHandler.js';
 import { CreateArticle, PatchArticle } from './struct.js';
-import assert from 'assert';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -10,13 +9,7 @@ const prisma = new PrismaClient();
 router.get(
   '/',
   asyncHandler(async (req, res) => {
-    const {
-      category = '',
-      offset = 0,
-      limit,
-      orderBy = 'recent',
-      keyword = '',
-    } = req.query;
+    const { offset = 0, limit, orderBy = 'recent', keyword = '' } = req.query;
 
     const numericLimit = limit ? parseInt(limit, 10) : undefined;
 
@@ -29,18 +22,8 @@ router.get(
         orderByClause = { createdAt: 'desc' };
     }
 
-    let categoryClause = '';
-
-    if (category === 'fleamarket') {
-      categoryClause = 'fleamarket';
-    } else if (category === 'freeboard') {
-      categoryClause = 'freeboard';
-    } else {
-      categoryClause = undefined;
-    }
-
     const where = {
-      category: categoryClause,
+      category: freeboard,
       ...(keyword
         ? {
             OR: [
@@ -57,26 +40,14 @@ router.get(
       skip: parseInt(offset),
       take: numericLimit,
       include: {
-        user: {
-          select: {
-            name: true, // 사용자 이름만 포함
-          },
-        },
-        comment: {
-          include: {
-            user: {
-              select: {
-                name: true, // 댓글 작성자의 사용자 이름만 포함
-              },
-            },
-          },
-        },
+        comment: true,
       },
     });
-
     res.send(article);
   })
 );
+
+router.get('/');
 
 router.get(
   '/:id',

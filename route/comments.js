@@ -19,21 +19,14 @@ router.get(
         createdAt: 'desc',
       },
       include: {
-        article: {
-          select: {
-            category: true,
-          },
-        },
+        user: true,
       },
     };
 
     if (category) {
       queryOptions.where = {
         article: {
-          category:
-            category === 'FreeboardComment'
-              ? 'FreeboardComment'
-              : 'MarketplaceComment',
+          category: category === 'freeboard' ? 'freeboard' : 'fleamarket',
         },
       };
     }

@@ -2,9 +2,10 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 
-import articleRoute from './utils/articles.js';
-import commentRoute from './utils/comments.js';
-import userRoute from './utils/users.js';
+import articleRoute from './route/articles.js';
+import freeboardRoute from './route/freeboard.js';
+import commentRoute from './route/comments.js';
+import userRoute from './route/users.js';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/articles', articleRoute);
+app.use('/freeboard', freeboardRoute);
 app.use('/comments', commentRoute);
 app.use('/users', userRoute);
 
