@@ -42,7 +42,9 @@ app.get(
       orderBy = "recent",
       keyWord = "",
     } = req.query;
-    const offset = (page - 1) * pageSize;
+    const pageNum = page || 1
+    const pageSizeNum = pageSize || 4
+    const offset = (pageNum - 1) * pageSizeNum;
     const whereOr = {
       OR: [
         {
@@ -63,7 +65,7 @@ app.get(
     const noticeBoard = await prisma.noticeBoard.findMany({
       orderBy: { createdAt: "desc" },
       skip: parseInt(offset),
-      take: parseInt(pageSize),
+      take: parseInt(pageSizeNum),
       where: whereOr,
     });
     const count = await prisma.noticeBoard.count({ where: whereOr });

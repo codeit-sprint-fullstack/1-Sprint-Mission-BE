@@ -1,7 +1,7 @@
 GET  http://localhost:3000/noticeBoards
 ###
 
-GET  http://localhost:3000/noticeBoards?keyWord=&page=1&pageSize=2
+GET  http://localhost:3000/noticeBoards?keyWord=&page=&pageSize=
 
 ###
 
