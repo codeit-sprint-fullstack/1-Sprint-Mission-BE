@@ -13,7 +13,7 @@
     "prisma": "^5.18.0"
   },
   "scripts": {
-    "start": "node src/main.mongoose.js",
+    "start": "node src/main.postgreSQL.js",
     "server": "set NODE_ENV=local && node src/main.mongoose.js",
     "nodemon": "set NODE_ENV=postgreSQL && nodemon src/main.postgreSQL.js",
     "seed": "node data/seed.js",
