@@ -116,15 +116,38 @@ app.get(
     const castedOffset = Number(page) - 1;
     const skip = castedTake * castedOffset;
     let castedOrderBy = { createdAt: "desc" };
-    if (orderBy === "favorite") castedOrderBy = { createdAt: "desc" };
-    const articles = await prisma.article.findMany({
-      skip: skip,
-      take: castedTake,
-      orderBy: { createdAt: "desc" },
-      select: resultArticleFormat,
-    });
+    if (orderBy === "favorite") {
+      castedOrderBy = { favorite: "desc" };
+    }
 
-    res.status(200).send(articles);
+    let articles = undefined;
+    let totalCount = 0;
+
+    if (!keyword) {
+      articles = await prisma.article.findMany({
+        where: { title: { contains: keyword } },
+        skip: skip,
+        take: castedTake,
+        orderBy: castedOrderBy,
+        select: resultArticleFormat,
+      });
+
+      totalCount = await prisma.study.count({
+        where: { title: { contains: keyword } },
+      });
+    } else {
+      articles = await prisma.article.findMany({
+        skip: skip,
+        take: castedTake,
+        orderBy: castedOrderBy,
+        select: resultArticleFormat,
+      });
+
+      totalCount = await prisma.study.count();
+    }
+
+    const result = { totalCount, articles };
+    res.status(200).send(result);
   })
 );
 
