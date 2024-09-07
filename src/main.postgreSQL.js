@@ -25,18 +25,22 @@ const resultArticleFormat = {
   id: true,
   title: true,
   content: true,
+  favorite: true,
+  user: { select: { name: true } },
   createdAt: true,
 };
 
 const resultArticleCommentFormat = {
   id: true,
   content: true,
+  user: { select: { name: true } },
   createdAt: true,
 };
 
 const resultProductCommentFormat = {
   id: true,
   content: true,
+  user: { select: { name: true } },
   createdAt: true,
 };
 
@@ -129,7 +133,6 @@ app.get(
         skip: skip,
         take: castedTake,
         orderBy: castedOrderBy,
-        select: resultArticleFormat,
       });
 
       totalCount = await prisma.article.count({
@@ -140,7 +143,6 @@ app.get(
         skip: skip,
         take: castedTake,
         orderBy: castedOrderBy,
-        select: resultArticleFormat,
       });
 
       totalCount = await prisma.article.count();
