@@ -53,7 +53,6 @@ router.get(
         id: true,
         title: true,
         content: true,
-        image: true,
         createdAt: true,
         user: {
           select: {
