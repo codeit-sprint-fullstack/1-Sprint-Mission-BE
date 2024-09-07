@@ -54,12 +54,6 @@ router.get(
         title: true,
         content: true,
         createdAt: true,
-        user: {
-          select: {
-            name: true,
-            image: true,
-          },
-        },
       },
     });
     res.send(article);
