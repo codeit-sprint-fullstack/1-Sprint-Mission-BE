@@ -55,6 +55,7 @@ router.get(
         title: true,
         content: true,
         count: true,
+        image: true,
         createdAt: true,
       },
     });
