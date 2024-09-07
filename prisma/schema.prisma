@@ -13,12 +13,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String
+  image     String?
+  createdAt DateTime  @default(now())
+  articles  Article[]
+  comment   Comment[]
+}
+
 model Product {
   id          String    @id @default(uuid())
   name        String
   description String
   price       Int
   tags        String
+  image       String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   Comment     Comment[]
@@ -28,9 +39,13 @@ model Article {
   id        String    @id @default(uuid())
   title     String
   content   String
+  image     String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  count     Int       @default(0)
   comment   Comment[]
+  User      User?     @relation(fields: [userId], references: [id])
+  userId    String?
 }
 
 model Comment {
@@ -42,7 +57,10 @@ model Comment {
   articleId String?
   product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String?
+  User      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
 
+  @@index([userId])
   @@index([articleId])
   @@index([productId])
 }
