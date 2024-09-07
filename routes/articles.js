@@ -12,7 +12,7 @@ app.get(
   asyncHandle(async (req, res) => {
     const { orderBy = "", keyword = "" } = req.query;
     const limit = parseInt(req.query.limit) || 10;
-    const offset = parseInt(req.query.offset) || 0;
+    const offset = parseInt(req.query.offset) - 1 || 0;
     let orderbyQuery;
     switch (orderBy) {
       case "title":
@@ -70,7 +70,10 @@ app.get(
     const data = await prisma.article.findUnique({
       where: { id },
       include: {
-        comment: true,
+        user: true,
+        comment: {
+          include: { user: true },
+        },
       },
     });
 

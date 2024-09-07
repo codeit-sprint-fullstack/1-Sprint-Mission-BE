@@ -11,13 +11,13 @@ app.get(
     const {
       order,
       limit = 10,
-      page = 1,
+      offset = 1,
       keyword = "",
       minPrice = 0,
       maxPrice = Infinity,
       date = "",
     } = req.query;
-    const offset = (page - 1) * limit; //page가 3이면 3-1 = 2 * count 만큼 스킵
+    const page = (offset - 1) * limit; //page가 3이면 3-1 = 2 * count 만큼 스킵
     const regex = new RegExp(keyword, "i"); // 대소문자 구분 안 함
     const dateQuery = {};
     if (date) {
@@ -45,7 +45,7 @@ app.get(
         ...dateQuery,
       })
         .sort(orderOption)
-        .skip(offset)
+        .skip(page)
         .limit(limit),
       Product.countDocuments({
         $or: [{ name: regex }, { description: regex }],

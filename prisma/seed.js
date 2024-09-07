@@ -33,18 +33,18 @@ async function main() {
   // });
 
   // 글 데이터 시딩
-  await prisma.article.deleteMany();
-  await prisma.article.createMany({
-    data: articles,
-    skipDuplicates: true,
-  });
+  // await prisma.article.deleteMany();
+  // await prisma.article.createMany({
+  //   data: articles,
+  //   skipDuplicates: true,
+  // });
 
   // // 댓글 데이터 시딩
   // await prisma.comment.deleteMany();
-  // await prisma.comment.createMany({
-  //   data: comments,
-  //   // skipDuplicates: true,
-  // });
+  await prisma.comment.createMany({
+    data: comments,
+    // skipDuplicates: true,
+  });
 
   console.log("Seeding completed!");
 }
