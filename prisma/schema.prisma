@@ -42,7 +42,7 @@ model Article {
   image     String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  count     Int       @default(0)
+  count     Int?      @default(0)
   comment   Comment[]
   user      User?     @relation(fields: [userId], references: [id])
   userId    String?
