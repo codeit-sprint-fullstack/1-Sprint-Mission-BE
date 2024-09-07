@@ -53,7 +53,7 @@ router.get(
         id: true,
         title: true,
         content: true,
-        counts: true,
+        count: true,
         createdAt: true,
       },
     });
