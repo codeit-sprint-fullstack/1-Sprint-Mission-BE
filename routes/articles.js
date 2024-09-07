@@ -18,7 +18,6 @@ router.get(
         id: true,
         title: true,
         content: true,
-        count: true,
         createdAt: true,
       },
     });
@@ -54,7 +53,6 @@ router.get(
         id: true,
         title: true,
         content: true,
-        count: true,
         image: true,
         createdAt: true,
         user: {
