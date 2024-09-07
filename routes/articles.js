@@ -19,6 +19,7 @@ router.get(
         title: true,
         content: true,
         createdAt: true,
+        count: true,
       },
     });
     res.send(article);
