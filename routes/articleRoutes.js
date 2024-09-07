@@ -13,6 +13,7 @@ router.get('/articles', getArticles);
 router.get('/articles/:id', getArticleById);
 router.patch('/articles/:id', updateArticle);
 router.delete('/articles/:id', deleteArticle);
+router.get('/articles/best', getBestArticles);
 
 module.exports = router;
 

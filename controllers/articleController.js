@@ -65,3 +65,15 @@ exports.deleteArticle = async (req, res) => {
   }
 };
 
+exports.getBestArticles = async (req, res) => {
+  try {
+    const articles = await prisma.article.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 3, // 최신순으로 3개만 가져옴
+    });
+    res.status(200).json(articles);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
