@@ -24,5 +24,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 request.http
-mock_2.js
-seed.js
+prisma/migrations/
+prisma/seed.js
+prisma/mock.js
+prisma/mock_2.js
