@@ -2,6 +2,7 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from './asyncHandler.js';
 import { CreateComment, PatchComment } from './struct.js';
+import assert from 'assert';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -48,7 +49,7 @@ router.get(
 );
 
 router.post(
-  '/comments',
+  '/',
   asyncHandler(async (req, res) => {
     assert(req.body, CreateComment);
     const comments = await prisma.comment.create({

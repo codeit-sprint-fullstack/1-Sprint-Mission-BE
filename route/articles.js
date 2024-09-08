@@ -84,6 +84,22 @@ router.get(
     const { id } = req.params;
     const article = await prisma.article.findUnique({
       where: { id },
+      include: {
+        user: {
+          select: {
+            name: true, // 사용자 이름만 포함
+          },
+        },
+        comment: {
+          include: {
+            user: {
+              select: {
+                name: true, // 댓글 작성자의 사용자 이름만 포함
+              },
+            },
+          },
+        },
+      },
     });
     res.send(article);
   })
