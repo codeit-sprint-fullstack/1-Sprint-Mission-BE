@@ -57,6 +57,12 @@ router.get(
         count: true,
         image: true,
         createdAt: true,
+        user: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
       },
     });
     res.send(article);
