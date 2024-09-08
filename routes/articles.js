@@ -37,6 +37,11 @@ router.get(
         orderBy = { createdAt: 'asc' };
         break;
       case 'recent':
+        orderBy = { createdAt: 'desc' };
+        break;
+      case 'favorite':
+        orderBy = { count: 'desc' };
+        break;
       default:
         orderBy = { createdAt: 'desc' };
     }
