@@ -17,7 +17,7 @@ router.get(
       take: numericLimit,
       skip: cursor ? 1 : 0,
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'asc',
       },
       include: {
         user: true,
