@@ -97,6 +97,7 @@ app.post(
 
     const data = {
       userId: authorization,
+      favorite: 0,
       ...req.body,
     };
 
