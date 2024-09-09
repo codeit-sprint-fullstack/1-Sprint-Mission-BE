@@ -72,6 +72,7 @@ app.get(
       include: {
         user: true,
         comment: {
+          orderBy: { createAt: "desc" },
           include: { user: true },
         },
       },
