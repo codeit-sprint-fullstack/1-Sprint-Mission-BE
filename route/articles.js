@@ -23,10 +23,10 @@ router.get(
     let orderByClause;
     switch (orderBy) {
       case 'recent':
-        orderByClause = { createdAt: 'asc' };
+        orderByClause = { createdAt: 'desc' };
         break;
       case 'old':
-        orderByClause = { createdAt: 'desc' };
+        orderByClause = { createdAt: 'asc' };
     }
 
     let categoryClause = '';

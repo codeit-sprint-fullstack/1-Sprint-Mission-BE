@@ -14,13 +14,13 @@ router.get(
     const { articleId } = req.params;
     const numericLimit = limit ? parseInt(limit, 10) : undefined;
 
-    let orderByClause = { createdAt: 'asc' };
+    let orderByClause = { createdAt: 'desc' };
     switch (orderBy) {
       case 'recent':
-        orderByClause = { createdAt: 'asc' };
+        orderByClause = { createdAt: 'desc' };
         break;
       case 'old':
-        orderByClause = { createdAt: 'desc' };
+        orderByClause = { createdAt: 'asc' };
     }
 
     const queryOptions = {
