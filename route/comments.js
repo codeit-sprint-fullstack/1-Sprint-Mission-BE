@@ -8,9 +8,10 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 router.get(
-  '/',
+  '/:articleId/',
   asyncHandler(async (req, res) => {
     const { cursor, limit, category, orderBy = 'recent' } = req.query;
+    const { articleId } = req.params;
     const numericLimit = limit ? parseInt(limit, 10) : undefined;
 
     let orderByClause = { createdAt: 'asc' };
@@ -39,7 +40,9 @@ router.get(
       };
     }
 
-    const comments = await prisma.comment.findMany(queryOptions);
+    const comments = await prisma.comment.findMany(queryOptions, {
+      where: { articleId },
+    });
     res.send(comments);
   })
 );
