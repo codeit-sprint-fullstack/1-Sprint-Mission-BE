@@ -36,23 +36,28 @@ export const getArticles = asyncHandler(async (req, res) => {
 
   const articles = await prisma.article.findMany({
     where: {
-      OR: [{ title: { contains: search } }],
+      title: {
+        contains: search,
+        mode: "insensitive",
+      },
     },
-    skip: parseInt(offset),
-    take: parseInt(size),
     orderBy,
+    skip: offset,
+    take: Number(size),
   });
 
   const total = await prisma.article.count({
     where: {
-      OR: [{ title: { contains: search } }, { content: { contains: search } }],
+      title: {
+        contains: search,
+        mode: "insensitive",
+      },
     },
   });
 
   res.status(200).json({
-    total,
-    pages: Math.ceil(total / size),
     data: articles,
+    total: totalArticles,
   });
 });
 
