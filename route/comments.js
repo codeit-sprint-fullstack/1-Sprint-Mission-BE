@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 router.get(
   '/:articleId/',
   asyncHandler(async (req, res) => {
-    const { cursor, limit, orderBy } = req.query;
+    const { cursor, limit } = req.query;
     const { articleId } = req.params;
     const numericLimit = limit ? parseInt(limit, 10) : undefined;
 

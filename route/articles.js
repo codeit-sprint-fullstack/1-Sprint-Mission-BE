@@ -8,7 +8,7 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 router.get(
-  '/',
+  '/freeboard',
   asyncHandler(async (req, res) => {
     const {
       category = '',
@@ -17,6 +17,7 @@ router.get(
       orderBy = 'recent',
       keyword = '',
     } = req.query;
+    const { freeboard } = req.params;
 
     const numericLimit = limit ? parseInt(limit, 10) : undefined;
 
@@ -40,7 +41,7 @@ router.get(
     }
 
     const where = {
-      category: categoryClause,
+      category: freeboard,
       ...(keyword
         ? {
             OR: [
