@@ -38,11 +38,14 @@ router.get(
 );
 
 router.get(
-  '/:id',
+  '/:articleId',
   asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const comments = await prisma.comment.findUnique({
-      where: { id },
+    const { articleId } = req.params;
+    const comments = await prisma.comment.findMany({
+      where: { articleId },
+      include: {
+        user: true,
+      },
     });
     res.send(comments);
   })
