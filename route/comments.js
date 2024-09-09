@@ -27,22 +27,15 @@ router.get(
       take: numericLimit,
       skip: cursor ? 1 : 0,
       orderBy: orderByClause,
+      where: {
+        articleId: articleId,
+      },
       include: {
         user: true,
       },
     };
 
-    if (category) {
-      queryOptions.where = {
-        article: {
-          category: category === 'freeboard' ? 'freeboard' : 'fleamarket',
-        },
-      };
-    }
-
-    const comments = await prisma.comment.findMany(queryOptions, {
-      where: { articleId },
-    });
+    const comments = await prisma.comment.findMany(queryOptions);
     res.send(comments);
   })
 );
