@@ -57,6 +57,9 @@ router.post(
     assert(req.body, CreateComment);
     const comments = await prisma.comment.create({
       data: req.body,
+      include: {
+        user: true,
+      },
     });
     res.status(201).send(comments);
   })
