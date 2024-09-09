@@ -56,8 +56,9 @@ export const getArticles = asyncHandler(async (req, res) => {
   });
 
   res.status(200).json({
+    total,
+    pages: Math.ceil(total / size),
     data: articles,
-    total: totalArticles,
   });
 });
 
