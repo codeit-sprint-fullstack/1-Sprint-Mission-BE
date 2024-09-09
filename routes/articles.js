@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 app.get(
   "/",
   asyncHandle(async (req, res) => {
-    const { orderBy = "", keyword = "" } = req.query;
+    const { orderBy = "recent", keyword = "" } = req.query;
     const limit = parseInt(req.query.limit) || 10;
     const offset = parseInt(req.query.offset) - 1 || 0;
     let orderbyQuery;
@@ -18,11 +18,11 @@ app.get(
       case "title":
         orderbyQuery = { title: "asc" };
         break;
-      case "resent":
-        orderbyQuery = { createAt: "asc" };
+      case "recent":
+        orderbyQuery = { createAt: "desc" };
         break;
       case "oldset":
-        orderbyQuery = { createAt: "desc" };
+        orderbyQuery = { createAt: "asc" };
         break;
       case "favorite":
         orderbyQuery = { favorite: "desc" };
@@ -38,7 +38,7 @@ app.get(
       ];
     }
     const [totalCount, data] = await prisma.$transaction([
-      prisma.article.count(whereConditions),
+      prisma.article.count({ where: whereConditions }),
       prisma.article.findMany({
         where: whereConditions,
         skip: offset * limit,

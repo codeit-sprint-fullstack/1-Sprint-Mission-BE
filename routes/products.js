@@ -9,7 +9,7 @@ app.get(
   "/",
   asyncHandle(async (req, res) => {
     const {
-      order,
+      orderBy,
       limit = 10,
       offset = 1,
       keyword = "",
@@ -24,7 +24,7 @@ app.get(
       const startDate = new Date(date);
       dateQuery.createAt = { $gt: startDate.getTime() };
     }
-    const orderOption = { createAt: order === "recent" ? "asc" : "desc" };
+    const orderOption = { createAt: orderBy === "recent" ? "asc" : "desc" };
 
     //1차 시도 하지만 await를 2번하여 느리다.
     // const products = await Product.find({
