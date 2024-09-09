@@ -113,7 +113,7 @@ model Article {
   userId              String
   title               String                @db.VarChar(30)
   content             String                @db.VarChar(200)
-  favorite            Int
+  favorite            Int                   @default(0)
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
   ArticleComment      ArticleComment[]
