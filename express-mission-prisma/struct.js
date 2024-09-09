@@ -11,7 +11,6 @@ const noticeBoardBody = {
 
 export const CreateNoticeBoard = s.object({
   ...noticeBoardBody,
-  userId: Uuid,
 });
 
 export const PatchNoticeBoard = s.partial(
@@ -27,7 +26,6 @@ export const PatchCommend = s.object({
 
 const commendBody = {
   content: s.size(s.string(), 1, Infinity),
-  userId: Uuid,
 };
 
 //자유게시판 댓글 유효성 검사

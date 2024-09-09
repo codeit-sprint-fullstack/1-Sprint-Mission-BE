@@ -13,25 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id           String        @id @default(uuid())
-  name         String        @unique
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  FreeCommends FreeCommend[]
-  UsedCommends UsedCommend[]
-  NoticeBoards NoticeBoard[]
-  UsedMarkets  UsedMarket[]
-}
-
 model NoticeBoard {
   id           String        @id @default(uuid())
   title        String
   content      String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
   FreeCommends FreeCommend[]
 }
 
@@ -40,8 +27,6 @@ model FreeCommend {
   content       String
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId        String
   noticeBoard   NoticeBoard @relation(fields: [noticeBoardId], references: [id], onDelete: Cascade)
   noticeBoardId String
 }
@@ -54,8 +39,6 @@ model UsedMarket {
   tags         String[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
   UsedCommends UsedCommend[]
 }
 
@@ -64,8 +47,6 @@ model UsedCommend {
   content      String
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
-  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
   usedMarket   UsedMarket @relation(fields: [usedMarketId], references: [id], onDelete: Cascade)
   usedMarketId String
 }

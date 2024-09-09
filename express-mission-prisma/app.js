@@ -69,9 +69,6 @@ app.get(
       skip: parseInt(offset),
       take: parseInt(pageSizeNum),
       where: whereOr,
-      include: {
-        user: true
-      }
     });
     const count = await prisma.noticeBoard.count({ where: whereOr });
     const [list, total] = await Promise.all([noticeBoard, count]);
@@ -86,9 +83,6 @@ app.get(
     const { id } = req.params;
     const noticeBoard = await prisma.noticeBoard.findUniqueOrThrow({
       where: { id },
-      include: {
-        user: true
-      }
     });
     res.send(noticeBoard);
   })
@@ -100,9 +94,6 @@ app.post(
     assert(req.body, s.CreateNoticeBoard);
     const noticeBoard = await prisma.noticeBoard.create({
       data: req.body,
-      include: {
-        user: true
-      }
     });
     res.status(201).send(noticeBoard);
   })
@@ -116,9 +107,6 @@ app.patch(
     const noticeBoard = await prisma.noticeBoard.update({
       where: { id },
       data: req.body,
-      include: {
-        user: true
-      }
     });
     res.status(201).send(noticeBoard);
   })
@@ -137,17 +125,16 @@ app.delete(
 
 /*-----------------자유게시판 댓글-------------------*/
 app.get(
-  "/freeCommends",
+  "/noticeBoards/:id/freeCommends",
   asyncHandler(async (req, res) => {
-    const { cursor = "", pageSize = 2, orderBy = "recent" } = req.query;
+    const { cursor = "", pageSize = 5, orderBy = "recent" } = req.query;
+    const {id} = req.params
     const skipInt = cursor === "" ? 0 : 1;
     const findValueDefault = {
       orderBy: { createdAt: "desc" },
       skip: parseInt(skipInt),
       take: parseInt(pageSize),
-      include: {
-        user: true
-      }
+      where: { noticeBoardId: id}
     };
     const findValue =
       cursor !== ""
@@ -155,7 +142,7 @@ app.get(
         : { ...findValueDefault };
 
     const freeCommend = await prisma.freeCommend.findMany(findValue);
-    const count = await prisma.freeCommend.count();
+    const count = await prisma.freeCommend.count({where: { noticeBoardId: id}});
     const [list, total] = await Promise.all([freeCommend, count]);
 
     const lastList = list[pageSize - 1];
@@ -188,9 +175,6 @@ app.post(
     assert(req.body, s.CreateFreeCommend);
     const freeCommend = await prisma.freeCommend.create({
       data: req.body,
-      include: {
-        user: true
-      }
     });
     res.status(201).send(freeCommend);
   })
@@ -204,9 +188,6 @@ app.patch(
     const freeCommend = await prisma.freeCommend.update({
       where: { id },
       data: req.body,
-      include: {
-        user: true
-      }
     });
     res.status(201).send(freeCommend);
   })
@@ -302,4 +283,4 @@ app.delete(
   })
 );
 
-app.listen(process.env.PORT || 3000, () => console.log("Server Started"));
+app.listen(process.env.PORT || 3001, () => console.log("Server Started"));

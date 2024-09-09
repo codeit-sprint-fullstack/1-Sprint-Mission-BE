@@ -4,16 +4,12 @@ import * as seed from "./mock.js";
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.user.deleteMany();
   await prisma.noticeBoard.deleteMany();
   await prisma.freeCommend.deleteMany();
   await prisma.usedCommend.deleteMany();
   await prisma.usedMarket.deleteMany();
 
-  await prisma.user.createMany({
-    data: seed.USERS,
-    skipDuplicates: true,
-  });
+
   await prisma.noticeBoard.createMany({
     data: seed.NOTICEBOARDS,
     skipDuplicates: true,

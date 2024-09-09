@@ -15,7 +15,6 @@ Content-Type: application/json
 
 {
     "content": "fg",
-    "userId": "412aab2b-26fe-4d60-9006-8459c869580f",
     "usedMarketId": "c8ce69c0-2bc4-44dd-9f90-82df2047919d"
 }
 
