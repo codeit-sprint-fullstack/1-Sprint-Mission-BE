@@ -14,8 +14,8 @@ Content-Type : application/json
 Authorization : 123e4567-e89b-12d3-a456-426614174001
 
 {
-    "title" : "기사제목14",
-    "content" : "기사내용14"
+    "title" : "이런 글을 올려도 되는지 모르겠네요",
+    "content" : "PS5 타이틀 사둔거 현생이 바빠서 못 하고 있어요 ㅜㅜ"
 }
 
 ###

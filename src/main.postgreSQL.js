@@ -114,12 +114,12 @@ app.post(
 app.get(
   "/article",
   asyncHandler(async (req, res) => {
-    const {
-      pageSize = 10,
-      page = 1,
-      orderBy = "recent",
-      keyword = null,
-    } = req.query;
+    const { pageSize, page, orderBy, keyword } = {
+      pageSize: req.query.pageSize || 10,
+      page: req.query.page || 1,
+      orderBy: req.query.orderBy || "recent",
+      keyword: req.query.keyword || undefined,
+    };
     const castedTake = Number(pageSize);
     const castedOffset = Number(page) - 1;
     const skip = castedTake * castedOffset;
