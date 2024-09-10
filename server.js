@@ -9,9 +9,8 @@ const commentRoutes = require('./routes/commentRoutes');
 dotenv.config();
 
 const app = express();
-app.use(cors({
-  origin: 'https://ibaomarket.netlify.app',
-}));
+app.use(cors());  // 모든 도메인에서 요청 허용 (일시적으로 테스트)
+
 app.use(express.json());
 
 app.use('/api/products', productRoutes);  // /api/products 경로
