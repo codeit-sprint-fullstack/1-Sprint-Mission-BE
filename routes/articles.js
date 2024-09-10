@@ -23,6 +23,7 @@ router.get(
         comment: {
           select: {
             content: true,
+            createdAt: true,
             user: {
               select: {
                 name: true,
