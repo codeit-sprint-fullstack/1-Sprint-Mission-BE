@@ -20,6 +20,17 @@ router.get(
         content: true,
         createdAt: true,
         count: true,
+        comment: {
+          select: {
+            content: true,
+            user: {
+              select: {
+                name: true,
+                image: true,
+              },
+            },
+          },
+        },
       },
     });
     res.send(article);
