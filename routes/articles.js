@@ -7,12 +7,31 @@ import { createArticle, updateArticle } from "../structs/articleStruct.js";
 const app = express.Router();
 const prisma = new PrismaClient();
 
+const getArticles = async (cursor, limit, whereConditions, orderbyQuery) => {
+  const data = await prisma.article.findMany({
+    where: whereConditions,
+    take: limit + 1, //추가적인 게시글이 있는지 확인
+    skip: cursor ? 1 : 0, //커서 자신을 스킵하기 위함
+    cursor: cursor ? { id: cursor } : undefined,
+    orderBy: orderbyQuery,
+    include: {
+      user: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+    },
+  });
+  return data;
+};
+
 app.get(
   "/",
   asyncHandle(async (req, res) => {
-    const { orderBy = "recent", keyword = "" } = req.query;
+    const { orderBy = "recent", keyword = "", cursor = "" } = req.query;
     const limit = parseInt(req.query.limit) || 10;
-    const offset = parseInt(req.query.offset) - 1 || 0;
+    // const offset = parseInt(req.query.offset) - 1 || 0;
     let orderbyQuery;
     switch (orderBy) {
       case "title":
@@ -28,7 +47,7 @@ app.get(
         orderbyQuery = { favorite: "desc" };
         break;
       default:
-        orderbyQuery = { createAt: "asc" };
+        orderbyQuery = { createAt: "desc" };
     }
     const whereConditions = {};
     if (keyword) {
@@ -37,30 +56,50 @@ app.get(
         { content: { contains: keyword, mode: "insensitive" } },
       ];
     }
-    const [totalCount, data] = await prisma.$transaction([
-      prisma.article.count({ where: whereConditions }),
-      prisma.article.findMany({
-        where: whereConditions,
-        skip: offset * limit,
-        take: limit,
-        orderBy: orderbyQuery,
-        include: {
-          user: {
-            select: {
-              name: true,
-              id: true,
-            },
-          },
-        },
-      }),
-    ]);
 
-    if (data) {
-      res.send({ totalCount, list: data });
+    const articles = await getArticles(
+      cursor,
+      limit,
+      whereConditions,
+      orderbyQuery
+    );
+
+    if (articles) {
+      const nextArticles = articles.length > limit;
+      const nextCursor = nextArticles ? articles[limit - 1].id : "";
+
+      const returnData = {
+        list: articles.slice(0, limit),
+        nextCursor,
+      };
+      res.send(returnData);
     } else {
-      res.status(404).send({ message: "게시글을 찾을수 없습니다." });
+      res.status(404).send({ message: "댓글을 찾을수 없습니다." });
     }
   })
+  //offset 방식 미션8에서 커서방식으로 변경
+  // const [totalCount, data] = await prisma.$transaction([
+  //   prisma.article.count({ where: whereConditions }),
+  //   prisma.article.findMany({
+  //     where: whereConditions,
+  //     skip: offset * limit,
+  //     take: limit,
+  //     orderBy: orderbyQuery,
+  //     include: {
+  //       user: {
+  //         select: {
+  //           name: true,
+  //           id: true,
+  //         },
+  //       },
+  //     },
+  //   }),
+  // ]);
+  // if (data) {
+  //   res.send({ totalCount, list: data });
+  // } else {
+  //   res.status(404).send({ message: "게시글을 찾을수 없습니다." });
+  // }
 );
 
 app.get(
