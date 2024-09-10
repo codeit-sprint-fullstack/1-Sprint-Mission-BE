@@ -1,4 +1,3 @@
-// service/articleCommentService.js
 import { PrismaClient } from "@prisma/client";
 import asyncHandler from "../Common/asyncHandler.js";
 
