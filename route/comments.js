@@ -12,7 +12,7 @@ router.get(
   asyncHandler(async (req, res) => {
     const { cursor, limit } = req.query;
     const { articleId } = req.params;
-    const numericLimit = limit ? parseInt(limit, 10) : undefined;
+    const numericLimit = limit ? parseInt(limit, 10) : 5;
 
     const queryOptions = {
       take: numericLimit,
