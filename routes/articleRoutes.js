@@ -6,6 +6,7 @@ const {
   getArticleById,
   updateArticle,
   deleteArticle,
+  getBestArticles,
 } = require('../controllers/articleController');
 
 router.post('/articles', createArticle);
@@ -16,4 +17,3 @@ router.delete('/articles/:id', deleteArticle);
 router.get('/articles/best', getBestArticles);
 
 module.exports = router;
-

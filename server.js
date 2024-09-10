@@ -11,7 +11,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: 'https://rimmymarket.netlify.app'
+  origin: 'https://ibaomarket.netlify.app'
 }));
 
 app.use(express.json());
