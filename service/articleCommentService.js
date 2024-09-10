@@ -19,8 +19,12 @@ export const createArticleComment = asyncHandler(async (req, res) => {
 
 export const getArticleComments = asyncHandler(async (req, res) => {
   const { articleId } = req.params;
-  const { page = 1, size = 5, search = "" } = req.query;
+  const { page = 1, size = 4 } = req.query;
   const offset = (page - 1) * size;
+
+  const totalComments = await prisma.articleComment.count({
+    where: { articleId: parseInt(articleId) },
+  });
 
   const comments = await prisma.articleComment.findMany({
     where: { articleId: parseInt(articleId) },
@@ -29,7 +33,12 @@ export const getArticleComments = asyncHandler(async (req, res) => {
     orderBy: { createdAt: "desc" },
   });
 
-  res.status(200).json(comments);
+  res.status(200).json({
+    total: totalComments,
+    page: parseInt(page),
+    size: parseInt(size),
+    data: comments,
+  });
 });
 
 export const updateArticleComment = asyncHandler(async (req, res) => {
