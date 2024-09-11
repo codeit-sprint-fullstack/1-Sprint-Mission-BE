@@ -24,19 +24,18 @@ app.get(
       const startDate = new Date(date);
       dateQuery.createAt = { $gt: startDate.getTime() };
     }
-    const orderOption = { createAt: orderBy === "recent" ? "asc" : "desc" };
-
-    //1차 시도 하지만 await를 2번하여 느리다.
-    // const products = await Product.find({
-    //   $or: [{ name: regex }, { description: regex }],
-    //   price: { $gt: Number(minPrice), $lt: Number(maxPrice) },
-    //   ...dateQuery,
-    // })
-    //   .sort(orderOption)
-    //   .skip(offset)
-    //   .limit(limit);
-    // const totalCount = await Product.countDocuments();
-
+    let orderOption;
+    switch (orderBy) {
+      case "recent":
+        orderOption = { createAt: "desc" };
+        break;
+      case "favorite":
+        orderOption = { favorite: "desc" };
+        break;
+      default:
+        orderOption = { createAt: "desc" };
+        break;
+    }
     //promise.all를 사용해서 동시에 기다려보자...
     const [products, totalCount] = await Promise.all([
       Product.find({
