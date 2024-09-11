@@ -9,12 +9,13 @@ const {
   getArticleComments,
 } = require('../controllers/commentController');
 
-// 중복된 경로 제거하고 상대 경로로 수정
-router.post('/:productId/comments', createProductComment);  // /api/products/:productId/comments
-router.post('/:articleId/comments', createArticleComment);  // /api/articles/:articleId/comments
+// 댓글 관련 라우트
+router.post('/products/:productId/comments', createProductComment);  // /api/comments/products/:productId/comments
+router.post('/articles/:articleId/comments', createArticleComment);  // /api/comments/articles/:articleId/comments
 router.patch('/:id', updateComment);
 router.delete('/:id', deleteComment);
-router.get('/:productId/comments', getProductComments);  // /api/products/:productId/comments
-router.get('/:articleId/comments', getArticleComments);  // /api/articles/:articleId/comments
+router.get('/products/:productId/comments', getProductComments);  // /api/comments/products/:productId/comments
+router.get('/articles/:articleId/comments', getArticleComments);  // /api/comments/articles/:articleId/comments
 
 module.exports = router;
+
