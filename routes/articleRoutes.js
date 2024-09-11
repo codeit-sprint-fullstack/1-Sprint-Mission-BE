@@ -9,11 +9,13 @@ const {
   getBestArticles,
 } = require('../controllers/articleController');
 
-router.post('/articles', createArticle);
-router.get('/articles', getArticles);
-router.get('/articles/:id', getArticleById);
-router.patch('/articles/:id', updateArticle);
-router.delete('/articles/:id', deleteArticle);
-router.get('/articles/best', getBestArticles);
+// 중복된 경로를 제거하고 상대 경로로 설정
+router.post('/', createArticle);
+router.get('/', getArticles);
+router.get('/:id', getArticleById);
+router.patch('/:id', updateArticle);
+router.delete('/:id', deleteArticle);
+router.get('/best', getBestArticles);
 
 module.exports = router;
+

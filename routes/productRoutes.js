@@ -8,11 +8,11 @@ const {
   deleteProduct,
 } = require('../controllers/productController');
 
-router.post('/products', createProduct);
-router.get('/products', getProducts);
-router.get('/products/:id', getProductById);
-router.patch('/products/:id', updateProduct);
-router.delete('/products/:id', deleteProduct);
+// 중복된 경로 제거
+router.post('/', createProduct);
+router.get('/', getProducts);
+router.get('/:id', getProductById);
+router.patch('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
 
 module.exports = router;
-
