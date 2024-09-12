@@ -10,14 +10,18 @@ const prisma = new PrismaClient();
 router.get(
   '/:articleId/',
   asyncHandler(async (req, res) => {
-    const { cursor, limit } = req.query;
+    const { cursor, limit, skip } = req.query;
     const { articleId } = req.params;
     const numericLimit = limit ? parseInt(limit, 10) : 5;
 
+    const cursorValue = cursor ? parseInt(cursor, 10) : null;
+
+    const skipValue = skip ? parseInt(skip, 10) : 0;
+
     const queryOptions = {
       take: numericLimit,
-      skip: cursor ? 1 : 0,
-      orderBy: { createdAt: 'desc' },
+      ...(cursorValue && { cursor: { id: cursorValue } }),
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
       where: {
         articleId: articleId,
       },
