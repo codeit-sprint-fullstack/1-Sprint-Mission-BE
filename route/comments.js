@@ -10,13 +10,11 @@ const prisma = new PrismaClient();
 router.get(
   '/:articleId/',
   asyncHandler(async (req, res) => {
-    const { cursor, limit, skip } = req.query;
+    const { cursor, limit } = req.query;
     const { articleId } = req.params;
     const numericLimit = limit ? parseInt(limit, 10) : 5;
 
     const cursorValue = cursor ? parseInt(cursor, 10) : null;
-
-    const skipValue = skip ? parseInt(skip, 10) : 0;
 
     const queryOptions = {
       take: numericLimit,
@@ -30,8 +28,15 @@ router.get(
       },
     };
 
-    const comments = await prisma.comment.findMany(queryOptions);
-    res.send(comments);
+    const [comments, totalCount] = await prisma.$transaction([
+      prisma.comment.findMany(queryOptions),
+      prisma.comment.count({
+        where: {
+          articleId: parseInt(articleId, 10),
+        },
+      }),
+    ]);
+    res.send({ comments, totalCount });
   })
 );
 
