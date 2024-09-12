@@ -192,7 +192,7 @@ app.get(
       }
     }
 
-    const result = { totalCount, articleWithMyFavorite };
+    const result = { totalCount, articles: articleWithMyFavorite };
     res.status(200).send(result);
   })
 );
@@ -208,7 +208,15 @@ app.get(
       select: resultArticleFormat,
     });
 
-    res.status(200).send(article);
+    const favorite = await prisma.articleFavoriteUser.findFirst({
+      where: {
+        AND: [{ articleId: article.id }, { userId: authorization }],
+      },
+    });
+
+    const articleWithMyFavorite = { ...article, myFavorite: !!favorite };
+
+    res.status(200).send(articleWithMyFavorite);
   })
 );
 
