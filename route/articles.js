@@ -10,18 +10,14 @@ const prisma = new PrismaClient();
 router.get(
   '/freeboard',
   asyncHandler(async (req, res) => {
-    const {
-      category = '',
-      offset = 0,
-      limit,
-      orderBy = 'recent',
-      keyword = '',
-    } = req.query;
+    const { cursor, limit, skip, orderBy, keyword = '' } = req.query;
     const { freeboard } = req.params;
 
-    const numericLimit = limit ? parseInt(limit, 10) : undefined;
+    const LimitValue = limit ? parseInt(limit, 10) : 0;
+    const skipValue = skip ? parseInt(skip, 10) : 0;
+    const cursorValue = cursor ? parseInt(cursor, 10) : null;
 
-    let orderByClause;
+    let orderByClause = 'recent';
     switch (orderBy) {
       case 'recent':
         orderByClause = { createdAt: 'desc' };
@@ -30,54 +26,76 @@ router.get(
         orderByClause = { createdAt: 'asc' };
     }
 
-    let categoryClause = '';
-
-    if (category === 'fleamarket') {
-      categoryClause = 'fleamarket';
-    } else if (category === 'freeboard') {
-      categoryClause = 'freeboard';
-    } else {
-      categoryClause = undefined;
-    }
-
-    const where = {
-      category: freeboard,
-      ...(keyword
-        ? {
-            OR: [
-              { title: { contains: keyword, mode: 'insensitive' } },
-              { content: { contains: keyword, mode: 'insensitive' } },
-            ],
-          }
-        : {}),
+    const queryOptions = {
+      take: LimitValue,
+      skip: skipValue,
+      ...(cursorValue && { cursor: { id: cursorValue } }),
+      orderBy: orderByClause,
+      where: {
+        category: freeboard,
+        ...(keyword
+          ? {
+              OR: [
+                { title: { contains: keyword, mode: 'insensitive' } },
+                { content: { contains: keyword, mode: 'insensitive' } },
+              ],
+            }
+          : {}),
+      },
+      include: {
+        user: true,
+        comment: true,
+      },
     };
 
-    const article = await prisma.article.findMany({
-      where,
-      orderBy: orderByClause,
-      skip: parseInt(offset),
-      take: numericLimit,
-      include: {
-        user: {
-          select: {
-            name: true, // 사용자 이름만 포함
-          },
-        },
-        comment: {
-          include: {
-            user: {
-              select: {
-                name: true, // 댓글 작성자의 사용자 이름만 포함
-              },
-            },
-          },
-        },
-      },
-    });
+    // let categoryClause = '';
 
-    res.send(article);
+    // if (category === 'fleamarket') {
+    //   categoryClause = 'fleamarket';
+    // } else if (category === 'freeboard') {
+    //   categoryClause = 'freeboard';
+    // } else {
+    //   categoryClause = undefined;
+    // }
+
+    const [articles, totalCount] = await prisma.$transaction([
+      prisma.article.findMany(queryOptions),
+      prisma.article.count({
+        where: {
+          freeboard: freeboard,
+        },
+      }),
+    ]);
+    res.send({ articles, totalCount });
   })
 );
+
+// const article = await prisma.article.findMany({
+//   where,
+//   orderBy: orderByClause,
+//   skip: parseInt(offset),
+//   take: numericLimit,
+//   include: {
+//     user: {
+//       select: {
+//         name: true, // 사용자 이름만 포함
+//       },
+//     },
+//     comment: {
+//       include: {
+//         user: {
+//           select: {
+//             name: true, // 댓글 작성자의 사용자 이름만 포함
+//           },
+//         },
+//       },
+//     },
+//   },
+// });
+
+//     res.send(article);
+//   })
+// );
 
 router.get(
   '/:id',
