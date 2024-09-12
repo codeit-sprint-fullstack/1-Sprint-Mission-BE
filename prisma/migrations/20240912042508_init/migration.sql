@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "BoardType" AS ENUM ('MarketplaceComment', 'FreeboardComment');
+CREATE TYPE "BoardType" AS ENUM ('fleamarket', 'freeboard');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -14,7 +14,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Article" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "category" "BoardType" NOT NULL,
@@ -27,10 +27,10 @@ CREATE TABLE "Article" (
 
 -- CreateTable
 CREATE TABLE "Comment" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "content" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "articleId" TEXT NOT NULL,
+    "articleId" INTEGER,
     "userId" TEXT DEFAULT 'Anoymous',
 
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
