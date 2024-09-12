@@ -27,7 +27,7 @@ const resultArticleFormat = {
   content: true,
   favorite: true,
   userId: true,
-  user: { select: { name: true } },
+  user: { select: { nickname: true } },
   createdAt: true,
 };
 
@@ -35,7 +35,7 @@ const resultArticleCommentFormat = {
   id: true,
   content: true,
   userId: true,
-  user: { select: { name: true } },
+  user: { select: { nickname: true } },
   createdAt: true,
 };
 
@@ -43,7 +43,7 @@ const resultProductCommentFormat = {
   id: true,
   content: true,
   userId: true,
-  user: { select: { name: true } },
+  user: { select: { nickname: true } },
   createdAt: true,
 };
 
