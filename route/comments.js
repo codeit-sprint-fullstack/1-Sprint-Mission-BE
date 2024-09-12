@@ -23,7 +23,7 @@ router.get(
       ...(cursorValue && { cursor: { id: cursorValue } }),
       orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
       where: {
-        articleId: articleId,
+        articleId: parseInt(articleId, 10),
       },
       include: {
         user: true,
@@ -40,7 +40,9 @@ router.get(
   asyncHandler(async (req, res) => {
     const { articleId } = req.params;
     const comments = await prisma.comment.findMany({
-      where: { articleId },
+      where: {
+        articleId: parseInt(articleId, 10), // 정수형으로 변환 후 사용
+      },
       include: {
         user: true,
       },
@@ -69,7 +71,9 @@ router.patch(
     assert(req.body, PatchComment);
     const { id } = req.params;
     const comments = await prisma.comment.update({
-      where: { id },
+      where: {
+        id: parseInt(id, 10), // 정수형으로 변환 후 사용
+      },
       data: req.body,
     });
     res.send(comments);
@@ -81,7 +85,9 @@ router.delete(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     await prisma.comment.delete({
-      where: { id },
+      where: {
+        id: parseInt(id, 10), // 정수형으로 변환 후 사용
+      },
     });
     res.sendStatus(204);
   })

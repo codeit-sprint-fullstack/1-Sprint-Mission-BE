@@ -84,7 +84,9 @@ router.get(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const article = await prisma.article.findUnique({
-      where: { id },
+      where: {
+        id: parseInt(id, 10), // 정수형으로 변환 후 사용
+      },
       include: {
         user: {
           select: {
@@ -123,7 +125,9 @@ router.patch(
     assert(req.body, PatchArticle);
     const { id } = req.params;
     const article = await prisma.article.update({
-      where: { id },
+      where: {
+        id: parseInt(id, 10), // 정수형으로 변환 후 사용
+      },
       data: req.body,
     });
     res.send(article);
@@ -135,7 +139,9 @@ router.delete(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     await prisma.article.delete({
-      where: { id },
+      where: {
+        id: parseInt(id, 10), // 정수형으로 변환 후 사용
+      },
     });
     res.sendStatus(204);
   })
