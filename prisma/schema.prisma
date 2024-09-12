@@ -24,7 +24,7 @@ model User {
 }
 
 model Article {
-  id        String    @id @default(uuid())
+  id        Int       @id @default(autoincrement())
   title     String
   content   String
   category  BoardType
@@ -39,8 +39,8 @@ model Comment {
   id        Int      @id @default(autoincrement())
   content   String
   createdAt DateTime @default(now())
-  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  articleId String
+  article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId Int?
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String?  @default("Anoymous")
 }
