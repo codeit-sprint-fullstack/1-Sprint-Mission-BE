@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 router.get(
   '/freeboard',
   asyncHandler(async (req, res) => {
-    const { cursor, limit, skip, orderBy, keyword = '' } = req.query;
+    const { cursor, limit, skip, orderBy = 'recent', keyword = '' } = req.query;
     const { freeboard } = req.params;
 
     const LimitValue = limit ? parseInt(limit, 10) : 0;
@@ -98,28 +98,15 @@ router.get(
 // );
 
 router.get(
-  '/:id',
+  '/:articleID',
   asyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { articleID } = req.params;
     const article = await prisma.article.findUnique({
       where: {
-        id: parseInt(id, 10), // 정수형으로 변환 후 사용
+        id: parseInt(articleID, 10), // 정수형으로 변환 후 사용
       },
       include: {
-        user: {
-          select: {
-            name: true, // 사용자 이름만 포함
-          },
-        },
-        comment: {
-          include: {
-            user: {
-              select: {
-                name: true, // 댓글 작성자의 사용자 이름만 포함
-              },
-            },
-          },
-        },
+        user: true,
       },
     });
     res.send(article);
@@ -138,13 +125,13 @@ router.post(
 );
 
 router.patch(
-  '/:id',
+  '/:articleID',
   asyncHandler(async (req, res) => {
     assert(req.body, PatchArticle);
-    const { id } = req.params;
+    const { articleID } = req.params;
     const article = await prisma.article.update({
       where: {
-        id: parseInt(id, 10), // 정수형으로 변환 후 사용
+        id: parseInt(articleID, 10), // 정수형으로 변환 후 사용
       },
       data: req.body,
     });
@@ -153,12 +140,12 @@ router.patch(
 );
 
 router.delete(
-  '/:id',
+  '/:articleID',
   asyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { articleID } = req.params;
     await prisma.article.delete({
       where: {
-        id: parseInt(id, 10), // 정수형으로 변환 후 사용
+        id: parseInt(articleID, 10), // 정수형으로 변환 후 사용
       },
     });
     res.sendStatus(204);

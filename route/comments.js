@@ -46,7 +46,7 @@ router.get(
     const { articleId } = req.params;
     const comments = await prisma.comment.findMany({
       where: {
-        articleId: parseInt(articleId, 10), // 정수형으로 변환 후 사용
+        id: parseInt(articleId, 10), // 정수형으로 변환 후 사용
       },
       include: {
         user: true,
