@@ -27,7 +27,7 @@ const resultArticleFormat = {
   content: true,
   favorite: true,
   userId: true,
-  user: { select: { nickname: true } },
+  user: { select: { nickname: true, image: true } },
   createdAt: true,
 };
 
@@ -35,7 +35,7 @@ const resultArticleCommentFormat = {
   id: true,
   content: true,
   userId: true,
-  user: { select: { nickname: true } },
+  user: { select: { nickname: true, image: true } },
   createdAt: true,
 };
 
@@ -43,7 +43,7 @@ const resultProductCommentFormat = {
   id: true,
   content: true,
   userId: true,
-  user: { select: { nickname: true } },
+  user: { select: { nickname: true, image: true } },
   createdAt: true,
 };
 
@@ -114,6 +114,7 @@ app.post(
 app.get(
   "/article",
   asyncHandler(async (req, res) => {
+    const { authorization } = req.headers; // 임시 코드 검증 코드 방식 미정
     const { pageSize, page, orderBy, keyword } = {
       pageSize: req.query.pageSize || 10,
       page: req.query.page || 1,
@@ -128,8 +129,9 @@ app.get(
       castedOrderBy = { favorite: "desc" };
     }
 
-    let articles = undefined;
+    let articles = null;
     let totalCount = 0;
+    let articleWithMyFavorite = null;
 
     if (keyword) {
       articles = await prisma.article.findMany({
@@ -143,6 +145,24 @@ app.get(
       totalCount = await prisma.article.count({
         where: { title: { contains: keyword } },
       });
+
+      if (authorization) {
+        articleWithMyFavorite = await Promise.all(
+          articles.map(async (article) => {
+            const favorite = await prisma.articleFavoriteUser.findFirst({
+              where: {
+                AND: [{ articleId: article.id }, { userId: authorization }],
+              },
+            });
+
+            return { ...article, myFavorite: !!favorite };
+          })
+        );
+      } else {
+        articleWithMyFavorite = articles.map((article) => {
+          return { ...article, myFavorite: false };
+        });
+      }
     } else {
       articles = await prisma.article.findMany({
         skip: skip,
@@ -152,9 +172,27 @@ app.get(
       });
 
       totalCount = await prisma.article.count();
+
+      if (authorization) {
+        articleWithMyFavorite = await Promise.all(
+          articles.map(async (article) => {
+            const favorite = await prisma.articleFavoriteUser.findFirst({
+              where: {
+                AND: [{ articleId: article.id }, { userId: authorization }],
+              },
+            });
+
+            return { ...article, myFavorite: !!favorite };
+          })
+        );
+      } else {
+        articleWithMyFavorite = articles.map((article) => {
+          return { ...article, myFavorite: false };
+        });
+      }
     }
 
-    const result = { totalCount, articles };
+    const result = { totalCount, articleWithMyFavorite };
     res.status(200).send(result);
   })
 );
@@ -163,6 +201,7 @@ app.get(
 app.get(
   "/article/:id",
   asyncHandler(async (req, res) => {
+    const { authorization } = req.headers; // 임시 코드 검증 코드 방식 미정
     const { id: articleId } = req.params;
     const article = await prisma.article.findUniqueOrThrow({
       where: { id: articleId },
