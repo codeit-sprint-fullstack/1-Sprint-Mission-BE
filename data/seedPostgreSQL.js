@@ -35,6 +35,12 @@ async function main() {
   await prisma.productComment.createMany({
     data: ProductComment,
   });
+  // await prisma.user.deleteMany();
+  // await prisma.product.deleteMany();
+  // await prisma.article.deleteMany();
+  // await prisma.articleFavoriteUser.deleteMany();
+  // await prisma.articleComment.deleteMany();
+  // await prisma.productComment.deleteMany();
 }
 
 main()
