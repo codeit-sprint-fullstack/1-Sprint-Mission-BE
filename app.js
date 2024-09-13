@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import { MONGO_DATABASE_URL, PORT } from "./env.js";
+import { PORT } from "./env.js";
 import express from "express";
 import articles from "./routes/articles.js";
 import comments from "./routes/comments.js";
@@ -10,10 +9,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-mongoose
-  .connect(MONGO_DATABASE_URL)
-  .then(() => console.log("Connected to MongoDB"));
 
 app.use("/articles", articles);
 app.use("/comments", comments);

@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
 import express from "express";
-import Product from "../models/product.js";
 import { asyncHandle } from "../errorUtils.js";
+import { PrismaClient } from "@prisma/client";
 
 const app = express.Router();
+const prisma = new PrismaClient();
 
 app.get(
   "/",
@@ -37,17 +37,30 @@ app.get(
         break;
     }
     //promise.all를 사용해서 동시에 기다려보자...
-    const [products, totalCount] = await Promise.all([
-      Product.find({
-        $or: [{ name: regex }, { description: regex }],
-        price: { $gt: Number(minPrice), $lt: Number(maxPrice) },
-        ...dateQuery,
-      })
-        .sort(orderOption)
-        .skip(page)
-        .limit(limit),
-      Product.countDocuments({
-        $or: [{ name: regex }, { description: regex }],
+    const [totalCount, products] = await prisma.$transaction([
+      prisma.product.count({ where: regex }),
+      prisma.product.findMany({
+        take: limit, //추가적인 이 있는지 확인
+        skip: limit * page, //커서 자신을 스킵하기 위함
+        orderBy: orderOption,
+        include: {
+          user: {
+            select: {
+              name: true,
+              id: true,
+            },
+          },
+          comment: {
+            include: {
+              user: {
+                select: {
+                  name: true,
+                  id: true,
+                },
+              },
+            },
+          },
+        },
       }),
     ]);
 
@@ -67,7 +80,27 @@ app.get(
   "/:id",
   asyncHandle(async (req, res) => {
     const id = req.params.id;
-    const product = await Product.findById(id);
+    const product = await prisma.product.findUniqueOrThrow({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+        comment: {
+          include: {
+            user: {
+              select: {
+                name: true,
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    });
     if (product) {
       res.send(product);
     } else {
@@ -76,28 +109,38 @@ app.get(
   })
 );
 
-app.post(
-  "/",
-  asyncHandle(async (req, res) => {
-    const product = await Product.create(req.body);
-    res.status(201).send(product);
-  })
-);
-
 app.patch(
-  "//:id",
+  "/:id",
   asyncHandle(async (req, res) => {
-    const id = req.params.id;
-    const object = req.body;
-    const product = await Product.findById(id);
-    if (product) {
-      Object.keys(object).forEach((key) => {
-        product[key] = object[key];
-      });
-      await product.save();
-      res.send(product);
+    assert(req.body, updateArticle);
+    const { id } = req.params;
+    const data = await prisma.product.update({
+      where: { id },
+      data: req.body,
+      include: {
+        user: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+        comment: {
+          include: {
+            user: {
+              select: {
+                name: true,
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (data) {
+      res.send(data);
     } else {
-      res.status(404).send({ message: "등록된 상품이 없습니다." });
+      res.status(404).send({ message: "게시글을 찾을수 없습니다." });
     }
   })
 );
@@ -105,12 +148,15 @@ app.patch(
 app.delete(
   "/:id",
   asyncHandle(async (req, res) => {
-    const id = req.params.id;
-    const product = await Product.findByIdAndDelete(id);
-    if (product) {
-      res.status(204).send({ message: "상품을 삭제했습니다" });
+    const { id } = req.params;
+    const data = await prisma.product.delete({
+      where: { id },
+    });
+
+    if (data) {
+      res.sendStatus(204);
     } else {
-      res.status(404).send({ message: "등록된 상품이 없습니다." });
+      res.status(404).send({ message: "게시글을 찾을수 없습니다." });
     }
   })
 );
