@@ -10,14 +10,13 @@ const prisma = new PrismaClient();
 router.get(
   '/freeboard',
   asyncHandler(async (req, res) => {
-    const { cursor, limit, skip, orderBy = 'recent', keyword = '' } = req.query;
+    const { cursor, limit, orderBy, keyword = '' } = req.query;
     const { freeboard } = req.params;
 
-    const LimitValue = limit ? parseInt(limit, 10) : 0;
-    const skipValue = skip ? parseInt(skip, 10) : 0;
+    const LimitValue = limit ? parseInt(limit, 10) : 6;
     const cursorValue = cursor ? parseInt(cursor, 10) : null;
 
-    let orderByClause = 'recent';
+    let orderByClause;
     switch (orderBy) {
       case 'recent':
         orderByClause = { createdAt: 'desc' };
@@ -28,7 +27,6 @@ router.get(
 
     const queryOptions = {
       take: LimitValue,
-      skip: skipValue,
       ...(cursorValue && { cursor: { id: cursorValue } }),
       orderBy: orderByClause,
       where: {
@@ -48,54 +46,14 @@ router.get(
       },
     };
 
-    // let categoryClause = '';
+    const articles = await prisma.article.findMany(queryOptions);
 
-    // if (category === 'fleamarket') {
-    //   categoryClause = 'fleamarket';
-    // } else if (category === 'freeboard') {
-    //   categoryClause = 'freeboard';
-    // } else {
-    //   categoryClause = undefined;
-    // }
+    const nextCursor =
+      articles.length > 0 ? articles[articles.length - 1].id : null;
 
-    const [articles, totalCount] = await prisma.$transaction([
-      prisma.article.findMany(queryOptions),
-      prisma.article.count({
-        where: {
-          freeboard: freeboard,
-        },
-      }),
-    ]);
-    res.send({ articles, totalCount });
+    res.send({ articles, nextCursor });
   })
 );
-
-// const article = await prisma.article.findMany({
-//   where,
-//   orderBy: orderByClause,
-//   skip: parseInt(offset),
-//   take: numericLimit,
-//   include: {
-//     user: {
-//       select: {
-//         name: true, // 사용자 이름만 포함
-//       },
-//     },
-//     comment: {
-//       include: {
-//         user: {
-//           select: {
-//             name: true, // 댓글 작성자의 사용자 이름만 포함
-//           },
-//         },
-//       },
-//     },
-//   },
-// });
-
-//     res.send(article);
-//   })
-// );
 
 router.get(
   '/:articleID',
