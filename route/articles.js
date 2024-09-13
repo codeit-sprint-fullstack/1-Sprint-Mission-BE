@@ -52,7 +52,15 @@ router.get(
       prisma.article.findMany(queryOptions),
       prisma.article.count({
         where: {
-          freeboard: freeboard,
+          category: freeboard,
+          ...(keyword
+            ? {
+                OR: [
+                  { title: { contains: keyword, mode: 'insensitive' } },
+                  { content: { contains: keyword, mode: 'insensitive' } },
+                ],
+              }
+            : {}),
         },
       }),
     ]);
