@@ -10,10 +10,11 @@ const prisma = new PrismaClient();
 router.get(
   '/freeboard',
   asyncHandler(async (req, res) => {
-    const { cursor, limit, orderBy, keyword = '' } = req.query;
+    const { cursor, limit, skip, orderBy, keyword } = req.query;
     const { freeboard } = req.params;
 
-    const LimitValue = limit ? parseInt(limit, 10) : 6;
+    const LimitValue = limit ? parseInt(limit, 10) : 0;
+    const skipValue = skip ? parseInt(skip, 10) : 0;
     const cursorValue = cursor ? parseInt(cursor, 10) : null;
 
     let orderByClause;
@@ -27,6 +28,7 @@ router.get(
 
     const queryOptions = {
       take: LimitValue,
+      skip: skipValue,
       ...(cursorValue && { cursor: { id: cursorValue } }),
       orderBy: orderByClause,
       where: {
@@ -46,12 +48,17 @@ router.get(
       },
     };
 
-    const articles = await prisma.article.findMany(queryOptions);
-
+    const [articles, totalCount] = await prisma.$transaction([
+      prisma.article.findMany(queryOptions),
+      prisma.article.count({
+        where: {
+          freeboard: freeboard,
+        },
+      }),
+    ]);
     const nextCursor =
       articles.length > 0 ? articles[articles.length - 1].id : null;
-
-    res.send({ articles, nextCursor });
+    res.send({ articles, totalCount, nextCursor });
   })
 );
 
