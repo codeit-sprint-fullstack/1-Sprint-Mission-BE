@@ -10,27 +10,18 @@ const prisma = new PrismaClient();
 router.get(
   '/freeboard',
   asyncHandler(async (req, res) => {
-    const { cursor, limit, skip, orderBy, keyword } = req.query;
+    const { page = 1, size = 5, keyword = '', sort = 'createdAt' } = req.query;
     const { freeboard } = req.params;
+    const offset = (page - 1) * size;
 
-    const LimitValue = limit ? parseInt(limit, 10) : 0;
-    const skipValue = skip ? parseInt(skip, 10) : 0;
-    const cursorValue = cursor ? parseInt(cursor, 10) : null;
-
-    let orderByClause;
-    switch (orderBy) {
-      case 'recent':
-        orderByClause = { createdAt: 'desc' };
-        break;
-      case 'old':
-        orderByClause = { createdAt: 'asc' };
+    let orderBy;
+    if (sort === 'recent') {
+      orderBy = [{ createdAt: 'desc' }, { id: desc }];
+      orderBy = [{ favorite: 'desc' }, { id: desc }];
+    } else {
     }
 
-    const queryOptions = {
-      take: LimitValue,
-      skip: skipValue,
-      ...(cursorValue && { cursor: { id: cursorValue } }),
-      orderBy: orderByClause,
+    const articles = await prisma.article.findMany({
       where: {
         category: freeboard,
         ...(keyword
@@ -46,27 +37,30 @@ router.get(
         user: true,
         comment: true,
       },
-    };
+      orderBy,
+      skip: offset,
+      take: Number(size),
+    });
 
-    const [articles, totalCount] = await prisma.$transaction([
-      prisma.article.findMany(queryOptions),
-      prisma.article.count({
-        where: {
-          category: freeboard,
-          ...(keyword
-            ? {
-                OR: [
-                  { title: { contains: keyword, mode: 'insensitive' } },
-                  { content: { contains: keyword, mode: 'insensitive' } },
-                ],
-              }
-            : {}),
-        },
-      }),
-    ]);
-    const nextCursor =
-      articles.length > 0 ? articles[articles.length - 1].id : null;
-    res.send({ articles, totalCount, nextCursor });
+    const total = await prisma.article.count({
+      where: {
+        category: freeboard,
+        ...(keyword
+          ? {
+              OR: [
+                { title: { contains: keyword, mode: 'insensitive' } },
+                { content: { contains: keyword, mode: 'insensitive' } },
+              ],
+            }
+          : {}),
+      },
+    });
+
+    res.status(200).json({
+      total,
+      pages: Math.ceil(total / size),
+      data: articles,
+    });
   })
 );
 
