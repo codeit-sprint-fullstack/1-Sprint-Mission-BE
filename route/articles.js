@@ -18,7 +18,6 @@ router.get(
     if (sort === 'recent') {
       orderBy = [{ createdAt: 'desc' }, { id: desc }];
       orderBy = [{ favorite: 'desc' }, { id: desc }];
-    } else {
     }
 
     const articles = await prisma.article.findMany({
