@@ -76,7 +76,7 @@ router.patch(
     assert(req.body, PatchComment);
     const { id } = req.params;
 
-    const updatedComment = await prisma.comment.update({
+    const comments = await prisma.comment.update({
       where: {
         id: parseInt(id, 10),
       },
@@ -86,9 +86,7 @@ router.patch(
       },
     });
 
-    res.json({
-      updatedComment,
-    });
+    res.status(201).send(comments);
   })
 );
 
