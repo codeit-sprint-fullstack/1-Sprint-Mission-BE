@@ -10,9 +10,9 @@ const prisma = new PrismaClient();
 router.get(
   '/freeboard',
   asyncHandler(async (req, res) => {
-    const { page = 1, size = 5, keyword = '', sort = 'createdAt' } = req.query;
+    const { page = 1, limit = 5, keyword = '', sort = 'createdAt' } = req.query;
     const { freeboard } = req.params;
-    const offset = (page - 1) * size;
+    const offset = (page - 1) * limit;
 
     let orderBy;
     if (sort === 'recent') {
@@ -38,7 +38,7 @@ router.get(
       },
       orderBy,
       skip: offset,
-      take: Number(size),
+      take: parseInt(limit, 10),
     });
 
     const total = await prisma.article.count({
@@ -57,7 +57,7 @@ router.get(
 
     res.status(200).json({
       total,
-      pages: Math.ceil(total / size),
+      pages: Math.ceil(total / limit),
       data: articles,
     });
   })
