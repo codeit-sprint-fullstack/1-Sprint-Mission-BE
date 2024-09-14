@@ -1,7 +1,7 @@
 
 ### get comments list of article
 
-GET http://localhost:3000/api/articles/03cb17ca-01d2-4b2d-ac70-51b3eb5b072b/comments
+GET http://localhost:3000/api/articles/c0b0e10b-e828-47d5-9758-2df29c6eaa42/comments
 
 
 ### get comments list of article pagination

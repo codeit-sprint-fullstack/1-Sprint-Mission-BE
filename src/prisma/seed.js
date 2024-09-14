@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-import { PRODUCTS, ARTICLES, COMMENTS } from "./mock.js";
+import { PRODUCTS, ARTICLES } from "./mock.js";
 
 const prisma = new PrismaClient();
 
@@ -10,20 +10,40 @@ async function main() {
   await prisma.product.deleteMany();
   await prisma.article.deleteMany();
 
-  await prisma.product.createMany({
-    data: PRODUCTS,
-    skipDuplicates: true,
-  });
-  await prisma.article.createMany({
-    data: ARTICLES,
-    skipDuplicates: true,
-  });
-  await prisma.comment.createMany({
-    data: COMMENTS,
-    skipDuplicates: true,
-  });
-}
+  await Promise.all(
+    PRODUCTS.map((product) => {
+      const { comments, ...productData } = product;
 
+      return prisma.product.create({
+        data: {
+          ...productData,
+          comments: {
+            create: comments.map((comment) => ({
+              ...comment,
+            })),
+          },
+        },
+      });
+    })
+  );
+
+  await Promise.all(
+    ARTICLES.map((article) => {
+      const { comments, ...articleData } = article;
+
+      return prisma.article.create({
+        data: {
+          ...articleData,
+          comments: {
+            create: comments.map((comment) => ({
+              ...comment,
+            })),
+          },
+        },
+      });
+    })
+  );
+}
 main()
   .then(async () => {
     await prisma.$disconnect();

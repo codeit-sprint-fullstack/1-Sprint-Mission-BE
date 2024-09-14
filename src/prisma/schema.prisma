@@ -17,6 +17,7 @@ model Product {
   id            String    @id @default(uuid())
   name          String
   description   String
+  images        String[]  @default([])
   price         Int
   tags          String[]  @default([])
   favoriteCount Int       @default(0)
@@ -28,6 +29,8 @@ model Product {
 model Article {
   id        String    @id @default(uuid())
   title     String
+  image     String?
+  likeCount Int       @default(0)
   content   String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

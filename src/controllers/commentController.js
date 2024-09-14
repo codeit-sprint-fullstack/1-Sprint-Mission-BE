@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 export const getProductComments = async (req, res) => {
   const { id: productId } = req.params;
   assert(productId, Uuid);
-  const { limit = 5, lastId } = req.query;
+  const { limit = 5, cursor: lastId } = req.query;
 
   const queryOptions = {
     where: { productId },
@@ -21,6 +21,7 @@ export const getProductComments = async (req, res) => {
       id: true,
       content: true,
       createdAt: true,
+      updatedAt: true,
     },
   };
 
@@ -37,7 +38,7 @@ export const getProductComments = async (req, res) => {
 export const getArticleComments = async (req, res) => {
   const { id: articleId } = req.params;
   assert(articleId, Uuid);
-  const { limit = 5, lastId } = req.query;
+  const { limit = 5, cursor: lastId } = req.query;
 
   const queryOptions = {
     where: { articleId },
@@ -48,6 +49,7 @@ export const getArticleComments = async (req, res) => {
       id: true,
       content: true,
       createdAt: true,
+      updatedAt: true,
     },
   };
 

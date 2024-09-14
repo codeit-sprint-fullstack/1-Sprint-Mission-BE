@@ -5,8 +5,8 @@ import isUuid from "is-uuid";
 export const Uuid = s.define("Uuid", (value) => isUuid.v4(value));
 
 export const CreateProduct = s.object({
-  name: s.size(s.string(), 1, 10),
-  description: s.size(s.string(), 1, 100),
+  name: s.size(s.string(), 3, 30),
+  description: s.size(s.string(), 10, 200),
   price: s.min(s.number(), 0),
   tags: s.optional(s.array(s.string())),
 });

@@ -8,27 +8,42 @@ const prisma = new PrismaClient();
 //get article list
 // query parameter: orderBy, page, pageSize, keyword
 export const getArticles = async (req, res) => {
-  const { orderBy } = req.query;
+  const { orderBy } = req.query || "recent";
   const page = parseInt(req.query.page) * 1 || 1;
   const pageSize = parseInt(req.query.pageSize) * 1 || 10;
   const keyword = req.query.keyword || "";
 
   const offset = (page - 1) * pageSize;
 
-  const sortOption = { createdAt: orderBy === "recent" ? "desc" : "asc" };
+  let sortOption;
+  switch (orderBy) {
+    case "like":
+      sortOption = { likeCount: "desc" };
+      break;
+    case "recent":
+    default:
+      sortOption = { createdAt: "desc" };
+      break;
+  }
 
-  const searchQuery = {
-    OR: [{ title: { contains: keyword } }, { content: { contains: keyword } }],
-  };
+  let searchQuery = {};
+  if (keyword && keyword.trim() !== "")
+    searchQuery = {
+      OR: [
+        { title: { contains: keyword } },
+        { content: { contains: keyword } },
+      ],
+    };
 
-  const articles = await prisma.article.findMany({
-    where: searchQuery,
-    orderBy: sortOption,
-    skip: offset,
-    take: pageSize,
-  });
-
-  const totalCount = await prisma.article.count({ where: searchQuery });
+  const [totalCount, articles] = await Promise.all([
+    prisma.article.count({ where: searchQuery }),
+    prisma.article.findMany({
+      where: searchQuery,
+      orderBy: sortOption,
+      skip: offset,
+      take: pageSize,
+    }),
+  ]);
 
   res.send({ totalCount, list: articles });
 };

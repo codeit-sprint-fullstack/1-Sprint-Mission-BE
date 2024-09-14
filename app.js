@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-dotenv.config();
+import cors from "cors";
 
 import express from "express";
 import { Prisma } from "@prisma/client";
@@ -8,7 +8,11 @@ import productRoutes from "./src/routes/productRoutes.js";
 import articleRoutes from "./src/routes/articleRoutes.js";
 import commentRoutes from "./src/routes/commentRoutes.js";
 
+dotenv.config();
 const app = express();
+
+app.use(cors());
+
 app.use(express.json());
 
 app.use("/api/products", productRoutes);
