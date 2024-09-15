@@ -36,7 +36,7 @@ router.get(
         user: true,
         comment: true,
       },
-      orderBy,
+      sort: orderBy,
       skip: offset,
       take: parseInt(limit, 10),
     });
