@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express'); // Express 모듈을 불러옴
+const router = express.Router(); // 라우터 객체 생성 (라우터를 설정하기 위해 사용)
 const {
   createArticle,
   getArticles,
@@ -7,16 +7,16 @@ const {
   updateArticle,
   deleteArticle,
   getBestArticles,
-} = require('../controllers/articleController');
+} = require('../controllers/articleController'); // controllers 폴더 안에 있는 articleController에서 각 함수 불러옴
 
-// 중복된 경로를 제거하고 상대 경로로 설정
-router.post('/', createArticle);
-router.get('/best', getBestArticles);  // '/best' 경로를 먼저 설정
-router.get('/', getArticles);
-router.get('/:id', getArticleById);
-router.patch('/:id', updateArticle);
-router.delete('/:id', deleteArticle);
+// server.js에서 app.use('/api/articles', articleRoutes)로 기본 경로가 설정
+
+router.post('/', createArticle); // 게시글 생성 /api/articles
+router.get('/best', getBestArticles);  // 베스트 게시글 조회  /api/articles/best
+router.get('/', getArticles); // 게시글 목록 조회  /api/articles
+router.get('/:id', getArticleById); // 특정 게시글 조회 /api/articles/:id
+router.patch('/:id', updateArticle); // 게시글 수정 /api/articles/:id
+router.delete('/:id', deleteArticle); // 게시글 삭제 /api/articles/:id
 
 
-module.exports = router;
-
+module.exports = router; 
