@@ -10,14 +10,14 @@ const prisma = new PrismaClient();
 router.get(
   '/freeboard',
   asyncHandler(async (req, res) => {
-    const { page = 1, limit = 5, keyword = '', sort = 'createdAt' } = req.query;
+    const { page = 1, limit = 5, keyword = '', sort = 'recent' } = req.query;
     const { freeboard } = req.params;
     const offset = (page - 1) * limit;
 
     let orderBy;
     if (sort === 'recent') {
-      orderBy = [{ createdAt: 'desc' }, { id: desc }];
-      orderBy = [{ favorite: 'desc' }, { id: desc }];
+      orderBy = [{ createdAt: 'asc' }, { id: 'desc' }];
+      orderBy = [{ createdAt: 'desc' }, { id: 'desc' }];
     }
 
     const articles = await prisma.article.findMany({
@@ -36,7 +36,7 @@ router.get(
         user: true,
         comment: true,
       },
-      sort: orderBy,
+      orderBy,
       skip: offset,
       take: parseInt(limit, 10),
     });
