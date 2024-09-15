@@ -50,16 +50,10 @@ export const getArticles = async (req, res) => {
 
 //get article by id
 export const getArticleById = async (req, res) => {
-  const { id } = req.params;
+  const { articleId } = req.params;
 
   const article = await prisma.article.findUniqueOrThrow({
-    where: { id },
-    select: {
-      id: true,
-      title: true,
-      content: true,
-      createdAt: true,
-    },
+    where: { id: articleId },
   });
 
   res.send(article);
@@ -77,7 +71,7 @@ export const createArticle = async (req, res) => {
 // patch existed article with id
 export const updateArticleById = async (req, res) => {
   assert(req.body, PatchArticle);
-  const { id } = req.params;
+  const { articleId: id } = req.params;
   const article = await prisma.article.update({
     where: { id },
     data: req.body,
@@ -87,7 +81,7 @@ export const updateArticleById = async (req, res) => {
 
 // delete an article by id
 export const deleteArticleById = async (req, res) => {
-  const { id } = req.params;
+  const { articleId: id } = req.params;
   await prisma.article.delete({ where: { id } });
 
   res.status(200).send({ message: "Article has deleted successfully" });

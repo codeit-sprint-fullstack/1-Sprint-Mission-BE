@@ -36,9 +36,10 @@ export const getProductComments = async (req, res) => {
 // get the article comments list
 // route /articles/:id/comments
 export const getArticleComments = async (req, res) => {
-  const { id: articleId } = req.params;
+  const { articleId } = req.params;
   assert(articleId, Uuid);
-  const { limit = 5, cursor: lastId } = req.query;
+  const limit = parseInt(req.query.limit) || 5;
+  const { cursor: lastId } = req.query;
 
   const queryOptions = {
     where: { articleId },
@@ -64,7 +65,7 @@ export const getArticleComments = async (req, res) => {
 //create comment on product
 //route /products/:id/comments
 export const createProductComment = async (req, res) => {
-  const { id: productId } = req.params;
+  const { productId } = req.params;
   assert(productId, Uuid);
   assert(req.body, CreateComment);
 
@@ -82,7 +83,7 @@ export const createProductComment = async (req, res) => {
 //create comment on article
 //route /articles/:id/comments
 export const createArticleComment = async (req, res) => {
-  const { id: articleId } = req.params;
+  const { articleId } = req.params;
   assert(articleId, Uuid);
   assert(req.body, CreateComment);
 

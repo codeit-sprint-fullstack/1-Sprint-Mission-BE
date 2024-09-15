@@ -4,7 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 const router = express.Router();
 
-router.patch("/:id", asyncHandler(c.updateCommentById));
-router.delete("/:id", asyncHandler(c.deleteCommentById));
+router.patch("/:commentId", asyncHandler(c.updateCommentById));
+router.delete("/:commentId", asyncHandler(c.deleteCommentById));
 
 export default router;
