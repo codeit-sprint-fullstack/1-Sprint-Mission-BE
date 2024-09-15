@@ -49,7 +49,7 @@ router.post(
         },
       },
     });
-    res.status(201);
+    res.status(201).send(comment);
   })
 );
 
