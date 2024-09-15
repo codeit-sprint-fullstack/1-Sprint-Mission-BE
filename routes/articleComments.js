@@ -72,10 +72,10 @@ router.delete(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    await prisma.comment.delete({
+    const comment = await prisma.comment.delete({
       where: { id },
     });
-    res.sendStatus(204);
+    res.sendStatus(204).send(comment);
   })
 );
 
