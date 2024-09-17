@@ -75,7 +75,7 @@ router.delete(
     const comment = await prisma.comment.delete({
       where: { id },
     });
-    res.sendStatus(204).send(comment);
+    res.status(204);
   })
 );
 
