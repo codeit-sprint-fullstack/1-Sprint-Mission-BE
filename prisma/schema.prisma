@@ -44,16 +44,12 @@ enum BoardType {
   freeboard
 }
 
-
-
 model Comment {
   id        Int      @id @default(autoincrement())
   content   String
   createdAt DateTime @default(now())
-  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  articleId Int
+  article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId Int?
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String?  @default("Anoymous")
 }
-
-
