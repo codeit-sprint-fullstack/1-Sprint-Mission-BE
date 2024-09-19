@@ -88,16 +88,16 @@ router.get(
   })
 );
 
-// router.post(
-//   '/',
-//   asyncHandler(async (req, res) => {
-//     assert(req.body, CreateArticle);
-//     const article = await prisma.article.create({
-//       data: req.body,
-//     });
-//     res.status(201).send(article);
-//   })
-// );
+router.post(
+  '/',
+  asyncHandler(async (req, res) => {
+    assert(req.body, CreateArticle);
+    const article = await prisma.article.create({
+      data: req.body,
+    });
+    res.status(201).send(article);
+  })
+);
 
 router.patch(
   '/:articleID',
@@ -127,15 +127,13 @@ router.delete(
   })
 );
 
-export default router;
-
 router.post(
   '/',
   upload.single('images'),
   asyncHandler(async (req, res) => {
     const { title, content, category, price, tags, userId } = req.body;
 
-    const article = prisma.article.create({
+    const article = await prisma.article.create({
       data: {
         title,
         content,
@@ -149,3 +147,5 @@ router.post(
     res.status(201).send(article);
   })
 );
+
+export default router;
