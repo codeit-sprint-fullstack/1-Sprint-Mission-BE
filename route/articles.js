@@ -8,10 +8,16 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 router.get(
-  '/freeboard',
+  '/',
   asyncHandler(async (req, res) => {
-    const { page = 1, limit = 5, keyword = '', sort = 'recent' } = req.query;
-    const { freeboard } = req.params;
+    const {
+      page = 1,
+      limit = 5,
+      keyword = '',
+      sort = 'recent',
+      category,
+    } = req.query;
+
     const offset = (page - 1) * limit;
 
     let orderBy;
@@ -22,7 +28,7 @@ router.get(
 
     const articles = await prisma.article.findMany({
       where: {
-        category: freeboard,
+        category: category,
         ...(keyword
           ? {
               OR: [
@@ -43,7 +49,7 @@ router.get(
 
     const total = await prisma.article.count({
       where: {
-        category: freeboard,
+        category: category,
         ...(keyword
           ? {
               OR: [
