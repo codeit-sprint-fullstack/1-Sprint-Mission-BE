@@ -4,6 +4,9 @@ import { asyncHandler } from './asyncHandler.js';
 import { CreateArticle, PatchArticle } from './struct.js';
 import assert from 'assert';
 
+import multer from 'multer';
+const upload = multer({ dest: 'uploads/' });
+
 const router = express.Router();
 const prisma = new PrismaClient();
 
@@ -85,16 +88,16 @@ router.get(
   })
 );
 
-router.post(
-  '/',
-  asyncHandler(async (req, res) => {
-    assert(req.body, CreateArticle);
-    const article = await prisma.article.create({
-      data: req.body,
-    });
-    res.status(201).send(article);
-  })
-);
+// router.post(
+//   '/',
+//   asyncHandler(async (req, res) => {
+//     assert(req.body, CreateArticle);
+//     const article = await prisma.article.create({
+//       data: req.body,
+//     });
+//     res.status(201).send(article);
+//   })
+// );
 
 router.patch(
   '/:articleID',
@@ -125,3 +128,24 @@ router.delete(
 );
 
 export default router;
+
+router.post(
+  '/',
+  upload.single('images'),
+  asyncHandler(async (req, res) => {
+    const { title, content, category, price, tags, userId } = req.body;
+
+    const article = prisma.article.create({
+      data: {
+        title,
+        content,
+        images: req.file ? req.file.path : null,
+        price: price || null,
+        tags: tags || null,
+        category,
+        userId,
+      },
+    });
+    res.status(201).send(article);
+  })
+);
