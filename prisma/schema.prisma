@@ -29,7 +29,7 @@ model Article {
   content   String
   category  BoardType
   favorite  Int       @default(0)
-  images    String?
+  images    String[]
   tags      String[]
   price     Int?
   createdAt DateTime  @default(now())
@@ -37,11 +37,6 @@ model Article {
   user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String?   @default("Anoymous")
   comment   Comment[]
-}
-
-enum BoardType {
-  fleamarket
-  freeboard
 }
 
 model Comment {
@@ -52,4 +47,9 @@ model Comment {
   articleId Int?
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String?  @default("Anoymous")
+}
+
+enum BoardType {
+  fleamarket
+  freeboard
 }
