@@ -101,7 +101,7 @@ export const createArticleComment = async (req, res) => {
 // patch existed comment with comment id
 //route comments/:id
 export const updateCommentById = async (req, res) => {
-  const { id } = req.params;
+  const { commentId: id } = req.params;
   assert(id, Uuid);
   assert(req.body, PatchComment);
 
@@ -109,13 +109,13 @@ export const updateCommentById = async (req, res) => {
     where: { id },
     data: req.body,
   });
-  res.send(comment);
+  res.status(201).send(comment);
 };
 
 // delete a comment by comment id
 //route comments/:id
 export const deleteCommentById = async (req, res) => {
-  const { id } = req.params;
+  const { commentId: id } = req.params;
   assert(id, Uuid);
 
   await prisma.comment.delete({ where: { id } });

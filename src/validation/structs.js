@@ -14,8 +14,8 @@ export const CreateProduct = s.object({
 export const PatchProduct = s.partial(CreateProduct);
 
 export const CreateArticle = s.object({
-  title: s.size(s.string(), 1, 30),
-  content: s.size(s.string(), 1, 300),
+  title: s.size(s.string(), 1, 50),
+  content: s.size(s.string(), 1, 500),
 });
 
 export const PatchArticle = s.partial(CreateArticle);

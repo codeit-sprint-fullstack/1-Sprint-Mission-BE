@@ -17,7 +17,7 @@ GET http://localhost:3000/api/products/a57d8a16-eb82-413b-8726-59b24b80e7e4/comm
 GET http://localhost:3000/api/products/81ddeb00-a28c-4bac-bfed-b15f46d39896/comments?lastId=76bee06c-f5c8-4c6b-8e1b-2b298f622458
 
 ### create comment on article
-POST http://localhost:3000/api/articles/03cb17ca-01d2-4b2d-ac70-51b3eb5b072b/comments
+POST http://localhost:3000/api/articles/f6f6204c-bec2-4814-a5db-46c1b4e8cb55/comments
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 }
 
 ### update comment
-PATCH http://localhost:3000/api/comments/b9b74c3d-05e4-4e4b-8a0e-84d25f10dfe9
+PATCH http://localhost:3000/api/comments/18d0ad11-fdb7-484d-81be-3adfb0161def
 Content-Type: application/json
 
 {
@@ -55,7 +55,7 @@ Content-Type: application/json
 }
 
 ### update comment by comment id
-PATCH http://localhost:3000/api/comments/eb8d9178-20f6-460a-bd01-a2e39de1867f
+PATCH http://localhost:3000/api/comments/49462309-2efa-4cfb-bd7e-4dc2325e6768
 Content-Type: application/json
 
 {
