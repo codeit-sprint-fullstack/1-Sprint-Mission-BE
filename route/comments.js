@@ -8,64 +8,88 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 router.get(
-  '/:articleId/',
+  '/:articleCategory/:articleId',
   asyncHandler(async (req, res) => {
     const { cursor, limit } = req.query;
-    const { articleId } = req.params;
-    const numericLimit = limit ? parseInt(limit, 10) : 0;
+    const { articleId, articleCategory } = req.params;
 
-    const cursorValue = cursor ? parseInt(cursor, 10) : null;
+    const numericLimit = limit ? Number(limit) : 5;
+    const cursorValue = cursor ? Number(cursor) : null;
 
-    const queryOptions = {
-      take: numericLimit,
-      ...(cursorValue && { cursor: { id: cursorValue } }),
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      where: {
-        articleId: parseInt(articleId, 10),
-      },
-      include: {
-        user: true,
-      },
-    };
+    let comments;
 
-    const [comments, totalCount] = await prisma.$transaction([
-      prisma.comment.findMany(queryOptions),
-      prisma.comment.count({
+    if (articleCategory === 'freeboard') {
+      comments = await prisma.comment.findMany({
+        take: numericLimit,
+        ...(cursorValue && { cursor: { id: cursorValue } }),
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
         where: {
-          articleId: parseInt(articleId, 10),
+          freeBoardId: Number(articleId),
         },
-      }),
-    ]);
+        include: {
+          user: true,
+        },
+      });
+    } else if (articleCategory === 'fleamarket') {
+      comments = await prisma.comment.findMany({
+        take: numericLimit,
+        ...(cursorValue && { cursor: { id: cursorValue } }),
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        where: {
+          fleaMarketId: Number(articleId),
+        },
+        include: {
+          user: true,
+        },
+      });
+    }
+
+    const totalCount = await prisma.comment.count({
+      where:
+        articleCategory === 'freeBoard'
+          ? { freeBoardId: Number(articleId) }
+          : { fleaMarketId: Number(articleId) },
+    });
+
     res.send({ comments, totalCount });
   })
 );
 
-router.get(
-  '/:articleId',
-  asyncHandler(async (req, res) => {
-    const { articleId } = req.params;
-    const comments = await prisma.comment.findMany({
-      where: {
-        id: parseInt(articleId, 10), // 정수형으로 변환 후 사용
-      },
-      include: {
-        user: true,
-      },
-    });
-    res.send(comments);
-  })
-);
+// router.get(
+//   '/:articleId',
+//   asyncHandler(async (req, res) => {
+//     const { articleId } = req.params;
+//     const comments = await prisma.comment.findMany({
+//       where: {
+//         id: Number(articleId), // 정수형으로 변환 후 사용
+//       },
+//       include: {
+//         user: true,
+//       },
+//     });
+//     res.send(comments);
+//   })
+// );
 
 router.post(
-  '/',
+  '/:articleCategory/:articleId',
   asyncHandler(async (req, res) => {
+    const { articleId, articleCategory } = req.params;
     assert(req.body, CreateComment);
-    const comments = await prisma.comment.create({
-      data: req.body,
-      include: {
-        user: true,
-      },
-    });
+
+    let comments;
+    if (articleCategory === 'freeboard') {
+      comments = await prisma.comment.create({
+        data: {
+          content: req.body.content,
+          userId: req.body.userId,
+          freeBoardId: Number(articleId),
+        },
+        include: {
+          user: true,
+        },
+      });
+    }
     res.status(201).send(comments);
   })
 );
@@ -78,7 +102,7 @@ router.patch(
 
     const comments = await prisma.comment.update({
       where: {
-        id: parseInt(id, 10),
+        id: Number(id),
       },
       data: req.body,
       include: {
