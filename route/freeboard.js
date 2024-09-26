@@ -80,9 +80,9 @@ router.get(
     const article = await prisma.freeBoard.findUnique({
       where: {
         id: Number(id),
-        include: {
-          user: true, // 필요에 따라 관련된 사용자 정보도 포함
-        },
+      },
+      include: {
+        user: true,
       },
     });
 
