@@ -14,24 +14,38 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  article   Article[]
-  Comment   Comment[]
+  id         String       @id @default(uuid())
+  email      String       @unique
+  name       String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Comment    Comment[]
+  freeBoard  FreeBoard[]
+  fleaMarket FleaMarket[]
 }
 
-model Article {
+model FreeBoard {
   id        Int       @id @default(autoincrement())
   title     String
   content   String
-  category  BoardType
   favorite  Int       @default(0)
   images    String[]
   tags      String[]
-  price     Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?   @default("Anoymous")
+  comment   Comment[]
+}
+
+model FleaMarket {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String
+  favorite  Int       @default(0)
+  images    String[]
+  tags      String[]
+  price     Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
@@ -40,16 +54,13 @@ model Article {
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
-  article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  articleId Int?
-  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId    String?  @default("Anoymous")
-}
-
-enum BoardType {
-  fleamarket
-  freeboard
+  id           Int         @id @default(autoincrement())
+  content      String
+  createdAt    DateTime    @default(now())
+  user         User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId       String?     @default("Anoymous")
+  freeBoard    FreeBoard?  @relation(fields: [freeBoardId], references: [id])
+  freeBoardId  Int?
+  fleaMarket   FleaMarket? @relation(fields: [fleaMarketId], references: [id])
+  fleaMarketId Int?
 }

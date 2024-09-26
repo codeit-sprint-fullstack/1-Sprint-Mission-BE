@@ -2,10 +2,12 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 
-import articleRoute from './route/articles.js';
-import boardRoute from './route/board.js';
-import commentRoute from './route/comments.js';
 import userRoute from './route/users.js';
+import freeboardRoute from './route/freeboard.js';
+import fleamarketRoute from './route/fleamarket.js';
+import articleRoute from './route/articles.js';
+import commentRoute from './route/comments.js';
+
 import multer from 'multer';
 
 dotenv.config();
@@ -19,10 +21,10 @@ app.get('/', (req, res) => {
 });
 
 app.use('/articles', articleRoute);
-// app.use('/freeboard', freeboardRoute);
+app.use('/freeboard', freeboardRoute);
+app.use('/fleamarket', fleamarketRoute);
 app.use('/comments', commentRoute);
 app.use('/users', userRoute);
-app.use('/', boardRoute);
 
 const upload = multer({ dest: 'uploads/' });
 
