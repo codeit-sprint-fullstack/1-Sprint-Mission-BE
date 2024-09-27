@@ -78,12 +78,24 @@ router.post(
     assert(req.body, CreateComment);
 
     let comments;
+
     if (articleCategory === 'freeboard') {
       comments = await prisma.comment.create({
         data: {
           content: req.body.content,
           userId: req.body.userId,
           freeBoardId: Number(articleId),
+        },
+        include: {
+          user: true,
+        },
+      });
+    } else if (articleCategory === 'fleamarket') {
+      comments = await prisma.comment.create({
+        data: {
+          content: req.body.content,
+          userId: req.body.userId,
+          fleaMarketId: Number(articleId),
         },
         include: {
           user: true,
