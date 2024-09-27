@@ -28,3 +28,5 @@ prisma/migrations/
 prisma/seed.js
 prisma/mock.js
 prisma/mock_2.js
+
+swagger.js

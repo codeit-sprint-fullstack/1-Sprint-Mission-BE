@@ -1,8 +1,16 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
-import { asyncHandle } from "../errorUtils.js";
+import { asyncHandle } from "../utils/errorUtils.js";
 import { assert } from "superstruct";
 import { createArticle, updateArticle } from "../structs/articleStruct.js";
+import { setOrderByQuery } from "../utils/orderByQuery.js";
+
+/**
+ * @swagger
+ * tags:
+ *   name: Articles
+ *   description: 게시글
+ */
 
 const app = express.Router();
 const prisma = new PrismaClient();
@@ -32,23 +40,8 @@ app.get(
     const { orderBy = "recent", keyword = "", cursor = "" } = req.query;
     const limit = parseInt(req.query.limit) || 10;
     // const offset = parseInt(req.query.offset) - 1 || 0;
-    let orderbyQuery;
-    switch (orderBy) {
-      case "title":
-        orderbyQuery = { title: "asc" };
-        break;
-      case "recent":
-        orderbyQuery = { createAt: "desc" };
-        break;
-      case "oldset":
-        orderbyQuery = { createAt: "asc" };
-        break;
-      case "favorite":
-        orderbyQuery = { favorite: "desc" };
-        break;
-      default:
-        orderbyQuery = { createAt: "desc" };
-    }
+    const orderbyQuery = setOrderByQuery(orderBy);
+
     const whereConditions = {};
     if (keyword) {
       whereConditions.OR = [

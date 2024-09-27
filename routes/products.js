@@ -1,6 +1,7 @@
 import express from "express";
-import { asyncHandle } from "../errorUtils.js";
+import { asyncHandle } from "../utils/errorUtils.js";
 import { PrismaClient } from "@prisma/client";
+import { getProducts } from "../service/productService.js";
 
 const app = express.Router();
 const prisma = new PrismaClient();
@@ -8,70 +9,20 @@ const prisma = new PrismaClient();
 app.get(
   "/",
   asyncHandle(async (req, res) => {
-    const {
-      orderBy,
-      limit = 10,
-      offset = 1,
-      keyword = "",
-      minPrice = 0,
-      maxPrice = Infinity,
-      date = "",
-    } = req.query;
-    const page = (offset - 1) * limit; //page가 3이면 3-1 = 2 * count 만큼 스킵
-    const regex = new RegExp(keyword, "i"); // 대소문자 구분 안 함
-    const dateQuery = {};
-    if (date) {
-      const startDate = new Date(date);
-      dateQuery.createAt = { $gt: startDate.getTime() };
-    }
-    let orderOption;
-    switch (orderBy) {
-      case "recent":
-        orderOption = { createAt: "desc" };
-        break;
-      case "favorite":
-        orderOption = { favorite: "desc" };
-        break;
-      default:
-        orderOption = { createAt: "desc" };
-        break;
-    }
-    //promise.all를 사용해서 동시에 기다려보자...
-    const [totalCount, products] = await prisma.$transaction([
-      prisma.product.count({ where: regex }),
-      prisma.product.findMany({
-        take: limit, //추가적인 이 있는지 확인
-        skip: limit * page, //커서 자신을 스킵하기 위함
-        orderBy: orderOption,
-        include: {
-          user: {
-            select: {
-              name: true,
-              id: true,
-            },
-          },
-          comment: {
-            include: {
-              user: {
-                select: {
-                  name: true,
-                  id: true,
-                },
-              },
-            },
-          },
-        },
-      }),
-    ]);
-
-    if (products) {
-      const responseData = {
-        list: products,
-        totalCount: totalCount,
-      };
-      res.send(responseData);
-    } else {
-      res.status(404).send({ message: "등록된 상품이 없습니다." });
+    try {
+      const { totalCount, products, hasMore } = await getProducts(req.query);
+      if (products) {
+        const responseData = {
+          list: products,
+          totalCount: totalCount,
+          hasMore,
+        };
+        return res.send(responseData);
+      } else {
+        return res.status(404).send({ message: "등록된 상품이 없습니다." });
+      }
+    } catch (error) {
+      return res.status(404).send({ message: "등록된 상품이 없습니다." });
     }
   })
 );

@@ -1,6 +1,6 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
-import { asyncHandle } from "../errorUtils.js";
+import { asyncHandle } from "../utils/errorUtils.js";
 import { assert } from "superstruct";
 import { createComment, updateComment } from "../structs/commentStruct.js";
 const app = express.Router();
@@ -18,6 +18,34 @@ const getComments = async (cursor, limit, id) => {
   });
   return data;
 };
+
+/**
+ * @swagger
+ * paths:
+ *  /Comments:
+ *    get:
+ *      summary: "유저 데이터 전체조회"
+ *      description: "서버에 데이터를 보내지 않고 Get방식으로 요청"
+ *      tags: [Comments]
+ *      responses:
+ *        "200":
+ *          description: 전체 유저 정보
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    ok:
+ *                      type: boolean
+ *                    users:
+ *                      type: object
+ *                      example:
+ *                          [
+ *                            { "id": 1, "name": "유저1" },
+ *                            { "id": 2, "name": "유저2" },
+ *                            { "id": 3, "name": "유저3" },
+ *                          ]
+ */
 
 app.get(
   "/:id",
