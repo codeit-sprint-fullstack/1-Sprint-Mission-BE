@@ -69,7 +69,7 @@ router.post(
         ...req.body,
       },
     });
-    res.status(201).send(article);
+    res.status(201).json(article);
   })
 );
 
@@ -86,7 +86,7 @@ router.get(
       },
     });
 
-    res.send(article);
+    res.status(200).json(article);
   })
 );
 
@@ -98,7 +98,7 @@ router.patch(
       where: { id: Number(id) },
       data: req.body,
     });
-    res.send(article);
+    res.status(201).json(article);
   })
 );
 
