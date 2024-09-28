@@ -34,6 +34,7 @@ router.get(
       include: {
         user: true,
         comment: true,
+        favorite: true,
       },
       orderBy,
       skip: offset,
@@ -85,6 +86,7 @@ router.get(
       },
       include: {
         user: true, // 필요에 따라 관련된 사용자 정보도 포함
+        favorite: true,
       },
     });
 

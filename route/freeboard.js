@@ -34,6 +34,7 @@ router.get(
       include: {
         user: true,
         comment: true,
+        favorite: true,
       },
       orderBy,
       skip: offset,
@@ -83,6 +84,7 @@ router.get(
       },
       include: {
         user: true,
+        favorite: true,
       },
     });
 

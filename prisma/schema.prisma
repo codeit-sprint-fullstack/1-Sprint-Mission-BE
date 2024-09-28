@@ -22,40 +22,52 @@ model User {
   Comment    Comment[]
   freeBoard  FreeBoard[]
   fleaMarket FleaMarket[]
+  Favorite   Favorite[]
 }
 
 model FreeBoard {
-  id        Int       @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   title     String
   content   String
-  favorite  Int       @default(0)
   images    String[]
   tags      String[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId    String?   @default("Anoymous")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?    @default("Anoymous")
   comment   Comment[]
+  favorite  Favorite[]
 }
 
 model FleaMarket {
-  id        Int       @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   title     String
   content   String
-  favorite  Int       @default(0)
   images    String[]
   tags      String[]
   price     Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId    String?   @default("Anoymous")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?    @default("Anoymous")
   comment   Comment[]
+  favorite  Favorite[]
 }
 
 model Comment {
   id           Int         @id @default(autoincrement())
   content      String
+  createdAt    DateTime    @default(now())
+  user         User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId       String?     @default("Anoymous")
+  freeBoard    FreeBoard?  @relation(fields: [freeBoardId], references: [id])
+  freeBoardId  Int?
+  fleaMarket   FleaMarket? @relation(fields: [fleaMarketId], references: [id])
+  fleaMarketId Int?
+}
+
+model Favorite {
+  id           Int         @id @default(autoincrement())
   createdAt    DateTime    @default(now())
   user         User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId       String?     @default("Anoymous")
