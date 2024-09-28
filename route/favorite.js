@@ -94,20 +94,23 @@ router.post(
 );
 
 router.delete(
-  '/:id',
+  '/:articleCategory/:articleId',
   asyncHandler(async (req, res) => {
     const { articleCategory, articleId } = req.params;
+    const { userId } = req.query;
 
     if (articleCategory === 'freeboard') {
-      await prisma.favorite.delete({
+      await prisma.favorite.deleteMany({
         where: {
-          id: Number(id),
+          userId: userId,
+          freeBoardId: Number(articleId),
         },
       });
     } else if (articleCategory === 'fleamarket') {
       await prisma.favorite.delete({
         where: {
-          id: Number(id),
+          userId: userId,
+          freeBoardId: Number(articleId),
         },
       });
     }
@@ -115,7 +118,6 @@ router.delete(
     res.sendStatus(204);
   })
 );
-
 // router.get(
 //   '/:id',
 //   asyncHandler(async (req, res) => {
