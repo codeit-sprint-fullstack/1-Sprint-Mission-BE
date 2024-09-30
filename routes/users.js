@@ -1,49 +1,66 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
 import { asyncHandle } from "../utils/errorUtils.js";
+import userService from "../service/userService.js";
+import cookiesConfig from "../config/cookiesConfig.js";
+import passport from "../config/passportConfig.js";
 
-const app = express.Router();
-const prisma = new PrismaClient();
+const router = express.Router();
 
-app.get(
-  "/",
-  asyncHandle(async (req, res) => {
-    const { orderby = "", offset = 0, limit = 5, keyword = "" } = req.query;
-    let orderbyQuery;
-    switch (orderby) {
-      case "resent":
-        orderbyQuery = { createAt: "asc" };
-        break;
-      case "oldset":
-        orderbyQuery = { createAt: "desc" };
-        break;
-      case "name":
-        orderbyQuery = { name: "asc" };
-        break;
-      default:
-        orderbyQuery = { createAt: "asc" };
-        break;
-    }
-    const whereConditions = {};
-    if (keyword) {
-      whereConditions.OR = [
-        { name: { contains: keyword, mode: "insensitive" } },
-        { email: { contains: keyword, mode: "insensitive" } },
-      ];
-    }
-    const data = await prisma.user.findMany({
-      where: whereConditions,
-      skip: offset * limit,
-      take: limit,
-      orderBy: orderbyQuery,
-    });
-
-    if (data) {
-      res.send(data);
-    } else {
-      res.status(404).send({ message: "사용자를 찾을수 없습니다." });
+router.get(
+  "/me",
+  passport.authenticate("access-token", { session: false }),
+  asyncHandle(async (req, res, next) => {
+    try {
+      const user = await userService.getUserById(req.user.id);
+      return res.status(200).send(user);
+    } catch (error) {
+      next(error);
     }
   })
 );
 
-export default app;
+router.post(
+  "/signup",
+  asyncHandle(async (req, res, next) => {
+    try {
+      const user = await userService.createUser(req.body);
+      const accessToken = userService.createToken(user);
+      const refreshToken = userService.createToken(user, "refresh-token");
+
+      res.cookie("access-token", accessToken, cookiesConfig.accessTokenOption);
+      res.cookie(
+        "refresh-token",
+        refreshToken,
+        cookiesConfig.accessTokenOption
+      );
+
+      return res.status(201).send(user);
+    } catch (error) {
+      next(error);
+    }
+  })
+);
+
+router.post(
+  "/login",
+  asyncHandle(async (req, res, next) => {
+    try {
+      const user = await userService.getUser(req.body);
+      const accessToken = userService.createToken(user);
+      const refreshToken = userService.createToken(user, "refresh-token");
+
+      res.cookie("access-token", accessToken, cookiesConfig.accessTokenOption);
+      res.cookie(
+        "refresh-token",
+        refreshToken,
+        cookiesConfig.accessTokenOption
+      );
+
+      return res.status(201).send(user);
+    } catch (error) {
+      next(error);
+    }
+  })
+);
+
+export default router;

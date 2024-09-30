@@ -1,12 +1,19 @@
 {
   "dependencies": {
     "@prisma/client": "^5.4.2",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "is-email": "^1.0.2",
     "is-uuid": "^1.0.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1",
+    "multer": "^1.4.5-lts.1",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
     "prisma": "^5.4.2",
     "superstruct": "^1.0.3"
   },

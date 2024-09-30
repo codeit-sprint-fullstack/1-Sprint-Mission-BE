@@ -1,115 +1,82 @@
 import express from "express";
 import { asyncHandle } from "../utils/errorUtils.js";
-import { PrismaClient } from "@prisma/client";
-import { getProducts } from "../service/productService.js";
+import prismaClient from "../utils/prismaClient.js";
+import productService from "../service/productService.js";
+import { assert } from "superstruct";
+import multer from "multer";
 
-const app = express.Router();
-const prisma = new PrismaClient();
+const router = express.Router();
+const upload = multer({ dest: "upload/" });
 
-app.get(
+router.get(
   "/",
-  asyncHandle(async (req, res) => {
+  asyncHandle(async (req, res, next) => {
     try {
-      const { totalCount, products, hasMore } = await getProducts(req.query);
-      if (products) {
-        const responseData = {
-          list: products,
-          totalCount: totalCount,
-          hasMore,
-        };
-        return res.send(responseData);
-      } else {
-        return res.status(404).send({ message: "등록된 상품이 없습니다." });
-      }
+      const { totalCount, products, hasMore } =
+        await productService.getProducts(req.query);
+      const responseData = {
+        list: products,
+        totalCount: totalCount,
+        hasMore,
+      };
+      return res.send(responseData);
     } catch (error) {
-      return res.status(404).send({ message: "등록된 상품이 없습니다." });
+      return next(error);
     }
   })
 );
 
-app.get(
+router.get(
   "/:id",
-  asyncHandle(async (req, res) => {
-    const id = req.params.id;
-    const product = await prisma.product.findUniqueOrThrow({
-      where: { id },
-      include: {
-        user: {
-          select: {
-            name: true,
-            id: true,
-          },
-        },
-        comment: {
-          include: {
-            user: {
-              select: {
-                name: true,
-                id: true,
-              },
-            },
-          },
-        },
-      },
-    });
-    if (product) {
+  asyncHandle(async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const product = await productService.getById(id);
       res.send(product);
-    } else {
-      res.status(404).send({ message: "등록된 상품이 없습니다." });
+    } catch (error) {
+      next(error);
     }
   })
 );
 
-app.patch(
+router.post("/", upload.array("images", 3), async (req, res, next) => {
+  const images = req.files.map((file) => file.path);
+  try {
+    const data = await productService.createProduct({
+      ...req.body,
+      images,
+    });
+    return res.status(201).send(data);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch(
   "/:id",
-  asyncHandle(async (req, res) => {
+  asyncHandle(async (req, res, next) => {
     assert(req.body, updateArticle);
-    const { id } = req.params;
-    const data = await prisma.product.update({
-      where: { id },
-      data: req.body,
-      include: {
-        user: {
-          select: {
-            name: true,
-            id: true,
-          },
-        },
-        comment: {
-          include: {
-            user: {
-              select: {
-                name: true,
-                id: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (data) {
-      res.send(data);
-    } else {
-      res.status(404).send({ message: "게시글을 찾을수 없습니다." });
+    try {
+      const { id } = req.params;
+      const product = await productService.updateProduct(id, req.body);
+      res.send(product);
+    } catch (error) {
+      next(error);
     }
   })
 );
 
-app.delete(
+router.delete(
   "/:id",
-  asyncHandle(async (req, res) => {
-    const { id } = req.params;
-    const data = await prisma.product.delete({
-      where: { id },
-    });
-
-    if (data) {
+  asyncHandle(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await productService.deleteProduct(id, req.body);
       res.sendStatus(204);
-    } else {
-      res.status(404).send({ message: "게시글을 찾을수 없습니다." });
+    } catch (error) {
+      next(error);
     }
   })
 );
 
-export default app;
+export default router;

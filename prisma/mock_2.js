@@ -1,53 +1,63 @@
 export const users = [
   {
     id: "550e8400-e29b-41d4-a716-446655440000",
-    name: "Alice",
+    nickname: "Alice",
     email: "alice@example.com",
+    password: "1234",
   },
   {
     id: "6f8e95f6-e2d4-471c-88e5-c5b7a67cbaba",
-    name: "Bob",
+    nickname: "Bob",
     email: "bob@example.com",
+    password: "1234",
   },
   {
     id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    name: "Charlie",
+    nickname: "Charlie",
     email: "charlie@example.com",
+    password: "1234",
   },
   {
     id: "123e4567-e89b-12d3-a456-426614174000",
-    name: "David",
+    nickname: "David",
     email: "david@example.com",
+    password: "1234",
   },
   {
     id: "987f1234-57d1-4650-8475-b57d19873a2d",
-    name: "Eve",
+    nickname: "Eve",
     email: "eve@example.com",
+    password: "1234",
   },
   {
     id: "f0983210-ae23-11ed-afa1-0242ac120002",
-    name: "Frank",
+    nickname: "Frank",
     email: "frank@example.com",
+    password: "1234",
   },
   {
     id: "65cd87ac-53f4-4031-bc1d-2efbfed65345",
-    name: "Grace",
+    nickname: "Grace",
     email: "grace@example.com",
+    password: "1234",
   },
   {
     id: "74b5c55e-df5b-4f8a-91c7-d2847f1ea6e2",
-    name: "Heidi",
+    nickname: "Heidi",
     email: "heidi@example.com",
+    password: "1234",
   },
   {
     id: "33bf88a1-3f2e-4ae3-944e-90859b340004",
-    name: "Ivan",
+    nickname: "Ivan",
     email: "ivan@example.com",
+    password: "1234",
   },
   {
     id: "6c5b11a2-a7e1-47e4-b93a-13f890cf6639",
-    name: "Judy",
+    nickname: "Judy",
     email: "judy@example.com",
+    password: "1234",
   },
 ];
 

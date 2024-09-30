@@ -9,14 +9,14 @@ function whereConditions(keyword) {
     : {};
 }
 
-export const getTotalCount = async (keyword) => {
+const getTotalCount = async (keyword) => {
   const where = whereConditions(keyword);
   return await prismaClient.product.count({
     where,
   });
 };
 
-export const getList = async (pageSize, offset, orderOption, keyword) => {
+const getList = async (pageSize, offset, orderOption, keyword) => {
   const where = whereConditions(keyword);
   return await prismaClient.product.findMany({
     take: pageSize,
@@ -42,4 +42,98 @@ export const getList = async (pageSize, offset, orderOption, keyword) => {
       },
     },
   });
+};
+
+const getById = async (id) => {
+  return await prismaClient.product.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+      comment: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
+
+const create = async (data) => {
+  return await prismaClient.product.create({
+    data,
+    include: {
+      user: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+      comment: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
+
+const update = async (id, data) => {
+  return await prismaClient.product.update({
+    where: {
+      id,
+    },
+    data,
+    include: {
+      user: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+      comment: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
+
+const deleteItem = async (id) => {
+  return await prismaClient.product.delete({
+    where: {
+      id,
+    },
+  });
+};
+
+export default {
+  getTotalCount,
+  getById,
+  getList,
+  update,
+  deleteItem,
+  create,
 };

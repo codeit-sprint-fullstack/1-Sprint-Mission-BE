@@ -26,11 +26,11 @@ async function main() {
   // console.log("Seeding database...");
 
   // 사용자 데이터 시딩
-  // await prisma.user.deleteMany();
-  // await prisma.user.createMany({
-  //   data: users,
-  //   // skipDuplicates: true,
-  // });
+  await prisma.user.deleteMany();
+  await prisma.user.createMany({
+    data: users,
+    // skipDuplicates: true,
+  });
 
   // 글 데이터 시딩
   // await prisma.article.deleteMany();
@@ -41,10 +41,10 @@ async function main() {
 
   // // 댓글 데이터 시딩
   // await prisma.comment.deleteMany();
-  await prisma.comment.createMany({
-    data: comments,
-    // skipDuplicates: true,
-  });
+  // await prisma.comment.createMany({
+  // data: comments,
+  // skipDuplicates: true,
+  // });
 
   console.log("Seeding completed!");
 }
