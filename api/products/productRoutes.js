@@ -58,13 +58,9 @@ router.get("/:id", authMiddleware, async (req, res, next) => {
   const userId = req.user ? req.user.id : null; // 로그인한 사용자의 ID
 
   try {
-    const product = await prisma.marketPost.findUnique({
-      where: { id: Number(id) },
-      include: {
-        comments: true, // 댓글을 포함하여 조회
-        likes: true, // 좋아요 정보를 포함
-      },
-    });
+    const product = await Product.findById(id) // Product 모델 사용
+      .populate("comments") // 댓글 포함
+      .populate("likes"); // 좋아요 포함
 
     if (!product) {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
@@ -72,7 +68,7 @@ router.get("/:id", authMiddleware, async (req, res, next) => {
 
     // 사용자가 좋아요를 눌렀는지 여부 확인
     const isLiked = userId
-      ? product.likes.some((like) => like.userId === userId)
+      ? product.likes.some((like) => like.userId.toString() === userId) // userId를 문자열로 비교
       : false;
 
     // 응답 객체에 상품 정보, 댓글 리스트, 좋아요 여부를 포함하여 반환
@@ -81,6 +77,41 @@ router.get("/:id", authMiddleware, async (req, res, next) => {
       comments: product.comments,
       isLiked, // '좋아요' 여부 포함
     });
+  } catch (error) {
+    next(error); // 에러를 핸들러로 전달
+  }
+});
+
+// 상품에 좋아요 추가 및 삭제 API
+router.post("/:id/favorite", authMiddleware, async (req, res, next) => {
+  // next 추가
+  const { id } = req.params;
+  const userId = req.user.id; // 인증된 사용자 ID
+
+  try {
+    const product = await Product.findById(id).populate("likes"); // Product 모델 사용
+
+    if (!product) {
+      return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
+    }
+
+    // 사용자가 좋아요를 눌렀는지 확인
+    const isLiked = product.likes.some(
+      (like) => like.userId.toString() === userId
+    ); // userId를 문자열로 비교
+
+    // 좋아요 추가/삭제 로직
+    if (isLiked) {
+      // 좋아요를 취소
+      product.likes.pull(userId);
+      await product.save();
+      return res.status(200).send({ message: "좋아요가 취소되었습니다." });
+    } else {
+      // 좋아요 추가
+      product.likes.push(userId);
+      await product.save();
+      return res.status(200).send({ message: "좋아요가 추가되었습니다." });
+    }
   } catch (error) {
     next(error); // 에러를 핸들러로 전달
   }
@@ -180,42 +211,29 @@ router.post("/:id/favorite", authMiddleware, async (req, res, next) => {
   const userId = req.user.id; // 인증된 사용자 ID
 
   try {
-    const product = await prisma.marketPost.findUnique({
-      where: { id: Number(id) },
-      include: { likes: true }, // 좋아요 리스트를 포함
-    });
+    const product = await Product.findById(id).populate("likes"); // Product 모델 사용
 
     if (!product) {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
     }
+
     // 사용자가 좋아요를 눌렀는지 확인
-    const isLiked = product.likes.some((like) => like.userId === userId);
+    const isLiked = product.likes.some(
+      (like) => like.userId.toString() === userId
+    ); // userId를 문자열로 비교
 
-    // 트랜잭션 시작
-    await prisma.$transaction(async (prisma) => {
-      if (isLiked) {
-        // 좋아요를 취소
-        await prisma.like.deleteMany({
-          where: {
-            marketPostId: Number(id),
-            userId: userId,
-          },
-        });
-      } else {
-        // 좋아요 추가
-        await prisma.like.create({
-          data: {
-            marketPostId: Number(id),
-            userId: userId,
-          },
-        });
-      }
-    });
-
-    const message = isLiked
-      ? "좋아요가 취소되었습니다."
-      : "좋아요가 추가되었습니다.";
-    res.status(200).send({ message });
+    // 좋아요 추가/삭제 로직
+    if (isLiked) {
+      // 좋아요를 취소
+      product.likes.pull(userId);
+      await product.save();
+      return res.status(200).send({ message: "좋아요가 취소되었습니다." });
+    } else {
+      // 좋아요 추가
+      product.likes.push(userId);
+      await product.save();
+      return res.status(200).send({ message: "좋아요가 추가되었습니다." });
+    }
   } catch (error) {
     next(error); // 에러를 핸들러로 전달
   }
