@@ -43,22 +43,23 @@ model Article {
   comments  Comment[] @relation("ArticleComments") // 댓글과의 관계 설정
 }
 
-// 댓글 모델 스키마
 model Comment {
   id          Int       @id @default(autoincrement())
   content     String
   articleId   Int?      // 자유게시판 게시글 외래키
   marketPostId Int?      // 중고마켓 게시글 외래키
   boardType   boardType @default(board)
-  author      String 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  userId      Int       // 사용자 ID 필드를 필수로 변경
 
   article     Article?   @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
   marketPost  MarketPost? @relation("MarketComments", fields: [marketPostId], references: [id], onDelete: Cascade)
-
+  user        User       @relation(fields: [userId], references: [id]) // 사용자와의 관계 추가
+  
   @@unique([id, boardType])
 }
+
 
 // 사용자 모델 스키마
 model User {
@@ -69,6 +70,8 @@ model User {
   encryptedPassword String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  comments         Comment[] // 사용자와의 댓글 관계 추가
 }
 
 // 자유게시판 댓글인지 중고마켓 댓글인지 'board', 'market' 로 구분
