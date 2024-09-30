@@ -132,4 +132,33 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
+// 상품에 좋아요 추가 및 삭제 API
+router.post("/:id/favorite", authMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id; // 인증된 사용자 ID
+
+  try {
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
+    }
+
+    // 사용자가 이미 좋아요를 눌렀는지 확인
+    if (product.likes.includes(userId)) {
+      // 좋아요를 취소
+      product.likes.pull(userId);
+      await product.save();
+      return res.status(200).send({ message: "좋아요가 취소되었습니다." });
+    } else {
+      // 좋아요 추가
+      product.likes.push(userId);
+      await product.save();
+      return res.status(200).send({ message: "좋아요가 추가되었습니다." });
+    }
+  } catch (error) {
+    console.error("좋아요 처리 중 오류 발생:", error);
+    res.status(500).send({ error: "좋아요를 처리하는 데 실패했습니다." });
+  }
+});
+
 export default router;
