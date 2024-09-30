@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import Product from "../../models/Product.js";
 import authMiddleware from "../../middlewares/authMiddleware.js"; // JWT 토큰 인증 미들웨어 import
-import multer from "multer"; //  파일 업로드를 처리하기 위한 미들웨어
+import multer from "multer"; // 파일 업로드를 처리하기 위한 미들웨어
 import errorHandler from "../../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
 import { validateProduct } from "../../middlewares/productValidationMiddleware.js"; // 유효성 검사 미들웨어 import
 
@@ -19,37 +19,71 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// 상품 목록 조회
-router.get("/", async (req, res, next) => {
-  // next 추가
-  const { sort = "recent", offset = 0, limit = 10, search = "" } = req.query;
+// 상품 목록 조회 및 등록 API
+router
+  .route("/")
+  .get(async (req, res, next) => {
+    // next 추가
+    const { sort = "recent", offset = 0, limit = 10, search = "" } = req.query;
 
-  try {
-    // 정렬 옵션 설정
-    const sortOption = sort === "recent" ? { createdAt: -1 } : {}; // 1은 오름차순, -1 내림차순
+    try {
+      // 정렬 옵션 설정
+      const sortOption = sort === "recent" ? { createdAt: -1 } : {}; // 1은 오름차순, -1 내림차순
 
-    // 검색 조건 설정
-    const searchQuery = {
-      $or: [
-        // 두 가지 조건 중 하나라도 만족하는 문서를 찾도록 설정
-        { name: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
-      ],
-      // regex : name 또는 description 필드에서 search 문자열을 찾음
-      // 'i': 대소문자 구분 없이 검색하도록 설정
-    };
+      // 검색 조건 설정
+      const searchQuery = {
+        $or: [
+          // 두 가지 조건 중 하나라도 만족하는 문서를 찾도록 설정
+          { name: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } },
+        ],
+        // regex : name 또는 description 필드에서 search 문자열을 찾음
+        // 'i': 대소문자 구분 없이 검색하도록 설정
+      };
 
-    // 페이지네이션 및 검색 적용
-    const products = await Product.find(searchQuery) // 조건에 맞는 문서 조회
-      .sort(sortOption) // 정렬함
-      .skip(Number(offset)) // offset만큼 문서 건너뜀
-      .limit(Number(limit)) // 최대 limit 만큼 문서 반환
-      .select("id name price createdAt"); // 선택한 필드만 포함된 결과를 반환
-    res.status(200).send(products);
-  } catch (error) {
-    next(error); // 에러를 핸들러로 전달
-  }
-});
+      // 페이지네이션 및 검색 적용
+      const products = await Product.find(searchQuery) // 조건에 맞는 문서 조회
+        .sort(sortOption) // 정렬함
+        .skip(Number(offset)) // offset만큼 문서 건너뜀
+        .limit(Number(limit)) // 최대 limit 만큼 문서 반환
+        .select("id name price createdAt"); // 선택한 필드만 포함된 결과를 반환
+      res.status(200).send(products);
+    } catch (error) {
+      next(error); // 에러를 핸들러로 전달
+    }
+  })
+  .post(
+    authMiddleware,
+    upload.single("image"),
+    validateProduct,
+    async (req, res, next) => {
+      // next 추가
+      // 인증 미들웨어 및 multer 미들웨어 및 유효성검사 미들웨어 추가
+      const { name, description, price, tags } = req.body;
+
+      try {
+        const newProduct = new Product({
+          name,
+          description,
+          price: Number(price), // price를 숫자로 변환하여 저장
+          tags,
+          userId: req.user.id, // 등록한 사용자의 ID 추가
+          image: req.file ? req.file.path : null, // 파일 업로드 된 경우, 이미지 경로 추가
+        });
+
+        await newProduct.save();
+
+        // 응답에 이미지 경로 추가
+        res.status(201).send({
+          message: "상품이 성공적으로 등록되었습니다.",
+          product: newProduct,
+          imageUrl: req.file ? req.file.path : null, // 이미지 경로 포함
+        });
+      } catch (error) {
+        next(error); // 에러를 핸들러로 전달
+      }
+    }
+  );
 
 // 상품 상세 조회 API
 router.get("/:id", authMiddleware, async (req, res, next) => {
@@ -81,41 +115,6 @@ router.get("/:id", authMiddleware, async (req, res, next) => {
     next(error); // 에러를 핸들러로 전달
   }
 });
-
-// 상품 등록 API
-router.post(
-  "/",
-  authMiddleware,
-  upload.single("image"),
-  validateProduct,
-  async (req, res, next) => {
-    // next 추가
-    // 인증 미들웨어 및 multer 미들웨어 및 유효성검사 미들웨어 추가
-    const { name, description, price, tags } = req.body;
-
-    try {
-      const newProduct = new Product({
-        name,
-        description,
-        price: Number(price), // price를 숫자로 변환하여 저장
-        tags,
-        userId: req.user.id, // 등록한 사용자의 ID 추가
-        image: req.file ? req.file.path : null, // 파일 업로드 된 경우, 이미지 경로 추가
-      });
-
-      await newProduct.save();
-
-      // 응답에 이미지 경로 추가
-      res.status(201).send({
-        message: "상품이 성공적으로 등록되었습니다.",
-        product: newProduct,
-        imageUrl: req.file ? req.file.path : null, // 이미지 경로 포함
-      });
-    } catch (error) {
-      next(error); // 에러를 핸들러로 전달
-    }
-  }
-);
 
 // 상품 수정 API
 router.patch("/:id", authMiddleware, async (req, res, next) => {

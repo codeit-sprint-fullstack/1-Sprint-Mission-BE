@@ -7,8 +7,8 @@ import errorHandler from "../../middlewares/errorHandler.js"; // 에러 핸들�
 const prisma = new PrismaClient();
 const router = express.Router();
 
-// 회원가입 API
-router.post("/signUp", async (req, res, next) => {
+// 회원가입 API 및 로그인 API
+router.route("/signUp").post(async (req, res, next) => {
   const { email, nickname, password } = req.body;
 
   try {
@@ -31,8 +31,7 @@ router.post("/signUp", async (req, res, next) => {
   }
 });
 
-// 로그인 API
-router.post("/login", async (req, res, next) => {
+router.route("/login").post(async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
