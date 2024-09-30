@@ -8,6 +8,16 @@ const errorHandler = (err, req, res, next) => {
     return res.status(400).json({ error: err.message });
   }
 
+  // 리소스를 찾을 수 없을 때
+  if (err.name === "NotFoundError") {
+    return res.status(404).json({ error: "리소스를 찾을 수 없습니다." });
+  }
+
+  // 인증이 필요할 때
+  if (err.name === "UnauthorizedError") {
+    return res.status(401).json({ error: "인증이 필요합니다." });
+  }
+
   // 상태 코드가 지정된 에러 처리
   if (err.status) {
     return res.status(err.status).json({ error: err.message });
