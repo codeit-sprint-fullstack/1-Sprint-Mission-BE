@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import Product from "../../models/Product.js";
+import authMiddleware from "../../middlewares/authMiddleware.js"; // JWT 토큰 인증 미들웨어 import
 
 const router = express.Router();
 
@@ -27,7 +28,7 @@ router.get("/", async (req, res) => {
       .sort(sortOption) // 정렬함
       .skip(Number(offset)) // offset만큼 문서 건너뜀
       .limit(Number(limit)) // 최대 limit 만큼 문서 반환
-      .select("id name price createdAt"); //선택한 필드만 포함된 결과를 반환
+      .select("id name price createdAt"); // 선택한 필드만 포함된 결과를 반환
     res.status(200).send(products);
   } catch (error) {
     console.error("상품 목록 조회 중 오류 발생:", error);
@@ -52,7 +53,8 @@ router.get("/:id", async (req, res) => {
 });
 
 // 상품 등록
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
+  // 인증 미들웨어 추가
   const { name, description, price, tags } = req.body;
 
   // 데이터 검증
@@ -68,6 +70,7 @@ router.post("/", async (req, res) => {
       description,
       price: Number(price), // price를 숫자로 변환하여 저장
       tags,
+      userId: req.user.id, // 등록한 사용자의 ID 추가
     });
 
     await newProduct.save();
@@ -78,21 +81,27 @@ router.post("/", async (req, res) => {
 });
 
 // 상품 수정 API
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", authMiddleware, async (req, res) => {
+  // 인증 미들웨어 추가
   const { id } = req.params;
 
   try {
-    // 상품을 찾고 업데이트
-    const product = await Product.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true, // 유효성 검사
-    });
-
+    const product = await Product.findById(id);
     if (!product) {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
     }
 
-    res.status(200).send(product);
+    // 상품 등록자 확인
+    if (product.userId.toString() !== req.user.id) {
+      return res.status(403).send({ message: "수정 권한이 없습니다." });
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true, // 유효성 검사
+    });
+
+    res.status(200).send(updatedProduct);
   } catch (error) {
     console.error("상품 수정 중 오류 발생:", error);
     res.status(500).send({ error: "상품을 수정하는 데 실패했습니다" });
@@ -100,15 +109,22 @@ router.patch("/:id", async (req, res) => {
 });
 
 // 상품 삭제 API
-router.delete("/:id", async (req, res) => {
-  const { id } = req.params; // 수정된 부분: ID를 문자열로 사용
+router.delete("/:id", authMiddleware, async (req, res) => {
+  // 인증 미들웨어 추가
+  const { id } = req.params;
 
   try {
-    const product = await Product.findByIdAndDelete(id);
+    const product = await Product.findById(id);
     if (!product) {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
     }
 
+    // 상품 등록자 확인
+    if (product.userId.toString() !== req.user.id) {
+      return res.status(403).send({ message: "삭제 권한이 없습니다." });
+    }
+
+    await Product.findByIdAndDelete(id);
     res.status(200).send({ message: "상품이 성공적으로 삭제되었습니다." });
   } catch (error) {
     console.error("상품 삭제 중 오류 발생:", error);
