@@ -2,6 +2,7 @@ import express, { Router } from "express";
 import Product from "../../models/Product.js";
 import authMiddleware from "../../middlewares/authMiddleware.js"; // JWT 토큰 인증 미들웨어 import
 import multer from "multer"; //  파일 업로드를 처리하기 위한 미들웨어
+import errorHandler from "../../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
 import { validateProduct } from "../../middlewares/productValidationMiddleware.js"; // 유효성 검사 미들웨어 import
 
 const router = express.Router();
@@ -19,7 +20,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // 상품 목록 조회
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
+  // next 추가
   const { sort = "recent", offset = 0, limit = 10, search = "" } = req.query;
 
   try {
@@ -45,13 +47,13 @@ router.get("/", async (req, res) => {
       .select("id name price createdAt"); // 선택한 필드만 포함된 결과를 반환
     res.status(200).send(products);
   } catch (error) {
-    console.error("상품 목록 조회 중 오류 발생:", error);
-    res.status(500).send({ error: "상품 목록을 불러오는 데 실패했습니다" });
+    next(error); // 에러를 핸들러로 전달
   }
 });
 
 // 상품 상세 조회 API
-router.get("/:id", authMiddleware, async (req, res) => {
+router.get("/:id", authMiddleware, async (req, res, next) => {
+  // next 추가
   const { id } = req.params;
   const userId = req.user ? req.user.id : null; // 로그인한 사용자의 ID
 
@@ -80,8 +82,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
       isLiked, // '좋아요' 여부 포함
     });
   } catch (error) {
-    console.error("상품 상세 조회 중 오류 발생:", error);
-    res.status(500).send({ error: "상품을 불러오는 데 실패했습니다" });
+    next(error); // 에러를 핸들러로 전달
   }
 });
 
@@ -91,7 +92,8 @@ router.post(
   authMiddleware,
   upload.single("image"),
   validateProduct,
-  async (req, res) => {
+  async (req, res, next) => {
+    // next 추가
     // 인증 미들웨어 및 multer 미들웨어 및 유효성검사 미들웨어 추가
     const { name, description, price, tags } = req.body;
 
@@ -114,13 +116,14 @@ router.post(
         imageUrl: req.file ? req.file.path : null, // 이미지 경로 포함
       });
     } catch (error) {
-      res.status(500).send({ error: error.message });
+      next(error); // 에러를 핸들러로 전달
     }
   }
 );
 
 // 상품 수정 API
-router.patch("/:id", authMiddleware, async (req, res) => {
+router.patch("/:id", authMiddleware, async (req, res, next) => {
+  // next 추가
   // 인증 미들웨어 추가
   const { id } = req.params;
 
@@ -142,13 +145,13 @@ router.patch("/:id", authMiddleware, async (req, res) => {
 
     res.status(200).send(updatedProduct);
   } catch (error) {
-    console.error("상품 수정 중 오류 발생:", error);
-    res.status(500).send({ error: "상품을 수정하는 데 실패했습니다" });
+    next(error); // 에러를 핸들러로 전달
   }
 });
 
 // 상품 삭제 API
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res, next) => {
+  // next 추가
   // 인증 미들웨어 추가
   const { id } = req.params;
 
@@ -166,13 +169,13 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     await Product.findByIdAndDelete(id);
     res.status(200).send({ message: "상품이 성공적으로 삭제되었습니다." });
   } catch (error) {
-    console.error("상품 삭제 중 오류 발생:", error);
-    res.status(500).send({ error: "상품을 삭제하는 데 실패했습니다" });
+    next(error); // 에러를 핸들러로 전달
   }
 });
 
 // 상품에 좋아요 추가 및 삭제 API
-router.post("/:id/favorite", authMiddleware, async (req, res) => {
+router.post("/:id/favorite", authMiddleware, async (req, res, next) => {
+  // next 추가
   const { id } = req.params;
   const userId = req.user.id; // 인증된 사용자 ID
 
@@ -214,9 +217,11 @@ router.post("/:id/favorite", authMiddleware, async (req, res) => {
       : "좋아요가 추가되었습니다.";
     res.status(200).send({ message });
   } catch (error) {
-    console.error("좋아요 처리 중 오류 발생:", error);
-    res.status(500).send({ error: "좋아요를 처리하는 데 실패했습니다." });
+    next(error); // 에러를 핸들러로 전달
   }
 });
+
+// 에러 핸들러 미들웨어 등록
+router.use(errorHandler);
 
 export default router;

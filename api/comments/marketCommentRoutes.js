@@ -1,11 +1,13 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import errorHandler from "../../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
 // 중고마켓 댓글 목록 조회 API
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
+  // next 추가
   // "/api/market/comments"에 해당
   const { cursor = "", limit = 15 } = req.query;
 
@@ -31,12 +33,13 @@ router.get("/", async (req, res) => {
     res.status(200).json({ totalCount, comments }); // 응답 형식 변경
   } catch (error) {
     console.error("댓글 목록 조회 중 오류 발생:", error);
-    res.status(500).json({ error: "댓글 목록을 불러오는 데 실패했습니다." });
+    next(error); // 에러를 핸들러로 전달
   }
 });
 
 // 중고마켓 댓글 등록 API
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
+  // next 추가
   // "/api/market/comments"에 해당
   const { content, postId } = req.body;
 
@@ -44,6 +47,7 @@ router.post("/", async (req, res) => {
   if (!content || !postId) {
     return res.status(400).json({ error: "댓글 내용을 입력해주세요." });
   }
+
   try {
     const newComment = await prisma.comment.create({
       data: {
@@ -56,8 +60,11 @@ router.post("/", async (req, res) => {
     res.status(201).json(newComment); // 응답 형식 변경
   } catch (error) {
     console.error("댓글 등록 중 오류 발생:", error);
-    res.status(500).json({ error: "댓글 등록을 실패했습니다." });
+    next(error); // 에러를 핸들러로 전달
   }
 });
+
+// 에러 핸들러 미들웨어 등록
+router.use(errorHandler);
 
 export default router;
