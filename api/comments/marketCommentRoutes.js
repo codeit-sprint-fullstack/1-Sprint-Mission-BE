@@ -5,7 +5,8 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 // 중고마켓 댓글 목록 조회 API
-router.get("/api/market/comments", async (req, res) => {
+router.get("/", async (req, res) => {
+  // "/api/market/comments"에 해당
   const { cursor = "", limit = 15 } = req.query;
 
   try {
@@ -27,20 +28,21 @@ router.get("/api/market/comments", async (req, res) => {
       select: { id: true, content: true, createdAt: true, postId: true },
     });
 
-    res.status(200).send(totalCount, comments);
+    res.status(200).json({ totalCount, comments }); // 응답 형식 변경
   } catch (error) {
     console.error("댓글 목록 조회 중 오류 발생:", error);
-    res.status(500).send({ error: "댓글 목록을 불러오는 데 실패했습니다." });
+    res.status(500).json({ error: "댓글 목록을 불러오는 데 실패했습니다." });
   }
 });
 
 // 중고마켓 댓글 등록 API
-router.post("/api/board/comments", async (req, res) => {
+router.post("/", async (req, res) => {
+  // "/api/market/comments"에 해당
   const { content, postId } = req.body;
 
   // 데이터 검증
   if (!content || !postId) {
-    return res.status(400).send({ error: "댓글 내용을 입력해주세요." });
+    return res.status(400).json({ error: "댓글 내용을 입력해주세요." });
   }
   try {
     const newComment = await prisma.comment.create({
@@ -51,10 +53,10 @@ router.post("/api/board/comments", async (req, res) => {
       },
     });
 
-    res.status(201).send(newComment);
+    res.status(201).json(newComment); // 응답 형식 변경
   } catch (error) {
     console.error("댓글 등록 중 오류 발생:", error);
-    res.status(500).send({ error: "댓글 등록을 실패했습니다." });
+    res.status(500).json({ error: "댓글 등록을 실패했습니다." });
   }
 });
 
