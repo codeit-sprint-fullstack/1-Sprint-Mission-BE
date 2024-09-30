@@ -27,6 +27,7 @@ model MarketPost {
   updatedAt       DateTime @updatedAt
   ownerNickname   String   // 소유자 닉네임
   isFavorite      Boolean   @default(false) // 찜 여부
+  comments        Comment[] @relation("MarketComments") // 댓글과의 관계 추가
 }
 
 // 자유게시판 게시글 모델 스키마
@@ -43,18 +44,21 @@ model Article {
 }
 
 model Comment {
-  id        Int       @id @default(autoincrement())
-  content   String
-  postId    Int
-  boardType boardType @default(board)
-  author    String 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  article   Article   @relation("ArticleComments", fields: [postId], references: [id], onDelete: Cascade) // 관계 설정
+  id          Int       @id @default(autoincrement())
+  content     String
+  articleId   Int?      // 자유게시판 게시글 외래키
+  marketPostId Int?      // 중고마켓 게시글 외래키
+  boardType   boardType @default(board)
+  author      String 
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
+  article     Article?   @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
+  marketPost  MarketPost? @relation("MarketComments", fields: [marketPostId], references: [id], onDelete: Cascade)
 
   @@unique([id, boardType])
 }
+
 
 // 자유게시판 댓글인지 중고마켓 댓글인지 'board', 'market' 로 구분
 enum boardType {
