@@ -53,13 +53,29 @@ router.get("/", async (req, res) => {
 // 상품 상세 조회
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
+  const userId = req.user ? req.user.id : null; // 로그인한 사용자의 ID
 
   try {
-    const product = await Product.findById(id);
+    const product = await prisma.marketPost.findUnique({
+      where: { id: Number(id) },
+      include: {
+        comments: true, // 댓글을 포함하여 조회
+      },
+    });
+
     if (!product) {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
     }
-    res.status(200).send(product);
+
+    // 사용자가 좋아요를 눌렀는지 여부 확인
+    const isFavorite = product.isFavorite && userId !== null; // null이 아니라면, 인증된 사용자
+
+    //응답 객체에 상품 정보, 댓글 리스트, 좋아요 여부를 포함하여 반환
+    res.status(200).send({
+      product,
+      comments: product.comments,
+      isFavorite,
+    });
   } catch (error) {
     console.error("상품 상세 조회 중 오류 발생:", error);
     res.status(500).send({ error: "상품을 불러오는 데 실패했습니다" });
