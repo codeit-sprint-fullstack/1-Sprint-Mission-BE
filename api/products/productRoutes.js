@@ -2,6 +2,7 @@ import express, { Router } from "express";
 import Product from "../../models/Product.js";
 import authMiddleware from "../../middlewares/authMiddleware.js"; // JWT 토큰 인증 미들웨어 import
 import multer from "multer"; //  파일 업로드를 처리하기 위한 미들웨어
+import { validateProduct } from "../../middlewares/productValidationMiddleware.js"; // 유효성 검사 미들웨어 import
 
 const router = express.Router();
 
@@ -66,39 +67,38 @@ router.get("/:id", async (req, res) => {
 });
 
 // 상품 등록 API
-router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
-  // 인증 미들웨어 및 multer 미들웨어 추가
-  const { name, description, price, tags } = req.body;
+router.post(
+  "/",
+  authMiddleware,
+  upload.single("image"),
+  validateProduct,
+  async (req, res) => {
+    // 인증 미들웨어 및 multer 미들웨어 및 유효성검사 미들웨어 추가
+    const { name, description, price, tags } = req.body;
 
-  // 데이터 검증
-  if (!name || !description || !price) {
-    return res
-      .status(400)
-      .send({ error: "상품 이름과 설명, 판매가격은 필수로 적어주세요." });
+    try {
+      const newProduct = new Product({
+        name,
+        description,
+        price: Number(price), // price를 숫자로 변환하여 저장
+        tags,
+        userId: req.user.id, // 등록한 사용자의 ID 추가
+        image: req.file ? req.file.path : null, // 파일 업로드 된 경우, 이미지 경로 추가
+      });
+
+      await newProduct.save();
+
+      // 응답에 이미지 경로 추가
+      res.status(201).send({
+        message: "상품이 성공적으로 등록되었습니다.",
+        product: newProduct,
+        imageUrl: req.file ? req.file.path : null, // 이미지 경로 포함
+      });
+    } catch (error) {
+      res.status(500).send({ error: error.message });
+    }
   }
-
-  try {
-    const newProduct = new Product({
-      name,
-      description,
-      price: Number(price), // price를 숫자로 변환하여 저장
-      tags,
-      userId: req.user.id, // 등록한 사용자의 ID 추가
-      image: req.file ? req.file.path : null, // 파일 업로드 된 경우, 이미지 경로 추가
-    });
-
-    await newProduct.save();
-
-    // 응답에 이미지 경로 추가
-    res.status(201).send({
-      message: "상품이 성공적으로 등록되었습니다.",
-      product: newProduct,
-      imageUrl: req.file ? req.file.path : null, // 이미지 경로 포함
-    });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
+);
 
 // 상품 수정 API
 router.patch("/:id", authMiddleware, async (req, res) => {
