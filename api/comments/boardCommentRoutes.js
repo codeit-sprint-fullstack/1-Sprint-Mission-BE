@@ -1,11 +1,12 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import errorHandler from "../../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
 // 자유게시판 댓글 목록 조회 API
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   const { cursor = "", limit = 20 } = req.query;
 
   try {
@@ -31,17 +32,16 @@ router.get("/", async (req, res) => {
     res.status(200).send(comments);
   } catch (error) {
     console.error("댓글 목록 조회 중 오류 발생:", error);
-    res.status(500).send({ error: "댓글 목록을 불러오는 데 실패했습니다." });
+    next(error); // 에러 핸들러로 전달
   }
 });
 
 // 자유게시판 댓글 등록 API
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   const { content, postId, author } = req.body; // author 추가
 
   // 데이터 검증
   if (!content || !postId || !author) {
-    // author 검증 추가
     return res
       .status(400)
       .send({ error: "댓글 내용을 입력해주세요. 작성자를 입력해주세요." });
@@ -60,12 +60,12 @@ router.post("/", async (req, res) => {
     res.status(201).send(newComment);
   } catch (error) {
     console.error("댓글 등록 중 오류 발생:", error);
-    res.status(500).send({ error: "댓글 등록을 실패했습니다." });
+    next(error); // 에러 핸들러로 전달
   }
 });
 
 // 자유게시판 댓글 수정 API
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", async (req, res, next) => {
   const { id, boardType } = req.params;
   const { content } = req.body;
 
@@ -91,12 +91,12 @@ router.patch("/:id", async (req, res) => {
     }
 
     console.error("댓글 수정 중 오류 발생:", error);
-    res.status(500).send({ error: "댓글 수정을 실패했습니다." });
+    next(error); // 에러 핸들러로 전달
   }
 });
 
 // 자유게시판 댓글 삭제 API
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
   const { id, boardType } = req.params;
 
   try {
@@ -114,8 +114,11 @@ router.delete("/:id", async (req, res) => {
     res.status(200).send({ message: "댓글이 성공적으로 삭제되었습니다." });
   } catch (error) {
     console.error("댓글 삭제 중 오류 발생:", error);
-    res.status(500).send({ error: "댓글 삭제를 실패했습니다." });
+    next(error); // 에러 핸들러로 전달
   }
 });
+
+// 에러 핸들러 미들웨어 등록
+router.use(errorHandler);
 
 export default router;

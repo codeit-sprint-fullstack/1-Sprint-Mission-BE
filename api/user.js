@@ -2,12 +2,13 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken"; // JWT 토큰 생성을 위한 라이브러리
 import bcrypt from "bcryptjs";
+import errorHandler from "../../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
 // 회원가입 API
-router.post("/signUp", async (req, res) => {
+router.post("/signUp", async (req, res, next) => {
   const { email, nickname, password } = req.body;
 
   try {
@@ -26,12 +27,12 @@ router.post("/signUp", async (req, res) => {
     res.status(201).json({ message: "회원가입 성공", userId: user.id });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ error: "회원가입 실패" });
+    next(error); // 에러를 에러 핸들러로 전달
   }
 });
 
 // 로그인 API
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
@@ -54,8 +55,11 @@ router.post("/login", async (req, res) => {
     res.status(200).json({ message: "로그인 성공", token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "로그인 실패" });
+    next(error); // 에러를 에러 핸들러로 전달
   }
 });
+
+// 에러 핸들러 미들웨어 등록
+router.use(errorHandler);
 
 export default router;

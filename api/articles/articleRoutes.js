@@ -1,11 +1,12 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import errorHandler from "../../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
 
 const prisma = new PrismaClient();
 const router = express.Router(); // API 경로 정의
 
 // 게시글 목록 조회 API
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   const { sort = "recent", offset = 0, limit = 27, search = "" } = req.query;
 
   try {
@@ -42,12 +43,12 @@ router.get("/", async (req, res) => {
     res.status(200).send(articles);
   } catch (error) {
     console.error("게시글 목록 조회 중 오류 발생:", error);
-    res.status(500).send({ error: "게시글 목록을 불러오는 데 실패했습니다." });
+    next(error); // 에러 핸들러로 전달
   }
 });
 
 // 게시글 상세 조회 API
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -71,12 +72,12 @@ router.get("/:id", async (req, res) => {
     res.status(200).send(article);
   } catch (error) {
     console.error("게시글 상세 조회 중 오류 발생:", error);
-    res.status(500).send({ error: "게시글을 불러오는 데 실패했습니다." });
+    next(error); // 에러 핸들러로 전달
   }
 });
 
 // 게시글 등록 API
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   const {
     title,
     content,
@@ -105,12 +106,12 @@ router.post("/", async (req, res) => {
     res.status(201).json(newArticle);
   } catch (error) {
     console.error("게시글 등록 중 오류 발생:", error);
-    res.status(500).json({ error: "게시글을 등록하는 데 실패했습니다." });
+    next(error); // 에러 핸들러로 전달
   }
 });
 
 // 게시글 수정 API
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", async (req, res, next) => {
   const { id } = req.params;
   const { title, content, likeCount, author, imageUrl } = req.body;
 
@@ -133,12 +134,12 @@ router.patch("/:id", async (req, res) => {
     res.status(200).send(updatedArticle);
   } catch (error) {
     console.error("게시글 수정 중 오류 발생:", error);
-    res.status(500).send({ error: "게시글을 수정하는 데 실패했습니다." });
+    next(error); // 에러 핸들러로 전달
   }
 });
 
 // 게시글 삭제 API
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -149,8 +150,11 @@ router.delete("/:id", async (req, res) => {
     res.status(200).send({ message: "게시글이 성공적으로 삭제되었습니다." });
   } catch (error) {
     console.error("게시글 삭제 중 오류 발생:", error);
-    res.status(500).send({ error: "게시글을 삭제하는 데 실패했습니다." });
+    next(error); // 에러 핸들러로 전달
   }
 });
+
+// 에러 핸들러 미들웨어 등록
+router.use(errorHandler);
 
 export default router;
