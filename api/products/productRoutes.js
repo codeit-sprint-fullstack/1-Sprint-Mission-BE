@@ -50,8 +50,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-// 상품 상세 조회
-router.get("/:id", async (req, res) => {
+// 상품 상세 조회 API
+router.get("/:id", authMiddleware, async (req, res) => {
   const { id } = req.params;
   const userId = req.user ? req.user.id : null; // 로그인한 사용자의 ID
 
@@ -60,6 +60,7 @@ router.get("/:id", async (req, res) => {
       where: { id: Number(id) },
       include: {
         comments: true, // 댓글을 포함하여 조회
+        likes: true, // 좋아요 정보를 포함
       },
     });
 
@@ -68,13 +69,15 @@ router.get("/:id", async (req, res) => {
     }
 
     // 사용자가 좋아요를 눌렀는지 여부 확인
-    const isFavorite = product.isFavorite && userId !== null; // null이 아니라면, 인증된 사용자
+    const isLiked = userId
+      ? product.likes.some((like) => like.userId === userId)
+      : false;
 
-    //응답 객체에 상품 정보, 댓글 리스트, 좋아요 여부를 포함하여 반환
+    // 응답 객체에 상품 정보, 댓글 리스트, 좋아요 여부를 포함하여 반환
     res.status(200).send({
       product,
       comments: product.comments,
-      isFavorite,
+      isLiked, // '좋아요' 여부 포함
     });
   } catch (error) {
     console.error("상품 상세 조회 중 오류 발생:", error);
@@ -174,23 +177,42 @@ router.post("/:id/favorite", authMiddleware, async (req, res) => {
   const userId = req.user.id; // 인증된 사용자 ID
 
   try {
-    const product = await Product.findById(id);
+    const product = await prisma.marketPost.findUnique({
+      where: { id: Number(id) },
+      include: { likes: true }, // 좋아요 리스트를 포함
+    });
+
     if (!product) {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
     }
+    // 사용자가 좋아요를 눌렀는지 확인
+    const isLiked = product.likes.some((like) => like.userId === userId);
 
-    // 사용자가 이미 좋아요를 눌렀는지 확인
-    if (product.likes.includes(userId)) {
-      // 좋아요를 취소
-      product.likes.pull(userId);
-      await product.save();
-      return res.status(200).send({ message: "좋아요가 취소되었습니다." });
-    } else {
-      // 좋아요 추가
-      product.likes.push(userId);
-      await product.save();
-      return res.status(200).send({ message: "좋아요가 추가되었습니다." });
-    }
+    // 트랜잭션 시작
+    await prisma.$transaction(async (prisma) => {
+      if (isLiked) {
+        // 좋아요를 취소
+        await prisma.like.deleteMany({
+          where: {
+            marketPostId: Number(id),
+            userId: userId,
+          },
+        });
+      } else {
+        // 좋아요 추가
+        await prisma.like.create({
+          data: {
+            marketPostId: Number(id),
+            userId: userId,
+          },
+        });
+      }
+    });
+
+    const message = isLiked
+      ? "좋아요가 취소되었습니다."
+      : "좋아요가 추가되었습니다.";
+    res.status(200).send({ message });
   } catch (error) {
     console.error("좋아요 처리 중 오류 발생:", error);
     res.status(500).send({ error: "좋아요를 처리하는 데 실패했습니다." });
