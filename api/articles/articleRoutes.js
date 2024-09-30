@@ -6,7 +6,7 @@ const router = express.Router(); // API 경로 정의
 
 // 게시글 목록 조회 API
 router.get("/", async (req, res) => {
-  const { sort = "recent", offset = 0, limit = 10, search = "" } = req.query;
+  const { sort = "recent", offset = 0, limit = 27, search = "" } = req.query;
 
   try {
     // 정렬 옵션 설정(최신순)
@@ -33,6 +33,9 @@ router.get("/", async (req, res) => {
         title: true,
         content: true,
         createdAt: true,
+        likeCount: true, // 추가된 속성
+        author: true, // 추가된 속성
+        imageUrl: true, // 추가된 속성
       },
     });
 
@@ -55,6 +58,9 @@ router.get("/:id", async (req, res) => {
         title: true,
         content: true,
         createdAt: true,
+        likeCount: true, // 추가된 필드
+        author: true, // 추가된 필드
+        imageUrl: true, // 추가된 필드
       },
     });
 
@@ -71,13 +77,18 @@ router.get("/:id", async (req, res) => {
 
 // 게시글 등록 API
 router.post("/", async (req, res) => {
-  const { title, content } = req.body;
+  const {
+    title,
+    content,
+    likeCount = 0,
+    author = "",
+    imageUrl = "",
+  } = req.body;
 
-  // 데이터 검증
   if (!title || !content) {
     return res
       .status(400)
-      .send({ error: "게시글 제목과 내용은 필수로 입력해주세요." });
+      .json({ error: "게시글 제목과 내용은 필수로 입력해주세요." });
   }
 
   try {
@@ -85,20 +96,23 @@ router.post("/", async (req, res) => {
       data: {
         title,
         content,
+        likeCount,
+        author,
+        imageUrl,
       },
     });
 
-    res.status(201).send(newArticle);
+    res.status(201).json(newArticle);
   } catch (error) {
     console.error("게시글 등록 중 오류 발생:", error);
-    res.status(500).send({ error: "게시글을 등록하는 데 실패했습니다" });
+    res.status(500).json({ error: "게시글을 등록하는 데 실패했습니다." });
   }
 });
 
 // 게시글 수정 API
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
-  const { title, content, likeCount } = req.body;
+  const { title, content, likeCount, author, imageUrl } = req.body;
 
   try {
     const updatedArticle = await prisma.article.update({
@@ -106,7 +120,9 @@ router.patch("/:id", async (req, res) => {
       data: {
         title,
         content,
-        likeCount,
+        likeCount, // 추가된 필드
+        author, // 추가된 필드
+        imageUrl, // 추가된 필드
       },
     });
 
@@ -132,11 +148,6 @@ router.delete("/:id", async (req, res) => {
 
     res.status(200).send({ message: "게시글이 성공적으로 삭제되었습니다." });
   } catch (error) {
-    //게시글 못 찾을때
-    if (!deletedArticle) {
-      return res.status(404).send({ message: "게시글을 찾을 수 없습니다." });
-    }
-
     console.error("게시글 삭제 중 오류 발생:", error);
     res.status(500).send({ error: "게시글을 삭제하는 데 실패했습니다." });
   }

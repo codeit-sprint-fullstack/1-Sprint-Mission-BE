@@ -19,7 +19,13 @@ router.get("/", async (req, res) => {
       },
       orderBy: { id: "asc" }, // id를 기준으로 오름차순 정렬
       take: Number(limit),
-      select: { id: true, content: true, createdAt: true, postId: true },
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+        postId: true,
+        author: true,
+      },
     });
 
     res.status(200).send(comments);
@@ -31,11 +37,14 @@ router.get("/", async (req, res) => {
 
 // 자유게시판 댓글 등록 API
 router.post("/", async (req, res) => {
-  const { content, postId } = req.body;
+  const { content, postId, author } = req.body; // author 추가
 
   // 데이터 검증
-  if (!content || !postId) {
-    return res.status(400).send({ error: "댓글 내용을 입력해주세요." });
+  if (!content || !postId || !author) {
+    // author 검증 추가
+    return res
+      .status(400)
+      .send({ error: "댓글 내용을 입력해주세요. 작성자를 입력해주세요." });
   }
 
   try {
@@ -43,6 +52,7 @@ router.post("/", async (req, res) => {
       data: {
         content,
         postId,
+        author, // author 추가
         boardType: "board",
       },
     });
