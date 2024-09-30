@@ -43,6 +43,7 @@ model Article {
   comments  Comment[] @relation("ArticleComments") // 댓글과의 관계 설정
 }
 
+// 댓글 모델 스키마
 model Comment {
   id          Int       @id @default(autoincrement())
   content     String
@@ -59,6 +60,16 @@ model Comment {
   @@unique([id, boardType])
 }
 
+// 사용자 모델 스키마
+model User {
+  id               Int      @id @default(autoincrement())
+  email            String   @unique
+  nickname         String   @unique
+  image            String?  // 이미지 URL
+  encryptedPassword String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
 
 // 자유게시판 댓글인지 중고마켓 댓글인지 'board', 'market' 로 구분
 enum boardType {
