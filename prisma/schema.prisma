@@ -13,6 +13,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// 중고마켓 게시글 모델 스키마
+model MarketPost {
+  id              Int      @id @default(autoincrement())
+  name            String   // 상품명
+  description     String   // 상품 설명
+  price           Int      // 가격
+  tags            String[] // 태그 배열
+  images          String[] // 이미지 URL 배열
+  ownerId         Int      // 소유자 ID
+  favoriteCount   Int      @default(0) // 찜 개수
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  ownerNickname   String   // 소유자 닉네임
+  isFavorite      Boolean   @default(false) // 찜 여부
+}
+
+// 자유게시판 게시글 모델 스키마
 model Article {
   id        Int      @id @default(autoincrement())
   title     String   
