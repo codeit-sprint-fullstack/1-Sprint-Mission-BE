@@ -11,6 +11,10 @@ import articleRoutes from "./api/articles/articleRoutes.js";
 import boardCommentRoutes from "./api/comments/boardCommentRoutes.js";
 import marketCommentRoutes from "./api/comments/marketCommentRoutes.js";
 
+// Swagger 관련 import
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+
 // __filename과 __dirname 정의
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,7 +22,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(express.json());
 
-// cors 설정( 일단, 모든 도메인에서의 요청을 허용해놓음 )
+// CORS 설정
 app.use(cors());
 
 // MongoDB 연결
@@ -26,6 +30,27 @@ mongoose
   .connect(process.env.DATABASE_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
+
+// Swagger 설정
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "API Documentation",
+      version: "1.0.0",
+      description: "API documentation for your project",
+    },
+    servers: [
+      {
+        url: `http://localhost:${process.env.PORT || 8000}`,
+      },
+    ],
+  },
+  apis: ["./api/**/*.js"], // API 문서 주석이 포함된 파일의 경로
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // 정적 파일 제공 설정
 app.use("/images", express.static(path.join(__dirname, "public/images")));
