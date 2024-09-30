@@ -1,8 +1,21 @@
 import express, { Router } from "express";
 import Product from "../../models/Product.js";
 import authMiddleware from "../../middlewares/authMiddleware.js"; // JWT 토큰 인증 미들웨어 import
+import multer from "multer"; //  파일 업로드를 처리하기 위한 미들웨어
 
 const router = express.Router();
+
+// Multer 설정
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // 파일을 저장할 경로
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname); // 파일 이름 설정
+  },
+});
+
+const upload = multer({ storage });
 
 // 상품 목록 조회
 router.get("/", async (req, res) => {
@@ -52,9 +65,9 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// 상품 등록
-router.post("/", authMiddleware, async (req, res) => {
-  // 인증 미들웨어 추가
+// 상품 등록 API
+router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
+  // 인증 미들웨어 및 multer 미들웨어 추가
   const { name, description, price, tags } = req.body;
 
   // 데이터 검증
@@ -71,10 +84,17 @@ router.post("/", authMiddleware, async (req, res) => {
       price: Number(price), // price를 숫자로 변환하여 저장
       tags,
       userId: req.user.id, // 등록한 사용자의 ID 추가
+      image: req.file ? req.file.path : null, // 파일 업로드 된 경우, 이미지 경로 추가
     });
 
     await newProduct.save();
-    res.status(201).send(newProduct);
+
+    // 응답에 이미지 경로 추가
+    res.status(201).send({
+      message: "상품이 성공적으로 등록되었습니다.",
+      product: newProduct,
+      imageUrl: req.file ? req.file.path : null, // 이미지 경로 포함
+    });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
