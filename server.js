@@ -56,9 +56,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 // 라우터 등록
-app.use("/api/products", productRoutes);
-app.use("/api/articles", articleRoutes);
-app.use("/api/board/comments", boardCommentRoutes);
-app.use("/api/market/comments", marketCommentRoutes);
+app.use("/api/products", productRoutes); // 제품 관련 API
+app.use("/api/articles", articleRoutes); // 게시글 관련 API
+app.use("/api/board/comments", boardCommentRoutes); // 자유게시판 댓글
+app.use("/api/market/comments", marketCommentRoutes); // 중고마켓 댓글
 
 app.listen(process.env.PORT || 8000, () => console.log("Server Started"));
