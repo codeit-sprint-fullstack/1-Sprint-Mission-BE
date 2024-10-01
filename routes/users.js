@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.get(
   "/me",
+  //passport 사용 토큰이 유효하다면 리퀘스트의 user로 담긴다
   passport.authenticate("access-token", { session: false }),
   asyncHandle(async (req, res, next) => {
     try {
@@ -27,6 +28,7 @@ router.post(
       const accessToken = userService.createToken(user);
       const refreshToken = userService.createToken(user, "refresh-token");
 
+      //리스폰스의 쿠키에 담아 전달
       res.cookie("access-token", accessToken, cookiesConfig.accessTokenOption);
       res.cookie(
         "refresh-token",
@@ -65,6 +67,7 @@ router.post(
 
 router.get(
   "/refresh-token",
+  //클라이언트의 인터셉터의 401이 아닌 403을 잡기위한 커스텀 콜밸
   (req, res, next) => {
     passport.authenticate("refresh-token", { session: false }, (err, user) => {
       if (err || !user) {
@@ -79,11 +82,13 @@ router.get(
       const { id: userId } = req.user;
       const refreshToken = req.cookies.refreshToken;
 
+      //전달 받은 토큰의 사용자와 리프레쉬 토큰을 전달 > 갱신후 반환값 사용
       const { accessToken, newRefreshToken } = await userService.refreshToken(
         userId,
         refreshToken
       );
 
+      //Db의 갱신된 리프레쉬 토큰 저장
       const user = await userService.updateUser(userId, {
         refreshToken: newRefreshToken,
       });

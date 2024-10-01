@@ -40,6 +40,7 @@ async function jwtVerify(payload, done) {
   }
 }
 
+//리퀘스트의 사용자 정보를 담아줌  -> req.user
 export const accessTokenStrategy = new JwtStrategy(
   accessTokenOptions,
   jwtVerify
