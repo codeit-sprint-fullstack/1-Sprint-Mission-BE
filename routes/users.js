@@ -63,4 +63,42 @@ router.post(
   })
 );
 
+router.get(
+  "/refresh-token",
+  (req, res, next) => {
+    passport.authenticate("refresh-token", { session: false }, (err, user) => {
+      if (err || !user) {
+        return res.status(403).send({ message: "토근만료" });
+      }
+      req.user = user;
+      next();
+    })(req, res, next);
+  },
+  async (req, res, next) => {
+    try {
+      const { id: userId } = req.user;
+      const refreshToken = req.cookies.refreshToken;
+
+      const { accessToken, newRefreshToken } = await userService.refreshToken(
+        userId,
+        refreshToken
+      );
+
+      const user = await userService.updateUser(userId, {
+        refreshToken: newRefreshToken,
+      });
+
+      res.cookie("access-token", accessToken, cookiesConfig.accessTokenOption);
+      res.cookie(
+        "refresh-token",
+        newRefreshToken,
+        cookiesConfig.accessTokenOption
+      );
+      res.status(200).send(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export default router;

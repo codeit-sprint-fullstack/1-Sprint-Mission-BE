@@ -26,8 +26,18 @@ const create = async (data) => {
   });
 };
 
+const update = async (id, data) => {
+  return prismaClient.user.update({
+    where: {
+      id,
+    },
+    data,
+  });
+};
+
 export default {
   create,
+  update,
   getUsers,
   findByEmail,
   findById,

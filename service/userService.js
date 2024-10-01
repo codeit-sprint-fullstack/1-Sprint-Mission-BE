@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 const createToken = (user, type) => {
   const payload = { userId: user.id, email: user.email };
-  const options = { expiresIn: type ? "1h" : "5m" };
+  const options = { expiresIn: type ? "1w" : "1h" };
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 };
 
@@ -50,6 +50,35 @@ const getUserById = async (userId) => {
   return filterSensitiveUserData(user);
 };
 
+const refreshToken = async (userId, refreshToken) => {
+  const existedUser = await userModel.findById(userId);
+
+  if (!existedUser || existedUser.refreshToken !== refreshToken) {
+    const error = new Error("토큰이 유효하지 않습니다.");
+    error.status = 401;
+    error.data = { email: user.email };
+    throw error;
+  }
+
+  const accessToken = createToken(existedUser);
+  const newRefreshToken = createToken(existedUser, "refresh");
+
+  return {
+    accessToken,
+    newRefreshToken,
+  };
+};
+
+const updateUser = async (id, data) => {
+  const user = await userModel.update(id, data);
+  if (!user) {
+    const error = new Error("Not Found");
+    error.status = 404;
+    throw error;
+  }
+  return filterSensitiveUserData(user);
+};
+
 const hashingPassword = async (password) => {
   // 함수 추가
   return bcrypt.hash(password, 10);
@@ -73,5 +102,7 @@ export default {
   createUser,
   getUser,
   getUserById,
+  updateUser,
+  refreshToken,
   createToken,
 };
