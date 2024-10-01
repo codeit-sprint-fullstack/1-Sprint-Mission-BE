@@ -22,6 +22,7 @@ model User {
   products  Product[] // 유저가 등록한 상품
   articles  Article[] // 유저가 작성한 게시글
   comments  Comment[] // 유저가 작성한 댓글
+  likes     Like[]    // 유저가 남긴 좋아요
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -68,6 +69,8 @@ model Comment {
 
 model Like {
   id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
 
