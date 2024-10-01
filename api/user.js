@@ -2,7 +2,7 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken"; // JWT 토큰 생성을 위한 라이브러리
 import bcrypt from "bcryptjs";
-import errorHandler from "../../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
+import errorHandler from "../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
 
 const prisma = new PrismaClient();
 const router = express.Router();
