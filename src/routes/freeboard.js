@@ -17,10 +17,14 @@ router.get(
     if (sort === 'recent') {
       orderBy = [{ createdAt: 'desc' }, { id: 'desc' }];
     } else {
-      orderBy = [{ createdAt: 'asc' }, { id: 'desc' }];
+      orderBy = [
+        { favorite: { _count: 'desc' } },
+        { createdAt: 'desc' },
+        { id: 'desc' },
+      ];
     }
 
-    const articles = await prisma.fleaMarket.findMany({
+    const articles = await prisma.freeBoard.findMany({
       where: {
         ...(keyword
           ? {
@@ -41,7 +45,7 @@ router.get(
       take: parseInt(limit, 10),
     });
 
-    const total = await prisma.fleaMarket.count({
+    const total = await prisma.freeBoard.count({
       where: {
         ...(keyword
           ? {
@@ -65,11 +69,9 @@ router.get(
 router.post(
   '/post',
   asyncHandler(async (req, res) => {
-    const { price } = req.body;
-    const article = await prisma.fleaMarket.create({
+    const article = await prisma.freeBoard.create({
       data: {
         ...req.body,
-        price: Number(price),
       },
     });
     res.status(201).json(article);
@@ -80,12 +82,12 @@ router.get(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const article = await prisma.fleaMarket.findUnique({
+    const article = await prisma.freeBoard.findUnique({
       where: {
         id: Number(id),
       },
       include: {
-        user: true, // 필요에 따라 관련된 사용자 정보도 포함
+        user: true,
         favorite: true,
       },
     });
@@ -98,7 +100,7 @@ router.patch(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const article = await prisma.fleaMarket.update({
+    const article = await prisma.freeBoard.update({
       where: { id: Number(id) },
       data: req.body,
     });
@@ -111,7 +113,7 @@ router.delete(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    await prisma.fleaMarket.delete({
+    await prisma.freeBoard.delete({
       where: {
         id: Number(id),
       },

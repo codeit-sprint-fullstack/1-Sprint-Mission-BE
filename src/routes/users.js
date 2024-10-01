@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from './asyncHandler.js';
 import { CreateUser, PatchUser } from './struct.js';
 import assert from 'assert';
+import authMiddleware from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -73,6 +74,18 @@ router.delete(
       where: { id },
     });
     res.sendStatus(204);
+  })
+);
+
+router.get(
+  '/auth',
+  authMiddleware,
+  asyncHandler(async (req, res) => {
+    res.status(200).json({
+      id: req.user.id,
+      email: req.user.email,
+      name: req.user.name,
+    });
   })
 );
 

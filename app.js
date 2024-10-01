@@ -2,12 +2,12 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 
-import userRoute from './route/users.js';
-import freeboardRoute from './route/freeboard.js';
-import fleamarketRoute from './route/fleamarket.js';
-import articleRoute from './route/articles.js';
-import commentRoute from './route/comments.js';
-import favoriteRoute from './route/favorite.js'
+import userRoute from './src/routes/users.js';
+import freeboardRoute from './src/routes/freeboard.js';
+import fleamarketRoute from './src/routes/fleamarket.js';
+import articleRoute from './src/routes/articles.js';
+import commentRoute from './src/routes/comments.js';
+import favoriteRoute from './src/routes/favorite.js';
 
 import multer from 'multer';
 
@@ -36,5 +36,3 @@ app.post('/files', upload.single('attachment'), (req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
-
-console.log('Using port:', process.env.PORT || 3000);

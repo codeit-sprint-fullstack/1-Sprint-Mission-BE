@@ -1,7 +1,9 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from './asyncHandler.js';
+import validateProductFields from '../middlewares/validateProductFields.js';
 import { CreateArticle, PatchArticle } from './struct.js';
+import upload from '../middlewares/multer.middleware.js';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -17,10 +19,14 @@ router.get(
     if (sort === 'recent') {
       orderBy = [{ createdAt: 'desc' }, { id: 'desc' }];
     } else {
-      orderBy = [{ createdAt: 'asc' }, { id: 'desc' }];
+      orderBy = [
+        { favorite: { _count: 'desc' } },
+        { createdAt: 'desc' },
+        { id: 'desc' },
+      ];
     }
 
-    const articles = await prisma.freeBoard.findMany({
+    const articles = await prisma.fleaMarket.findMany({
       where: {
         ...(keyword
           ? {
@@ -38,10 +44,10 @@ router.get(
       },
       orderBy,
       skip: offset,
-      take: parseInt(limit, 10),
+      take: Number(10),
     });
 
-    const total = await prisma.freeBoard.count({
+    const total = await prisma.fleaMarket.count({
       where: {
         ...(keyword
           ? {
@@ -64,21 +70,51 @@ router.get(
 
 router.post(
   '/post',
+  upload.array('images', 3),
+  validateProductFields,
+
   asyncHandler(async (req, res) => {
-    const article = await prisma.freeBoard.create({
+    const { price, title, content, tags, userId } = req.body;
+
+    const imagePaths = req.files ? req.files.map((file) => file.path) : [];
+    const tagsArray = tags ? tags.split(',') : [];
+
+    const article = await prisma.fleaMarket.create({
       data: {
-        ...req.body,
+        title,
+        content,
+        price: Number(price),
+        tags: tagsArray,
+        images: imagePaths,
+        userId: userId,
       },
     });
+
+    console.log(req.body);
     res.status(201).json(article);
   })
 );
+
+// router.post(
+//   '/post',
+//   validateProductFields,
+//   asyncHandler(async (req, res) => {
+//     const { price } = req.body;
+//     const article = await prisma.fleaMarket.create({
+//       data: {
+//         ...req.body,
+//         price: Number(price),
+//       },
+//     });
+//     res.status(201).json(article);
+//   })
+// );
 
 router.get(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const article = await prisma.freeBoard.findUnique({
+    const article = await prisma.fleaMarket.findUnique({
       where: {
         id: Number(id),
       },
@@ -96,7 +132,7 @@ router.patch(
   '/:id',
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const article = await prisma.freeBoard.update({
+    const article = await prisma.fleaMarket.update({
       where: { id: Number(id) },
       data: req.body,
     });
@@ -109,7 +145,7 @@ router.delete(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    await prisma.freeBoard.delete({
+    await prisma.fleaMarket.delete({
       where: {
         id: Number(id),
       },
