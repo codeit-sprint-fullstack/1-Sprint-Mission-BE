@@ -49,6 +49,7 @@ model Article {
   image       String?   // 게시글 이미지 경로
   tags        String[]
   comments    Comment[] @relation("ArticleComments")
+  likes       Like[]    // 좋아요 연결
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   userId      Int?
@@ -74,6 +75,8 @@ model Like {
   user      User     @relation(fields: [userId], references: [id])
   productId Int?
   product   Product? @relation(fields: [productId], references: [id])
+  articleId Int?
+  article   Article? @relation(fields: [articleId], references: [id])
   createdAt DateTime @default(now())
 }
 
