@@ -1,79 +1,111 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-exports.createArticle = async (req, res) => {
+// 게시글 생성
+exports.createArticle = async (req, res, next) => {
+  const { title, content, tags } = req.body;
+  const imagePaths = req.files.map(file => `/uploads/${file.filename}`);
+
   try {
-    const { title, content } = req.body;
     const article = await prisma.article.create({
-      data: { title, content }
+      data: {
+        title,
+        content,
+        tags,
+        image: imagePaths,
+        userId: req.user.id,
+      },
     });
     res.status(201).json(article);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error); // 에러 전달
   }
 };
 
-exports.getArticles = async (req, res) => {
+// 게시글 목록 조회
+exports.getArticles = async (req, res, next) => {
+  const { page = 1, pageSize = 10, orderBy = 'recent', keyword = '' } = req.query;
+
+  let sortBy = {};
+  if (orderBy === 'recent') {
+    sortBy = { createdAt: 'desc' };
+  } else if (orderBy === 'like') {
+    sortBy = { likes: { _count: 'desc' } };
+  }
+
   try {
-    const { orderBy, page = 1, pageSize = 10, keyword = '' } = req.query;
     const articles = await prisma.article.findMany({
       where: {
         OR: [
           { title: { contains: keyword, mode: 'insensitive' } },
-          { content: { contains: keyword, mode: 'insensitive' } }
-        ]
+          { content: { contains: keyword, mode: 'insensitive' } },
+        ],
       },
-      orderBy: orderBy === 'recent' ? { createdAt: 'desc' } : {},
       skip: (page - 1) * pageSize,
-      take: parseInt(pageSize, 10)
-    });
-    res.status(200).json({ list: articles });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-exports.getArticleById = async (req, res) => {
-  try {
-    const article = await prisma.article.findUnique({ where: { id: parseInt(req.params.id) } });
-    if (!article) return res.status(404).json({ error: 'Article not found' });
-    res.status(200).json(article);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-exports.updateArticle = async (req, res) => {
-  try {
-    const article = await prisma.article.update({
-      where: { id: parseInt(req.params.id) },
-      data: req.body
-    });
-    if (!article) return res.status(404).json({ error: 'Article not found' });
-    res.status(200).json(article);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-exports.deleteArticle = async (req, res) => {
-  try {
-    await prisma.article.delete({ where: { id: parseInt(req.params.id) } });
-    res.status(200).json({ message: 'Article deleted successfully' });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-exports.getBestArticles = async (req, res) => {
-  try {
-    const articles = await prisma.article.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 3, // 최신순으로 3개만 가져옴
+      take: parseInt(pageSize, 10),
+      orderBy: sortBy,
+      include: {
+        likes: true,
+        comments: true,
+      },
     });
     res.status(200).json(articles);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error); // 에러 전달
+  }
+};
+
+// 특정 게시글 조회
+exports.getArticleById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const article = await prisma.article.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        likes: true,
+        comments: true,
+      },
+    });
+    if (!article)
+      return res.status(404).json({ error: "해당 게시글을 찾을 수 없습니다." });
+
+    const isLiked = article.likes.some(like => like.userId === req.user.id);
+
+    res.status(200).json({ ...article, isLiked });
+  } catch (error) {
+    next(error); // 에러 전달
+  }
+};
+
+// 게시글 수정
+exports.updateArticle = async (req, res, next) => {
+  const { id } = req.params;
+  const { title, content, tags } = req.body;
+  const imagePaths = req.files.map(file => `/uploads/${file.filename}`);
+
+  try {
+    const article = await prisma.article.update({
+      where: { id: parseInt(id) },
+      data: { title, content, tags, image: imagePaths },
+    });
+    res.status(200).json(article);
+  } catch (error) {
+    next(error); // 에러 전달
+  }
+};
+
+// 게시글 삭제
+exports.deleteArticle = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    await prisma.article.delete({
+      where: { id: parseInt(id) },
+    });
+    res.status(200).json({ message: "게시글이 성공적으로 삭제되었습니다." });
+  } catch (error) {
+    next(error); // 에러 전달
   }
 };
 
