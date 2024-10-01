@@ -1,22 +1,23 @@
-const express = require('express'); // Express 모듈을 불러옴
-const router = express.Router(); // 라우터 객체 생성 (라우터를 설정하기 위해 사용)
-const {
-  createArticle,
-  getArticles,
-  getArticleById,
-  updateArticle,
-  deleteArticle,
-  getBestArticles,
-} = require('../controllers/articleController'); // controllers 폴더 안에 있는 articleController에서 각 함수 불러옴
+const express = require('express');
+const { createArticle, getArticles, getArticleById, updateArticle, deleteArticle } = require('../controllers/articleController');
+const upload = require('../utils/multer');
+const authMiddleware = require('../middlewares/authMiddleware');
+const router = express.Router();
 
-// server.js에서 app.use('/api/articles', articleRoutes)로 기본 경로가 설정
+// 게시글 생성 - 로그인한 사용자만 가능, 이미지 최대 3개
+router.post('/', authMiddleware, upload.array('images', 3), createArticle);
 
-router.post('/', createArticle); // 게시글 생성 /api/articles
-router.get('/best', getBestArticles);  // 베스트 게시글 조회  /api/articles/best
-router.get('/', getArticles); // 게시글 목록 조회  /api/articles
-router.get('/:id', getArticleById); // 특정 게시글 조회 /api/articles/:id
-router.patch('/:id', updateArticle); // 게시글 수정 /api/articles/:id
-router.delete('/:id', deleteArticle); // 게시글 삭제 /api/articles/:id
+// 모든 게시글 목록 조회
+router.get('/', getArticles);
 
+// 특정 게시글 조회
+router.get('/:id', getArticleById);
 
-module.exports = router; 
+// 게시글 수정 - 로그인한 사용자만 가능
+router.patch('/:id', authMiddleware, upload.array('images', 3), updateArticle);
+
+// 게시글 삭제 - 로그인한 사용자만 가능
+router.delete('/:id', authMiddleware, deleteArticle);
+
+module.exports = router;
+
