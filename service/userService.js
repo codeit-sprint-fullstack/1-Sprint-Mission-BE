@@ -58,7 +58,7 @@ const refreshToken = async (userId, refreshToken) => {
     //DB의 정보가 없거나 쿠키로 받은 토큰과 DB의 저당된 토큰을 비교한다.
     const error = new Error("토큰이 유효하지 않습니다.");
     error.status = 401;
-    error.data = { email: user.email };
+    error.data = { refreshToken };
     throw error;
   }
 

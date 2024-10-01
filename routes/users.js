@@ -51,6 +51,11 @@ router.post(
       const accessToken = userService.createToken(user);
       const refreshToken = userService.createToken(user, "refresh-token");
 
+      //Db의 갱신된 리프레쉬 토큰 저장
+      const nextUser = await userService.updateUser(user.id, {
+        refreshToken,
+      });
+
       res.cookie("access-token", accessToken, cookiesConfig.accessTokenOption);
       res.cookie(
         "refresh-token",
@@ -80,8 +85,7 @@ router.get(
   async (req, res, next) => {
     try {
       const { id: userId } = req.user;
-      const refreshToken = req.cookies.refreshToken;
-
+      const refreshToken = req.cookies["refresh-token"];
       //전달 받은 토큰의 사용자와 리프레쉬 토큰을 전달 > 갱신후 반환값 사용
       const { accessToken, newRefreshToken } = await userService.refreshToken(
         userId,
