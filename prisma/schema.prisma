@@ -19,6 +19,8 @@ model User {
   nickname  String
   password  String
   image     String?   // 프로필 이미지 (선택적)
+  products  Product[] // 유저가 등록한 상품
+  articles  Article[] // 유저가 작성한 게시글
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -32,6 +34,8 @@ model Product {
   tags        String[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  userId      Int?
+  user        User?     @relation(fields: [userId], references: [id])
 }
 
 model Article {
@@ -42,5 +46,7 @@ model Article {
   tags        String[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  userId      Int?
+  user        User?     @relation(fields: [userId], references: [id])
 }
 
