@@ -33,6 +33,7 @@ router.get(
     try {
       const { id: productId } = req.params;
       const { id: userId } = req.user;
+      //헤당 상품의 좋아요를 확인하기 위해 사용자정보를 함께 보낸다
       const { product, existingLike } = await productService.getProduct({
         productId,
         userId,
@@ -85,7 +86,7 @@ router.patch(
 
 router.post(
   "/:id/favorite",
-  passport.authenticate("access-token", { session: false }),
+  passport.authenticate("access-token", { session: false }), //인가된 사용자만 작성가능
   asyncHandle(async (req, res, next) => {
     try {
       const { id: productId } = req.params;

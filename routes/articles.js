@@ -50,6 +50,25 @@ router.get(
   })
 );
 
+router.post(
+  "/",
+  passport.authenticate("access-token", { session: false }),
+  asyncHandle(async (req, res, next) => {
+    assert(req.body, createArticle);
+    //서버에서 로그인된 사용자의 정보를 반영한다
+    const { id: userId } = req.user;
+    try {
+      const data = await articleService.createArticle({
+        ...req.body,
+        ownerId: userId,
+      });
+      return res.status(201).send(data);
+    } catch (error) {
+      next();
+    }
+  })
+);
+
 router.patch(
   "/:id",
   asyncHandle(async (req, res, next) => {
@@ -66,7 +85,7 @@ router.patch(
 
 router.post(
   "/:id/favorite",
-  passport.authenticate("access-token", { session: false }),
+  passport.authenticate("access-token", { session: false }), //인가된 사용자만 작성가능
   asyncHandle(async (req, res, next) => {
     try {
       const { id: articleId } = req.params;
@@ -90,25 +109,6 @@ router.delete(
       return res.status(200).send({ ...article, isFavorite: false });
     } catch (error) {
       next(error);
-    }
-  })
-);
-
-router.post(
-  "/",
-  passport.authenticate("access-token", { session: false }),
-  asyncHandle(async (req, res, next) => {
-    assert(req.body, createArticle);
-    //서버에서 로그인된 사용자의 정보를 반영한다
-    const { id: userId } = req.user;
-    try {
-      const data = await articleService.createArticle({
-        ...req.body,
-        ownerId: userId,
-      });
-      return res.status(201).send(data);
-    } catch (error) {
-      next();
     }
   })
 );
