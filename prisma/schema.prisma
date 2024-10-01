@@ -23,3 +23,13 @@ model User {
   updatedAt DateTime  @updatedAt
 }
 
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  price       Int
+  image       String?   // 상품 이미지 경로
+  tags        String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
