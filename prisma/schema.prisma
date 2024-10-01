@@ -35,6 +35,7 @@ model Product {
   image       String?   // 상품 이미지 경로
   tags        String[]
   comments    Comment[] @relation("ProductComments")
+  likes       Like[]    // 좋아요 연결
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   userId      Int?
@@ -71,6 +72,8 @@ model Like {
   id        Int      @id @default(autoincrement())
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id])
   createdAt DateTime @default(now())
 }
 
