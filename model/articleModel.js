@@ -6,58 +6,117 @@ const getArticles = async ({
   whereConditions,
   orderbyQuery,
 }) => {
-  return prisma.article.findMany({
+  return prismaClient.article.findMany({
     where: whereConditions,
     take: limit + 1, //추가적인 게시글이 있는지 확인
     skip: cursor ? 1 : 0, //커서 자신을 스킵하기 위함
     cursor: cursor ? { id: cursor } : undefined,
     orderBy: orderbyQuery,
     include: {
-      user: {
+      owner: {
         select: {
-          name: true,
-          id: true,
+          nickname: true,
         },
       },
     },
   });
 };
 
-const getArticle = async (id) => {
-  return prismaClient.article.findFirstOrThrow({
+const findById = async (id) => {
+  return prismaClient.article.findUnique({
     where: {
       id,
     },
     include: {
-      user: true,
-      comment: {
-        orderBy: { createAt: "desc" },
-        include: { user: true },
+      owner: {
+        select: {
+          nickname: true,
+        },
       },
     },
   });
 };
 
-const updateArticle = async (id) => {
+const updateArticle = async (articleId, data) => {
   return prismaClient.article.update({
     where: {
-      id,
+      id: articleId,
     },
+    data,
     include: {
-      user: true,
-      comment: {
-        orderBy: { createAt: "desc" },
-        include: { user: true },
+      owner: {
+        select: {
+          nickname: true,
+        },
       },
     },
   });
 };
 
-const createArticle = async (data) => {
-  return prismaClient.article.create({
+const existingLike = async (articleId, userId) => {
+  return prismaClient.article.findUnique({
+    where: {
+      id: articleId,
+      favorited: {
+        some: {
+          id: userId,
+        },
+      },
+    },
+  });
+};
+
+const likeArticle = async ({ articleId, userId }) => {
+  return prismaClient.article.update({
+    where: {
+      id: articleId,
+    },
+    data: {
+      favorited: {
+        connect: { id: userId },
+      },
+      favoriteCount: { increment: 1 },
+    },
+    include: {
+      owner: {
+        select: {
+          nickname: true,
+        },
+      },
+    },
+  });
+};
+
+const unlikeArticle = async ({ articleId, userId }) => {
+  return prismaClient.article.update({
+    where: {
+      id: articleId,
+    },
+    data: {
+      favorited: {
+        connect: { id: userId },
+      },
+      favoriteCount: { decrement: 1 },
+    },
+    include: {
+      owner: {
+        select: {
+          nickname: true,
+        },
+      },
+    },
+  });
+};
+
+const createArticle = async ({ data }) => {
+  return await prismaClient.article.create({
     data,
     include: {
-      user: true,
+      owner: {
+        select: {
+          nickname: true,
+        },
+      },
     },
   });
 };
@@ -72,8 +131,11 @@ const deleteArticle = async (id) => {
 
 export default {
   getArticles,
-  getArticle,
+  findById,
   updateArticle,
   createArticle,
   deleteArticle,
+  existingLike,
+  likeArticle,
+  unlikeArticle,
 };
