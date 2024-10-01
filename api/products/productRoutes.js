@@ -14,7 +14,8 @@ const storage = multer.diskStorage({
     cb(null, "uploads/"); // 파일을 저장할 경로
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname); // 파일 이름 설정
+    const sanitizedFileName = file.originalname.replace(/[^a-zA-Z0-9.]/g, "_"); // 안전한 파일 이름으로 변경
+    cb(null, Date.now() + "-" + sanitizedFileName); // 수정된 파일 이름 사용
   },
 });
 
@@ -63,14 +64,17 @@ router
     async (req, res, next) => {
       const { name, description, price, tags } = req.body;
 
+      const tagsArray = tags.split(","); // 태그를 배열로 변환
+
       try {
         const newProduct = await prisma.marketPost.create({
           data: {
             name,
             description,
             price: Number(price), // price를 숫자로 변환하여 저장
-            tags,
-            ownerId: req.user.id, // 등록한 사용자의 ID 추가
+            tags: tagsArray,
+            ownerId: req.user.userId, // 등록한 사용자의 ID 추가
+            ownerNickname: req.user.nickname, // JWT에서 가져온 사용자 닉네임
             images: req.files ? req.files.map((file) => file.path) : [], // 파일 업로드 된 경우, 이미지 경로 배열 추가
           },
         });
@@ -82,6 +86,7 @@ router
           imageUrls: req.files ? req.files.map((file) => file.path) : [], // 이미지 경로 배열 포함
         });
       } catch (error) {
+        console.error("Error creating market post:", error);
         next(error); // 에러를 핸들러로 전달
       }
     }

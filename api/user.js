@@ -46,9 +46,13 @@ router.route("/login").post(async (req, res, next) => {
     }
 
     // JWT 토큰 발급, 토큰 유효기간 1시간으로 설정(임시)
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { userId: user.id, nickname: user.nickname },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     // 응답 성공사, JWT 토큰을 생성하여 반환
     res.status(200).json({ message: "로그인 성공", token });

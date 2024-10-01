@@ -12,6 +12,7 @@ const authMiddleware = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded; // 인증 성공 시, 사용자 정보를 요청 객체에 추가
+    console.log(req.user);
     next(); // 다음 미들웨어로 이동
   } catch (error) {
     return res.status(401).json({ error: "유효하지 않은 토큰입니다." });

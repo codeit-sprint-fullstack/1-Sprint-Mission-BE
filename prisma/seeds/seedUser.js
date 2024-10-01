@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt"; // bcrypt 가져오기
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 

@@ -11,7 +11,8 @@
     "build": "npm install",
     "seed:articles": "node prisma/seeds/seedArticles.js",
     "seed:Boardcomments": "node prisma/seeds/seedBoardComment.js",
-    "seed:Marketcomments": "node prisma/seeds/seedMarketComment.js"
+    "seed:Marketcomments": "node prisma/seeds/seedMarketComment.js",
+    "seed:User": "node prisma/seeds/seedUser.js"
   },
   "author": "",
   "license": "ISC",
