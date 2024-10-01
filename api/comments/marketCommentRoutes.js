@@ -12,7 +12,7 @@ router
   .get(async (req, res, next) => {
     // next 추가
     // "/api/market/comments"에 해당
-    const { cursor = "", limit = 15, postId } = req.query; // postId 추가
+    const { cursor = "", limit = 15, marketPostId } = req.query; // postId를 marketPostId로 변경
 
     try {
       // cursor가 있는 경우, cursor보다 큰 id를 가진 댓글을 가져옵니다.
@@ -22,7 +22,7 @@ router
       const totalCount = await prisma.comment.count({
         where: {
           boardType: "market",
-          postId: postId ? parseInt(postId) : undefined, // postId 필터링 추가
+          marketPostId: marketPostId ? parseInt(marketPostId) : undefined, // marketPostId 필터링 추가
         },
       });
 
@@ -30,7 +30,7 @@ router
         where: {
           ...query,
           boardType: "market",
-          postId: postId ? parseInt(postId) : undefined,
+          marketPostId: marketPostId ? parseInt(marketPostId) : undefined,
         },
         orderBy: { id: "asc" }, // id를 기준으로 오름차순 정렬
         take: Number(limit),
@@ -38,7 +38,7 @@ router
           id: true,
           content: true,
           createdAt: true,
-          postId: true,
+          marketPostId: true, // postId를 marketPostId로 변경
           userId: true,
         }, // 작성자 ID 포함
       });
@@ -52,17 +52,17 @@ router
   .post(authMiddleware, async (req, res, next) => {
     // next 추가
     // "/api/market/comments"에 해당
-    const { content, postId } = req.body;
+    const { content, marketPostId } = req.body; // postId를 marketPostId로 변경
 
     // 데이터 검증
-    if (!content || !postId) {
+    if (!content || !marketPostId) {
       return res.status(400).json({ error: "댓글 내용을 입력해주세요." });
     }
 
     try {
       // 게시글 존재 여부 확인
       const postExists = await prisma.marketPost.findUnique({
-        where: { id: postId },
+        where: { id: marketPostId }, // postId를 marketPostId로 변경
       });
 
       if (!postExists) {
@@ -72,7 +72,7 @@ router
       const newComment = await prisma.comment.create({
         data: {
           content,
-          postId,
+          marketPostId, // postId를 marketPostId로 변경
           boardType: "market",
           userId: req.user.id, // 로그인한 사용자의 ID 추가
         },
