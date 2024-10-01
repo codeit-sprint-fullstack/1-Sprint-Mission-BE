@@ -24,20 +24,9 @@ const getList = async (pageSize, offset, orderOption, keyword) => {
     orderBy: orderOption,
     where,
     include: {
-      user: {
+      owner: {
         select: {
-          name: true,
-          id: true,
-        },
-      },
-      comment: {
-        include: {
-          user: {
-            select: {
-              name: true,
-              id: true,
-            },
-          },
+          nickname: true,
         },
       },
     },
@@ -50,20 +39,9 @@ const getById = async (id) => {
       id,
     },
     include: {
-      user: {
+      owner: {
         select: {
-          name: true,
-          id: true,
-        },
-      },
-      comment: {
-        include: {
-          user: {
-            select: {
-              name: true,
-              id: true,
-            },
-          },
+          nickname: true,
         },
       },
     },
@@ -74,20 +52,9 @@ const create = async (data) => {
   return await prismaClient.product.create({
     data,
     include: {
-      user: {
+      owner: {
         select: {
-          name: true,
-          id: true,
-        },
-      },
-      comment: {
-        include: {
-          user: {
-            select: {
-              name: true,
-              id: true,
-            },
-          },
+          nickname: true,
         },
       },
     },
@@ -101,20 +68,64 @@ const update = async (id, data) => {
     },
     data,
     include: {
-      user: {
+      owner: {
         select: {
-          name: true,
-          id: true,
+          nicknamename: true,
         },
       },
-      comment: {
-        include: {
-          user: {
-            select: {
-              name: true,
-              id: true,
-            },
-          },
+    },
+  });
+};
+
+const existingLike = async (productId, userId) => {
+  return prismaClient.product.findUnique({
+    where: {
+      id: productId,
+      favorited: {
+        some: {
+          id: userId,
+        },
+      },
+    },
+  });
+};
+
+const likeProduct = async ({ productId, userId }) => {
+  return prismaClient.product.update({
+    where: {
+      id: productId,
+    },
+    data: {
+      favorited: {
+        connect: { id: userId },
+      },
+      favoriteCount: { increment: 1 },
+    },
+    include: {
+      owner: {
+        select: {
+          nickname: true,
+        },
+      },
+    },
+  });
+};
+
+const unlikeProduct = async ({ productId, userId }) => {
+  return prismaClient.product.update({
+    where: {
+      id: productId,
+    },
+    data: {
+      favorited: {
+        connect: { id: userId },
+      },
+      favoriteCount: { decrement: 1 },
+    },
+    include: {
+      owner: {
+        select: {
+          nickname: true,
         },
       },
     },
@@ -134,6 +145,9 @@ export default {
   getById,
   getList,
   update,
+  existingLike,
+  likeProduct,
+  unlikeProduct,
   deleteItem,
   create,
 };

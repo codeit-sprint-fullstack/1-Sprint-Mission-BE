@@ -8,7 +8,7 @@ export const createProduct = s.object({
   description: s.size(s.string(), 1, 100),
   price: s.min(0),
   tag: s.string(),
-  userId: Uuid,
+  // userId: Uuid,
 });
 
 export const updateArticle = s.partial(createArticle);

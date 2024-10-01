@@ -103,8 +103,8 @@ router.post(
     const { id: userId } = req.user;
     try {
       const data = await articleService.createArticle({
-        data: req.body,
-        userId,
+        ...req.body,
+        ownerId: userId,
       });
       return res.status(201).send(data);
     } catch (error) {

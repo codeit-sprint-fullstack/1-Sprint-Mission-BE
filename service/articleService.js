@@ -70,12 +70,9 @@ const unlikeArticle = async ({ articleId, userId }) => {
   return article;
 };
 
-const createArticle = async ({ data, userId }) => {
+const createArticle = async (data) => {
   const article = await articleModel.createArticle({
-    data: {
-      ...data,
-      ownerId: userId,
-    },
+    data,
   });
   if (!article) {
     const error = new Error("Bad request");

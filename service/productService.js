@@ -27,29 +27,64 @@ const getProducts = async ({
   return { totalCount, products, hasMore };
 };
 
-const getById = async (id) => {
-  const res = await productModel.getById(id);
-  return res;
+const getProduct = async ({ userId, productId }) => {
+  const product = await productModel.getById(productId);
+  if (!product) {
+    const error = new Error("Not Found");
+    error.status = 404;
+    throw error;
+  }
+  //현재 사용자의 좋아요 상태를 확인 후 반환 -> 좋아요 상태가 아니면 null
+  const existingLike = await productModel.existingLike(userId, productId);
+  return { product, existingLike };
 };
 
 const createProduct = async (data) => {
-  const res = await productModel.create(data);
-  return res;
+  const product = await productModel.create(data);
+  if (!product) {
+    const error = new Error("Bad request");
+    error.status = 400;
+    throw error;
+  }
+  return product;
 };
 
 const updateProduct = async (id, data) => {
-  const res = await productModel.update(id, data);
-  return res;
+  const product = await productModel.update(id, data);
+  if (!product) {
+    const error = new Error("Bad request");
+    error.status = 400;
+    throw error;
+  }
+  return product;
+};
+
+const likeProduct = async ({ userId, productId }) => {
+  const product = await productModel.likeProduct({ productId, userId });
+  return product;
+};
+
+const unlikeProduct = async ({ userId, productId }) => {
+  const product = await productModel.unlikeProduct({ productId, userId });
+  return product;
 };
 
 const deleteProduct = async (id) => {
-  return await productModel.deleteItem(id, data);
+  const product = await productModel.deleteItem(id, data);
+  if (!product) {
+    const error = new Error("Not found");
+    error.status = 404;
+    throw error;
+  }
+  return product;
 };
 
 export default {
   getProducts,
-  getById,
+  getProduct,
   updateProduct,
+  likeProduct,
+  unlikeProduct,
   deleteProduct,
   createProduct,
 };
