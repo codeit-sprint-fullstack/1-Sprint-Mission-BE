@@ -128,6 +128,36 @@ router.delete("/logout", async (req, res, next) => {
   }
 });
 
+// 사용자 정보 가져오기 API (현재 사용자)
+router.get("/me", async (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; // "Bearer TOKEN"에서 TOKEN 부분 추출
+
+  if (!token) {
+    return res.status(401).json({ error: "액세스 토큰이 필요합니다." });
+  }
+
+  try {
+    // 토큰 검증
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // 사용자 정보 조회
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId },
+      select: { id: true, nickname: true, email: true }, // 필요한 정보만 선택
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "사용자를 찾을 수 없습니다." });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(403).json({ error: "유효하지 않은 액세스 토큰입니다." });
+  }
+});
+
 // 에러 핸들러 미들웨어 등록
 router.use(errorHandler);
 
