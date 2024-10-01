@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 // 상품에 댓글 추가
@@ -34,6 +34,36 @@ exports.createArticleComment = async (req, res, next) => {
       },
     });
     res.status(201).json(comment);
+  } catch (error) {
+    next(error); // 에러 전달
+  }
+};
+
+// 상품 댓글 목록 조회
+exports.getProductComments = async (req, res, next) => {
+  const { productId } = req.params;
+
+  try {
+    const comments = await prisma.comment.findMany({
+      where: { productId: parseInt(productId) },
+      include: { user: true }, // 댓글 작성자 정보 포함
+    });
+    res.status(200).json(comments);
+  } catch (error) {
+    next(error); // 에러 전달
+  }
+};
+
+// 게시글 댓글 목록 조회
+exports.getArticleComments = async (req, res, next) => {
+  const { articleId } = req.params;
+
+  try {
+    const comments = await prisma.comment.findMany({
+      where: { articleId: parseInt(articleId) },
+      include: { user: true }, // 댓글 작성자 정보 포함
+    });
+    res.status(200).json(comments);
   } catch (error) {
     next(error); // 에러 전달
   }
