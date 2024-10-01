@@ -59,10 +59,13 @@ router
       return res.status(400).json({ error: "댓글 내용을 입력해주세요." });
     }
 
+    // marketPostId를 정수형으로 변환
+    const parsedMarketPostId = parseInt(marketPostId);
+
     try {
       // 게시글 존재 여부 확인
       const postExists = await prisma.marketPost.findUnique({
-        where: { id: marketPostId }, // postId를 marketPostId로 변경
+        where: { id: parseInt(marketPostId) }, // 정수형으로 변환
       });
 
       if (!postExists) {
@@ -72,7 +75,7 @@ router
       const newComment = await prisma.comment.create({
         data: {
           content,
-          marketPostId, // postId를 marketPostId로 변경
+          marketPostId: parsedMarketPostId, // 변환된 값 사용
           boardType: "market",
           userId: req.user.id, // 로그인한 사용자의 ID 추가
         },
