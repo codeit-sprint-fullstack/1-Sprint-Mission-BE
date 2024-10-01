@@ -1,10 +1,11 @@
 import express, { Router } from "express";
-import MarketPost from "../../models/MarketPost.js"; // Product를 MarketPost로 변경
+import { PrismaClient } from "@prisma/client"; // PrismaClient import
 import authMiddleware from "../../middlewares/authMiddleware.js"; // JWT 토큰 인증 미들웨어 import
 import multer from "multer"; // 파일 업로드를 처리하기 위한 미들웨어
 import errorHandler from "../../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
 import { validateProduct } from "../../middlewares/productValidationMiddleware.js"; // 유효성 검사 미들웨어 import
 
+const prisma = new PrismaClient(); // PrismaClient 인스턴스 생성
 const router = express.Router();
 
 // Multer 설정
@@ -27,22 +28,29 @@ router
 
     try {
       // 정렬 옵션 설정
-      const sortOption = sort === "recent" ? { createdAt: -1 } : {}; // 1은 오름차순, -1 내림차순
+      const sortOption = sort === "recent" ? { createdAt: "desc" } : {}; // 'desc'로 변경
 
       // 검색 조건 설정
       const searchQuery = {
-        $or: [
-          { name: { $regex: search, $options: "i" } },
-          { description: { $regex: search, $options: "i" } },
+        OR: [
+          { name: { contains: search, mode: "insensitive" } },
+          { description: { contains: search, mode: "insensitive" } },
         ],
       };
 
       // 페이지네이션 및 검색 적용
-      const products = await MarketPost.find(searchQuery)
-        .sort(sortOption)
-        .skip(Number(offset))
-        .limit(Number(limit))
-        .select("id name price createdAt"); // 선택한 필드만 포함된 결과를 반환
+      const products = await prisma.marketPost.findMany({
+        where: searchQuery,
+        orderBy: sortOption,
+        skip: Number(offset),
+        take: Number(limit),
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          createdAt: true,
+        },
+      });
       res.status(200).send(products);
     } catch (error) {
       next(error); // 에러를 핸들러로 전달
@@ -56,16 +64,16 @@ router
       const { name, description, price, tags } = req.body;
 
       try {
-        const newProduct = new MarketPost({
-          name,
-          description,
-          price: Number(price), // price를 숫자로 변환하여 저장
-          tags,
-          ownerId: req.user.id, // 등록한 사용자의 ID 추가
-          images: req.files ? req.files.map((file) => file.path) : [], // 파일 업로드 된 경우, 이미지 경로 배열 추가
+        const newProduct = await prisma.marketPost.create({
+          data: {
+            name,
+            description,
+            price: Number(price), // price를 숫자로 변환하여 저장
+            tags,
+            ownerId: req.user.id, // 등록한 사용자의 ID 추가
+            images: req.files ? req.files.map((file) => file.path) : [], // 파일 업로드 된 경우, 이미지 경로 배열 추가
+          },
         });
-
-        await newProduct.save();
 
         // 응답에 이미지 경로 추가
         res.status(201).send({
@@ -85,7 +93,10 @@ router.get("/:id", authMiddleware, async (req, res, next) => {
   const userId = req.user ? req.user.id : null; // 로그인한 사용자의 ID
 
   try {
-    const product = await MarketPost.findById(id).populate("comments"); // 댓글 포함
+    const product = await prisma.marketPost.findUnique({
+      where: { id: Number(id) },
+      include: { comments: true }, // 댓글 포함
+    });
 
     if (!product) {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
@@ -110,7 +121,9 @@ router.patch("/:id", authMiddleware, async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const product = await MarketPost.findById(id);
+    const product = await prisma.marketPost.findUnique({
+      where: { id: Number(id) },
+    });
     if (!product) {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
     }
@@ -120,9 +133,9 @@ router.patch("/:id", authMiddleware, async (req, res, next) => {
       return res.status(403).send({ message: "수정 권한이 없습니다." });
     }
 
-    const updatedProduct = await MarketPost.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true, // 유효성 검사
+    const updatedProduct = await prisma.marketPost.update({
+      where: { id: Number(id) },
+      data: req.body,
     });
 
     res.status(200).send(updatedProduct);
@@ -136,7 +149,9 @@ router.delete("/:id", authMiddleware, async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const product = await MarketPost.findById(id);
+    const product = await prisma.marketPost.findUnique({
+      where: { id: Number(id) },
+    });
     if (!product) {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
     }
@@ -146,7 +161,9 @@ router.delete("/:id", authMiddleware, async (req, res, next) => {
       return res.status(403).send({ message: "삭제 권한이 없습니다." });
     }
 
-    await MarketPost.findByIdAndDelete(id);
+    await prisma.marketPost.delete({
+      where: { id: Number(id) },
+    });
     res.status(200).send({ message: "상품이 성공적으로 삭제되었습니다." });
   } catch (error) {
     next(error); // 에러를 핸들러로 전달
@@ -159,7 +176,9 @@ router.post("/:id/favorite", authMiddleware, async (req, res, next) => {
   const userId = req.user.id; // 인증된 사용자 ID
 
   try {
-    const product = await MarketPost.findById(id);
+    const product = await prisma.marketPost.findUnique({
+      where: { id: Number(id) },
+    });
 
     if (!product) {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
@@ -173,13 +192,25 @@ router.post("/:id/favorite", authMiddleware, async (req, res, next) => {
       // 찜을 취소
       product.isFavorite = false;
       product.favoriteCount--; // 찜 개수 감소
-      await product.save();
+      await prisma.marketPost.update({
+        where: { id: Number(id) },
+        data: {
+          isFavorite: product.isFavorite,
+          favoriteCount: product.favoriteCount,
+        },
+      });
       return res.status(200).send({ message: "찜이 취소되었습니다." });
     } else {
       // 찜 추가
       product.isFavorite = true;
       product.favoriteCount++; // 찜 개수 증가
-      await product.save();
+      await prisma.marketPost.update({
+        where: { id: Number(id) },
+        data: {
+          isFavorite: product.isFavorite,
+          favoriteCount: product.favoriteCount,
+        },
+      });
       return res.status(200).send({ message: "찜이 추가되었습니다." });
     }
   } catch (error) {
