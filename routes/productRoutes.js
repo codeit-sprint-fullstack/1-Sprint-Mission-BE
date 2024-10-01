@@ -1,20 +1,23 @@
-const express = require('express'); // Express 모듈을 불러옴
-const router = express.Router(); // 라우터 객체 생성 (라우터를 설정하기 위해 사용)
-const {
-  createProduct,
-  getProducts,
-  getProductById,
-  updateProduct,
-  deleteProduct,
-} = require('../controllers/productController'); // controllers 폴더 안에 있는 productController에서 각 함수 불러옴
+const express = require('express');
+const { createProduct, getProducts, getProductById, updateProduct, deleteProduct } = require('../controllers/productController');
+const upload = require('../utils/multer');
+const authMiddleware = require('../middlewares/authMiddleware');
+const router = express.Router();
 
-// server.js에서 app.use('/api/products', productRoutes)로 기본 경로가 설정
+// 상품 등록 - 로그인한 사용자만 가능, 이미지 최대 3개
+router.post('/', authMiddleware, upload.array('images', 3), createProduct);
 
-router.post('/', createProduct); // 상품을 생성 /api/products
-router.get('/', getProducts); // 모든 상품 목록 조회 /api/products
-router.get('/:id', getProductById); // 특정 ID를 가진 상품 조회 /api/products/:id
-router.patch('/:id', updateProduct); // 특정 ID를 가진 상품 수정 /api/products/:id
-router.delete('/:id', deleteProduct); // 특정 ID를 가진 상품 삭제 /api/products/:id
+// 모든 상품 목록 조회
+router.get('/', getProducts);
+
+// 특정 상품 조회
+router.get('/:id', getProductById);
+
+// 상품 수정 - 로그인한 사용자만 가능
+router.patch('/:id', authMiddleware, upload.array('images', 3), updateProduct);
+
+// 상품 삭제 - 로그인한 사용자만 가능
+router.delete('/:id', authMiddleware, deleteProduct);
 
 module.exports = router;
 
