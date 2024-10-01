@@ -23,8 +23,9 @@ const getArticles = async (query) => {
   });
 
   if (!articles) {
-    const error = new Error("Bad request");
-    error.status = 400;
+    const error = new Error("Not Found");
+    error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
     throw error;
   }
   //추가적인 데이터가 있는지 확인
@@ -43,6 +44,7 @@ const getArticle = async ({ userId, articleId }) => {
   if (!article) {
     const error = new Error("Not Found");
     error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
     throw error;
   }
   //현재 사용자의 좋아요 상태를 확인 후 반환 -> 좋아요 상태가 아니면 null
@@ -55,6 +57,7 @@ const updateArticle = async ({ articleId, data }) => {
   if (!article) {
     const error = new Error("Not Found");
     error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
     throw error;
   }
   return article;
@@ -75,8 +78,9 @@ const createArticle = async (data) => {
     data,
   });
   if (!article) {
-    const error = new Error("Bad request");
-    error.status = 400;
+    const error = new Error("Not Found");
+    error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
     throw error;
   }
   return article;
@@ -87,6 +91,7 @@ const deleteArticle = async (articleId) => {
   if (!article) {
     const error = new Error("Not Found");
     error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
     throw error;
   }
   return article;

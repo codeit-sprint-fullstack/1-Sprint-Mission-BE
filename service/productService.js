@@ -32,6 +32,7 @@ const getProduct = async ({ userId, productId }) => {
   if (!product) {
     const error = new Error("Not Found");
     error.status = 404;
+    error.message = "상품을 찾지 못했습니다.";
     throw error;
   }
   //현재 사용자의 좋아요 상태를 확인 후 반환 -> 좋아요 상태가 아니면 null
@@ -42,8 +43,9 @@ const getProduct = async ({ userId, productId }) => {
 const createProduct = async (data) => {
   const product = await productModel.create(data);
   if (!product) {
-    const error = new Error("Bad request");
-    error.status = 400;
+    const error = new Error("Not Found");
+    error.status = 404;
+    error.message = "상품을 찾지 못했습니다.";
     throw error;
   }
   return product;
@@ -52,8 +54,9 @@ const createProduct = async (data) => {
 const updateProduct = async (id, data) => {
   const product = await productModel.update(id, data);
   if (!product) {
-    const error = new Error("Bad request");
-    error.status = 400;
+    const error = new Error("Not Found");
+    error.status = 404;
+    error.message = "상품을 찾지 못했습니다.";
     throw error;
   }
   return product;
@@ -74,6 +77,7 @@ const deleteProduct = async (id) => {
   if (!product) {
     const error = new Error("Not found");
     error.status = 404;
+    error.message = "상품을 찾지 못했습니다.";
     throw error;
   }
   return product;

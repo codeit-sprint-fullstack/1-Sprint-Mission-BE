@@ -4,6 +4,7 @@ import { assert } from "superstruct";
 import { createArticle, updateArticle } from "../structs/articleStruct.js";
 import articleService from "../service/articleService.js";
 import passport from "../config/passportConfig.js";
+import authUser from "../middlewares/authUser.js";
 
 /**
  * @swagger
@@ -71,6 +72,8 @@ router.post(
 
 router.patch(
   "/:id",
+  passport.authenticate("access-token", { session: false }),
+  authUser.verifyArticleAuth,
   asyncHandle(async (req, res, next) => {
     assert(req.body, updateArticle);
     try {
@@ -101,6 +104,7 @@ router.post(
 router.delete(
   "/:id/favorite",
   passport.authenticate("access-token", { session: false }),
+  authUser.verifyArticleAuth,
   asyncHandle(async (req, res, next) => {
     try {
       const { id: articleId } = req.params;

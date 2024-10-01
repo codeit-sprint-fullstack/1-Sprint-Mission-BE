@@ -1,7 +1,7 @@
 import * as s from "superstruct";
 import isUuid from "is-uuid";
 
-const Uuid = s.define("Uuid", (value) => isUuid.v4(value));
+// const Uuid = s.define("Uuid", (value) => isUuid.v4(value));
 
 export const createProduct = s.object({
   name: s.size(s.string(), 1, 10),
