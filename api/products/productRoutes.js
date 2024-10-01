@@ -29,7 +29,12 @@ router
 
     try {
       // 정렬 옵션 설정
-      const sortOption = sort === "recent" ? { createdAt: "desc" } : {}; // 'desc'로 변경
+      const sortOption = {};
+      if (sort === "recent") {
+        sortOption.createdAt = "desc"; // 최신순
+      } else if (sort === "favorite") {
+        sortOption.favoriteCount = "desc"; // 좋아요순
+      }
 
       // 검색 조건 설정
       const searchQuery = {
@@ -50,6 +55,7 @@ router
           name: true,
           price: true,
           createdAt: true,
+          favoriteCount: true, // 좋아요 개수 포함
         },
       });
       res.status(200).send(products);
