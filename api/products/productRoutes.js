@@ -125,6 +125,8 @@ router.get("/:id", authMiddleware, async (req, res, next) => {
 router.patch("/:id", authMiddleware, async (req, res, next) => {
   const { id } = req.params;
 
+  console.log("Request Body:", req.body); // 요청 본문 출력 추가
+
   try {
     const product = await prisma.marketPost.findUnique({
       where: { id: Number(id) },
@@ -134,14 +136,21 @@ router.patch("/:id", authMiddleware, async (req, res, next) => {
     }
 
     // 상품 등록자 확인
-    if (product.ownerId.toString() !== req.user.id) {
+    if (product.ownerId.toString() !== req.user.id.toString()) {
       return res.status(403).send({ message: "수정 권한이 없습니다." });
     }
 
+    //기존 이미지를 유지하는 방식
+    const updatedData = {
+      ...req.body,
+      images: req.body.images || product.images, // 기존 이미지 유지
+    };
+
     const updatedProduct = await prisma.marketPost.update({
       where: { id: Number(id) },
-      data: req.body,
+      data: updatedData,
     });
+    console.log("Updated Product:", updatedProduct); // 수정된 상품 출력
 
     res.status(200).send(updatedProduct);
   } catch (error) {
