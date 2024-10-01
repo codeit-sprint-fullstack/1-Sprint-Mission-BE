@@ -3,6 +3,7 @@ info:
   title: 바오마켓 API
   description: 바오마켓의 상품, 게시글, 댓글, 좋아요 관련 API입니다.
   version: 1.0.0
+
 servers:
   - url: http://localhost:5001/api
 
@@ -49,7 +50,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
-
+  
   /products/{id}:
     get:
       summary: 특정 상품 조회
@@ -151,6 +152,7 @@ components:
         createdAt:
           type: string
           format: date-time
+    
     ProductWithDetails:
       type: object
       properties:
@@ -189,6 +191,7 @@ components:
         createdAt:
           type: string
           format: date-time
+
     ArticleWithDetails:
       type: object
       properties:
