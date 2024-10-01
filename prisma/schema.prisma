@@ -16,7 +16,7 @@ datasource db {
 model User {
   id         String       @id @default(uuid())
   email      String       @unique
-  ncame       String
+  name       String
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   Comment    Comment[]
