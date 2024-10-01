@@ -162,6 +162,8 @@ router.patch("/:id", authMiddleware, async (req, res, next) => {
 router.delete("/:id", authMiddleware, async (req, res, next) => {
   const { id } = req.params;
 
+  console.log("Request User ID:", req.user.id);
+
   try {
     const product = await prisma.marketPost.findUnique({
       where: { id: Number(id) },
@@ -171,7 +173,7 @@ router.delete("/:id", authMiddleware, async (req, res, next) => {
     }
 
     // 상품 등록자 확인
-    if (product.ownerId.toString() !== req.user.id) {
+    if (product.ownerId.toString() !== req.user.id.toString()) {
       return res.status(403).send({ message: "삭제 권한이 없습니다." });
     }
 
