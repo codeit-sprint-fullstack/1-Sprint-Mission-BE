@@ -16,16 +16,16 @@ router.get("/", async (req, res, next) => {
     const comments = await prisma.comment.findMany({
       where: {
         ...query,
-        boardType: "board",
+        boardType: "board", // 자유게시판 댓글로 필터링
       },
       orderBy: { id: "asc" }, // id를 기준으로 오름차순 정렬
-      take: Number(limit),
+      take: Number(limit), // 요청한 댓글 수만큼 가져옴
       select: {
         id: true,
         content: true,
         createdAt: true,
-        postId: true,
-        author: true,
+        articleId: true, // 자유게시판 게시글 ID
+        user: { select: { nickname: true } }, // 작성자의 닉네임을 포함
       },
     });
 
@@ -38,21 +38,21 @@ router.get("/", async (req, res, next) => {
 
 // 자유게시판 댓글 등록 API
 router.post("/", async (req, res, next) => {
-  const { content, postId, author } = req.body; // author 추가
+  const { content, articleId, userId } = req.body; // userId 추가
 
   // 데이터 검증
-  if (!content || !postId || !author) {
-    return res
-      .status(400)
-      .send({ error: "댓글 내용을 입력해주세요. 작성자를 입력해주세요." });
+  if (!content || !articleId || !userId) {
+    return res.status(400).send({
+      error: "댓글 내용을 입력해주세요. 게시글 ID와 사용자 ID를 입력해주세요.",
+    });
   }
 
   try {
     const newComment = await prisma.comment.create({
       data: {
         content,
-        postId,
-        author, // author 추가
+        articleId, // 자유게시판 게시글 ID
+        userId, // 사용자 ID
         boardType: "board",
       },
     });
@@ -66,8 +66,8 @@ router.post("/", async (req, res, next) => {
 
 // 자유게시판 댓글 수정 API
 router.patch("/:id", async (req, res, next) => {
-  const { id, boardType } = req.params;
-  const { content } = req.body;
+  const { id } = req.params; // 댓글 ID
+  const { content } = req.body; // 수정할 내용
 
   if (!content) {
     return res.status(400).send({ error: "댓글 내용을 입력해주세요." });
@@ -78,10 +78,10 @@ router.patch("/:id", async (req, res, next) => {
       where: {
         id_boardType: {
           id: parseInt(id),
-          boardType: "board",
+          boardType: "board", // 자유게시판 댓글로 필터링
         },
       },
-      data: { content },
+      data: { content }, // 새로운 내용으로 업데이트
     });
 
     res.status(200).send(updatedComment);
@@ -97,13 +97,13 @@ router.patch("/:id", async (req, res, next) => {
 
 // 자유게시판 댓글 삭제 API
 router.delete("/:id", async (req, res, next) => {
-  const { id, boardType } = req.params;
+  const { id } = req.params; // 댓글 ID
 
   try {
     const deletedComment = await prisma.comment.deleteMany({
       where: {
         id: parseInt(id),
-        boardType: "board",
+        boardType: "board", // 자유게시판 댓글로 필터링
       },
     });
 
