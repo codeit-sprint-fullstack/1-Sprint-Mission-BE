@@ -21,6 +21,7 @@ model User {
   image     String?   // 프로필 이미지 (선택적)
   products  Product[] // 유저가 등록한 상품
   articles  Article[] // 유저가 작성한 게시글
+  comments  Comment[] // 유저가 작성한 댓글
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -53,6 +54,8 @@ model Article {
 model Comment {
   id        Int       @id @default(autoincrement())
   content   String
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
