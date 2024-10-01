@@ -186,7 +186,7 @@ router.delete("/:id", authMiddleware, async (req, res, next) => {
   }
 });
 
-// 상품에 찜 추가 및 삭제 API
+// 상품에 좋아요(찜) 추가 및 삭제 API
 router.post("/:id/favorite", authMiddleware, async (req, res, next) => {
   const { id } = req.params;
   const userId = req.user.id; // 인증된 사용자 ID
@@ -200,14 +200,14 @@ router.post("/:id/favorite", authMiddleware, async (req, res, next) => {
       return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
     }
 
-    // 사용자가 찜을 눌렀는지 확인
+    // 사용자가 좋아요 눌렀는지 확인
     const isFavorite = product.isFavorite;
 
-    // 찜 추가/삭제 로직
+    // 좋아요 추가/삭제 로직
     if (isFavorite) {
-      // 찜을 취소
+      // 좋아요 취소
       product.isFavorite = false;
-      product.favoriteCount--; // 찜 개수 감소
+      product.favoriteCount--; // 좋아요 개수 감소
       await prisma.marketPost.update({
         where: { id: Number(id) },
         data: {
@@ -215,11 +215,11 @@ router.post("/:id/favorite", authMiddleware, async (req, res, next) => {
           favoriteCount: product.favoriteCount,
         },
       });
-      return res.status(200).send({ message: "찜이 취소되었습니다." });
+      return res.status(200).send({ message: "좋아요가 취소되었습니다." });
     } else {
-      // 찜 추가
+      // 좋아요 추가
       product.isFavorite = true;
-      product.favoriteCount++; // 찜 개수 증가
+      product.favoriteCount++; // 좋아요 개수 증가
       await prisma.marketPost.update({
         where: { id: Number(id) },
         data: {
@@ -227,7 +227,7 @@ router.post("/:id/favorite", authMiddleware, async (req, res, next) => {
           favoriteCount: product.favoriteCount,
         },
       });
-      return res.status(200).send({ message: "찜이 추가되었습니다." });
+      return res.status(200).send({ message: "좋아요가 추가되었습니다." });
     }
   } catch (error) {
     next(error); // 에러를 핸들러로 전달
