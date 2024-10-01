@@ -79,8 +79,8 @@ router
             description,
             price: Number(price), // price를 숫자로 변환하여 저장
             tags: tagsArray,
-            ownerId: req.user.userId, // 등록한 사용자의 ID 추가
-            ownerNickname: req.user.nickname, // JWT에서 가져온 사용자 닉네임
+            ownerId: req.user.id, // 수정된 부분
+            ownerNickname: req.user.nickname, // 수정된 부분
             images: req.files ? req.files.map((file) => file.path) : [], // 파일 업로드 된 경우, 이미지 경로 배열 추가
           },
         });

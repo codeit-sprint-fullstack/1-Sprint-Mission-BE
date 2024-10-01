@@ -11,7 +11,10 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { id: decoded.userId }; // 인증 성공 시, 사용자 정보를 요청 객체에 추가
+    req.user = {
+      id: decoded.userId,
+      nickname: decoded.nickname, // nickname 추가
+    }; // 인증 성공 시, 사용자 정보를 요청 객체에 추가
     console.log(req.user);
     next(); // 다음 미들웨어로 이동
   } catch (error) {
