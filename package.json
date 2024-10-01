@@ -1,0 +1,20 @@
+{
+  "name": "1-sprint-mission-be",
+  "version": "1.0.0",
+  "description": "아래 링크를 통해 강의 학습 후 만들어봐야 할 실습 과제 디자인을 확인해보세요",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "type": "module"
+}
