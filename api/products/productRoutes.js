@@ -99,7 +99,7 @@ router
   );
 
 // 상품 상세 조회 API
-router.get("/:id", authMiddleware, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   const userId = req.user ? req.user.id : null; // 로그인한 사용자의 ID
 
