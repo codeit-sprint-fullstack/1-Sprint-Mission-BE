@@ -46,6 +46,7 @@ model Article {
   content     String
   image       String?   // 게시글 이미지 경로
   tags        String[]
+  comments    Comment[] @relation("ArticleComments")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   userId      Int?
@@ -57,6 +58,8 @@ model Comment {
   content   String
   productId Int?
   product   Product?  @relation("ProductComments", fields: [productId], references: [id])
+  articleId Int?
+  article   Article?  @relation("ArticleComments", fields: [articleId], references: [id])
   userId    Int
   user      User      @relation(fields: [userId], references: [id])
   createdAt DateTime  @default(now())
