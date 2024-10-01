@@ -1,85 +1,101 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-exports.createProductComment = async (req, res) => {
+// 상품에 댓글 추가
+exports.createProductComment = async (req, res, next) => {
+  const { content } = req.body;
+  const { productId } = req.params;
+
   try {
-    const { content } = req.body;
-    const { productId } = req.params;
     const comment = await prisma.comment.create({
-      data: { content, productId: parseInt(productId) }
+      data: {
+        content,
+        productId: parseInt(productId),
+        userId: req.user.id,
+      },
     });
     res.status(201).json(comment);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error); // 에러 전달
   }
 };
 
-exports.createArticleComment = async (req, res) => {
+// 게시글에 댓글 추가
+exports.createArticleComment = async (req, res, next) => {
+  const { content } = req.body;
+  const { articleId } = req.params;
+
   try {
-    const { content } = req.body;
-    const { articleId } = req.params;
     const comment = await prisma.comment.create({
-      data: { content, articleId: parseInt(articleId) }
+      data: {
+        content,
+        articleId: parseInt(articleId),
+        userId: req.user.id,
+      },
     });
     res.status(201).json(comment);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error); // 에러 전달
   }
 };
 
-exports.updateComment = async (req, res) => {
+// 상품 댓글 수정
+exports.updateProductComment = async (req, res, next) => {
+  const { id } = req.params;
+  const { content } = req.body;
+
   try {
     const comment = await prisma.comment.update({
-      where: { id: parseInt(req.params.id) },
-      data: req.body
+      where: { id: parseInt(id) },
+      data: { content },
     });
-    if (!comment) return res.status(404).json({ error: 'Comment not found' });
     res.status(200).json(comment);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error); // 에러 전달
   }
 };
 
-exports.deleteComment = async (req, res) => {
-  try {
-    await prisma.comment.delete({ where: { id: parseInt(req.params.id) } });
-    res.status(200).json({ message: 'Comment deleted successfully' });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+// 게시글 댓글 수정
+exports.updateArticleComment = async (req, res, next) => {
+  const { id } = req.params;
+  const { content } = req.body;
 
-exports.getProductComments = async (req, res) => {
   try {
-    const { productId } = req.params;
-    const { cursor, pageSize = 10 } = req.query;
-    const comments = await prisma.comment.findMany({
-      where: { productId: parseInt(productId) },
-      skip: cursor ? 1 : 0,
-      take: parseInt(pageSize, 10),
-      cursor: cursor ? { id: parseInt(cursor) } : undefined,
-      orderBy: { createdAt: 'desc' }
+    const comment = await prisma.comment.update({
+      where: { id: parseInt(id) },
+      data: { content },
     });
-    res.status(200).json({ list: comments });
+    res.status(200).json(comment);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error); // 에러 전달
   }
 };
 
-exports.getArticleComments = async (req, res) => {
+// 상품 댓글 삭제
+exports.deleteProductComment = async (req, res, next) => {
+  const { id } = req.params;
+
   try {
-    const { articleId } = req.params;
-    const { cursor, pageSize = 10 } = req.query;
-    const comments = await prisma.comment.findMany({
-      where: { articleId: parseInt(articleId) },
-      skip: cursor ? 1 : 0,
-      take: parseInt(pageSize, 10),
-      cursor: cursor ? { id: parseInt(cursor) } : undefined,
-      orderBy: { createdAt: 'desc' }
+    await prisma.comment.delete({
+      where: { id: parseInt(id) },
     });
-    res.status(200).json({ list: comments });
+    res.status(200).json({ message: "댓글이 성공적으로 삭제되었습니다." });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error); // 에러 전달
+  }
+};
+
+// 게시글 댓글 삭제
+exports.deleteArticleComment = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    await prisma.comment.delete({
+      where: { id: parseInt(id) },
+    });
+    res.status(200).json({ message: "댓글이 성공적으로 삭제되었습니다." });
+  } catch (error) {
+    next(error); // 에러 전달
   }
 };
 
