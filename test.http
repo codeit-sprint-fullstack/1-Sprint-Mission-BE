@@ -1,0 +1,16 @@
+# POST http://localhost:5432/auth/signup
+# Content-Type: application/json
+
+# {
+#     "email": "test1@example.com",
+#     "password": "password123",
+#     "nickname": "asdfa"
+# }
+
+POST http://localhost:5432/auth/signin
+Content-Type: application/json
+
+{
+    "email": "test1@example.com",
+    "password": "password123"
+}
