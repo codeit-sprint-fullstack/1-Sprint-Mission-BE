@@ -12,8 +12,8 @@ const getArticleComments = async (req) => {
     const nextCursor = nextComments ? comments[limit - 1].id : null;
 
     const returnData = {
-      comments: comments.slice(0, limit),
-      Cursor: nextCursor,
+      list: comments.slice(0, limit),
+      nextCursor,
     };
     return returnData;
   } else {
@@ -35,8 +35,8 @@ const getProductComments = async (req) => {
     const nextCursor = nextComments ? comments[limit - 1].id : null;
 
     const returnData = {
-      comments: comments.slice(0, limit),
-      Cursor: nextCursor,
+      list: comments.slice(0, limit),
+      nextCursor,
     };
     return returnData;
   } else {

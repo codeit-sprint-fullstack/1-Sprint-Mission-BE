@@ -19,8 +19,8 @@ const getTotalCount = async (keyword) => {
 const getList = async (pageSize, offset, orderOption, keyword) => {
   const where = whereConditions(keyword);
   return await prismaClient.product.findMany({
-    take: pageSize,
-    skip: pageSize * offset,
+    take: parseInt(pageSize),
+    skip: parseInt(pageSize) * offset,
     orderBy: orderOption,
     where,
     include: {

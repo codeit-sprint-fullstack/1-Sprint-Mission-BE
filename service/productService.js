@@ -12,8 +12,8 @@ const getProducts = async ({
     case "recent":
       orderOption = { createAt: "desc" };
       break;
-    case "favorite":
-      orderOption = { favorite: "desc" };
+    case "favoriteCount":
+      orderOption = { favoriteCount: "desc" };
       break;
     default:
       orderOption = { createAt: "desc" };

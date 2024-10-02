@@ -3,8 +3,10 @@ import userService from "../../service/userService.js";
 
 const accessExtractor = function (req) {
   var token = null;
-  if (req && req.cookies) {
+  if (req && req.cookies["access-token"]) {
     token = req.cookies["access-token"];
+  } else {
+    token = req.headers.authorization;
   }
   return token;
 };
