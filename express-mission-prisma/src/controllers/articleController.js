@@ -8,8 +8,6 @@ articleController
   .route("/")
   .post(
     asyncHandler(async (req, res, next) => {
-      console.log("1111");
-      console.log(req.body);
       const article = await articleService.create(req.body);
       res.status(201).send(article);
     })
