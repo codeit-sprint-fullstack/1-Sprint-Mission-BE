@@ -9,7 +9,7 @@ import articleRoute from './src/routes/articles.js';
 import commentRoute from './src/routes/comments.js';
 import favoriteRoute from './src/routes/favorite.js';
 
-import multer from 'multer';
+// import multer from 'multer';
 
 dotenv.config();
 
@@ -27,5 +27,12 @@ app.use('/fleamarket', fleamarketRoute);
 app.use('/comments', commentRoute);
 app.use('/users', userRoute);
 app.use('/favorite', favoriteRoute);
+
+// const upload = multer({ dest: 'uploads/' });
+
+// app.post('/files', upload.single('attachment'), (req, res) => {
+//   console.log(req.file);
+//   res.json({ message: '파일 업로드 완료!' });
+// });
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
