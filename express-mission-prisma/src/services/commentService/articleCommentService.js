@@ -1,4 +1,4 @@
-import articleCommentRepository from "../repositories/articleCommentRepository.js";
+import articleCommentRepository from "../../repositories/commentRepository/articleCommentRepository.js";
 
 async function create(id, createData) {
   const createDataWithId = { ...createData, articleId: id };

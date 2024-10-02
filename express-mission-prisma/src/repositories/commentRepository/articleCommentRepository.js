@@ -1,9 +1,9 @@
 import { assert } from "superstruct";
-import prisma from "../config/prisma.js";
+import prisma from "../../config/prisma.js";
 import {
   createArticleCommend,
   updateCommend,
-} from "../structs/commentStruct.js";
+} from "../../structs/commentStruct.js";
 
 async function create(createData) {
   assert(createData, createArticleCommend);

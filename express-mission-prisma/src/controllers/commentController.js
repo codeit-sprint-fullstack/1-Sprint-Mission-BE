@@ -1,7 +1,7 @@
 import express from "express";
 import asyncHandler from "../services/errorService.js";
-import articleCommentService from "../services/articleCommentService.js";
-import productCommentService from "../services/productCommentService.js";
+import articleCommentService from "../services/commentService/articleCommentService.js";
+import productCommentService from "../services/commentService/productCommentService.js";
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
 const articleCommentController = express.Router(); // 게시글 댓글 router
@@ -46,7 +46,7 @@ productCommentCotroller
   .post(
     asyncHandler(async (req, res, next) => {
       const { id } = req.params;
-      const commend = await productCommentService.create(id, req.body)
+      const commend = await productCommentService.create(id, req.body);
       res.status(201).send(commend);
     })
   )

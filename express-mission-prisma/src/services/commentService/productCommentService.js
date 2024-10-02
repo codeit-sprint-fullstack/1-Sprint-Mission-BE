@@ -1,4 +1,4 @@
-import productCommentRepository from "../repositories/productCommentRepository.js";
+import productCommentRepository from "../../repositories/commentRepository/productCommentRepository.js";
 
 async function create(id, createData) {
   const createDataWithId = { ...createData, productId: id };
