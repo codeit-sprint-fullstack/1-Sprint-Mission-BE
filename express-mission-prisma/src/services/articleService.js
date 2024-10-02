@@ -65,7 +65,11 @@ async function getById(id) {
 }
 
 async function update(id, updataData) {
-  return await articleRepository.update(id, updataData)
+  return await articleRepository.update(id, updataData);
+}
+
+async function deleteById(id) {
+  return await articleRepository.deleteById(id);
 }
 
 export default {
@@ -73,5 +77,6 @@ export default {
   getAllByFilter,
   countByFilter,
   getById,
-  update
+  update,
+  deleteById,
 };

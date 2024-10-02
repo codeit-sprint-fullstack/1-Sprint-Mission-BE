@@ -5,7 +5,7 @@ GET  http://localhost:3001/article?keyWord=post&page=&pageSize=
 
 ###
 
-GET http://localhost:3001/article/d14faeec-712d-4e04-9659-c69afb2caae0
+GET http://localhost:3001/article/d14faeec-712d-4e04-9659-c69afb2caae
 ###
 
 POST http://localhost:3001/article
@@ -29,4 +29,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/noticeBoards/22233ea1-005d-4659-9e0d-271b7fcf269e
+DELETE http://localhost:3001/article/d14faeec-712d-4e04-9659-c69afb2caae0

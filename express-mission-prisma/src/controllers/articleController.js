@@ -34,16 +34,14 @@ articleController
   .patch(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      const article = await articleService.update(id, req.body)
+      const article = await articleService.update(id, req.body);
       res.status(201).send(article);
     })
   )
   .delete(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      await prisma.article.delete({
-        where: { id },
-      });
+      await articleService.deleteById(id);
       res.sendStatus(204);
     })
   );
