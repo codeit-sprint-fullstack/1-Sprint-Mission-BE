@@ -9,15 +9,16 @@
     "generate": "^0.10.0",
     "is-email": "^1.0.2",
     "is-uuid": "^1.0.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.2",
     "postgresql": "^0.0.1",
     "superstruct": "^2.0.2",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "mongoose": "^8.5.2",
     "nodemon": "^3.1.4",
-    "prisma": "^5.18.0",
-    "mongoose": "^8.5.2"
+    "prisma": "^5.18.0"
   },
   "type": "module",
   "scripts": {
