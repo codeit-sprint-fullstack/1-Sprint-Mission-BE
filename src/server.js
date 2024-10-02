@@ -1,8 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { signup, login } from "./controllers/authController.js";
+import userRoutes from "./routes/userRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
+import axios from "axios";
 
 dotenv.config();
 
@@ -10,8 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/auth", signup);
-app.use("/auth", login);
+app.use("/auth", userRoutes); //유저 회원가입, 로그인
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "Not Found" });
