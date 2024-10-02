@@ -1,7 +1,7 @@
 import express from "express";
 import * as productController from "../controllers/productController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
-// import { validateProductFields } from "../middlewares/validateProductFields.js";
+import { validateProductFields } from "../middlewares/validateProductFields.js";
 // import { imageUpload } from "../middlewares/imageUpload.js";
 
 const router = express.Router();
@@ -10,7 +10,7 @@ const router = express.Router();
 router.post(
   "/",
   verifyToken,
-  //validateProductFields,
+  validateProductFields,
   //imageUpload.array("images", 3),
   productController.createProduct
 );
