@@ -56,6 +56,7 @@ router
           price: true,
           createdAt: true,
           favoriteCount: true, // 좋아요 개수 포함
+          images: true, // images 필드 추가
         },
       });
       res.status(200).send(products);
