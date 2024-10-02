@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use("/article", articleController);
 app.use("/article", articleCommentController);
-// app.use('/product/:id/comment', productCommentCotroller)
+app.use('/product', productCommentCotroller)
 // app.use('/comment/:id', commentController)
 
 app.listen(process.env.PORT || 3001, () => console.log("Server Started"));

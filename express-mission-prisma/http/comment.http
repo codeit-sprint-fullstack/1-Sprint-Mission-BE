@@ -6,10 +6,6 @@ GET  http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58/comment?
 
 ###
 
-GET http://localhost:3000/freeCommends/22938169-e14e-4eb4-b2e0-0249d0c874da
-
-###
-
 POST http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58/comment
 Content-Type: application/json
 
@@ -18,14 +14,17 @@ Content-Type: application/json
 }
 
 ###
-
-PATCH http://localhost:3000/freeCommends/ce07a21b-63ea-4e66-97d8-8537813c5d0b
-Content-Type: application/json
-
-{
-    "content": "sssss"
-}
+GET  http://localhost:3001/product/192fce08-09c2-4065-981b-0285f0e452b8/comment
 
 ###
 
-DELETE http://localhost:3001/freeCommends/a9767bcc-e79e-499f-893f-ad84c3646716
+GET  http://localhost:3001/product/192fce08-09c2-4065-981b-0285f0e452b8/comment?cursor=5f04ea72-41d8-4824-92ca-437bffbd4beb
+
+###
+
+POST http://localhost:3001/product/192fce08-09c2-4065-981b-0285f0e452b8/comment
+Content-Type: application/json
+
+{
+    "content": "안녕?"
+}
