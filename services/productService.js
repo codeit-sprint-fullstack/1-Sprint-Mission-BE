@@ -10,6 +10,9 @@ export const createProduct = async (
   userId,
   userNickname
 ) => {
+  if (!Array.isArray(tags) || tags.length < 1 || tags.length > 5) {
+    throw new Error("태그는 최소 1개, 최대 5개까지 입력 가능합니다.");
+  }
   const newProduct = await prisma.product.create({
     data: {
       images,
@@ -100,23 +103,27 @@ export const deleteProduct = async (productId) => {
 };
 
 export const addFavorite = async (productId) => {
-  const addFavorite = await prisma.product.update({
-    where: { id: parseInt(productId) },
-    data: {
-      favoriteCount: { increment: 1 },
-      isFavorite: true,
-    },
-  });
+  const addFavorite = await prisma.$transaction([
+    prisma.product.update({
+      where: { id: parseInt(productId) },
+      data: {
+        favoriteCount: { increment: 1 },
+        isFavorite: true,
+      },
+    }),
+  ]);
   return addFavorite;
 };
 
 export const deleteFavorite = async (productId) => {
-  const deleteFavorite = await prisma.product.update({
-    where: { id: parseInt(productId) },
-    data: {
-      favoriteCount: { decrement: 1 },
-      isFavorite: false,
-    },
-  });
+  const deleteFavorite = await prisma.$transaction([
+    prisma.product.update({
+      where: { id: parseInt(productId) },
+      data: {
+        favoriteCount: { decrement: 1 },
+        isFavorite: false,
+      },
+    }),
+  ]);
   return deleteFavorite;
 };
