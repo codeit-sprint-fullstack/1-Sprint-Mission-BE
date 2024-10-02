@@ -8,12 +8,12 @@ GET  http://localhost:3000/noticeBoards?keyWord=&page=&pageSize=
 GET http://localhost:3000/noticeBoards/0c5d059b-ee21-4126-87a4-582c6cd39677
 ###
 
-POST http://localhost:3000/noticeBoards
+POST http://localhost:3001/noticeBoards
 Content-Type: application/json
 
 {
-    "title": "7",
-    "content": "7",
+    "title": "q",
+    "content": "w"
 }
 
 
