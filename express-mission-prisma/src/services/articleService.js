@@ -1,7 +1,7 @@
 import articleRepository from "../repositories/articleRepository.js";
 
-async function create(article) {
-  return await articleRepository.create(article);
+async function create(createData) {
+  return await articleRepository.create(createData);
 }
 
 async function getAllByFilter(query) {

@@ -2,12 +2,12 @@ import { assert } from "superstruct";
 import prisma from "../config/prisma.js";
 import { createArticle } from "../structs/articleStruct.js";
 
-async function create(article) {
-  assert(article, createArticle);
+async function create(createData) {
+  assert(createData, createArticle);
   return await prisma.article.create({
     data: {
-      title: article.title,
-      content: article.content,
+      title: createData.title,
+      content: createData.content,
     },
   });
 }
