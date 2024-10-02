@@ -44,19 +44,18 @@ articleController
         where: whereOr,
       };
 
-      const article = await articleService.getAllByFilter(fillter);
+      const articles = await articleService.getAllByFilter(fillter);
       const count = await articleService.countByFilter(fillter.where);
-      const [list, total] = await Promise.all([article, count]);
+      const [list, total] = await Promise.all([articles, count]);
 
       return res.send({ total, list });
     })
   )
   .post(
-    asyncHandler(async (req, res) => {
-      assert(req.body, s.CreateNoticeBoard);
-      const article = await prisma.article.create({
-        data: req.body,
-      });
+    asyncHandler(async (req, res, next) => {
+      console.log('1111')
+      console.log(req.body)
+      const article = await articleService.create(req.body);
       res.status(201).send(article);
     })
   );

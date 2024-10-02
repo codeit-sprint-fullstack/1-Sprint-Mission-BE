@@ -8,7 +8,12 @@ async function countByFilter(fillter) {
   return await articleRepository.countByFilter(fillter);
 }
 
+async function create(article) {
+  return await articleRepository.create(article);
+}
+
 export default {
   getAllByFilter,
   countByFilter,
+  create,
 };
