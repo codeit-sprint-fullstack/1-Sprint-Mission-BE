@@ -16,8 +16,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 app.get('/', (req, res) => {
   res.send('default path');
@@ -30,7 +30,6 @@ app.use('/comments', commentRoute);
 app.use('/users', userRoute);
 app.use('/favorite', favoriteRoute);
 
-// uploads 디렉토리를 정적 파일로 제공
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
