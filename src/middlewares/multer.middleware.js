@@ -16,11 +16,13 @@ const upload = multer({
   storage: storage,
   limits: { fileSize: 1000000 },
   fileFilter: (req, file, cb) => {
-    const fileTypes = /jpeg|jpg|png|gif/;
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!allowedTypes.includes(file.mimetype)) {
       const error = new Error('허용되지 않는 파일 형식입니다');
       error.code = 'INCORRECT_FILETYPE';
       return cb(error, false);
+    } else {
+      cb(null, true);
     }
   },
 });
