@@ -2,7 +2,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 
-const uploadDirectory = 'src/uploads/';
+const uploadDirectory = 'uploads/';
 
 // 디렉토리 존재 확인 및 생성
 if (!fs.existsSync(uploadDirectory)) {
