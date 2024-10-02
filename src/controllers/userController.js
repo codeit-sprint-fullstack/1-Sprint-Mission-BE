@@ -7,10 +7,8 @@ const prisma = new PrismaClient();
 
 export async function getUser(req, res, next) {
   try {
-    // `authenticateUser` 미들웨어를 통과한 후, `req.user`에 사용자 정보가 저장되어 있습니다.
     const { userId } = req.user;
 
-    // 데이터베이스에서 사용자 정보를 조회합니다.
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
