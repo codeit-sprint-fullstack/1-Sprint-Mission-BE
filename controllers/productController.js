@@ -1,8 +1,8 @@
 import * as productService from "../services/productService.js";
 
 export const createProduct = async (req, res) => {
-  const { name, price, description, tags } = req.body;
-  const images = req.files.map((file) => file.path);
+  const { images, name, price, description, tags } = req.body;
+  //   const images = req.files.map((file) => file.path);
   try {
     const userId = req.user.id;
     const userNickname = req.user.nickname;
