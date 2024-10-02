@@ -1,13 +1,21 @@
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
+
+const uploadDirectory = 'src/uploads/';
+
+// 디렉토리 존재 확인 및 생성
+if (!fs.existsSync(uploadDirectory)) {
+  fs.mkdirSync(uploadDirectory, { recursive: true });
+}
 
 // 저장할 위치와 파일 이름 설정
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'src/uploads/');
+    cb(null, uploadDirectory);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + path.extname(file.originalname)); // 파일 이름을 현재 시간으로 설정
   },
 });
 
