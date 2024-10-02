@@ -25,7 +25,6 @@ model Article {
 model Comment {
   id        String   @id @default(uuid())
   content   String
-  postId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   product   Product? @relation(fields: [productId], references: [id])

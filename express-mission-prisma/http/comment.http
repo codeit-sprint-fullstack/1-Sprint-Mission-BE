@@ -1,4 +1,4 @@
-GET  http://localhost:3001/noticeBoards/5fa13fdb-caf1-46b5-bedb-108c66c3adfe/freeCommends
+GET  http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58/comment
 
 ###
 
@@ -10,12 +10,11 @@ GET http://localhost:3000/freeCommends/22938169-e14e-4eb4-b2e0-0249d0c874da
 
 ###
 
-POST http://localhost:3001/freeCommends
+POST http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58/comment
 Content-Type: application/json
 
 {
-    "content": "fdgs",
-    "noticeBoardId": "5fa13fdb-caf1-46b5-bedb-108c66c3adfe"
+    "content": "123"
 }
 
 ###
@@ -24,7 +23,7 @@ PATCH http://localhost:3000/freeCommends/ce07a21b-63ea-4e66-97d8-8537813c5d0b
 Content-Type: application/json
 
 {
-    "content": "fds"
+    "content": "sssss"
 }
 
 ###

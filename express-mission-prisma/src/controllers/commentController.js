@@ -1,12 +1,20 @@
 import express from "express";
-import { asyncHandler } from "../../app.js";
+import asyncHandler from "../services/errorService.js";
+import articleCommentService from "../services/articleCommentService.js";
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
 const articleCommentController = express.Router(); // 게시글 댓글 router
 const productCommentCotroller = express.Router(); // 상품 댓글 router
 
 articleCommentController
-  .route("/")
+  .route("/:id/comment")
+  .post(
+    asyncHandler(async (req, res, next) => {
+      const { id } = req.params;
+      const comment = await articleCommentService.create(id, req.body)
+      res.status(201).send(comment);
+    })
+  )
   .get(
     asyncHandler(async (req, res) => {
       const { cursor = "", pageSize = 5, orderBy = "recent" } = req.query;
@@ -40,19 +48,19 @@ articleCommentController
         list,
       });
     })
-  )
-  .post(
-    asyncHandler(async (req, res) => {
-      assert(req.body, s.CreateFreeCommend);
-      const freeCommend = await prisma.freeCommend.create({
-        data: req.body,
-      });
-      res.status(201).send(freeCommend);
-    })
   );
 
 productCommentCotroller
   .route("/")
+  .post(
+    asyncHandler(async (req, res) => {
+      assert(req.body, s.CreateUsedCommend);
+      const usedCommend = await prisma.usedCommend.create({
+        data: req.body,
+      });
+      res.status(201).send(usedCommend);
+    })
+  )
   .get(
     asyncHandler(async (req, res) => {
       const { cursor = "", pageSize = 2, orderBy = "recent" } = req.query;
@@ -82,15 +90,6 @@ productCommentCotroller
         list,
       });
     })
-  )
-  .post(
-    asyncHandler(async (req, res) => {
-      assert(req.body, s.CreateUsedCommend);
-      const usedCommend = await prisma.usedCommend.create({
-        data: req.body,
-      });
-      res.status(201).send(usedCommend);
-    })
   );
 
 commentController
@@ -116,4 +115,4 @@ commentController
     })
   );
 
-export {commentController, articleCommentController, productCommentCotroller}
+export { commentController, articleCommentController, productCommentCotroller };

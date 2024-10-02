@@ -1,22 +1,25 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
-import cors from 'cors';
+import cors from "cors";
 import articleController from "./src/controllers/articleController.js";
-import { articleCommentController, commentController, productCommentCotroller } from "./src/controllers/commentController.js";
+import {
+  articleCommentController,
+  commentController,
+  productCommentCotroller,
+} from "./src/controllers/commentController.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use('/article', articleController)
-// app.use('/article/:id/comment', articleCommentController)
+app.use("/article", articleController);
+app.use("/article", articleCommentController);
 // app.use('/product/:id/comment', productCommentCotroller)
 // app.use('/comment/:id', commentController)
 
 app.listen(process.env.PORT || 3001, () => console.log("Server Started"));
-
 
 export function asyncHandler(asyncFunc) {
   return async function (req, res) {
