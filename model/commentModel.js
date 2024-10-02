@@ -1,7 +1,7 @@
 import prismaClient from "../utils/prismaClient.js";
 
 const getArticleComments = async (cursor, limit, id) => {
-  const data = await prismaClient.comment.findMany({
+  return prismaClient.comment.findMany({
     where: { articleId: id },
     take: limit + 1, //추가적인 댓글이 있는지 확인
     skip: cursor ? 1 : 0, //커서 자신을 스킵하기 위함
@@ -10,11 +10,10 @@ const getArticleComments = async (cursor, limit, id) => {
       createAt: "asc",
     },
   });
-  return data;
 };
 
 const getProductComments = async (cursor, limit, id) => {
-  const data = await prismaClient.comment.findMany({
+  return prismaClient.comment.findMany({
     where: { productId: id },
     take: limit + 1, //추가적인 댓글이 있는지 확인
     skip: cursor ? 1 : 0, //커서 자신을 스킵하기 위함
@@ -23,7 +22,14 @@ const getProductComments = async (cursor, limit, id) => {
       createAt: "asc",
     },
   });
-  return data;
+};
+
+const getById = async (id) => {
+  return prismaClient.comment.findUniqueOrThrow({
+    where: {
+      id,
+    },
+  });
 };
 
 const createComment = async (data) => {
@@ -59,7 +65,6 @@ const updateComment = async ({ content, commentId, userId }) => {
 };
 
 const deleteComment = async (id) => {
-  console.log(id);
   return prismaClient.comment.delete({
     where: {
       id,
@@ -70,6 +75,7 @@ const deleteComment = async (id) => {
 export default {
   getArticleComments,
   getProductComments,
+  getById,
   createComment,
   updateComment,
   deleteComment,

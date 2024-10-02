@@ -1,8 +1,8 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
 import { asyncHandle } from "../utils/errorUtils.js";
 import { assert } from "superstruct";
 import { createComment, updateComment } from "../structs/commentStruct.js";
+import authUser from "../middlewares/authUser.js";
 import commentService from "../service/commentService.js";
 import passport from "../config/passportConfig.js";
 
@@ -102,6 +102,7 @@ router.post(
 
 router.patch(
   "/:id",
+  authUser.verifyCommentAuth, //작성자만 수정/삭제가 가능하다.
   passport.authenticate("access-token", { session: false }),
   asyncHandle(async (req, res, next) => {
     assert(req.body, updateComment);
@@ -123,6 +124,7 @@ router.patch(
 
 router.delete(
   "/:id",
+  authUser.verifyCommentAuth, //작성자만 수정/삭제가 가능하다.
   passport.authenticate("access-token", { session: false }),
   asyncHandle(async (req, res, next) => {
     try {

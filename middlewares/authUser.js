@@ -1,5 +1,6 @@
 import articleModel from "../model/articleModel.js";
 import productModel from "../model/productModel.js";
+import commentModel from "../model/commentModel.js";
 
 const verifyProductAuth = async (req, res, next) => {
   const { id: userId } = req.user;
@@ -51,7 +52,33 @@ const verifyArticleAuth = async (req, res, next) => {
   }
 };
 
+const verifyCommentAuth = async (req, res, next) => {
+  const { id: userId } = req.user;
+  const { id: commentId } = req.params;
+
+  try {
+    const comment = await commentModel.getById(commentId);
+
+    if (!comment) {
+      const error = new Error("Review not found");
+      error.code = 404;
+      throw error;
+    }
+
+    if (comment.userId !== userId) {
+      const error = new Error("Forbidden");
+      error.code = 403;
+      throw error;
+    }
+
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+};
+
 export default {
   verifyProductAuth,
   verifyArticleAuth,
+  verifyCommentAuth,
 };
