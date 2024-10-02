@@ -13,40 +13,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model NoticeBoard {
-  id           String        @id @default(uuid())
-  title        String
-  content      String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  FreeCommends FreeCommend[]
+model Article {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model FreeCommend {
-  id            String      @id @default(uuid())
-  content       String
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  noticeBoard   NoticeBoard @relation(fields: [noticeBoardId], references: [id], onDelete: Cascade)
-  noticeBoardId String
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model UsedMarket {
-  id           String        @id @default(uuid())
-  name         String        @unique
-  description  String
-  price        Int
-  tags         String[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  UsedCommends UsedCommend[]
-}
-
-model UsedCommend {
-  id           String      @id @default(uuid())
-  content      String
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  usedMarket   UsedMarket @relation(fields: [usedMarketId], references: [id], onDelete: Cascade)
-  usedMarketId String
+model Product {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String
+  price       Int
+  tags        String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

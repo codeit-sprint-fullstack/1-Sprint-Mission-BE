@@ -125,39 +125,39 @@ export function asyncHandler(asyncFunc) {
 // );
 
 /*-----------------자유게시판 댓글-------------------*/
-// app.get(
-//   "/noticeBoards/:id/freeCommends",
-//   asyncHandler(async (req, res) => {
-//     const { cursor = "", pageSize = 5, orderBy = "recent" } = req.query;
-//     const {id} = req.params
-//     const skipInt = cursor === "" ? 0 : 1;
-//     const findValueDefault = {
-//       orderBy: { createdAt: "desc" },
-//       skip: parseInt(skipInt),
-//       take: parseInt(pageSize),
-//       where: { noticeBoardId: id}
-//     };
-//     const findValue =
-//       cursor !== ""
-//         ? { ...findValueDefault, cursor: { id: cursor } }
-//         : { ...findValueDefault };
+app.get(
+  "/noticeBoards/:id/freeCommends",
+  asyncHandler(async (req, res) => {
+    const { cursor = "", pageSize = 5, orderBy = "recent" } = req.query;
+    const {id} = req.params
+    const skipInt = cursor === "" ? 0 : 1;
+    const findValueDefault = {
+      orderBy: { createdAt: "desc" },
+      skip: parseInt(skipInt),
+      take: parseInt(pageSize),
+      where: { noticeBoardId: id}
+    };
+    const findValue =
+      cursor !== ""
+        ? { ...findValueDefault, cursor: { id: cursor } }
+        : { ...findValueDefault };
 
-//     const freeCommend = await prisma.freeCommend.findMany(findValue);
-//     const count = await prisma.freeCommend.count({where: { noticeBoardId: id}});
-//     const [list, total] = await Promise.all([freeCommend, count]);
+    const freeCommend = await prisma.freeCommend.findMany(findValue);
+    const count = await prisma.freeCommend.count({where: { noticeBoardId: id}});
+    const [list, total] = await Promise.all([freeCommend, count]);
 
-//     const lastList = list[pageSize - 1];
-//     const NextCusor = lastList ? lastList.id : "null";
+    const lastList = list[pageSize - 1];
+    const NextCusor = lastList ? lastList.id : "null";
 
-//     res.send({
-//       cursorInfo: {
-//         total,
-//         NextCusor,
-//       },
-//       list,
-//     });
-//   })
-// );
+    res.send({
+      cursorInfo: {
+        total,
+        NextCusor,
+      },
+      list,
+    });
+  })
+);
 
 app.get(
   "/freeCommends/:id",
