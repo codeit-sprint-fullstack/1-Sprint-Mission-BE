@@ -14,44 +14,8 @@ articleController
   )
   .get(
     asyncHandler(async (req, res, next) => {
-      const {
-        page = 1,
-        pageSize = 10,
-        orderBy = "recent",
-        keyWord = "",
-      } = req.query;
-
-      const pageNum = page || 1;
-      const pageSizeNum = pageSize || 4;
-
-      const order = orderBy || "recent";
-      const offset = (pageNum - 1) * pageSizeNum;
-      const whereOr = {
-        OR: [
-          {
-            title: {
-              contains: keyWord,
-              mode: "insensitive",
-            },
-          },
-          {
-            content: {
-              contains: keyWord,
-              mode: "insensitive",
-            },
-          },
-        ],
-      };
-
-      const fillter = {
-        orderBy: { createdAt: "desc" },
-        skip: parseInt(offset),
-        take: parseInt(pageSizeNum),
-        where: whereOr,
-      };
-
-      const articles = await articleService.getAllByFilter(fillter);
-      const count = await articleService.countByFilter(fillter.where);
+      const articles = await articleService.getAllByFilter(req.query);
+      const count = await articleService.countByFilter(req.query);
       const [list, total] = await Promise.all([articles, count]);
 
       return res.send({ total, list });

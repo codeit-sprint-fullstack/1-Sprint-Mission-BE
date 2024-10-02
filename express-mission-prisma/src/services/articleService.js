@@ -4,11 +4,59 @@ async function create(article) {
   return await articleRepository.create(article);
 }
 
-async function getAllByFilter(fillter) {
+async function getAllByFilter(query) {
+  const { page = 1, pageSize = 10, orderBy = "recent", keyWord = "" } = query;
+
+  const pageNum = page || 1;
+  const pageSizeNum = pageSize || 10;
+  const order = orderBy || "recent";
+  const offset = (pageNum - 1) * pageSizeNum;
+  const whereOr = {
+    OR: [
+      {
+        title: {
+          contains: keyWord,
+          mode: "insensitive",
+        },
+      },
+      {
+        content: {
+          contains: keyWord,
+          mode: "insensitive",
+        },
+      },
+    ],
+  };
+
+  const fillter = {
+    orderBy: { createdAt: "desc" },
+    skip: parseInt(offset),
+    take: parseInt(pageSizeNum),
+    where: whereOr,
+  };
+
   return await articleRepository.getAllByFilter(fillter);
 }
 
-async function countByFilter(fillter) {
+async function countByFilter(query) {
+  const { keyWord = "" } = query;
+  const fillter = {
+    OR: [
+      {
+        title: {
+          contains: keyWord,
+          mode: "insensitive",
+        },
+      },
+      {
+        content: {
+          contains: keyWord,
+          mode: "insensitive",
+        },
+      },
+    ],
+  };
+
   return await articleRepository.countByFilter(fillter);
 }
 

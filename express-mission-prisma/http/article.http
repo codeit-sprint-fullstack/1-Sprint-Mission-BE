@@ -1,7 +1,7 @@
 GET  http://localhost:3001/article
 ###
 
-GET  http://localhost:3001/article?keyWord=&page=1&pageSize=1
+GET  http://localhost:3001/article?keyWord=post&page=&pageSize=
 
 ###
 
