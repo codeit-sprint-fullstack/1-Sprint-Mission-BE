@@ -64,9 +64,14 @@ async function getById(id) {
   return await articleRepository.getById(id);
 }
 
+async function update(id, updataData) {
+  return await articleRepository.update(id, updataData)
+}
+
 export default {
   create,
   getAllByFilter,
   countByFilter,
   getById,
+  update
 };

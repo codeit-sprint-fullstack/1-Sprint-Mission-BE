@@ -34,11 +34,7 @@ articleController
   .patch(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      assert(req.body, s.PatchNoticeBoard);
-      const article = await prisma.article.update({
-        where: { id },
-        data: req.body,
-      });
+      const article = await articleService.update(id, req.body)
       res.status(201).send(article);
     })
   )

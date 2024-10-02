@@ -1,6 +1,6 @@
 import { assert } from "superstruct";
 import prisma from "../config/prisma.js";
-import { createArticle } from "../structs/articleStruct.js";
+import { createArticle, updateArticle } from "../structs/articleStruct.js";
 
 async function create(createData) {
   assert(createData, createArticle);
@@ -34,9 +34,18 @@ async function getById(id) {
   });
 }
 
+async function update(id, updateData) {
+  assert(updateData, updateArticle);
+  return await prisma.article.update({
+    where: { id },
+    data: updateData,
+  });
+}
+
 export default {
   create,
   getAllByFilter,
   countByFilter,
   getById,
+  update,
 };
