@@ -1,30 +1,15 @@
 import express from "express";
-import dotenv from "dotenv";
-import { PrismaClient } from "@prisma/client";
-import articleRoutes from "./routes/articles.js";
-import commentRoutes from "./routes/articleComments.js";
-import productRoutes from "./routes/products.js";
-import productCommentRoutes from "./routes/productComments.js";
 import cors from "cors";
-
-dotenv.config();
+// import articleRoutes from "./routes/articles.js";
+// import commentRoutes from "./routes/articleComments.js";
+// import productRoutes from "./routes/products.js";
+// import productCommentRoutes from "./routes/productComments.js";
+import prisma from "./models/index.js";
 
 const app = express();
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL,
-    },
-  },
-});
 
 app.use(cors());
 app.use(express.json());
-
-// 기본 라우트: 서버 상태 확인용
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
 
 app.get("/check-db", async (req, res) => {
   try {
@@ -38,15 +23,9 @@ app.get("/check-db", async (req, res) => {
   }
 });
 
-app.use("/articles", articleRoutes);
-app.use("/articlecomments", commentRoutes);
-app.use("/productcomments", productCommentRoutes);
-app.use("/products", productRoutes);
-
-// 서버 실행
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// app.use("/articles", articleRoutes);
+// app.use("/articlecomments", commentRoutes);
+// app.use("/products", productRoutes);
+// app.use("/productcomments", productCommentRoutes);
 
 export default app;
