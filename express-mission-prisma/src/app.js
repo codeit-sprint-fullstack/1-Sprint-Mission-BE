@@ -4,15 +4,16 @@ import express from "express";
 import cors from 'cors';
 import { PrismaClient, Prisma } from "@prisma/client";
 import { assert } from "superstruct";
-import * as s from "./struct.js";
+import * as s from "../struct.js";
 
 const prisma = new PrismaClient();
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-function asyncHandler(asyncFunc) {
+export function asyncHandler(asyncFunc) {
   return async function (req, res) {
     try {
       await asyncFunc(req, res);
@@ -35,128 +36,128 @@ function asyncHandler(asyncFunc) {
 }
 
 /*-----------------게시글-------------------*/
-app.get(
-  "/noticeBoards",
-  asyncHandler(async (req, res) => {
-    const {
-      page = 1,
-      pageSize = 10,
-      orderBy = "recent",
-      keyWord = "",
-    } = req.query;
-    const pageNum = page || 1
-    const pageSizeNum = pageSize || 4
-    const offset = (pageNum - 1) * pageSizeNum;
-    const whereOr = {
-      OR: [
-        {
-          title: {
-            contains: keyWord,
-            mode: "insensitive",
-          },
-        },
-        {
-          content: {
-            contains: keyWord,
-            mode: "insensitive",
-          },
-        },
-      ],
-    };
+// app.get(
+//   "/noticeBoards",
+//   asyncHandler(async (req, res) => {
+//     const {
+//       page = 1,
+//       pageSize = 10,
+//       orderBy = "recent",
+//       keyWord = "",
+//     } = req.query;
+//     const pageNum = page || 1
+//     const pageSizeNum = pageSize || 4
+//     const offset = (pageNum - 1) * pageSizeNum;
+//     const whereOr = {
+//       OR: [
+//         {
+//           title: {
+//             contains: keyWord,
+//             mode: "insensitive",
+//           },
+//         },
+//         {
+//           content: {
+//             contains: keyWord,
+//             mode: "insensitive",
+//           },
+//         },
+//       ],
+//     };
 
-    const noticeBoard = await prisma.noticeBoard.findMany({
-      orderBy: { createdAt: "desc" },
-      skip: parseInt(offset),
-      take: parseInt(pageSizeNum),
-      where: whereOr,
-    });
-    const count = await prisma.noticeBoard.count({ where: whereOr });
-    const [list, total] = await Promise.all([noticeBoard, count]);
+//     const noticeBoard = await prisma.noticeBoard.findMany({
+//       orderBy: { createdAt: "desc" },
+//       skip: parseInt(offset),
+//       take: parseInt(pageSizeNum),
+//       where: whereOr,
+//     });
+//     const count = await prisma.noticeBoard.count({ where: whereOr });
+//     const [list, total] = await Promise.all([noticeBoard, count]);
 
-    res.send({ total, list });
-  })
-);
+//     res.send({ total, list });
+//   })
+// );
 
-app.get(
-  "/noticeBoards/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const noticeBoard = await prisma.noticeBoard.findUniqueOrThrow({
-      where: { id },
-    });
-    res.send(noticeBoard);
-  })
-);
+// app.get(
+//   "/noticeBoards/:id",
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     const noticeBoard = await prisma.noticeBoard.findUniqueOrThrow({
+//       where: { id },
+//     });
+//     res.send(noticeBoard);
+//   })
+// );
 
-app.post(
-  "/noticeBoards",
-  asyncHandler(async (req, res) => {
-    assert(req.body, s.CreateNoticeBoard);
-    const noticeBoard = await prisma.noticeBoard.create({
-      data: req.body,
-    });
-    res.status(201).send(noticeBoard);
-  })
-);
+// app.post(
+//   "/noticeBoards",
+//   asyncHandler(async (req, res) => {
+//     assert(req.body, s.CreateNoticeBoard);
+//     const noticeBoard = await prisma.noticeBoard.create({
+//       data: req.body,
+//     });
+//     res.status(201).send(noticeBoard);
+//   })
+// );
 
-app.patch(
-  "/noticeBoards/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    assert(req.body, s.PatchNoticeBoard);
-    const noticeBoard = await prisma.noticeBoard.update({
-      where: { id },
-      data: req.body,
-    });
-    res.status(201).send(noticeBoard);
-  })
-);
+// app.patch(
+//   "/noticeBoards/:id",
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     assert(req.body, s.PatchNoticeBoard);
+//     const noticeBoard = await prisma.noticeBoard.update({
+//       where: { id },
+//       data: req.body,
+//     });
+//     res.status(201).send(noticeBoard);
+//   })
+// );
 
-app.delete(
-  "/noticeBoards/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    await prisma.noticeBoard.delete({
-      where: { id },
-    });
-    res.sendStatus(204);
-  })
-);
+// app.delete(
+//   "/noticeBoards/:id",
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     await prisma.noticeBoard.delete({
+//       where: { id },
+//     });
+//     res.sendStatus(204);
+//   })
+// );
 
 /*-----------------자유게시판 댓글-------------------*/
-app.get(
-  "/noticeBoards/:id/freeCommends",
-  asyncHandler(async (req, res) => {
-    const { cursor = "", pageSize = 5, orderBy = "recent" } = req.query;
-    const {id} = req.params
-    const skipInt = cursor === "" ? 0 : 1;
-    const findValueDefault = {
-      orderBy: { createdAt: "desc" },
-      skip: parseInt(skipInt),
-      take: parseInt(pageSize),
-      where: { noticeBoardId: id}
-    };
-    const findValue =
-      cursor !== ""
-        ? { ...findValueDefault, cursor: { id: cursor } }
-        : { ...findValueDefault };
+// app.get(
+//   "/noticeBoards/:id/freeCommends",
+//   asyncHandler(async (req, res) => {
+//     const { cursor = "", pageSize = 5, orderBy = "recent" } = req.query;
+//     const {id} = req.params
+//     const skipInt = cursor === "" ? 0 : 1;
+//     const findValueDefault = {
+//       orderBy: { createdAt: "desc" },
+//       skip: parseInt(skipInt),
+//       take: parseInt(pageSize),
+//       where: { noticeBoardId: id}
+//     };
+//     const findValue =
+//       cursor !== ""
+//         ? { ...findValueDefault, cursor: { id: cursor } }
+//         : { ...findValueDefault };
 
-    const freeCommend = await prisma.freeCommend.findMany(findValue);
-    const count = await prisma.freeCommend.count({where: { noticeBoardId: id}});
-    const [list, total] = await Promise.all([freeCommend, count]);
+//     const freeCommend = await prisma.freeCommend.findMany(findValue);
+//     const count = await prisma.freeCommend.count({where: { noticeBoardId: id}});
+//     const [list, total] = await Promise.all([freeCommend, count]);
 
-    const lastList = list[pageSize - 1];
-    const NextCusor = lastList ? lastList.id : "null";
+//     const lastList = list[pageSize - 1];
+//     const NextCusor = lastList ? lastList.id : "null";
 
-    res.send({
-      cursorInfo: {
-        total,
-        NextCusor,
-      },
-      list,
-    });
-  })
-);
+//     res.send({
+//       cursorInfo: {
+//         total,
+//         NextCusor,
+//       },
+//       list,
+//     });
+//   })
+// );
 
 app.get(
   "/freeCommends/:id",
