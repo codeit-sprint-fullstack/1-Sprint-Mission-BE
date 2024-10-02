@@ -1,4 +1,4 @@
-import * as authService from "../service/authService.js";
+import * as authService from "../services/authService.js";
 
 // 회원가입 컨트롤러
 export const signUp = async (req, res) => {

@@ -1,13 +1,12 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") // 환경 변수로 DB URL 설정
+  url      = env("DATABASE_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
-// 사용자 모델 (회원가입, 로그인 및 인증)
 model User {
   id                Int       @id @default(autoincrement())
   email             String    @unique
@@ -19,11 +18,9 @@ model User {
   products          Product[]
   articles          Article[]
   comments          Comment[]
-  likes             Like[]
   auth              Auth[]
 }
 
-// 상품 모델 (상품 등록, 상품 정보 조회)
 model Product {
   id            Int       @id @default(autoincrement())
   name          String
@@ -31,34 +28,30 @@ model Product {
   price         Int
   tags          String[]
   images        String[]
-  favoriteCount Int       @default(0)
-  isFavorited   Boolean   @default(false)
+  favoriteCount Int?      @default(0)
+  isFavorite    Boolean?  @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  userId        Int
-  user          User      @relation(fields: [userId], references: [id])
+  ownerId       Int
+  ownerNickname String
+  user          User      @relation(fields: [ownerId], references: [id])
   comments      Comment[]
-
-  Like Like[]
 }
 
-// 게시글 모델 (게시글 등록, 게시글 정보 조회)
 model Article {
   id            Int       @id @default(autoincrement())
   title         String
   content       String
   images        String[]
   favoriteCount Int       @default(0)
-  isFavorited   Boolean   @default(false)
+  isFavorite    Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   userId        Int
   user          User      @relation(fields: [userId], references: [id])
   comments      Comment[]
-  likes         Like[]
 }
 
-// 댓글 모델 (댓글 등록 및 조회)
 model Comment {
   id        Int      @id @default(autoincrement())
   content   String
@@ -72,19 +65,6 @@ model Comment {
   article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
 }
 
-// 좋아요 모델 (좋아요 추가 및 삭제)
-model Like {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  productId Int?
-  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
-  articleId Int?
-  article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
-}
-
-// 인증 모델 (사용자 인증 및 토큰 관리)
 model Auth {
   id              Int      @id @default(autoincrement())
   userId          Int

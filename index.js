@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import prisma from "./models/index.js";
+import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 // 라우트 설정
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
+app.use("/products", productRoutes);
 
 // 404 오류 처리 (라우트가 없을 경우)
 app.use((req, res) => {
