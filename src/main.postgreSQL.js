@@ -25,7 +25,7 @@ const resultArticleFormat = {
   id: true,
   title: true,
   content: true,
-  favorite: true,
+  favoriteCount: true,
   userId: true,
   user: { select: { nickname: true, image: true } },
   createdAt: true,

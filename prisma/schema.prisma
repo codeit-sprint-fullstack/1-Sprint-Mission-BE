@@ -17,25 +17,43 @@ datasource db {
 }
 
 model User {
-  id                  String                @id @default(uuid())
-  name                String
-  nickname            String                @unique
-  password            String
-  email               String                @unique
-  image               String
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  UserProduct         UserProduct[]
-  UserFavoriteProduct UserFavoriteProduct[]
-  Product             Product[]
-  ProductFavoriteUser ProductFavoriteUser[]
-  Article             Article[]
-  ArticleComment      ArticleComment[]
-  ProductComment      ProductComment[]
-  ArticleFavoriteUser ArticleFavoriteUser[]
+  id              String            @id @default(uuid())
+  name            String            @db.VarChar(255)
+  nickname        String            @unique @db.VarChar(50)
+  password        String            @db.VarChar(60)
+  email           String            @unique @db.VarChar(255)
+  image           String            @db.VarChar(2048)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Product         Product[]
+  FavoriteProduct FavoriteProduct[]
+  Post            Post[]
+  PostFavorite    PostFavorite[]
+  PostComment     PostComment[]
+
+  @@map("user")
 }
 
-model UserProduct {
+model Product {
+  id            String   @id @default(uuid())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String   @map("user_id")
+  name          String   @db.VarChar(50)
+  description   String   @db.VarChar(1024)
+  price         Int
+  favoriteCount Int      @default(0) @map("favorite_count")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  FavoriteProduct FavoriteProduct[]
+  ProductTags     ProductTags[]
+  ProductImage    ProductImage[]
+  ProductComment  ProductComment[]
+
+  @@map("product")
+}
+
+model FavoriteProduct {
   id        String   @id @default(uuid())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String   @map("user_id")
@@ -44,116 +62,91 @@ model UserProduct {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("user_product")
-}
-
-model UserFavoriteProduct {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String   @map("user_id")
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  ProductId String   @map("product_id")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  productId String
-
-  @@map("user_favorite_product")
-}
-
-model Product {
-  id                  String                @id @default(uuid())
-  name                String
-  description         String
-  price               Int
-  user                User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId              String                @map("user_id")
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  UserFavoriteProduct UserFavoriteProduct[]
-  ProductTags         ProductTags[]
-  ProductImages       ProductImages[]
-  ProductFavoriteUser ProductFavoriteUser[]
-  UserProduct         UserProduct[]
-  ProductComment      ProductComment[]
+  @@map("favorite_product")
 }
 
 model ProductTags {
-  id        String  @id @default(uuid())
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
-  tag       String
+  id        String   @id @default(uuid())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String   @map("product_id")
+  tag       String   @db.VarChar(50)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("product_tags")
 }
 
-model ProductImages {
-  id        String  @id @default(uuid())
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
-  image     String
+model ProductImage {
+  id        String   @id @default(uuid())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String   @map("product_id")
+  image     String   @db.VarChar(2048)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("product_images")
 }
 
-model ProductFavoriteUser {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("product_favorite_user")
-}
-
-model Article {
-  id                  String                @id @default(uuid())
-  user                User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId              String
-  title               String                @db.VarChar(30)
-  content             String                @db.VarChar(200)
-  favorite            Int                   @default(0)
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  ArticleComment      ArticleComment[]
-  ArticleFavoriteUser ArticleFavoriteUser[]
-}
-
-model ArticleFavoriteUser {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  articleId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("article_favorite_user")
-}
-
-model ArticleComment {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  Article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  articleId String
-  content   String   @db.VarChar(200)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("article_comment")
-}
-
 model ProductComment {
   id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
-  content   String   @db.VarChar(200)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String   @map("product_id")
+  content   String   @db.VarChar(500)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("product_comment")
+}
+
+model Post {
+  id            String   @id @default(uuid())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String   @map("user_id")
+  title         String   @db.VarChar(50)
+  content       String   @db.VarChar(1024)
+  favoriteCount Int      @default(0) @map("favorite_count")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  PostImage    PostImage[]
+  PostFavorite PostFavorite[]
+  PostComment  PostComment[]
+
+  @@map("post")
+}
+
+model PostImage {
+  id        String   @id @default(uuid())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String   @map("post_id")
+  image     String   @db.VarChar(2048)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("post_images")
+}
+
+model PostFavorite {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  Post      Post     @relation(fields: [PostId], references: [id], onDelete: Cascade)
+  PostId    String   @map("post_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("post_favorite")
+}
+
+model PostComment {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  Post      Post     @relation(fields: [PostId], references: [id], onDelete: Cascade)
+  PostId    String   @map("post_id")
+  content   String   @db.VarChar(200)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("post_comment")
 }

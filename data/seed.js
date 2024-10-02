@@ -1,26 +1,54 @@
-import { DB_URL } from "../src/config.js";
+import { PrismaClient } from "@prisma/client";
+import {
+  User,
+  Product,
+  Post,
+  FavoritePost,
+  PostComment,
+  ProductComment,
+} from "./mock.js";
 
-import mongoose from "mongoose";
-import { productsData, userData } from "./mock.js";
-import { SampleData, Product, User } from "./MongooseSchema.js";
+const prisma = new PrismaClient();
 
-try {
-  await mongoose.connect(`${DB_URL}`);
-  console.log("success connect mongoose");
-
-  // await User.deleteMany({});
-  // await User.insertMany(userData);
-
-  const newMock = productsData.map((product) => {
-    const { _id, ownerId, ...rest } = product;
-    return { ownerId: "66b5ccad2cf6ddb53d85e3a6", ...rest };
+async function main() {
+  await prisma.user.deleteMany();
+  await prisma.user.createMany({
+    data: User,
   });
-
-  await Product.deleteMany({});
-  await Product.insertMany(newMock);
-} catch (err) {
-  console.log("fail connect mongoose " + err.name);
-  console.log(err);
+  await prisma.product.deleteMany();
+  await prisma.product.createMany({
+    data: Product,
+  });
+  await prisma.post.deleteMany();
+  await prisma.post.createMany({
+    data: Post,
+  });
+  await prisma.postfavoritepost.deleteMany();
+  await prisma.postfavoritepost.createMany({
+    data: FavoritePost,
+  });
+  await prisma.postComment.deleteMany();
+  await prisma.postComment.createMany({
+    data: PostComment,
+  });
+  await prisma.productComment.deleteMany();
+  await prisma.productComment.createMany({
+    data: ProductComment,
+  });
+  // await prisma.user.deleteMany();
+  // await prisma.product.deleteMany();
+  // await prisma.article.deleteMany();
+  // await prisma.articleFavoriteUser.deleteMany();
+  // await prisma.articleComment.deleteMany();
+  // await prisma.productComment.deleteMany();
 }
 
-await mongoose.disconnect();
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (err) => {
+    console.log(err.name);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

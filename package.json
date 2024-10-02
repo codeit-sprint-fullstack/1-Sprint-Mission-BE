@@ -5,7 +5,6 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-async-handler": "^1.2.0",
-    "mongoose": "^8.5.2",
     "superstruct": "^2.0.2"
   },
   "devDependencies": {
@@ -14,14 +13,13 @@
   },
   "scripts": {
     "start": "node src/main.postgreSQL.js",
-    "server": "set NODE_ENV=local && node src/main.mongoose.js",
     "nodemon": "set NODE_ENV=postgreSQL && nodemon src/main.postgreSQL.js",
     "seed": "node data/seed.js",
     "seed-l": "set NODE_ENV=local && node data/seed.js",
     "seed-p": "set NODE_ENV=production && node data/seed.js"
   },
   "prisma": {
-    "seed": "node data/seedPostgreSQL.js"
+    "seed": "node data/seed.js"
   },
   "type": "module"
 }
