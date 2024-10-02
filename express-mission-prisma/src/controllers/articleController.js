@@ -1,20 +1,24 @@
 import express from "express";
-import { asyncHandler } from "../app"; // 임시
+import articleService from "../services/articleService.js";
+import asyncHandler from "../services/errorService.js";
 
 const articleController = express.Router();
 
 articleController
   .route("/")
   .get(
-    asyncHandler(async (req, res) => {
+    asyncHandler(async (req, res, next) => {
       const {
         page = 1,
         pageSize = 10,
         orderBy = "recent",
         keyWord = "",
       } = req.query;
+
       const pageNum = page || 1;
       const pageSizeNum = pageSize || 4;
+
+      const order = orderBy || "recent";
       const offset = (pageNum - 1) * pageSizeNum;
       const whereOr = {
         OR: [
@@ -33,16 +37,18 @@ articleController
         ],
       };
 
-      const article = await prisma.article.findMany({
+      const fillter = {
         orderBy: { createdAt: "desc" },
         skip: parseInt(offset),
         take: parseInt(pageSizeNum),
         where: whereOr,
-      });
-      const count = await prisma.article.count({ where: whereOr });
+      };
+
+      const article = await articleService.getAllByFilter(fillter);
+      const count = await articleService.countByFilter(fillter.where);
       const [list, total] = await Promise.all([article, count]);
 
-      res.send({ total, list });
+      return res.send({ total, list });
     })
   )
   .post(
@@ -54,7 +60,6 @@ articleController
       res.status(201).send(article);
     })
   );
-
 
 articleController
   .route("/:id")
@@ -88,4 +93,4 @@ articleController
     })
   );
 
-export default articleController
+export default articleController;

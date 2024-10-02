@@ -1,5 +1,5 @@
 import express from "express";
-import { asyncHandler } from "../app";
+import { asyncHandler } from "../../app.js";
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
 const articleCommentController = express.Router(); // 게시글 댓글 router

@@ -2,18 +2,21 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from 'cors';
-import { PrismaClient, Prisma } from "@prisma/client";
-import { assert } from "superstruct";
-import * as s from "../struct.js";
-import articleController from "./controllers/articleController.js";
-import { articleCommentController, commentController, productCommentCotroller } from "./controllers/commentController.js";
-
-const prisma = new PrismaClient();
+import articleController from "./src/controllers/articleController.js";
+import { articleCommentController, commentController, productCommentCotroller } from "./src/controllers/commentController.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/article', articleController)
+// app.use('/article/:id/comment', articleCommentController)
+// app.use('/product/:id/comment', productCommentCotroller)
+// app.use('/comment/:id', commentController)
+
+app.listen(process.env.PORT || 3001, () => console.log("Server Started"));
+
 
 export function asyncHandler(asyncFunc) {
   return async function (req, res) {
@@ -36,11 +39,6 @@ export function asyncHandler(asyncFunc) {
     }
   };
 }
-
-app.use('/article', articleController)
-app.use('/article/:id/comment', articleCommentController)
-app.use('/product/:id/comment', productCommentCotroller)
-app.use('/comment/:id', commentController)
 
 /*-----------------게시글-------------------*/
 // app.get(
@@ -290,5 +288,3 @@ app.use('/comment/:id', commentController)
 //     res.sendStatus(204);
 //   })
 // );
-
-app.listen(process.env.PORT || 3001, () => console.log("Server Started"));
