@@ -65,9 +65,7 @@ articleController
   .get(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      const article = await prisma.article.findUniqueOrThrow({
-        where: { id },
-      });
+      const article = await articleService.getById(id);
       res.send(article);
     })
   )

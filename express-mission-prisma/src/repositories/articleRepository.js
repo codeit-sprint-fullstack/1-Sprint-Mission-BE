@@ -28,8 +28,15 @@ async function countByFilter(fillter) {
   });
 }
 
+async function getById(id) {
+  return await prisma.article.findUniqueOrThrow({
+    where: { id },
+  });
+}
+
 export default {
   create,
   getAllByFilter,
   countByFilter,
+  getById,
 };

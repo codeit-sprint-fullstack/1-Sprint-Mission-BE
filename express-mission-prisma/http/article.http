@@ -5,7 +5,7 @@ GET  http://localhost:3001/article?keyWord=&page=1&pageSize=1
 
 ###
 
-GET http://localhost:3000/noticeBoards/0c5d059b-ee21-4126-87a4-582c6cd39677
+GET http://localhost:3001/article/d14faeec-712d-4e04-9659-c69afb2caae0
 ###
 
 POST http://localhost:3001/article

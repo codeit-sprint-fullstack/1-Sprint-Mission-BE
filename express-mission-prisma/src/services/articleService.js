@@ -12,8 +12,13 @@ async function countByFilter(fillter) {
   return await articleRepository.countByFilter(fillter);
 }
 
+async function getById(id) {
+  return await articleRepository.getById(id);
+}
+
 export default {
   create,
   getAllByFilter,
   countByFilter,
+  getById,
 };
