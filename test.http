@@ -11,6 +11,6 @@ POST http://localhost:5432/auth/signin
 Content-Type: application/json
 
 {
-    "email": "test1@example.com",
+    "email": "test@example.com",
     "password": "password123"
 }

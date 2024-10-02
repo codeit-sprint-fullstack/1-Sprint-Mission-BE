@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 
 // 라우트 설정
 app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
+app.use("/users", userRoutes);
 
 // 404 오류 처리 (라우트가 없을 경우)
 app.use((req, res) => {

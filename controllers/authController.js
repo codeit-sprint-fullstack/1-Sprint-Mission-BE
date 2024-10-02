@@ -5,7 +5,6 @@ export const signUp = async (req, res) => {
   try {
     const { nickname, email, password } = req.body;
 
-    // 서비스 계층 호출
     const { newUser, tokens } = await authService.createUser(
       nickname,
       email,
@@ -18,12 +17,10 @@ export const signUp = async (req, res) => {
       tokens,
     });
   } catch (err) {
-    // 이메일 또는 닉네임 중복 에러 처리
     if (err.message === "이메일 또는 닉네임이 이미 사용중입니다.") {
       return res.status(400).json({ message: err.message });
     }
 
-    // 기타 서버 에러 처리
     res.status(500).json({
       message: "사용자 생성 중 오류가 발생했습니다.",
       error: err.message,
@@ -41,15 +38,14 @@ export const signIn = async (req, res) => {
     res.status(200).json({
       message: "로그인 성공",
       user,
-      tokens,
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
     });
   } catch (err) {
-    // 이메일 또는 비밀번호가 틀린 경우 에러 처리
     if (err.message === "이메일과 비밀번호를 다시 확인해주세요") {
       return res.status(401).json({ message: err.message });
     }
 
-    // 기타 서버 에러 처리
     res.status(500).json({
       message: "로그인 중 오류가 발생했습니다.",
       error: err.message,

@@ -1,15 +1,16 @@
-import * as userService from "../service/userService.js";
+import * as userService from "../services/userService.js";
 
-// 특정 User 조회
 export const getUserById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await userService.getUserById(parseInt(id));
+    const user = req.user;
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    return res.status(200).json(user);
+
+    const userData = await userService.getUserById(user.id);
+
+    return res.status(200).json(userData);
   } catch (error) {
     console.error("Error fetching user:", error);
 
