@@ -149,3 +149,70 @@ router.post(
 );
 
 export default router;
+
+// import express from 'express';
+// import { PrismaClient } from '@prisma/client';
+// import { asyncHandler } from './asyncHandler.js';
+// import { CreateArticle, PatchArticle } from './struct.js';
+// import { assert } from 'superstruct';
+
+// const router = express.Router();
+// const prisma = new PrismaClient();
+
+// router.post(
+//   '/:id',
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     const { userId } = req.body;
+
+//     await prisma.$transaction([
+//       prisma.favorite.create({
+//         data: {
+//           fleaMarketId: Number(id),
+//           userId: userId,
+//         },
+//       }),
+//       prisma.fleaMarket.update({
+//         where: {
+//           id: Number(id),
+//         },
+//         data: {
+//           favoriteCount: {
+//             increment: 1,
+//           },
+//         },
+//       }),
+//     ]);
+//     res.status(200).json({ message: '좋아요가 추가되었습니다.' });
+//   })
+// );
+
+// router.delete(
+//   '/:id',
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     const { userId } = req.body;
+
+//     await prisma.$transaction([
+//       prisma.favorite.deleteMany({
+//         where: {
+//           fleaMarketId: Number(id),
+//           userId: userId,
+//         },
+//       }),
+//       prisma.fleaMarket.update({
+//         where: {
+//           id: Number(id),
+//         },
+//         data: {
+//           favoriteCount: {
+//             decrement: 1,
+//           },
+//         },
+//       }),
+//     ]);
+//     res.status(200).json({ message: '좋아요가 취소됐습니다.' });
+//   })
+// );
+
+// export default router;

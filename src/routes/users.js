@@ -13,11 +13,7 @@ router.get(
   asyncHandler(async (req, res) => {
     const users = await prisma.user.findMany({
       include: {
-        article: {
-          select: {
-            title: true,
-          },
-        },
+        Favorite: true,
       },
     });
     res.send(users);

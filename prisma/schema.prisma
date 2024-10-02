@@ -40,18 +40,19 @@ model FreeBoard {
 }
 
 model FleaMarket {
-  id        Int        @id @default(autoincrement())
-  title     String
-  content   String
-  price     Int
-  images    String[]
-  tags      String[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  user      User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId    String?    @default("Anoymous")
-  comment   Comment[]
-  favorite  Favorite[]
+  id            Int        @id @default(autoincrement())
+  title         String
+  content       String
+  price         Int
+  images        String[]
+  tags          String[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  user          User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId        String?    @default("Anoymous")
+  comment       Comment[]
+  favorite      Favorite[]
+  favoriteCount Int        @default(0)
 }
 
 model Comment {

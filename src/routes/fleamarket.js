@@ -4,6 +4,7 @@ import { asyncHandler } from './asyncHandler.js';
 import validateProductFields from '../middlewares/validateProductFields.js';
 import { CreateArticle, PatchArticle } from './struct.js';
 import upload from '../middlewares/multer.middleware.js';
+import { number } from 'superstruct';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -12,6 +13,7 @@ router.get(
   '/',
   asyncHandler(async (req, res) => {
     const { page = 1, limit = 5, keyword = '', sort = 'recent' } = req.query;
+    const { userId } = req.body;
 
     const offset = (page - 1) * limit;
 
@@ -44,7 +46,17 @@ router.get(
       },
       orderBy,
       skip: offset,
-      take: Number(10),
+      take: Number(limit),
+    });
+
+    const articlesWithIsLiked = articles.map((article) => {
+      const isLiked = userId
+        ? article.favorite.some((fav) => fav.userId === userId)
+        : false;
+      return {
+        ...article,
+        isLiked, // isLiked 필드 추가
+      };
     });
 
     const total = await prisma.fleaMarket.count({
@@ -63,8 +75,32 @@ router.get(
     res.status(200).json({
       total,
       totalPages: Math.ceil(total / limit),
-      data: articles,
+      data: articlesWithIsLiked,
     });
+  })
+);
+
+router.get(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    const article = await prisma.fleaMarket.findUnique({
+      where: {
+        id: Number(id),
+      },
+      include: {
+        user: true,
+        favorite: true,
+      },
+    });
+
+    const isLiked = userId
+      ? article.favorite.some((fav) => fav.userId === userId)
+      : false;
+
+    res.status(200).json({ article, isLiked });
   })
 );
 
@@ -91,39 +127,6 @@ router.post(
     });
 
     res.status(201).json(article);
-  })
-);
-
-// router.post(
-//   '/post',
-//   validateProductFields,
-//   asyncHandler(async (req, res) => {
-//     const { price } = req.body;
-//     const article = await prisma.fleaMarket.create({
-//       data: {
-//         ...req.body,
-//         price: Number(price),
-//       },
-//     });
-//     res.status(201).json(article);
-//   })
-// );
-
-router.get(
-  '/:id',
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const article = await prisma.fleaMarket.findUnique({
-      where: {
-        id: Number(id),
-      },
-      include: {
-        user: true,
-        favorite: true,
-      },
-    });
-
-    res.status(200).json(article);
   })
 );
 
