@@ -1,9 +1,9 @@
 import express from "express";
 import { asyncHandler } from "../app"; // 임시
 
-const noticeBoardController = express.Router();
+const articleController = express.Router();
 
-noticeBoardController
+articleController
   .route("/")
   .get(
     asyncHandler(async (req, res) => {
@@ -33,14 +33,14 @@ noticeBoardController
         ],
       };
 
-      const noticeBoard = await prisma.noticeBoard.findMany({
+      const article = await prisma.article.findMany({
         orderBy: { createdAt: "desc" },
         skip: parseInt(offset),
         take: parseInt(pageSizeNum),
         where: whereOr,
       });
-      const count = await prisma.noticeBoard.count({ where: whereOr });
-      const [list, total] = await Promise.all([noticeBoard, count]);
+      const count = await prisma.article.count({ where: whereOr });
+      const [list, total] = await Promise.all([article, count]);
 
       res.send({ total, list });
     })
@@ -48,40 +48,40 @@ noticeBoardController
   .post(
     asyncHandler(async (req, res) => {
       assert(req.body, s.CreateNoticeBoard);
-      const noticeBoard = await prisma.noticeBoard.create({
+      const article = await prisma.article.create({
         data: req.body,
       });
-      res.status(201).send(noticeBoard);
+      res.status(201).send(article);
     })
   );
 
 
-noticeBoardController
+articleController
   .route("/:id")
   .get(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      const noticeBoard = await prisma.noticeBoard.findUniqueOrThrow({
+      const article = await prisma.article.findUniqueOrThrow({
         where: { id },
       });
-      res.send(noticeBoard);
+      res.send(article);
     })
   )
   .patch(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
       assert(req.body, s.PatchNoticeBoard);
-      const noticeBoard = await prisma.noticeBoard.update({
+      const article = await prisma.article.update({
         where: { id },
         data: req.body,
       });
-      res.status(201).send(noticeBoard);
+      res.status(201).send(article);
     })
   )
   .delete(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      await prisma.noticeBoard.delete({
+      await prisma.article.delete({
         where: { id },
       });
       res.sendStatus(204);
