@@ -87,3 +87,5 @@ articleController
       res.sendStatus(204);
     })
   );
+
+export default articleController

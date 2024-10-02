@@ -1,9 +1,9 @@
 import express from "express";
 import { asyncHandler } from "../app";
 
-const commentController = express.Router();
-const articleCommentController = express.Router();
-const productCommentCotroller = express.Router();
+const commentController = express.Router(); // 수정 및 삭제를 위한 router
+const articleCommentController = express.Router(); // 게시글 댓글 router
+const productCommentCotroller = express.Router(); // 상품 댓글 router
 
 articleCommentController
   .route("/")
@@ -115,3 +115,5 @@ commentController
       res.sendStatus(204);
     })
   );
+
+export {commentController, articleCommentController, productCommentCotroller}

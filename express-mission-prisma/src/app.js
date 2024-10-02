@@ -5,6 +5,8 @@ import cors from 'cors';
 import { PrismaClient, Prisma } from "@prisma/client";
 import { assert } from "superstruct";
 import * as s from "../struct.js";
+import articleController from "./controllers/articleController.js";
+import { articleCommentController, commentController, productCommentCotroller } from "./controllers/commentController.js";
 
 const prisma = new PrismaClient();
 
@@ -34,6 +36,11 @@ export function asyncHandler(asyncFunc) {
     }
   };
 }
+
+app.use('/article', articleController)
+app.use('/article/:id/comment', articleCommentController)
+app.use('/product/:id/comment', productCommentCotroller)
+app.use('/comment/:id', commentController)
 
 /*-----------------게시글-------------------*/
 // app.get(
@@ -125,163 +132,163 @@ export function asyncHandler(asyncFunc) {
 // );
 
 /*-----------------자유게시판 댓글-------------------*/
-app.get(
-  "/noticeBoards/:id/freeCommends",
-  asyncHandler(async (req, res) => {
-    const { cursor = "", pageSize = 5, orderBy = "recent" } = req.query;
-    const {id} = req.params
-    const skipInt = cursor === "" ? 0 : 1;
-    const findValueDefault = {
-      orderBy: { createdAt: "desc" },
-      skip: parseInt(skipInt),
-      take: parseInt(pageSize),
-      where: { noticeBoardId: id}
-    };
-    const findValue =
-      cursor !== ""
-        ? { ...findValueDefault, cursor: { id: cursor } }
-        : { ...findValueDefault };
+// app.get(
+//   "/noticeBoards/:id/freeCommends",
+//   asyncHandler(async (req, res) => {
+//     const { cursor = "", pageSize = 5, orderBy = "recent" } = req.query;
+//     const {id} = req.params
+//     const skipInt = cursor === "" ? 0 : 1;
+//     const findValueDefault = {
+//       orderBy: { createdAt: "desc" },
+//       skip: parseInt(skipInt),
+//       take: parseInt(pageSize),
+//       where: { noticeBoardId: id}
+//     };
+//     const findValue =
+//       cursor !== ""
+//         ? { ...findValueDefault, cursor: { id: cursor } }
+//         : { ...findValueDefault };
 
-    const freeCommend = await prisma.freeCommend.findMany(findValue);
-    const count = await prisma.freeCommend.count({where: { noticeBoardId: id}});
-    const [list, total] = await Promise.all([freeCommend, count]);
+//     const freeCommend = await prisma.freeCommend.findMany(findValue);
+//     const count = await prisma.freeCommend.count({where: { noticeBoardId: id}});
+//     const [list, total] = await Promise.all([freeCommend, count]);
 
-    const lastList = list[pageSize - 1];
-    const NextCusor = lastList ? lastList.id : "null";
+//     const lastList = list[pageSize - 1];
+//     const NextCusor = lastList ? lastList.id : "null";
 
-    res.send({
-      cursorInfo: {
-        total,
-        NextCusor,
-      },
-      list,
-    });
-  })
-);
+//     res.send({
+//       cursorInfo: {
+//         total,
+//         NextCusor,
+//       },
+//       list,
+//     });
+//   })
+// );
 
-app.get(
-  "/freeCommends/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const freeCommend = await prisma.freeCommend.findUniqueOrThrow({
-      where: { id },
-    });
-    res.send(freeCommend);
-  })
-);
+// app.get(
+//   "/freeCommends/:id",
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     const freeCommend = await prisma.freeCommend.findUniqueOrThrow({
+//       where: { id },
+//     });
+//     res.send(freeCommend);
+//   })
+// );
 
-app.post(
-  "/freeCommends",
-  asyncHandler(async (req, res) => {
-    assert(req.body, s.CreateFreeCommend);
-    const freeCommend = await prisma.freeCommend.create({
-      data: req.body,
-    });
-    res.status(201).send(freeCommend);
-  })
-);
+// app.post(
+//   "/freeCommends",
+//   asyncHandler(async (req, res) => {
+//     assert(req.body, s.CreateFreeCommend);
+//     const freeCommend = await prisma.freeCommend.create({
+//       data: req.body,
+//     });
+//     res.status(201).send(freeCommend);
+//   })
+// );
 
-app.patch(
-  "/freeCommends/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    assert(req.body, s.PatchCommend);
-    const freeCommend = await prisma.freeCommend.update({
-      where: { id },
-      data: req.body,
-    });
-    res.status(201).send(freeCommend);
-  })
-);
+// app.patch(
+//   "/freeCommends/:id",
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     assert(req.body, s.PatchCommend);
+//     const freeCommend = await prisma.freeCommend.update({
+//       where: { id },
+//       data: req.body,
+//     });
+//     res.status(201).send(freeCommend);
+//   })
+// );
 
-app.delete(
-  "/freeCommends/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    await prisma.freeCommend.delete({
-      where: { id },
-    });
-    res.sendStatus(204);
-  })
-);
+// app.delete(
+//   "/freeCommends/:id",
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     await prisma.freeCommend.delete({
+//       where: { id },
+//     });
+//     res.sendStatus(204);
+//   })
+// );
 
 /*-----------------중고마켓 댓글-------------------*/
-app.get(
-  "/usedCommends",
-  asyncHandler(async (req, res) => {
-    const { cursor = "", pageSize = 2, orderBy = "recent" } = req.query;
-    const skipInt = cursor === "" ? 0 : 1;
-    const findValueDefault = {
-      orderBy: { createdAt: "desc" },
-      skip: parseInt(skipInt),
-      take: parseInt(pageSize),
-    };
-    const findValue =
-      cursor !== ""
-        ? { ...findValueDefault, cursor: { id: cursor } }
-        : { ...findValueDefault };
+// app.get(
+//   "/usedCommends",
+//   asyncHandler(async (req, res) => {
+//     const { cursor = "", pageSize = 2, orderBy = "recent" } = req.query;
+//     const skipInt = cursor === "" ? 0 : 1;
+//     const findValueDefault = {
+//       orderBy: { createdAt: "desc" },
+//       skip: parseInt(skipInt),
+//       take: parseInt(pageSize),
+//     };
+//     const findValue =
+//       cursor !== ""
+//         ? { ...findValueDefault, cursor: { id: cursor } }
+//         : { ...findValueDefault };
 
-    const usedCommend = await prisma.usedCommend.findMany(findValue);
-    const count = await prisma.usedCommend.count();
-    const [list, total] = await Promise.all([usedCommend, count]);
+//     const usedCommend = await prisma.usedCommend.findMany(findValue);
+//     const count = await prisma.usedCommend.count();
+//     const [list, total] = await Promise.all([usedCommend, count]);
 
-    const lastList = list[pageSize - 1];
-    const NextCusor = lastList ? lastList.id : "null";
+//     const lastList = list[pageSize - 1];
+//     const NextCusor = lastList ? lastList.id : "null";
 
-    res.send({
-      cursorInfo: {
-        total,
-        NextCusor,
-      },
-      list,
-    });
-  })
-);
+//     res.send({
+//       cursorInfo: {
+//         total,
+//         NextCusor,
+//       },
+//       list,
+//     });
+//   })
+// );
 
-app.get(
-  "/usedCommends/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const usedCommend = await prisma.usedCommend.findUniqueOrThrow({
-      where: { id },
-    });
-    res.send(usedCommend);
-  })
-);
+// app.get(
+//   "/usedCommends/:id",
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     const usedCommend = await prisma.usedCommend.findUniqueOrThrow({
+//       where: { id },
+//     });
+//     res.send(usedCommend);
+//   })
+// );
 
-app.post(
-  "/usedCommends",
-  asyncHandler(async (req, res) => {
-    assert(req.body, s.CreateUsedCommend);
-    const usedCommend = await prisma.usedCommend.create({
-      data: req.body,
-    });
-    res.status(201).send(usedCommend);
-  })
-);
+// app.post(
+//   "/usedCommends",
+//   asyncHandler(async (req, res) => {
+//     assert(req.body, s.CreateUsedCommend);
+//     const usedCommend = await prisma.usedCommend.create({
+//       data: req.body,
+//     });
+//     res.status(201).send(usedCommend);
+//   })
+// );
 
-app.patch(
-  "/usedCommends/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    assert(req.body, s.PatchCommend);
-    const usedCommend = await prisma.usedCommend.update({
-      where: { id },
-      data: req.body,
-    });
-    res.status(201).send(usedCommend);
-  })
-);
+// app.patch(
+//   "/usedCommends/:id",
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     assert(req.body, s.PatchCommend);
+//     const usedCommend = await prisma.usedCommend.update({
+//       where: { id },
+//       data: req.body,
+//     });
+//     res.status(201).send(usedCommend);
+//   })
+// );
 
-app.delete(
-  "/usedCommends/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    await prisma.usedCommend.delete({
-      where: { id },
-    });
-    res.sendStatus(204);
-  })
-);
+// app.delete(
+//   "/usedCommends/:id",
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     await prisma.usedCommend.delete({
+//       where: { id },
+//     });
+//     res.sendStatus(204);
+//   })
+// );
 
 app.listen(process.env.PORT || 3001, () => console.log("Server Started"));
