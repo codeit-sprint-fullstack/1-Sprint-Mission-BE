@@ -20,6 +20,6 @@ Content-Type: application/json
 ### 접속중인 사용자 조회
 GET http://localhost:3001/auth/me
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJlbWFpbCI6ImF2dnZ2dkB0ZXN0LmNvbSIsImlhdCI6MTcyNzg1NDMxNCwiZXhwIjoxNzI3ODU1MjE0fQ.mkHJxshjcmuemmtLo0Vumw4blINJkVNa3-Jg94tk20Y
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJlbWFpbCI6ImF2dnZ2dkB0ZXN0LmNvbSIsImlhdCI6MTcyNzg1NTUyMiwiZXhwIjoxNzI3ODU2NDIyfQ.qZpclpcaEShOve-kVTakumUOrdJhpcJWX4WHWAz2qv4
 
 
