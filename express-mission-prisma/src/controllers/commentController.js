@@ -18,7 +18,7 @@ articleCommentController
   .get(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      const { pageSize = 5 } = req.query;
+      const { pageSize } = req.query;
       const freeCommend = await articleCommentService.getAllByFilter(
         id,
         req.query

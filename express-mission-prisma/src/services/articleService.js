@@ -5,7 +5,7 @@ async function create(createData) {
 }
 
 async function getAllByFilter(query) {
-  const { page = 1, pageSize = 10, orderBy = "recent", keyWord = "" } = query;
+  const { page, pageSize, orderBy, keyWord = "" } = query;
 
   const pageNum = page || 1;
   const pageSizeNum = pageSize || 10;

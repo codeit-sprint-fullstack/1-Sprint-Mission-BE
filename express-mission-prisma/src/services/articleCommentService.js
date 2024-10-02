@@ -6,7 +6,7 @@ async function create(id, createData) {
 }
 
 async function getAllByFilter(id, query) {
-  const { cursor = "", pageSize = 5, orderBy = "recent" } = query;
+  const { cursor = "", pageSize, orderBy } = query;
 
   let pageSizeNum = parseInt(pageSize) || 5;
   if (pageSizeNum) {
