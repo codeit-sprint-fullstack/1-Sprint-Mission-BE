@@ -71,7 +71,8 @@ router
     async (req, res, next) => {
       const { name, description, price, tags } = req.body;
 
-      const tagsArray = tags.split(","); // 태그를 배열로 변환
+      const tagsArray = tags ? tags.split(",").map((tag) => tag.trim()) : []; 
+      // 태그가 없으면 빈 배열
 
       try {
         const newProduct = await prisma.marketPost.create({
@@ -82,7 +83,12 @@ router
             tags: tagsArray,
             ownerId: req.user.id, // 수정된 부분
             ownerNickname: req.user.nickname, // 수정된 부분
-            images: req.files ? req.files.map((file) => file.path) : [], // 파일 업로드 된 경우, 이미지 경로 배열 추가
+            images: req.files
+              ? req.files.map(
+                  (file) => `http://localhost:8000/uploads/${file.filename}`
+                )
+              : [],
+            // 파일 업로드 된 경우, 이미지 경로 배열 추가
           },
         });
 
@@ -90,7 +96,11 @@ router
         res.status(201).send({
           message: "상품이 성공적으로 등록되었습니다.",
           product: newProduct,
-          imageUrls: req.files ? req.files.map((file) => file.path) : [], // 이미지 경로 배열 포함
+          imageUrls: req.files
+            ? req.files.map(
+                (file) => `http://localhost:8000/uploads/${file.filename}`
+              )
+            : [], // 클라이언트가 사용할 이미지 경로
         });
       } catch (error) {
         console.error("Error creating market post:", error);
