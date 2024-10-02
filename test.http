@@ -1,0 +1,9 @@
+###회원가입
+POST http://localhost:3001/auth/signup
+Content-Type: application/json
+
+{
+  "email" : "aa@naver.com",
+  "encryptedPassword" : "12341234",
+  "nickname" : "minsu"
+}
