@@ -1,5 +1,5 @@
-import articleModel from "../model/articleModel";
-import productModel from "../model/productModel";
+import articleModel from "../model/articleModel.js";
+import productModel from "../model/productModel.js";
 
 const verifyProductAuth = async (req, res, next) => {
   const { id: userId } = req.user;
@@ -31,7 +31,7 @@ const verifyArticleAuth = async (req, res, next) => {
   const { id: productId } = req.params;
 
   try {
-    const article = await productModel.getById(productId);
+    const article = await articleModel.getById(productId);
 
     if (!article) {
       const error = new Error("Review not found");

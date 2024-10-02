@@ -1,4 +1,4 @@
-import prismaClient from "../utils/prismaClient";
+import prismaClient from "../utils/prismaClient.js";
 
 const getArticleComments = async (cursor, limit, id) => {
   const data = await prismaClient.comment.findMany({
@@ -59,6 +59,7 @@ const updateComment = async ({ content, commentId, userId }) => {
 };
 
 const deleteComment = async (id) => {
+  console.log(id);
   return prismaClient.comment.delete({
     where: {
       id,

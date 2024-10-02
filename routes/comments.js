@@ -6,8 +6,7 @@ import { createComment, updateComment } from "../structs/commentStruct.js";
 import commentService from "../service/commentService.js";
 import passport from "../config/passportConfig.js";
 
-const app = express.Router();
-const prisma = new PrismaClient();
+const router = express.Router();
 
 /**
  * @swagger
@@ -37,7 +36,7 @@ const prisma = new PrismaClient();
  *                          ]
  */
 
-app.get(
+router.get(
   "/:id/article",
   asyncHandle(async (req, res, next) => {
     try {
@@ -49,11 +48,11 @@ app.get(
   })
 );
 
-app.get(
+router.get(
   "/:id/product",
   asyncHandle(async (req, res, next) => {
     try {
-      const comments = await commentService.getArticleComments(req);
+      const comments = await commentService.getProductComments(req);
       res.status(200).send(comments);
     } catch (error) {
       next(error);
@@ -61,7 +60,7 @@ app.get(
   })
 );
 
-app.post(
+router.post(
   "/:id/article",
   passport.authenticate("access-token", { session: false }),
   asyncHandle(async (req, res, next) => {
@@ -69,7 +68,7 @@ app.post(
     try {
       const { id: userId } = req.user;
       const { id: articleId } = req.params;
-      const data = commentService.createComment({
+      const data = await commentService.createComment({
         ...req.body,
         articleId,
         userId,
@@ -81,7 +80,7 @@ app.post(
   })
 );
 
-app.post(
+router.post(
   "/:id/product",
   passport.authenticate("access-token", { session: false }),
   asyncHandle(async (req, res, next) => {
@@ -89,7 +88,7 @@ app.post(
     try {
       const { id: userId } = req.user;
       const { id: productId } = req.params;
-      const data = commentService.createComment({
+      const data = await commentService.createComment({
         ...req.body,
         productId,
         userId,
@@ -101,7 +100,7 @@ app.post(
   })
 );
 
-app.patch(
+router.patch(
   "/:id",
   passport.authenticate("access-token", { session: false }),
   asyncHandle(async (req, res, next) => {
@@ -122,7 +121,7 @@ app.patch(
   })
 );
 
-app.delete(
+router.delete(
   "/:id",
   passport.authenticate("access-token", { session: false }),
   asyncHandle(async (req, res, next) => {
@@ -136,4 +135,4 @@ app.delete(
   })
 );
 
-export default app;
+export default router;

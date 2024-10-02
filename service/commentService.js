@@ -1,5 +1,5 @@
 import { date } from "superstruct";
-import commentModel from "../model/commentModel";
+import commentModel from "../model/commentModel.js";
 
 const getArticleComments = async (req) => {
   const { limit = 5, cursor = "" } = req.query;
@@ -70,7 +70,7 @@ const updateComment = async (data) => {
 };
 
 const deleteComment = async (id) => {
-  const comment = await commentModel.updateComment(id);
+  const comment = await commentModel.deleteComment(id);
   if (!comment) {
     const error = new Error("Not found");
     error.status = 404;
