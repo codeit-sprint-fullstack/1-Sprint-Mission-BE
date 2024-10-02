@@ -6,6 +6,3 @@
 userController.js: "사용자 정보 보여줘!"라고 할 때, 그 요청을 받아 처리해.
 productController.js: "상품 목록 보여줘!" 같은 요청을 처리.
 
-
-
-라우트를 정의하는 곳

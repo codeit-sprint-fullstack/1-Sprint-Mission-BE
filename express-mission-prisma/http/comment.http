@@ -2,7 +2,7 @@ GET  http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58/comment
 
 ###
 
-GET  http://localhost:3000/freeCommends/?cursor=136bb431-ac7b-42d5-8b9d-f1cd3ce88d89
+GET  http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58/comment?cursor=11205366-2f26-4a7a-bfea-5fb08bb14586
 
 ###
 
