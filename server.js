@@ -61,7 +61,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions); // Swagger 문서 생성
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs)); // Swagger UI 설정
 
 // 정적 파일 제공 설정
-app.use("/images", express.static(path.join(__dirname, "public/images"))); // 이미지 파일 제공
+app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // 이미지 파일 제공
 
 // 라우터 등록
 app.use("/api/products", productRoutes); // 제품 관련 API
