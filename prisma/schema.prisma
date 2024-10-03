@@ -14,17 +14,19 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  name      String
-  email     String
-  image     String?
-  createdAt DateTime  @default(now())
-  articles  Article[]
-  comment   Comment[]
+  id                Int       @id @default(autoincrement())
+  nickname          String
+  email             String    @unique
+  encryptedPassword String
+  image             String?
+  createdAt         DateTime  @default(now())
+  articles          Article[]
+  comment           Comment[]
+  poducts           Product[]
 }
 
 model Product {
-  id          String    @id @default(uuid())
+  id          Int    @id @default(autoincrement())
   name        String
   description String
   price       Int
@@ -32,7 +34,9 @@ model Product {
   image       String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  ownerId     Int
   comment     Comment[]
+  owner       User      @relation(fields: [ownerId], references: [id])
 }
 
 model Article {
