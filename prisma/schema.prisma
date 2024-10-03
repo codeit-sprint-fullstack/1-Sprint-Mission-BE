@@ -14,15 +14,17 @@ datasource db {
 }
 
 model User {
-  id         String       @id @default(uuid())
-  email      String       @unique
-  name       String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  Comment    Comment[]
-  freeBoard  FreeBoard[]
-  fleaMarket FleaMarket[]
-  Favorite   Favorite[]
+  id                String       @id @default(uuid())
+  email             String       @unique
+  nickname          String?
+  image             String[]
+  encryptedPassword String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  Comment           Comment[]
+  freeBoard         FreeBoard[]
+  fleaMarket        FleaMarket[]
+  Favorite          Favorite[]
 }
 
 model FreeBoard {
@@ -78,4 +80,7 @@ model Favorite {
   freeBoardId  Int?
   fleaMarket   FleaMarket? @relation(fields: [fleaMarketId], references: [id])
   fleaMarketId Int?
+
+  @@unique([userId, freeBoardId])
+  @@unique([userId, fleaMarketId])
 }

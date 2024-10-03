@@ -4,7 +4,6 @@ import { asyncHandler } from './asyncHandler.js';
 import validateProductFields from '../middlewares/validateProductFields.js';
 import { CreateArticle, PatchArticle } from './struct.js';
 import upload from '../middlewares/multer.middleware.js';
-import { number } from 'superstruct';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -80,33 +79,56 @@ router.get(
   })
 );
 
-router.get(
-  '/:id',
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { userId } = req.body;
+router
+  .route('/:id')
+  .get(
+    asyncHandler(async (req, res) => {
+      const { id } = req.params;
+      const { userId } = req.body;
 
-    const article = await prisma.fleaMarket.findUnique({
-      where: {
-        id: Number(id),
-      },
-      include: {
-        user: true,
-        favorite: true,
-      },
-    });
+      const article = await prisma.fleaMarket.findUnique({
+        where: {
+          id: Number(id),
+        },
+        include: {
+          user: true,
+          favorite: true,
+        },
+      });
 
-    const isLiked = userId
-      ? article.favorite.some((fav) => fav.userId === userId)
-      : false;
+      const isLiked = userId
+        ? article.favorite.some((fav) => fav.userId === userId)
+        : false;
 
-    if (!article) {
-      return res.status(404).json({ message: '게시물이 없습니다' });
-    }
+      if (!article) {
+        return res.status(404).json({ message: '게시물이 없습니다' });
+      }
 
-    res.status(200).json({ article, isLiked });
-  })
-);
+      res.status(200).json({ article, isLiked });
+    })
+  )
+  .patch(
+    asyncHandler(async (req, res) => {
+      const { id } = req.params;
+      const article = await prisma.fleaMarket.update({
+        where: { id: Number(id) },
+        data: req.body,
+      });
+      res.status(201).json(article);
+    })
+  )
+  .delete(
+    asyncHandler(async (req, res) => {
+      const { id } = req.params;
+
+      await prisma.fleaMarket.delete({
+        where: {
+          id: Number(id),
+        },
+      });
+      res.sendStatus(204);
+    })
+  );
 
 router.post(
   '/post',
@@ -131,32 +153,6 @@ router.post(
     });
 
     res.status(201).json(article);
-  })
-);
-
-router.patch(
-  '/:id',
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const article = await prisma.fleaMarket.update({
-      where: { id: Number(id) },
-      data: req.body,
-    });
-    res.status(201).json(article);
-  })
-);
-
-router.delete(
-  '/:id',
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-
-    await prisma.fleaMarket.delete({
-      where: {
-        id: Number(id),
-      },
-    });
-    res.sendStatus(204);
   })
 );
 
