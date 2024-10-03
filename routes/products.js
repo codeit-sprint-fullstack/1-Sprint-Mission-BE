@@ -52,7 +52,7 @@ router.get(
 
 router.post(
   "/",
-  // passport.authenticate("access-token", { session: false }), //인가된 사용자만 작성가능
+  passport.authenticate("access-token", { session: false }), //인가된 사용자만 작성가능
   upload.array("images", 3),
   async (req, res, next) => {
     try {
