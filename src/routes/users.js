@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import { asyncHandler } from './asyncHandler.js';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { CreateUser, PatchUser } from './struct.js';
 import assert from 'assert';
 import authMiddleware from '../middlewares/authMiddleware.js';
