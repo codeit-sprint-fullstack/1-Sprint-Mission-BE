@@ -8,14 +8,18 @@ const accessExtractor = function (req) {
   } else {
     token = req.headers.authorization;
   }
+  // console.log("엑세스" + token);
   return token;
 };
 
 const refreshExtractor = function (req) {
   var token = null;
-  if (req && req.cookies) {
+  if (req && req.cookies["refresh-token"]) {
     token = req.cookies["refresh-token"];
+  } else {
+    token = req.headers.authorization;
   }
+  // console.log("리프레쉬" + token);
   return token;
 };
 
