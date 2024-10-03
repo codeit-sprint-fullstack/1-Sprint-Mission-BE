@@ -1,7 +1,6 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from './asyncHandler.js';
-import { CreateArticle, PatchArticle } from './struct.js';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -29,7 +28,6 @@ router.post(
   })
 );
 
-
 router.delete(
   '/:id',
   asyncHandler(async (req, res) => {
@@ -47,12 +45,12 @@ router.delete(
       await prisma.$transaction([
         prisma.favorite.delete({
           where: {
-            id: existingFavorite.id, 
+            id: existingFavorite.id,
           },
         }),
         prisma.fleaMarket.update({
           where: { id: Number(id) },
-          data: { favoriteCount: { decrement: 1 } }, 
+          data: { favoriteCount: { decrement: 1 } },
         }),
       ]);
       return res.status(200).json({ message: '좋아요가 삭제됐습니다.' });

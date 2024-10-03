@@ -29,4 +29,12 @@ app.use('/favorite', favoriteRoute);
 
 app.use('/uploads', express.static('uploads'));
 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  const statusCode = err.status || 500;
+  res.status(statusCode).json({
+    message: err.message || '서버 오류',
+  });
+});
+
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));

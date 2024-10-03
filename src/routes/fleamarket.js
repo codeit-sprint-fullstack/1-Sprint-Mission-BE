@@ -22,7 +22,7 @@ router.get(
       orderBy = [{ createdAt: 'desc' }, { id: 'desc' }];
     } else {
       orderBy = [
-        { favorite: { _count: 'desc' } },
+        { favoriteCount: 'desc' },
         { createdAt: 'desc' },
         { id: 'desc' },
       ];
@@ -99,6 +99,10 @@ router.get(
     const isLiked = userId
       ? article.favorite.some((fav) => fav.userId === userId)
       : false;
+
+    if (!article) {
+      return res.status(404).json({ message: '게시물이 없습니다' });
+    }
 
     res.status(200).json({ article, isLiked });
   })
