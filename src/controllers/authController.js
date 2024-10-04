@@ -71,21 +71,45 @@ export async function login(req, res, next) {
       password,
       user.encryptedPassword
     );
-
     if (!isPasswordValid) {
       return res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
+    }
+
+    let refreshToken = user.refreshToken;
+
+    if (refreshToken) {
+      try {
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+      } catch (err) {
+        console.log("Refresh token is invalid or expired. Creating a new one.");
+        refreshToken = jwt.sign(
+          { userId: user.id, email: user.email },
+          process.env.REFRESH_TOKEN_SECRET,
+          { expiresIn: "7d" }
+        );
+
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { refreshToken },
+        });
+      }
+    } else {
+      refreshToken = jwt.sign(
+        { userId: user.id, email: user.email },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: "7d" }
+      );
+
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { refreshToken },
+      });
     }
 
     const accessToken = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "15m" }
-    );
-
-    const refreshToken = jwt.sign(
-      { userId: user.id, email: user.email },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "7d" }
     );
 
     res.status(200).json({
@@ -103,25 +127,51 @@ export async function login(req, res, next) {
 export async function refreshToken(req, res, next) {
   try {
     const { refreshToken } = req.body;
+
     if (!refreshToken) {
-      return res.status(401).json({ message: "인증 토큰가 없습니다." });
+      return res.status(401).json({ message: "인증 토큰이 없습니다." });
     }
-    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+    let decoded;
+    try {
+      decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    } catch (error) {
+      return res
+        .status(403)
+        .json({ message: "유효하지 않은 또는 만료된 토큰입니다." });
+    }
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
     });
+
     if (!user) {
-      return res.status(401).json({ message: "인증 토큰가 없습니다." });
+      return res.status(401).json({ message: "해당 사용자 정보가 없습니다." });
     }
+
     if (user.refreshToken !== refreshToken) {
-      return res.status(401).json({ message: "인증 토큰가 없습니다." });
+      return res.status(403).json({ message: "유효하지 않은 토큰입니다." });
     }
-    const accessToken = jwt.sign(
+
+    const newAccessToken = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "15m" }
     );
-    res.status(200).json({ accessToken });
+    const newRefreshToken = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
+    );
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken: newRefreshToken },
+    });
+
+    res.status(200).json({
+      message: "토큰 갱신 성공",
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    });
   } catch (error) {
     console.error("인증 토큰 오류:", error);
     next(error);
