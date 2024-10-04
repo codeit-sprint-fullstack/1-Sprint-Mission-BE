@@ -72,9 +72,14 @@ async function update(id, updateData) {
   return await commentRepository.update(updateDataWithId);
 }
 
+async function deleteById(id) {
+  return await commentRepository.deleteById(id);
+}
+
 export default {
   create,
   getAllByFilter,
   countByFilter,
   update,
+  deleteById,
 };

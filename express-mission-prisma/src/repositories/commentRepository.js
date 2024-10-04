@@ -38,9 +38,16 @@ async function update(updateData) {
   });
 }
 
+async function deleteById(id) {
+  return await prisma.comment.delete({
+    where: { id },
+  });
+}
+
 export default {
   create,
   getAllByFilter,
   countByFilter,
   update,
+  deleteById
 };

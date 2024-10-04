@@ -35,3 +35,6 @@ Content-Type: application/json
 {
     "content": "댓글 수정 테스트"
 }
+
+###
+DELETE http://localhost:3001/comment/91e44786-e4f3-4862-8599-c5e5eec08b5d
