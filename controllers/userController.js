@@ -1,4 +1,5 @@
-const prisma = require('../utils/prismaClient');
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 const bcrypt = require('bcryptjs');
 
 // 현재 유저 정보 조회
