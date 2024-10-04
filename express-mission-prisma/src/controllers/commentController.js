@@ -1,7 +1,6 @@
 import express from "express";
 import asyncHandler from "../services/errorService.js";
-import articleCommentService from "../services/commentService/articleCommentService.js";
-import productCommentService from "../services/commentService/productCommentService.js";
+import commentService from "../services/commentService.js";
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
 const articleCommentController = express.Router(); // 게시글 댓글 router
@@ -12,7 +11,7 @@ articleCommentController
   .post(
     asyncHandler(async (req, res, next) => {
       const { id } = req.params;
-      const comment = await articleCommentService.create(id, req.body);
+      const comment = await commentService.create(id, req.body, "article");
       res.status(201).send(comment);
     })
   )
@@ -20,11 +19,12 @@ articleCommentController
     asyncHandler(async (req, res) => {
       const { id } = req.params;
       const { pageSize } = req.query;
-      const freeCommend = await articleCommentService.getAllByFilter(
+      const freeCommend = await commentService.getAllByFilter(
         id,
-        req.query
+        req.query,
+        "article"
       );
-      const count = await articleCommentService.countByFilter(id);
+      const count = await commentService.countByFilter(id, "article");
       const [list, total] = await Promise.all([freeCommend, count]);
 
       const lastList = list[pageSize || 5];
@@ -48,7 +48,7 @@ productCommentCotroller
   .post(
     asyncHandler(async (req, res, next) => {
       const { id } = req.params;
-      const comment = await productCommentService.create(id, req.body);
+      const comment = await commentService.create(id, req.body, "product");
       res.status(201).send(comment);
     })
   )
@@ -56,8 +56,12 @@ productCommentCotroller
     asyncHandler(async (req, res) => {
       const { id } = req.params;
       const { pageSize } = req.query;
-      const comment = await productCommentService.getAllByFilter(id, req.query);
-      const count = await productCommentService.countByFilter(id);
+      const comment = await commentService.getAllByFilter(
+        id,
+        req.query,
+        "product"
+      );
+      const count = await commentService.countByFilter(id, "product");
       const [list, total] = await Promise.all([comment, count]);
 
       const lastList = list[pageSize || 2];

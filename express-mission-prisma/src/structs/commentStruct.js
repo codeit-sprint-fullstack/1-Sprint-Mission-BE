@@ -7,18 +7,18 @@ const commendBody = {
   content: s.size(s.string(), 1, Infinity),
 };
 
-const createArticleCommend = s.object({
+const createArticleComment = s.object({
   ...commendBody,
   articleId: Uuid,
 });
 
-const createProductCommend = s.object({
+const createProductComment = s.object({
   ...commendBody,
   productId: Uuid,
 });
 
-const updateCommend = s.object({
+const updateComment = s.object({
   ...commendBody,
 });
 
-export {createArticleCommend, createProductCommend, updateCommend}
+export {createArticleComment, createProductComment, updateComment}

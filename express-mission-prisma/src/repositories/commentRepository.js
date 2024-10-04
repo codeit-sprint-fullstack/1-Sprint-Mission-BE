@@ -1,19 +1,16 @@
 import { assert } from "superstruct";
-import prisma from "../../config/prisma.js";
-import {
-  createProductCommend,
-  updateCommend,
-} from "../../structs/commentStruct.js";
+import prisma from "../config/prisma.js";
+import { updateComment } from "../structs/commentStruct.js";
 
-async function create(createData) {
-  assert(createData, createProductCommend);
+async function create(createData, struct) {
+  assert(createData, struct);
   return await prisma.comment.create({
     data: createData,
   });
 }
 
 async function getAllByFilter(fillter) {
-  const { orderBy, skip, take, where, cursor = "" } = fillter;
+  const { orderBy, take, where, cursor = "" } = fillter;
   if (cursor === "") {
     return await prisma.comment.findMany({
       orderBy,
