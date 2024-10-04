@@ -1,5 +1,6 @@
-const prisma = require("../utils/prismaClient");
-//
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+
 // 상품 등록
 exports.createProduct = async (req, res, next) => {
   const { name, description, price, tags } = req.body;
