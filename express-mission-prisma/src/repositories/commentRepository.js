@@ -49,5 +49,5 @@ export default {
   getAllByFilter,
   countByFilter,
   update,
-  deleteById
+  deleteById,
 };

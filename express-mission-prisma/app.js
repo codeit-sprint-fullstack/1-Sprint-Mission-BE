@@ -18,6 +18,7 @@ app.use("/article", articleController);
 app.use("/article", articleCommentController);
 app.use('/product', productCommentCotroller)
 app.use('/comment', commentController)
+// app.use('/product', productController)
 
 app.listen(process.env.PORT || 3001, () => console.log("Server Started"));
 
