@@ -9,6 +9,7 @@ import {
   productCommentCotroller,
 } from "./src/controllers/commentController.js";
 import productController from "./src/controllers/productController.js";
+import errorHandler from "./src/middlewares/errorHandler.js";
 
 const app = express();
 
@@ -22,29 +23,10 @@ app.use('/product', productCommentCotroller)
 app.use('/comment', commentController)
 app.use('/product', productController)
 
+app.use(errorHandler)
+
 app.listen(process.env.PORT || 3001, () => console.log("Server Started"));
 
-export function asyncHandler(asyncFunc) {
-  return async function (req, res) {
-    try {
-      await asyncFunc(req, res);
-    } catch (e) {
-      if (
-        e.name === "StructError" ||
-        e instanceof Prisma.PrismaClientValidationError
-      ) {
-        res.status(400).send({ message: e.message });
-      } else if (
-        e instanceof Prisma.PrismaClientKnownRequestError &&
-        e.code === "P2025"
-      ) {
-        res.sendStatus(404);
-      } else {
-        res.status(500).send({ message: e.message });
-      }
-    }
-  };
-}
 
 /*-----------------게시글-------------------*/
 // app.get(

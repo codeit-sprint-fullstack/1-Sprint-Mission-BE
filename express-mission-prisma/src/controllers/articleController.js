@@ -1,6 +1,6 @@
 import express from "express";
 import articleService from "../services/articleService.js";
-import asyncHandler from "../services/errorService.js";
+import asyncHandler from "../utils/asyncHandler.js";
 import validateData from "../middlewares/validateData.js";
 
 const articleController = express.Router();

@@ -1,0 +1,31 @@
+import { Prisma } from "@prisma/client";
+import multer from "multer";
+
+function errorHandler(error, req, res, next) {
+  let status;
+
+  if (
+    error.name === "StructError" ||
+    error instanceof Prisma.PrismaClientValidationError ||
+    error instanceof multer.MulterError
+  ) {
+    status = 400;
+  } else if (
+    error instanceof Prisma.PrismaClientKnownRequestError &&
+    error.code === "P2025"
+  ) {
+    status = 404;
+  } else {
+    status = error.code ?? 500;
+  }
+
+  return res.status(status).json({
+    path: req.path,
+    method: req.method,
+    message: error.message ?? "Internal Server Error",
+    data: error.data ?? undefined,
+    date: new Date(),
+  });
+}
+
+export default errorHandler;

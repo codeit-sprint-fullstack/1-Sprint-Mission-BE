@@ -2,7 +2,7 @@ import express from "express";
 import imgUploadHandler from "../middlewares/imgUploadHandler.js";
 import validateData from "../middlewares/validateData.js";
 import productService from "../services/productService.js";
-import asyncHandler from "../services/errorService.js";
+import asyncHandler from "../utils/asyncHandler.js";
 
 const productController = express.Router();
 
@@ -18,7 +18,7 @@ productController.route("/").post(
       });
     }
 
-    res.status(201).send({product, path});
+    res.status(201).send({ product, path });
   })
 );
 

@@ -1,5 +1,5 @@
 import express from "express";
-import asyncHandler from "../services/errorService.js";
+import asyncHandler from "../utils/asyncHandler.js";
 import commentService from "../services/commentService.js";
 import validateData from "../middlewares/validateData.js";
 
