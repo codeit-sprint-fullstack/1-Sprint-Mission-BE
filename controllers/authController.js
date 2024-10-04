@@ -15,7 +15,12 @@ exports.signUp = async (req, res, next) => {
         password: hashedPassword,
       },
     });
-    res.status(201).json(user);
+
+    // JWT 토큰 발급
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    // accessToken과 nickname 반환
+    res.status(201).json({ accessToken: token, nickname: user.nickname });
   } catch (error) {
     next(error); // 에러 전달
   }
@@ -29,8 +34,12 @@ exports.signIn = async (req, res, next) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
+
+    // JWT 토큰 발급
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ accessToken: token });
+
+    // accessToken과 nickname 반환
+    res.status(200).json({ accessToken: token, nickname: user.nickname });
   } catch (error) {
     next(error); // 에러 전달
   }
