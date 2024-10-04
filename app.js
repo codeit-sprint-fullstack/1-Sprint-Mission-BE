@@ -37,4 +37,6 @@ app.use((err, req, res, next) => {
   });
 });
 
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
+
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
