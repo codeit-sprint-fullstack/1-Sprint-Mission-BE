@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import prisma from "./models/index.js";
 import productRoutes from "./routes/productRoutes.js";
+import articleRoutes from "./routes/articleRoutes.js";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
+app.use("/articles", articleRoutes);
 
 // 404 오류 처리 (라우트가 없을 경우)
 app.use((req, res) => {
