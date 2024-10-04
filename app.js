@@ -1,5 +1,7 @@
-import express from 'express';
 import * as dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url'; // 추가
@@ -9,8 +11,6 @@ import fleamarketRoute from './src/routes/fleamarket.js';
 import articleRoute from './src/routes/articles.js';
 import commentRoute from './src/routes/comments.js';
 import favoriteRoute from './src/routes/favorite.js';
-
-dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -36,7 +36,5 @@ app.use((err, req, res, next) => {
     message: err.message || '서버 오류',
   });
 });
-
-console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
