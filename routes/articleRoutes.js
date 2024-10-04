@@ -1,12 +1,10 @@
 import express from "express";
 import * as articleController from "../controllers/articleController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
-// import { validateProductFields } from "../middlewares/validateProductFields.js";
-// import { imageUpload } from "../middlewares/imageUpload.js";
 
 const router = express.Router();
 
-//https://thrift-shop.onrender.com/products
+//https://thrift-shop.onrender.com/articles
 router.post("/", verifyToken, articleController.createArticle);
 router.get("/", articleController.getArticles);
 router.get("/:articleId", verifyToken, articleController.getArticleById);
