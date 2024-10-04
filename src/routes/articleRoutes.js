@@ -1,5 +1,5 @@
 import express from "express";
-import * as a from "../controllers/articleController.js";
+import controller from "../controllers/articleController.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {
   getArticleComments,
@@ -8,11 +8,11 @@ import {
 
 const router = express.Router();
 
-router.get("/", asyncHandler(a.getArticles));
-router.get("/:articleId", asyncHandler(a.getArticleById));
-router.post("/", asyncHandler(a.createArticle));
-router.patch("/:articleId", asyncHandler(a.updateArticleById));
-router.delete("/:articleId", asyncHandler(a.deleteArticleById));
+router.get("/", asyncHandler(controller.getArticleList));
+router.get("/:articleId", asyncHandler(controller.getArticleById));
+router.post("/", asyncHandler(controller.createArticle));
+router.patch("/:articleId", asyncHandler(controller.updateArticleById));
+router.delete("/:articleId", asyncHandler(controller.deleteArticleById));
 
 //get comments, create comment
 router.get("/:articleId/comments", asyncHandler(getArticleComments));

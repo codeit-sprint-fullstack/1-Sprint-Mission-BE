@@ -13,13 +13,13 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon src/app.js",
     "start": "node app.js",
-    "migrate": "npx prisma migrate dev"
+    "migrate": "prisma migrate dev"
   },
   "prisma": {
-    "seed": "node src/prisma/seed.js",
-    "schema": "src/prisma/schema.prisma"
+    "seed": "node prisma/seed.js",
+    "schema": "prisma/schema.prisma"
   },
   "engines": {
     "node": "20.18.0"

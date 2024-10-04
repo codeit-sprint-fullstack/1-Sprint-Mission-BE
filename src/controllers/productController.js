@@ -40,7 +40,7 @@ export const getProducts = async (req, res) => {
 
   const totalCount = await prisma.product.count({ where: searchQuery });
 
-  res.send({ totalCount, list: products });
+  res.json({ totalCount, list: products });
 };
 
 //get product by id
@@ -59,7 +59,7 @@ export const getProductById = async (req, res) => {
     },
   });
 
-  res.send(product);
+  res.json(product);
 };
 
 // create new product
@@ -68,7 +68,7 @@ export const createProduct = async (req, res) => {
   const newProduct = await prisma.product.create({
     data: req.body,
   });
-  res.status(201).send(newProduct);
+  res.status(201).json(newProduct);
 };
 
 // patch existed product with id
@@ -79,7 +79,7 @@ export const updateProductById = async (req, res) => {
     where: { id },
     data: req.body,
   });
-  res.send(product);
+  res.json(product);
 };
 
 // delete a product by id
@@ -87,5 +87,5 @@ export const deleteProductById = async (req, res) => {
   const { id } = req.params;
   await prisma.product.delete({ where: { id } });
 
-  res.status(200).send({ message: "Product has deleted successfully" });
+  res.status(200).json({ message: "Product has deleted successfully" });
 };

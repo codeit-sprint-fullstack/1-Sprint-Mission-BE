@@ -30,7 +30,7 @@ export const getProductComments = async (req, res) => {
   const nextCursor =
     comments.length === limit ? comments[comments.length - 1].id : null;
 
-  res.status(200).send({ nextCursor, list: comments });
+  res.status(200).json({ nextCursor, list: comments });
 };
 
 // get the article comments list
@@ -59,7 +59,7 @@ export const getArticleComments = async (req, res) => {
   const nextCursor =
     comments.length === limit ? comments[comments.length - 1].id : null;
 
-  res.status(200).send({ nextCursor, list: comments });
+  res.status(200).json({ nextCursor, list: comments });
 };
 
 //create comment on product
@@ -77,7 +77,7 @@ export const createProductComment = async (req, res) => {
       product: { connect: { id: productId } },
     },
   });
-  res.status(201).send(comment);
+  res.status(201).json(comment);
 };
 
 //create comment on article
@@ -95,7 +95,7 @@ export const createArticleComment = async (req, res) => {
       article: { connect: { id: articleId } },
     },
   });
-  res.status(201).send(comment);
+  res.status(201).json(comment);
 };
 
 // patch existed comment with comment id
@@ -109,7 +109,7 @@ export const updateCommentById = async (req, res) => {
     where: { id },
     data: req.body,
   });
-  res.status(201).send(comment);
+  res.status(201).json(comment);
 };
 
 // delete a comment by comment id
@@ -120,5 +120,5 @@ export const deleteCommentById = async (req, res) => {
 
   await prisma.comment.delete({ where: { id } });
 
-  res.status(200).send({ message: "Comment has deleted successfully" });
+  res.status(200).json({ message: "Comment has deleted successfully" });
 };

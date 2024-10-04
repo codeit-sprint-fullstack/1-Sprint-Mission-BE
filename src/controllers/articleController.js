@@ -1,88 +1,51 @@
-import { PrismaClient } from "@prisma/client";
-import { assert } from "superstruct";
+import articleService from "../services/articleService";
 
-import { CreateArticle, PatchArticle } from "../validation/structs.js";
-
-const prisma = new PrismaClient();
-
-//get article list
-// query parameter: orderBy, page, pageSize, keyword
-export const getArticles = async (req, res) => {
+const getArticleList = async (req, res) => {
   const { orderBy } = req.query || "recent";
   const page = parseInt(req.query.page) * 1 || 1;
   const pageSize = parseInt(req.query.pageSize) * 1 || 10;
   const keyword = req.query.keyword || "";
 
-  const offset = (page - 1) * pageSize;
+  const articles = await articleService.getArticles({
+    orderBy,
+    page,
+    pageSize,
+    keyword,
+  });
 
-  let sortOption;
-  switch (orderBy) {
-    case "like":
-      sortOption = { likeCount: "desc" };
-      break;
-    case "recent":
-    default:
-      sortOption = { createdAt: "desc" };
-      break;
-  }
-
-  let searchQuery = {};
-  if (keyword && keyword.trim() !== "")
-    searchQuery = {
-      OR: [
-        { title: { contains: keyword } },
-        { content: { contains: keyword } },
-      ],
-    };
-
-  const [totalCount, articles] = await Promise.all([
-    prisma.article.count({ where: searchQuery }),
-    prisma.article.findMany({
-      where: searchQuery,
-      orderBy: sortOption,
-      skip: offset,
-      take: pageSize,
-    }),
-  ]);
-
-  res.send({ totalCount, list: articles });
+  return res.json(articles);
 };
 
-//get article by id
-export const getArticleById = async (req, res) => {
+const getArticleById = async (req, res) => {
   const { articleId } = req.params;
-
-  const article = await prisma.article.findUniqueOrThrow({
-    where: { id: articleId },
-  });
-
-  res.send(article);
+  const article = await articleService.getArticle(articleId);
+  return res.json(article);
 };
 
-// create new article
-export const createArticle = async (req, res) => {
-  assert(req.body, CreateArticle);
-  const newArticle = await prisma.article.create({
-    data: req.body,
-  });
-  res.status(201).send(newArticle);
+const createArticle = async (req, res) => {
+  const data = req.body;
+  const newArticle = await articleService.createArticle(data);
+
+  return res.status(201).json(newArticle);
 };
 
-// patch existed article with id
-export const updateArticleById = async (req, res) => {
-  assert(req.body, PatchArticle);
-  const { articleId: id } = req.params;
-  const article = await prisma.article.update({
-    where: { id },
-    data: req.body,
-  });
-  res.send(article);
+const updateArticleById = async (req, res) => {
+  const { articleId } = req.params;
+  const data = req.body;
+  const updatedArticle = await articleService.updateArticle(articleId, data);
+  return res.json(updatedArticle);
 };
 
-// delete an article by id
-export const deleteArticleById = async (req, res) => {
-  const { articleId: id } = req.params;
-  await prisma.article.delete({ where: { id } });
+const deleteArticleById = async (req, res) => {
+  const { articleId } = req.params;
+  await articleService.deleteArticle(articleId);
+  return res.status(204).json({ message: "게시글이 삭제되었습니다" });
+};
 
-  res.status(200).send({ message: "Article has deleted successfully" });
+export default {
+  getArticleList,
+  getArticleById,
+  createArticle,
+  updateArticleById,
+  deleteArticleById,
 };
