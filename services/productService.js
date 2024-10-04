@@ -1,6 +1,13 @@
 import prisma from "../models/index.js";
 
-// 상품 생성 서비스 함수
+const parseId = (id) => parseInt(id, 10);
+
+const validateTags = (tags) => {
+  if (!Array.isArray(tags) || tags.length < 1 || tags.length > 5) {
+    throw new Error("태그는 최소 1개, 최대 5개까지 입력 가능합니다.");
+  }
+};
+
 export const createProduct = async (
   images,
   name,
@@ -10,9 +17,8 @@ export const createProduct = async (
   userId,
   userNickname
 ) => {
-  if (!Array.isArray(tags) || tags.length < 1 || tags.length > 5) {
-    throw new Error("태그는 최소 1개, 최대 5개까지 입력 가능합니다.");
-  }
+  validateTags(tags);
+
   const newProduct = await prisma.product.create({
     data: {
       images,
@@ -28,7 +34,6 @@ export const createProduct = async (
   return newProduct;
 };
 
-// 상품 목록 조회 서비스 함수
 export const getProducts = async (
   page = 1,
   pageSize = 10,
@@ -37,7 +42,6 @@ export const getProducts = async (
 ) => {
   const offset = (page - 1) * pageSize;
 
-  // 키워드 검색 조건 설정
   const whereCondition = keyword
     ? {
         OR: [
@@ -47,13 +51,8 @@ export const getProducts = async (
       }
     : {};
 
-  // 정렬 조건 설정
-  let orderCondition;
-  if (orderBy === "favorite") {
-    orderCondition = { favoriteCount: "desc" };
-  } else {
-    orderCondition = { createdAt: "desc" };
-  }
+  const orderCondition =
+    orderBy === "favorite" ? { favoriteCount: "desc" } : { createdAt: "desc" };
 
   const [list, totalCount] = await prisma.$transaction([
     prisma.product.findMany({
@@ -62,9 +61,7 @@ export const getProducts = async (
       take: pageSize,
       orderBy: orderCondition,
     }),
-    prisma.product.count({
-      where: whereCondition,
-    }),
+    prisma.product.count({ where: whereCondition }),
   ]);
 
   return { list, totalCount, page, pageSize };
@@ -72,7 +69,7 @@ export const getProducts = async (
 
 export const getProductById = async (productId) => {
   return prisma.product.findUnique({
-    where: { id: parseInt(productId) },
+    where: { id: parseId(productId) },
   });
 };
 
@@ -84,14 +81,16 @@ export const updateProduct = async (
   description,
   name
 ) => {
+  validateTags(tags);
+
   const updatedProduct = await prisma.product.update({
-    where: { id: parseInt(productId) },
+    where: { id: parseId(productId) },
     data: {
-      name: name,
-      price: price,
-      description: description,
-      images: images,
-      tags: tags,
+      name,
+      price,
+      description,
+      images,
+      tags,
     },
   });
 
@@ -99,31 +98,28 @@ export const updateProduct = async (
 };
 
 export const deleteProduct = async (productId) => {
-  await prisma.product.delete({ where: { id: parseInt(productId) } });
+  await prisma.product.delete({ where: { id: parseId(productId) } });
+};
+
+const updateFavorite = async (productId, increment = true) => {
+  const favoriteAction = increment ? { increment: 1 } : { decrement: 1 };
+  const isFavorite = increment ? true : false;
+
+  const updatedProduct = await prisma.product.update({
+    where: { id: parseId(productId) },
+    data: {
+      favoriteCount: favoriteAction,
+      isFavorite,
+    },
+  });
+
+  return updatedProduct;
 };
 
 export const addFavorite = async (productId) => {
-  const addFavorite = await prisma.$transaction([
-    prisma.product.update({
-      where: { id: parseInt(productId) },
-      data: {
-        favoriteCount: { increment: 1 },
-        isFavorite: true,
-      },
-    }),
-  ]);
-  return addFavorite;
+  return updateFavorite(productId, true);
 };
 
 export const deleteFavorite = async (productId) => {
-  const deleteFavorite = await prisma.$transaction([
-    prisma.product.update({
-      where: { id: parseInt(productId) },
-      data: {
-        favoriteCount: { decrement: 1 },
-        isFavorite: false,
-      },
-    }),
-  ]);
-  return deleteFavorite;
+  return updateFavorite(productId, false);
 };

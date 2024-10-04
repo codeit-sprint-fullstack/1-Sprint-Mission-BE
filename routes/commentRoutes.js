@@ -4,36 +4,22 @@ import { verifyToken } from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 
-//https://thrift-shop.onrender.com/
-router.post(
-  "/products/:productId/comments",
-  verifyToken,
-  commentController.createProductComment
-);
-router.get(
-  "/products/:productId/comments",
-  verifyToken,
-  commentController.getProductComments
-);
-router.post(
-  "/articles/:articleId/comments",
-  verifyToken,
-  commentController.createArticleComment
-);
-router.get(
-  "/articles/:articleId/comments",
-  verifyToken,
-  commentController.getArticleComments
-);
-router.patch(
-  "/comments/:commentId",
-  verifyToken,
-  commentController.updateComment
-);
-router.delete(
-  "/comments/:commentId",
-  verifyToken,
-  commentController.deleteComment
-);
+router
+  .route("/products/:productId/comments")
+  .all(verifyToken)
+  .post(commentController.createProductComment)
+  .get(commentController.getProductComments);
+
+router
+  .route("/articles/:articleId/comments")
+  .all(verifyToken)
+  .post(commentController.createArticleComment)
+  .get(commentController.getArticleComments);
+
+router
+  .route("/comments/:commentId")
+  .all(verifyToken)
+  .patch(commentController.updateComment)
+  .delete(commentController.deleteComment);
 
 export default router;

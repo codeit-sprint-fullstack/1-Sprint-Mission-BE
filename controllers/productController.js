@@ -1,11 +1,10 @@
 import * as productService from "../services/productService.js";
 
-export const createProduct = async (req, res) => {
-  const { images, name, price, description, tags } = req.body;
-  //   const images = req.files.map((file) => file.path);
+export const createProduct = async (req, res, next) => {
   try {
-    const userId = req.user.id;
-    const userNickname = req.user.nickname;
+    const { images, name, price, description, tags } = req.body;
+    const { id: userId, nickname: userNickname } = req.user;
+
     const newProduct = await productService.createProduct(
       images,
       name,
@@ -15,14 +14,14 @@ export const createProduct = async (req, res) => {
       userId,
       userNickname
     );
-    res.status(200).json(newProduct);
+
+    res.status(201).json(newProduct);
   } catch (error) {
-    console.error("Error creating product:", error);
-    res.status(500).json({ message: "Failed to create product", error });
+    next(error);
   }
 };
 
-export const getProducts = async (req, res) => {
+export const getProducts = async (req, res, next) => {
   try {
     const {
       page = 1,
@@ -38,22 +37,16 @@ export const getProducts = async (req, res) => {
       orderBy
     );
 
-    res.status(200).json({
-      list,
-      totalCount,
-    });
+    res.status(200).json({ list, totalCount });
   } catch (error) {
-    console.error("Error fetching products:", error);
-    res
-      .status(500)
-      .json({ message: "Failed to fetch products", error: error.message });
+    next(error);
   }
 };
 
-export const getProductsById = async (req, res) => {
+export const getProductsById = async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const product = await productService.getProductById(productId);
+    const product = await productService.getProductById(parseInt(productId));
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -61,20 +54,17 @@ export const getProductsById = async (req, res) => {
 
     res.status(200).json(product);
   } catch (error) {
-    console.error("Error fetching product:", error);
-    res
-      .status(500)
-      .json({ message: "Failed to fetch product", error: error.message });
+    next(error);
   }
 };
 
-export const updateProduct = async (req, res) => {
+export const updateProduct = async (req, res, next) => {
   try {
     const { productId } = req.params;
     const { images, tags, price, description, name } = req.body;
 
     const updatedProduct = await productService.updateProduct(
-      productId,
+      parseInt(productId),
       images,
       tags,
       price,
@@ -84,48 +74,43 @@ export const updateProduct = async (req, res) => {
 
     res.status(200).json(updatedProduct);
   } catch (error) {
-    console.error("Error updating product:", error);
-    res.status(500).json({ message: "Failed to update product", error });
+    next(error);
   }
 };
 
-export const deleteProduct = async (req, res) => {
+export const deleteProduct = async (req, res, next) => {
   try {
     const { productId } = req.params;
-    await productService.deleteProduct(productId);
+    await productService.deleteProduct(parseInt(productId));
 
-    res.status(200).send();
+    res.status(204).send();
   } catch (error) {
-    res.status(500).json({ message: error });
+    next(error);
   }
 };
 
-export const addFavorite = async (req, res) => {
+export const addFavorite = async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const addFavorite = await productService.addFavorite(productId);
+    const updatedProduct = await productService.addFavorite(
+      parseInt(productId)
+    );
 
-    res.status(200).json(addFavorite);
+    res.status(200).json(updatedProduct);
   } catch (error) {
-    console.error("Error adding favorite:", error);
-    res.status(500).json({
-      message: "Failed to add favorite",
-      error: error.message,
-    });
+    next(error);
   }
 };
 
-export const deleteFavorite = async (req, res) => {
+export const deleteFavorite = async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const deleteFavorite = await productService.deleteFavorite(productId);
+    const updatedProduct = await productService.deleteFavorite(
+      parseInt(productId)
+    );
 
-    res.status(200).json(deleteFavorite);
+    res.status(200).json(updatedProduct);
   } catch (error) {
-    console.error("Error deleting favorite:", error);
-    res.status(500).json({
-      message: "Failed to delete favorite",
-      error: error.message,
-    });
+    next(error);
   }
 };

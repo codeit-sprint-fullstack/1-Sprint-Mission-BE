@@ -7,22 +7,22 @@ import { validateProductFields } from "../middlewares/validateProductFields.js";
 const router = express.Router();
 
 //https://thrift-shop.onrender.com/products
-router.post(
-  "/",
-  verifyToken,
-  validateProductFields,
-  //imageUpload.array("images", 3),
-  productController.createProduct
-);
-router.get("/", productController.getProducts);
-router.get("/:productId", verifyToken, productController.getProductsById);
-router.patch("/:productId", verifyToken, productController.updateProduct);
-router.delete("/:productId", verifyToken, productController.deleteProduct);
-router.post("/:productId/favorite", verifyToken, productController.addFavorite);
-router.delete(
-  "/:productId/favorite",
-  verifyToken,
-  productController.deleteFavorite
-);
+router
+  .route("/")
+  .post(verifyToken, validateProductFields, productController.createProduct)
+  .get(productController.getProducts);
+
+router
+  .route("/:productId")
+  .all(verifyToken)
+  .get(productController.getProductsById)
+  .patch(productController.updateProduct)
+  .delete(productController.deleteProduct);
+
+router
+  .route("/:productId/favorite")
+  .all(verifyToken)
+  .post(productController.addFavorite)
+  .delete(productController.deleteFavorite);
 
 export default router;

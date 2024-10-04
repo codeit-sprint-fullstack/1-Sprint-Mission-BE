@@ -4,13 +4,22 @@ import { verifyToken } from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 
-//https://thrift-shop.onrender.com/articles
-router.post("/", verifyToken, articleController.createArticle);
-router.get("/", articleController.getArticles);
-router.get("/:articleId", verifyToken, articleController.getArticleById);
-router.patch("/:articleId", verifyToken, articleController.updateArticle);
-router.delete("/:articleId", verifyToken, articleController.deleteArticle);
-router.post("/:articleId/like", verifyToken, articleController.addLike);
-router.delete("/:articleId/like", verifyToken, articleController.deleteLike);
+router
+  .route("/")
+  .post(verifyToken, articleController.createArticle)
+  .get(articleController.getArticles);
+
+router
+  .route("/:articleId")
+  .all(verifyToken)
+  .get(articleController.getArticleById)
+  .patch(articleController.updateArticle)
+  .delete(articleController.deleteArticle);
+
+router
+  .route("/:articleId/like")
+  .all(verifyToken)
+  .post(articleController.addLike)
+  .delete(articleController.deleteLike);
 
 export default router;

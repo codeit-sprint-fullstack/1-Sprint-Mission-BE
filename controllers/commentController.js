@@ -1,46 +1,56 @@
 import * as commentService from "../services/commentService.js";
 
-export const createProductComment = async (req, res) => {
+const createCommentResponse = (comment, type) => ({
+  id: comment.id,
+  content: comment.content,
+  createdAt: comment.createdAt,
+  updatedAt: comment.updatedAt,
+  [`${type}Id`]: comment[`${type}Id`],
+  writer: {
+    nickname: comment.writer.nickname,
+    id: comment.writer.id,
+    createdAt: comment.writer.createdAt,
+    updatedAt: comment.writer.updatedAt,
+  },
+});
+
+const createComment = async (req, res, next, type) => {
   const { content } = req.body;
-  const productId = req.params.productId;
+  const id = req.params[`${type}Id`];
   const userId = req.user.id;
   try {
-    const newComment = await commentService.createProductComment(
+    const newComment = await commentService[`create${type}Comment`](
       content,
       userId,
-      parseInt(productId)
+      parseInt(id)
     );
-    const response = {
-      id: newComment.id,
-      content: newComment.content,
-      createdAt: newComment.createdAt,
-      updatedAt: newComment.updatedAt,
-      productId: newComment.productId,
-      writer: {
-        nickname: newComment.writer.nickname,
-        id: newComment.writer.id,
-        createdAt: newComment.writer.createdAt,
-        updatedAt: newComment.writer.updatedAt,
-      },
-    };
 
-    res.status(200).json(response);
+    const response = createCommentResponse(newComment, type);
+    res.status(201).json(response);
   } catch (error) {
-    console.error("Error creating comment:", error);
-    res.status(500).json({ message: "Failed to create comment", error });
+    next(error);
   }
 };
 
-export const getProductComments = async (req, res) => {
+export const createProductComment = (req, res, next) => {
+  createComment(req, res, next, "Product");
+};
+
+export const createArticleComment = (req, res, next) => {
+  createComment(req, res, next, "Article");
+};
+
+const getComments = async (req, res, next, type) => {
   try {
     const { limit = 4, cursor = null } = req.query;
-    const productId = req.params.productId;
+    const id = req.params[`${type}Id`];
 
-    const { list, nextCursor } = await commentService.getProductComments(
+    const { list, nextCursor } = await commentService[`get${type}Comments`](
       parseInt(limit),
       cursor,
-      parseInt(productId)
+      parseInt(id)
     );
+
     const responseList = list.map((comment) => ({
       id: comment.id,
       content: comment.content,
@@ -53,107 +63,41 @@ export const getProductComments = async (req, res) => {
       },
     }));
 
-    res.status(200).json({
-      list: responseList,
-      nextCursor,
-    });
+    res.status(200).json({ list: responseList, nextCursor });
   } catch (error) {
-    console.error("Error fetching comments:", error);
-    res
-      .status(500)
-      .json({ message: "Failed to fetch comments", error: error.message });
+    next(error);
   }
 };
 
-export const createArticleComment = async (req, res) => {
-  const { content } = req.body;
-  const articleId = req.params.articleId;
-  const userId = req.user.id;
-  try {
-    const newComment = await commentService.createArticleComment(
-      content,
-      userId,
-      parseInt(articleId)
-    );
-    const response = {
-      id: newComment.id,
-      content: newComment.content,
-      createdAt: newComment.createdAt,
-      updatedAt: newComment.updatedAt,
-      articleId: newComment.articleId,
-      writer: {
-        nickname: newComment.writer.nickname,
-        id: newComment.writer.id,
-        createdAt: newComment.writer.createdAt,
-        updatedAt: newComment.writer.updatedAt,
-      },
-    };
-
-    res.status(200).json(response);
-  } catch (error) {
-    console.error("Error creating comment:", error);
-    res.status(500).json({ message: "Failed to create comment", error });
-  }
+export const getProductComments = (req, res, next) => {
+  getComments(req, res, next, "Product");
 };
 
-export const getArticleComments = async (req, res) => {
-  try {
-    const { limit = 4, cursor = null } = req.query;
-    const articleId = req.params.articleId;
-
-    const { list, nextCursor } = await commentService.getArticleComments(
-      parseInt(limit),
-      cursor,
-      articleId
-    );
-    const responseList = list.map((comment) => ({
-      id: comment.id,
-      content: comment.content,
-      createdAt: comment.createdAt,
-      updatedAt: comment.updatedAt,
-      writer: {
-        nickname: comment.writer.nickname,
-        id: comment.writer.id,
-        image: comment.writer.image,
-      },
-    }));
-
-    res.status(200).json({
-      list: responseList,
-      nextCursor,
-    });
-  } catch (error) {
-    console.error("Error fetching comments:", error);
-    res
-      .status(500)
-      .json({ message: "Failed to fetch comments", error: error.message });
-  }
+export const getArticleComments = (req, res, next) => {
+  getComments(req, res, next, "Article");
 };
 
-export const updateComment = async (req, res) => {
+export const updateComment = async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const { content } = req.body;
 
-    const updateComment = await commentService.updateComment(
+    const updatedComment = await commentService.updateComment(
       commentId,
       content
     );
-
-    res.status(200).json(updateComment);
+    res.status(200).json(updatedComment);
   } catch (error) {
-    console.error("Error updating comment:", error);
-    res.status(500).json({ message: "Failed to update comment", error });
+    next(error);
   }
 };
 
-export const deleteComment = async (req, res) => {
+export const deleteComment = async (req, res, next) => {
   try {
     const { commentId } = req.params;
     await commentService.deleteComment(commentId);
-
-    res.status(200).send();
+    res.status(204).send();
   } catch (error) {
-    res.status(500).json({ message: error });
+    next(error);
   }
 };

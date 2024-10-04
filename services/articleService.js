@@ -1,20 +1,32 @@
 import prisma from "../models/index.js";
 
-// 상품 생성 서비스 함수
-export const createArticle = async (image, content, title, userId) => {
-  const newArticle = await prisma.article.create({
-    data: {
-      image,
-      content,
-      title,
-      userId,
-    },
-    include: {
-      writer: true,
-    },
-  });
+const includeWriter = {
+  writer: true,
+};
 
-  return newArticle;
+const generateWhereCondition = (keyword) => {
+  return keyword
+    ? {
+        OR: [
+          { name: { contains: keyword, mode: "insensitive" } },
+          { description: { contains: keyword, mode: "insensitive" } },
+        ],
+      }
+    : {};
+};
+
+const generateOrderCondition = (orderBy) => {
+  if (orderBy === "favorite") {
+    return { likeCount: "desc" };
+  }
+  return { createdAt: "desc" };
+};
+
+export const createArticle = async (image, content, title, userId) => {
+  return prisma.article.create({
+    data: { image, content, title, userId },
+    include: includeWriter,
+  });
 };
 
 export const getArticles = async (
@@ -25,36 +37,16 @@ export const getArticles = async (
 ) => {
   const offset = (page - 1) * pageSize;
 
-  // 키워드 검색 조건 설정
-  const whereCondition = keyword
-    ? {
-        OR: [
-          { name: { contains: keyword, mode: "insensitive" } },
-          { description: { contains: keyword, mode: "insensitive" } },
-        ],
-      }
-    : {};
-
-  // 정렬 조건 설정
-  let orderCondition;
-  if (orderBy === "favorite") {
-    orderCondition = { LikeCount: "desc" };
-  } else {
-    orderCondition = { createdAt: "desc" };
-  }
-
   const [list, totalCount] = await prisma.$transaction([
     prisma.article.findMany({
-      where: whereCondition,
+      where: generateWhereCondition(keyword),
       skip: offset,
       take: pageSize,
-      orderBy: orderCondition,
-      include: {
-        writer: true,
-      },
+      orderBy: generateOrderCondition(orderBy),
+      include: includeWriter,
     }),
     prisma.article.count({
-      where: whereCondition,
+      where: generateWhereCondition(keyword),
     }),
   ]);
 
@@ -64,23 +56,16 @@ export const getArticles = async (
 export const getArticleById = async (articleId) => {
   return prisma.article.findUnique({
     where: { id: parseInt(articleId) },
-    include: {
-      writer: true,
-    },
+    include: includeWriter,
   });
 };
 
 export const updateArticle = async (articleId, image, title, content) => {
-  const updatedArticle = await prisma.article.update({
+  return prisma.article.update({
     where: { id: parseInt(articleId) },
-    data: {
-      image: image,
-      title: title,
-      content: content,
-    },
+    data: { image, title, content },
+    include: includeWriter,
   });
-
-  return updatedArticle;
 };
 
 export const deleteArticle = async (articleId) => {
@@ -88,27 +73,23 @@ export const deleteArticle = async (articleId) => {
 };
 
 export const addLike = async (articleId) => {
-  const addLike = await prisma.$transaction([
-    prisma.article.update({
-      where: { id: parseInt(articleId) },
-      data: {
-        likeCount: { increment: 1 },
-        isLike: true,
-      },
-    }),
-  ]);
-  return addLike;
+  return prisma.article.update({
+    where: { id: parseInt(articleId) },
+    data: {
+      likeCount: { increment: 1 },
+      isLike: true,
+    },
+    include: includeWriter,
+  });
 };
 
 export const deleteLike = async (articleId) => {
-  const deleteLike = await prisma.$transaction([
-    prisma.article.update({
-      where: { id: parseInt(articleId) },
-      data: {
-        likeCount: { decrement: 1 },
-        isLike: false,
-      },
-    }),
-  ]);
-  return deleteLike;
+  return prisma.article.update({
+    where: { id: parseInt(articleId) },
+    data: {
+      likeCount: { decrement: 1 },
+      isLike: false,
+    },
+    include: includeWriter,
+  });
 };

@@ -1,92 +1,70 @@
 import prisma from "../models/index.js";
 
-export const createProductComment = async (content, userId, productId) => {
+const parseId = (id) => parseInt(id, 10);
+
+const getCursorOptions = (cursor) => {
+  if (!cursor) return {};
+  return {
+    cursor: { id: parseId(cursor) },
+    skip: 1,
+  };
+};
+
+const getCommentOptions = (limit, cursor, whereCondition) => ({
+  take: limit,
+  orderBy: { createdAt: "desc" },
+  include: { writer: true },
+  where: whereCondition,
+  ...getCursorOptions(cursor),
+});
+
+const createComment = async (content, userId, entityId, entityType) => {
+  const data = { content, userId };
+  data[entityType] = entityId;
+
   const newComment = await prisma.comment.create({
-    data: {
-      content,
-      userId,
-      productId,
-    },
-    include: {
-      writer: true,
-    },
+    data,
+    include: { writer: true },
   });
 
   return newComment;
 };
 
-export const getProductComments = async (limit, cursor, productId) => {
-  const queryOptions = {
-    take: limit,
-    orderBy: { createdAt: "desc" },
-    include: {
-      writer: true,
-    },
-    where: {
-      productId: parseInt(productId),
-    },
-  };
+const getComments = async (limit, cursor, entityId, entityType) => {
+  const whereCondition = {};
+  whereCondition[entityType] = parseId(entityId);
 
-  if (cursor) {
-    queryOptions.cursor = { id: parseInt(cursor) };
-    queryOptions.skip = 1;
-  }
+  const queryOptions = getCommentOptions(limit, cursor, whereCondition);
 
   const list = await prisma.comment.findMany(queryOptions);
   const nextCursor = list.length === limit ? list[list.length - 1].id : null;
 
   return { list, nextCursor };
+};
+
+export const createProductComment = async (content, userId, productId) => {
+  return createComment(content, userId, parseId(productId), "productId");
 };
 
 export const createArticleComment = async (content, userId, articleId) => {
-  const newComment = await prisma.comment.create({
-    data: {
-      content,
-      userId,
-      articleId,
-    },
-    include: {
-      writer: true,
-    },
-  });
+  return createComment(content, userId, parseId(articleId), "articleId");
+};
 
-  return newComment;
+export const getProductComments = async (limit, cursor, productId) => {
+  return getComments(limit, cursor, productId, "productId");
 };
 
 export const getArticleComments = async (limit, cursor, articleId) => {
-  const queryOptions = {
-    take: limit,
-    orderBy: { createdAt: "desc" },
-    include: {
-      writer: true,
-    },
-    where: {
-      articleId: parseInt(articleId),
-    },
-  };
-
-  if (cursor) {
-    queryOptions.cursor = { id: parseInt(cursor) };
-    queryOptions.skip = 1;
-  }
-
-  const list = await prisma.comment.findMany(queryOptions);
-  const nextCursor = list.length === limit ? list[list.length - 1].id : null;
-
-  return { list, nextCursor };
+  return getComments(limit, cursor, articleId, "articleId");
 };
 
 export const updateComment = async (commentId, content) => {
-  const updateComment = await prisma.comment.update({
-    where: { id: parseInt(commentId) },
-    data: {
-      content: content,
-    },
+  return prisma.comment.update({
+    where: { id: parseId(commentId) },
+    data: { content },
   });
-
-  return updateComment;
 };
 
 export const deleteComment = async (commentId) => {
-  await prisma.comment.delete({ where: { id: parseInt(commentId) } });
+  await prisma.comment.delete({ where: { id: parseId(commentId) } });
 };

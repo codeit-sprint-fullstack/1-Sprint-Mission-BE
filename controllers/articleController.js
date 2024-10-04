@@ -1,6 +1,22 @@
 import * as articleService from "../services/articleService.js";
 
-export const createArticle = async (req, res) => {
+const formatArticleResponse = (article) => ({
+  id: article.id,
+  title: article.title,
+  content: article.content,
+  image: article.image,
+  likeCount: article.likeCount,
+  createdAt: article.createdAt,
+  updatedAt: article.updatedAt,
+  writer: {
+    nickname: article.writer.nickname,
+    id: article.writer.id,
+  },
+});
+
+const sendResponse = (res, data, status = 200) => res.status(status).json(data);
+
+export const createArticle = async (req, res, next) => {
   const { image, content, title } = req.body;
   try {
     const userId = req.user.id;
@@ -10,28 +26,14 @@ export const createArticle = async (req, res) => {
       title,
       userId
     );
-    const response = {
-      id: newArticle.id,
-      title: newArticle.title,
-      content: newArticle.content,
-      image: newArticle.image,
-      likeCount: newArticle.likeCount,
-      createdAt: newArticle.createdAt,
-      updatedAt: newArticle.updatedAt,
-      writer: {
-        nickname: newArticle.writer.nickname,
-        id: newArticle.writer.id,
-      },
-    };
-
-    res.status(200).json(response);
+    const response = formatArticleResponse(newArticle);
+    sendResponse(res, response, 201);
   } catch (error) {
-    console.error("Error creating article:", error);
-    res.status(500).json({ message: "Failed to create article", error });
+    next(error);
   }
 };
 
-export const getArticles = async (req, res) => {
+export const getArticles = async (req, res, next) => {
   try {
     const {
       page = 1,
@@ -39,126 +41,82 @@ export const getArticles = async (req, res) => {
       keyword = "",
       orderBy = "recent",
     } = req.query;
-
     const { list, totalCount } = await articleService.getArticles(
       parseInt(page),
       parseInt(pageSize),
       keyword,
       orderBy
     );
-    const responseList = list.map((article) => ({
-      id: article.id,
-      title: article.title,
-      content: article.content,
-      image: article.image,
-      likeCount: article.likeCount,
-      createdAt: article.createdAt,
-      updatedAt: article.updatedAt,
-      writer: {
-        nickname: article.writer.nickname,
-        id: article.writer.id,
-      },
-    }));
-
-    res.status(200).json({
-      list: responseList,
-      totalCount,
-    });
+    const responseList = list.map(formatArticleResponse);
+    sendResponse(res, { list: responseList, totalCount });
   } catch (error) {
-    console.error("Error fetching articles:", error);
-    res
-      .status(500)
-      .json({ message: "Failed to fetch articles", error: error.message });
+    next(error);
   }
 };
 
-export const getArticleById = async (req, res) => {
+export const getArticleById = async (req, res, next) => {
   try {
     const { articleId } = req.params;
     const article = await articleService.getArticleById(articleId);
 
     if (!article) {
-      return res.status(404).json({ message: "Article not found" });
+      const error = new Error("Article not found");
+      error.name = "NotFoundError";
+      throw error;
     }
-    const responseList = {
-      id: article.id,
-      title: article.title,
-      content: article.content,
-      image: article.image,
-      likeCount: article.likeCount,
-      createdAt: article.createdAt,
-      updatedAt: article.updatedAt,
-      writer: {
-        nickname: article.writer.nickname,
-        id: article.writer.id,
-      },
-    };
 
-    res.status(200).json(responseList);
+    const response = formatArticleResponse(article);
+    sendResponse(res, response);
   } catch (error) {
-    console.error("Error fetching article:", error);
-    res
-      .status(500)
-      .json({ message: "Failed to fetch article", error: error.message });
+    next(error);
   }
 };
 
-export const updateArticle = async (req, res) => {
+export const updateArticle = async (req, res, next) => {
   try {
     const { articleId } = req.params;
     const { image, title, content } = req.body;
-
     const updatedArticle = await articleService.updateArticle(
       articleId,
       image,
       title,
       content
     );
-
-    res.status(200).json(updatedArticle);
+    const response = formatArticleResponse(updatedArticle);
+    sendResponse(res, response);
   } catch (error) {
-    console.error("Error updating article:", error);
-    res.status(500).json({ message: "Failed to update article", error });
+    next(error);
   }
 };
 
-export const deleteArticle = async (req, res) => {
+export const deleteArticle = async (req, res, next) => {
   try {
     const { articleId } = req.params;
     await articleService.deleteArticle(articleId);
-
-    res.status(200).send();
+    sendResponse(res, { message: "Article deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: error });
+    next(error);
   }
 };
 
-export const addLike = async (req, res) => {
+export const addLike = async (req, res, next) => {
   try {
     const { articleId } = req.params;
-    const addLike = await articleService.addLike(articleId);
-
-    res.status(200).json(addLike);
+    const updatedArticle = await articleService.addLike(articleId);
+    const response = formatArticleResponse(updatedArticle);
+    sendResponse(res, response);
   } catch (error) {
-    console.error("Error adding favorite:", error);
-    res.status(500).json({
-      message: "Failed to add favorite",
-      error: error.message,
-    });
+    next(error);
   }
 };
 
-export const deleteLike = async (req, res) => {
+export const deleteLike = async (req, res, next) => {
   try {
     const { articleId } = req.params;
-    const deleteLike = await articleService.deleteLike(articleId);
-
-    res.status(200).json(deleteLike);
+    const updatedArticle = await articleService.deleteLike(articleId);
+    const response = formatArticleResponse(updatedArticle);
+    sendResponse(res, response);
   } catch (error) {
-    console.error("Error deleting favorite:", error);
-    res.status(500).json({
-      message: "Failed to delete favorite",
-      error: error.message,
-    });
+    next(error);
   }
 };
