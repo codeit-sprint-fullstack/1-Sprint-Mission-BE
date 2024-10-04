@@ -1,4 +1,3 @@
-// middlewares/validateProductFields.js
 export const validateProductFields = (req, res, next) => {
   const { name, description, price, tags } = req.body;
 
@@ -12,7 +11,7 @@ export const validateProductFields = (req, res, next) => {
       .json({ message: "상품 설명은 최소 10자 이상이어야 합니다." });
   }
 
-  if (!price || isNaN(price) || price <= 0) {
+  if (price < 0) {
     return res
       .status(400)
       .json({ message: "유효한 가격을 숫자만 입력해주세요." });

@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
@@ -7,60 +8,35 @@ import productRoutes from "./routes/productRoutes.js";
 import articleRoutes from "./routes/articleRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
-import prisma from "./models/index.js";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
-const requiredEnvVars = [
-  "DATABASE_URL",
-  "ACCESS_TOKEN_SECRET",
-  "REFRESH_TOKEN_SECRET",
-];
-const missingEnvVars = requiredEnvVars.filter((key) => !process.env[key]);
-if (missingEnvVars.length) {
-  console.error(
-    `Missing required environment variables: ${missingEnvVars.join(", ")}`
-  );
-  process.exit(1);
-}
-
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 정적 파일 제공 설정: /uploads 경로에서 파일을 서빙
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// 기타 설정 및 라우트
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Server is running and connected to the database");
-});
-
+// 라우트 설정
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 app.use("/articles", articleRoutes);
 app.use("/", commentRoutes);
 
-app.use((req, res, next) => {
-  const error = new Error("Route not found");
-  error.name = "NotFoundError";
-  next(error);
-});
-
+// 에러 처리 미들웨어 설정
 app.use(errorHandler);
 
-const startServer = async () => {
-  try {
-    await prisma.$connect();
-    console.log("Database connected successfully");
-
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.error("Failed to connect to the database:", error);
-    process.exit(1);
-  }
-};
-
-startServer();
+// 서버 실행
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
 
 export default app;

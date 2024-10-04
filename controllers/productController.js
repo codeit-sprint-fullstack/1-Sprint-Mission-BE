@@ -1,21 +1,28 @@
 import * as productService from "../services/productService.js";
+import path from "path";
 
 export const createProduct = async (req, res, next) => {
   try {
-    const { images, name, price, description, tags } = req.body;
+    const images = req.files
+      ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
+      : req.body.images || [];
+    const { name, price, description, tags } = req.body;
     const { id: userId, nickname: userNickname } = req.user;
 
     const newProduct = await productService.createProduct(
       images,
       name,
-      price,
+      parseInt(price),
       description,
       tags,
       userId,
       userNickname
     );
 
-    res.status(201).json(newProduct);
+    res.status(201).json({
+      message: "Product created successfully",
+      product: newProduct,
+    });
   } catch (error) {
     next(error);
   }
