@@ -1,5 +1,5 @@
 import { assert } from "superstruct";
-import { CreateArticle, PatchArticle, Uuid } from "../validation/structs.js";
+import { CreateArticle, PatchArticle } from "../validation/structs.js";
 import articleRepository from "../repositories/articleRepository.js";
 
 async function getArticles({ orderBy, page, pageSize, keyword }) {
@@ -34,7 +34,6 @@ async function getArticles({ orderBy, page, pageSize, keyword }) {
 }
 
 async function getArticle(id) {
-  assert(id, Uuid);
   return await articleRepository.getById(id);
 }
 
@@ -44,14 +43,11 @@ async function createArticle(data) {
 }
 
 async function updateArticle(id, data) {
-  assert(id, Uuid);
   assert(data, PatchArticle);
-
   return await articleRepository.updateById(id, data);
 }
 
 async function deleteArticle(id) {
-  assert(id, Uuid);
   return await articleRepository.deleteById(id);
 }
 
