@@ -1,6 +1,7 @@
 import express from "express";
 import asyncHandler from "../services/errorService.js";
 import commentService from "../services/commentService.js";
+import validateData from "../middlewares/validateData.js";
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
 const articleCommentController = express.Router(); // 게시글 댓글 router
@@ -9,9 +10,9 @@ const productCommentCotroller = express.Router(); // 상품 댓글 router
 articleCommentController
   .route("/:id/comment")
   .post(
+    validateData.comment("post", "article"),
     asyncHandler(async (req, res, next) => {
-      const { id } = req.params;
-      const comment = await commentService.create(id, req.body, "article");
+      const comment = await commentService.create(req.createData);
       res.status(201).send(comment);
     })
   )
@@ -46,9 +47,9 @@ articleCommentController
 productCommentCotroller
   .route("/:id/comment")
   .post(
+    validateData.comment("post", "product"),
     asyncHandler(async (req, res, next) => {
-      const { id } = req.params;
-      const comment = await commentService.create(id, req.body, "product");
+      const comment = await commentService.create(req.createData);
       res.status(201).send(comment);
     })
   )
@@ -83,6 +84,7 @@ productCommentCotroller
 commentController
   .route("/:id")
   .patch(
+    validateData.comment("patch"),
     asyncHandler(async (req, res, next) => {
       const { id } = req.params;
       const comment = await commentService.update(id, req.body);

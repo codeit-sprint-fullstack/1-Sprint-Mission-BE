@@ -6,16 +6,8 @@ import {
   updateComment,
 } from "../structs/commentStruct.js";
 
-async function create(id, createData, type) {
-  if (type === "article") {
-    const createDataWithId = { ...createData, articleId: id };
-    assert(createDataWithId, createArticleComment);
-    return await commentRepository.create(createDataWithId);
-  } else if (type === "product") {
-    const createDataWithId = { ...createData, productId: id };
-    assert(createDataWithId, createProductComment);
-    return await commentRepository.create(createDataWithId);
-  }
+async function create(createData) {
+  return await commentRepository.create(createData);
 }
 
 async function getAllByFilter(id, query, type) {
@@ -66,9 +58,7 @@ async function countByFilter(id, type) {
 }
 
 async function update(id, updateData) {
-  assert(updateData, updateComment);
   const updateDataWithId = { where: { id }, data: updateData };
-
   return await commentRepository.update(updateDataWithId);
 }
 

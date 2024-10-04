@@ -1,5 +1,10 @@
 import { assert } from "superstruct";
 import { createArticle, updateArticle } from "../structs/articleStruct.js";
+import {
+  createArticleComment,
+  createProductComment,
+  updateComment,
+} from "../structs/commentStruct.js";
 
 function article(method) {
   return (req, res, next) => {
@@ -13,6 +18,31 @@ function article(method) {
   };
 }
 
+function comment(method, type) {
+  return (req, res, next) => {
+    if (method === "post") {
+      const { id } = req.params;
+      let createDataWithId;
+
+      if (type === "article") {
+        createDataWithId = { ...req.body, articleId: id };
+        assert(createDataWithId, createArticleComment);
+        req.createData = createDataWithId;
+        next();
+      } else if (type === "product") {
+        createDataWithId = { ...req.body, productId: id };
+        assert(createDataWithId, createProductComment);
+        req.createData = createDataWithId;
+        next();
+      }
+    } else if (method === "patch") {
+      assert(req.body, updateComment);
+      next();
+    }
+  };
+}
+
 export default {
   article,
+  comment,
 };
