@@ -1,22 +1,20 @@
 import commentRepository from "../repositories/commentRepository.js";
+import { assert } from "superstruct";
 import {
   createArticleComment,
   createProductComment,
+  updateComment,
 } from "../structs/commentStruct.js";
 
 async function create(id, createData, type) {
   if (type === "article") {
     const createDataWithId = { ...createData, articleId: id };
-    return await commentRepository.create(
-      createDataWithId,
-      createArticleComment
-    );
+    assert(createDataWithId, createArticleComment);
+    return await commentRepository.create(createDataWithId);
   } else if (type === "product") {
     const createDataWithId = { ...createData, productId: id };
-    return await commentRepository.create(
-      createDataWithId,
-      createProductComment
-    );
+    assert(createDataWithId, createProductComment);
+    return await commentRepository.create(createDataWithId);
   }
 }
 

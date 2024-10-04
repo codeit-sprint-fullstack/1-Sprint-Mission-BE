@@ -1,9 +1,6 @@
-import { assert } from "superstruct";
 import prisma from "../config/prisma.js";
-import { updateComment } from "../structs/commentStruct.js";
 
-async function create(createData, struct) {
-  assert(createData, struct);
+async function create(createData) {
   return await prisma.comment.create({
     data: createData,
   });
@@ -31,6 +28,10 @@ async function countByFilter(fillter) {
   return await prisma.comment.count({
     where: fillter,
   });
+}
+
+async function update() {
+    
 }
 
 export default {
