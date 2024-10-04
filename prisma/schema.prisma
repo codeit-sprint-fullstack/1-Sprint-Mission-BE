@@ -7,49 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum CommentStatus {
-  active
-  deleted
-  flagged
-}
-
-model Article {
-  id        String    @id @default(uuid())
-  title     String
-  content   String
-  viewCount Int       @default(0)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  comments  Comment[]
-}
-
-model Comment {
-  id        String        @id @default(uuid())
-  content   String
-  status    CommentStatus @default(active)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  article   Article       @relation(fields: [articleId], references: [id])
-  articleId String
+// 여기에 모델 정의를 추가해야 합니다.
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Product {
-  id          String           @id @default(uuid())
+  id          Int      @id @default(autoincrement())
   name        String
   description String
-  price       Int
-  tags        String[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  comments    ProductComment[]
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
-model ProductComment {
-  id        String        @id @default(uuid())
+model Comment {
+  id        Int      @id @default(autoincrement())
   content   String
-  status    CommentStatus @default(active)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  product   Product       @relation(fields: [productId], references: [id])
-  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  productId Int
 }
