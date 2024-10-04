@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 export async function getProducts(req, res, next) {
   try {
     const page = parseInt(req.query.page, 10) || 1;
-    const pageSize = parseInt(req.query.limit, 10) || 10;
+    const pageSize = parseInt(req.query.pageSize, 10) || 10;
     const skip = (page - 1) * pageSize;
     const orderByField = req.query.orderByField || "createdAt";
     const orderDir = req.query.orderDir || "desc";
