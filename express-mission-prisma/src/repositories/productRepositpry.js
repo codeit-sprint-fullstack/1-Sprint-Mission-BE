@@ -5,3 +5,7 @@ async function create(createData) {
     data: createData,
   });
 }
+
+export default {
+  create,
+};
