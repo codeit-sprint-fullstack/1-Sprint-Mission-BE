@@ -3,7 +3,17 @@ import { PrismaClient } from "@prisma/client"; // Prisma ORM 사용 예시 (필�
 const prisma = new PrismaClient();
 export async function getProducts(req, res, next) {
   try {
-    const products = await prisma.product.findMany();
+    const page = parseInt(req.query.page, 10) || 1;
+    const pageSize = parseInt(req.query.limit, 10) || 10;
+    const skip = (page - 1) * pageSize;
+    const orderBy = req.query.orderBy || "createdAt";
+    const orderDir = req.query.orderDir || "desc";
+
+    const products = await prisma.product.findMany({
+      skip,
+      take: pageSize,
+      orderBy: { orderBy: orderDir },
+    });
     return res.status(200).json({ message: "상품 정보 추출", products });
   } catch (error) {
     console.error("상품 정보 추출 중 오류 발생:", error);
@@ -36,7 +46,21 @@ export async function postProduct(req, res, next) {
   }
 }
 
+export async function getProductId(req, res, next) {
+  try {
+    const { productId } = req.params;
+    const product = await prisma.product.findUnique({
+      where: { id: parseInt(productId, 10) },
+    });
+    return res.status(200).json({ message: "상품 정보 추출", product });
+  } catch (error) {
+    console.error("상품 정보 추출 중 오류 발생:", error);
+    return res.status(500).json({ message: "상품 정보를 추출할 수 없습니다." });
+  }
+}
+
 export default {
   getProducts,
   postProduct,
+  getProductId,
 };
