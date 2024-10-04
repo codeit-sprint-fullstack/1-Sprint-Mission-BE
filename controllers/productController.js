@@ -1,5 +1,5 @@
 const prisma = require("../utils/prismaClient");
-
+//
 // 상품 등록
 exports.createProduct = async (req, res, next) => {
   const { name, description, price, tags } = req.body;
