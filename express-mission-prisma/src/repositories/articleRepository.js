@@ -1,13 +1,11 @@
-import { assert } from "superstruct";
 import prisma from "../config/prisma.js";
-import { createArticle, updateArticle } from "../structs/articleStruct.js";
 
 async function create(createData) {
-  assert(createData, createArticle);
+  const { title, content } = createData;
   return await prisma.article.create({
     data: {
-      title: createData.title,
-      content: createData.content,
+      title,
+      content,
     },
   });
 }
@@ -34,11 +32,11 @@ async function getById(id) {
   });
 }
 
-async function update(id, updateData) {
-  assert(updateData, updateArticle);
+async function update(updateData) {
+  const { where, data } = updateData;
   return await prisma.article.update({
-    where: { id },
-    data: updateData,
+    where,
+    data,
   });
 }
 

@@ -5,7 +5,7 @@ GET  http://localhost:3001/article?keyWord=post&page=&pageSize=
 
 ###
 
-GET http://localhost:3001/article/d14faeec-712d-4e04-9659-c69afb2caae
+GET http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58
 ###
 
 POST http://localhost:3001/article
@@ -19,14 +19,14 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3001/article/d14faeec-712d-4e04-9659-c69afb2caae0
+PATCH http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58
 Content-Type: application/json
 
 {
-    "content": "sd"
+    "title": "게시물 수정 테스트"
 }
 
 
 ###
 
-DELETE http://localhost:3001/article/d14faeec-712d-4e04-9659-c69afb2caae0
+DELETE http://localhost:3001/article/329c83eb-ff90-4cc4-b2b0-0b1528864d2d

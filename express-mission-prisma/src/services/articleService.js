@@ -1,6 +1,9 @@
 import articleRepository from "../repositories/articleRepository.js";
+import { assert } from "superstruct";
+import { createArticle, updateArticle } from "../structs/articleStruct.js";
 
 async function create(createData) {
+  assert(createData, createArticle);
   return await articleRepository.create(createData);
 }
 
@@ -11,19 +14,17 @@ async function getAllByFilter(query) {
   const pageSizeNum = pageSize || 10;
   const order = orderBy || "recent";
   const offset = (pageNum - 1) * pageSizeNum;
+  const whereOrBody = {
+    contains: keyWord,
+    mode: "insensitive",
+  };
   const whereOr = {
     OR: [
       {
-        title: {
-          contains: keyWord,
-          mode: "insensitive",
-        },
+        title: whereOrBody,
       },
       {
-        content: {
-          contains: keyWord,
-          mode: "insensitive",
-        },
+        content: whereOrBody,
       },
     ],
   };
@@ -40,19 +41,18 @@ async function getAllByFilter(query) {
 
 async function countByFilter(query) {
   const { keyWord = "" } = query;
+
+  const fillterBody = {
+    contains: keyWord,
+    mode: "insensitive",
+  };
   const fillter = {
     OR: [
       {
-        title: {
-          contains: keyWord,
-          mode: "insensitive",
-        },
+        title: fillterBody,
       },
       {
-        content: {
-          contains: keyWord,
-          mode: "insensitive",
-        },
+        content: fillterBody,
       },
     ],
   };
@@ -64,8 +64,11 @@ async function getById(id) {
   return await articleRepository.getById(id);
 }
 
-async function update(id, updataData) {
-  return await articleRepository.update(id, updataData);
+async function update(id, updateData) {
+  assert(updateData, updateArticle);
+  const updateDataWithId = { where: { id }, data: updateData };
+
+  return await articleRepository.update(updateDataWithId);
 }
 
 async function deleteById(id) {
