@@ -35,7 +35,9 @@ async function create(data) {
 async function updateById(id, data) {
   const updatedArticle = await prisma.article.update({
     where: { id },
-    data,
+    data: {
+      ...data,
+    },
   });
   return updatedArticle;
 }

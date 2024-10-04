@@ -1,21 +1,16 @@
 import express from "express";
-import * as p from "../controllers/productController.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import {
-  getProductComments,
-  createProductComment,
-} from "../controllers/commentController.js";
+import * as controller from "../controllers/productController.js";
+import validateUuid from "../middlewares/validateUuid.js";
 
 const router = express.Router();
 
-router.get("/", asyncHandler(p.getProducts));
-router.get("/:productId", asyncHandler(p.getProductById));
-router.post("/", asyncHandler(p.createProduct));
-router.patch("/:productId", asyncHandler(p.updateProductById));
-router.delete("/:productId", asyncHandler(p.deleteProductById));
+router.use("/:productId", validateUuid);
 
-//get comments, create comment
-router.get("/:productId/comments", asyncHandler(getProductComments));
-router.post("/:productId/comments", asyncHandler(createProductComment));
+router.get("/", asyncHandler(controller.getProducts));
+router.get("/:productId", asyncHandler(controller.getProductById));
+router.post("/", asyncHandler(controller.createProduct));
+router.patch("/:productId", asyncHandler(controller.updateProductById));
+router.delete("/:productId", asyncHandler(controller.deleteProductById));
 
 export default router;

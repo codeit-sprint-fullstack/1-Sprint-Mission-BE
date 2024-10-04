@@ -1,8 +1,8 @@
 import { assert } from "superstruct";
-import { CreateArticle, PatchArticle } from "../validation/structs.js";
+import { CreateArticle, PatchArticle } from "../validations/structs.js";
 import articleRepository from "../repositories/articleRepository.js";
 
-async function getArticles({ orderBy, page, pageSize, keyword }) {
+export async function getArticles({ orderBy, page, pageSize, keyword }) {
   const offset = (page - 1) * pageSize;
 
   let sortOption;
@@ -33,28 +33,20 @@ async function getArticles({ orderBy, page, pageSize, keyword }) {
   return { totalCount, list };
 }
 
-async function getArticle(id) {
+export async function getArticle(id) {
   return await articleRepository.getById(id);
 }
 
-async function createArticle(data) {
+export async function createArticle(data) {
   assert(data, CreateArticle);
   return await articleRepository.create(data);
 }
 
-async function updateArticle(id, data) {
+export async function updateArticle(id, data) {
   assert(data, PatchArticle);
   return await articleRepository.updateById(id, data);
 }
 
-async function deleteArticle(id) {
+export async function deleteArticle(id) {
   return await articleRepository.deleteById(id);
 }
-
-export default {
-  getArticles,
-  getArticle,
-  createArticle,
-  updateArticle,
-  deleteArticle,
-};

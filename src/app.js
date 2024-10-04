@@ -18,7 +18,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/articles", articleRoutes);
-app.use("/api/comments", commentRoutes);
+app.use("/api", commentRoutes);
 
 app.use(errorHandler);
 

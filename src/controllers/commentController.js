@@ -1,124 +1,48 @@
-import { PrismaClient } from "@prisma/client";
-import { assert } from "superstruct";
+import * as commentService from "../services/commentService";
+import { areBothIdsNull } from "../validations/validateFunction";
 
-import { CreateComment, PatchComment, Uuid } from "../validation/structs.js";
-
-const prisma = new PrismaClient();
-
-// get the product comments list
-// route /products/:id/comments
-export const getProductComments = async (req, res) => {
-  const { id: productId } = req.params;
-  assert(productId, Uuid);
-  const { limit = 5, cursor: lastId } = req.query;
-
-  const queryOptions = {
-    where: { productId },
-    take: limit,
-    skip: lastId ? 1 : 0,
-    cursor: lastId ? { id: lastId } : undefined,
-    select: {
-      id: true,
-      content: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-  };
-
-  const comments = await prisma.comment.findMany(queryOptions);
-
-  const nextCursor =
-    comments.length === limit ? comments[comments.length - 1].id : null;
-
-  res.status(200).json({ nextCursor, list: comments });
-};
-
-// get the article comments list
-// route /articles/:id/comments
-export const getArticleComments = async (req, res) => {
-  const { articleId } = req.params;
-  assert(articleId, Uuid);
-  const limit = parseInt(req.query.limit) || 5;
+export const getCommentList = async (req, res) => {
+  const { articleId, productId } = req.params || null;
+  const limit = parseInt(req.query.limit) * 1 || 5;
   const { cursor: lastId } = req.query;
 
-  const queryOptions = {
-    where: { articleId },
-    take: limit,
-    skip: lastId ? 1 : 0,
-    cursor: lastId ? { id: lastId } : undefined,
-    select: {
-      id: true,
-      content: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-  };
+  areBothIdsNull(articleId, productId);
 
-  const comments = await prisma.comment.findMany(queryOptions);
-
-  const nextCursor =
-    comments.length === limit ? comments[comments.length - 1].id : null;
-
-  res.status(200).json({ nextCursor, list: comments });
-};
-
-//create comment on product
-//route /products/:id/comments
-export const createProductComment = async (req, res) => {
-  const { productId } = req.params;
-  assert(productId, Uuid);
-  assert(req.body, CreateComment);
-
-  const { content } = req.body;
-
-  const comment = await prisma.comment.create({
-    data: {
-      content,
-      product: { connect: { id: productId } },
-    },
+  const comments = await commentService.getComments({
+    articleId,
+    limit,
+    lastId,
+    productId,
   });
-  res.status(201).json(comment);
+
+  return res.json(comments);
 };
 
-//create comment on article
-//route /articles/:id/comments
-export const createArticleComment = async (req, res) => {
-  const { articleId } = req.params;
-  assert(articleId, Uuid);
-  assert(req.body, CreateComment);
+export const createComment = async (req, res) => {
+  const { articleId, productId } = req.params || null;
+  const data = req.body;
 
-  const { content } = req.body;
+  areBothIdsNull(articleId, productId);
 
-  const comment = await prisma.comment.create({
-    data: {
-      content,
-      article: { connect: { id: articleId } },
-    },
+  const comment = await commentService.createComment({
+    productId,
+    articleId,
+    userId,
+    data,
   });
-  res.status(201).json(comment);
+
+  return res.status(201).json(comment);
 };
 
-// patch existed comment with comment id
-//route comments/:id
 export const updateCommentById = async (req, res) => {
   const { commentId: id } = req.params;
-  assert(id, Uuid);
-  assert(req.body, PatchComment);
-
-  const comment = await prisma.comment.update({
-    where: { id },
-    data: req.body,
-  });
-  res.status(201).json(comment);
+  const data = req.body;
+  const comment = await commentService.updateComment(id, data);
+  return res.status(201).json(comment);
 };
 
-// delete a comment by comment id
-//route comments/:id
 export const deleteCommentById = async (req, res) => {
   const { commentId: id } = req.params;
-  assert(id, Uuid);
-
-  await prisma.comment.delete({ where: { id } });
-
-  res.status(200).json({ message: "Comment has deleted successfully" });
+  await commentService.deleteComment(id);
+  return res.status(200).json({ message: "댓글이 삭제되었습니다" });
 };
