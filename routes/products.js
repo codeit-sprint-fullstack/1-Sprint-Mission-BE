@@ -7,7 +7,6 @@ import asyncHandler from '../utils/asyncHandler.js';
 const prisma = new PrismaClient();
 const router = express.Router();
 
-// 상품 조회 API //id, name, description, price, tags, createdAt
 router.get(
   '/:id',
   asyncHandler(async (req, res) => {
@@ -16,18 +15,19 @@ router.get(
       where: { id },
       select: {
         id: true,
+        images: true,
         name: true,
         description: true,
         price: true,
         tags: true,
         createdAt: true,
+        favoriteCount: true,
       },
     });
     res.send(product);
   })
 );
 
-// 상품 목록조회 API //id, name, description, price, tags, createdAt을 조회합니다. offset적용, recent정렬, name, description로 검색
 router.get(
   '/',
   asyncHandler(async (req, res) => {
@@ -53,11 +53,13 @@ router.get(
       },
       select: {
         id: true,
+        images: true,
         name: true,
         description: true,
         price: true,
         tags: true,
         createdAt: true,
+        favoriteCount: true,
       },
     });
     res.send(product);
