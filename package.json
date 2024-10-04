@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@prisma/client": "^5.4.2",
+    "@prisma/client": "^5.20.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -9,15 +9,19 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "prisma": "^5.4.2"
+    "prisma": "^5.20.0"
   },
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "migrate": "npx prisma migrate dev"
   },
   "prisma": {
     "seed": "node src/prisma/seed.js",
     "schema": "src/prisma/schema.prisma"
+  },
+  "engines": {
+    "node": "20.18.0"
   }
 }

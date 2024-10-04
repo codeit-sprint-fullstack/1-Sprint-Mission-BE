@@ -13,28 +13,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  nickname          String
+  image             String?
+  encryptedPassword String
+  refreshToken      String
+  provider          String?  @default("local")
+  providerId        String?  @unique
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  comments Comment[]
+  articles Article[]
+  products Product[]
+
+  likedArticles Article[] @relation("ArticleLike")
+  likedProducts Product[] @relation("ProductLike")
+}
+
 model Product {
-  id            String    @id @default(uuid())
+  id            String   @id @default(uuid())
   name          String
   description   String
-  images        String[]  @default([])
+  images        String[] @default([])
   price         Int
-  tags          String[]  @default([])
-  favoriteCount Int       @default(0)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  comments      Comment[]
+  tags          String[] @default([])
+  favoriteCount Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  ownerId       String
+  owner         User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  likedUsers User[]    @relation("ProductLike")
+  comments   Comment[]
 }
 
 model Article {
-  id        String    @id @default(uuid())
+  id        String   @id @default(uuid())
   title     String
   image     String?
-  likeCount Int       @default(0)
+  likeCount Int      @default(0)
   content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  comments  Comment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  writerId  String
+  writer    User     @relation(fields: [writerId], references: [id], onDelete: Cascade)
+
+  likedUsers User[]    @relation("ArticleLike")
+  comments   Comment[]
 }
 
 model Comment {
@@ -42,8 +70,11 @@ model Comment {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String?
-  article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  userId    String
   articleId String?
+  productId String?
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
