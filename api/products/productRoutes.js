@@ -71,7 +71,7 @@ router
     async (req, res, next) => {
       const { name, description, price, tags } = req.body;
 
-      const tagsArray = tags ? tags.split(",").map((tag) => tag.trim()) : []; 
+      const tagsArray = tags ? tags.split(",").map((tag) => tag.trim()) : [];
       // 태그가 없으면 빈 배열
 
       try {
@@ -139,41 +139,54 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // 상품 수정 API
-router.patch("/:id", authMiddleware, async (req, res, next) => {
-  const { id } = req.params;
+router.patch(
+  "/:id",
+  authMiddleware,
+  upload.array("images"),
+  async (req, res, next) => {
+    const { id } = req.params;
 
-  console.log("Request Body:", req.body); // 요청 본문 출력 추가
+    console.log("Request Body:", req.body); // 요청 본문 출력 추가
+    console.log("Uploaded Files:", req.files); // 업로드된 파일 출력 추가
 
-  try {
-    const product = await prisma.marketPost.findUnique({
-      where: { id: Number(id) },
-    });
-    if (!product) {
-      return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
+    try {
+      const product = await prisma.marketPost.findUnique({
+        where: { id: Number(id) },
+      });
+      if (!product) {
+        return res.status(404).send({ message: "상품을 찾을 수 없습니다." });
+      }
+
+      // 상품 등록자 확인
+      if (product.ownerId.toString() !== req.user.id.toString()) {
+        return res.status(403).send({ message: "수정 권한이 없습니다." });
+      }
+
+      // 각 필드 빈 문자열인지 확인하고, 기본 값 유지
+      const updatedData = {
+        name: req.body.name || product.name,
+        description: req.body.description || product.description,
+        price: req.body.price ? Number(req.body.price) : product.price, // price를 숫자로 변환
+        images: req.files
+          ? req.files.map(
+              (file) => `http://localhost:8000/uploads/${file.filename}`
+            ) // 업로드된 이미지 경로 배열
+          : product.images,
+        tags: Array.isArray(req.body.tags) ? req.body.tags : product.tags, // tags도 배열로 처리
+      };
+
+      const updatedProduct = await prisma.marketPost.update({
+        where: { id: Number(id) },
+        data: updatedData,
+      });
+      console.log("Updated Product:", updatedProduct); // 수정된 상품 출력
+
+      res.status(200).send(updatedProduct);
+    } catch (error) {
+      next(error); // 에러를 핸들러로 전달
     }
-
-    // 상품 등록자 확인
-    if (product.ownerId.toString() !== req.user.id.toString()) {
-      return res.status(403).send({ message: "수정 권한이 없습니다." });
-    }
-
-    //기존 이미지를 유지하는 방식
-    const updatedData = {
-      ...req.body,
-      images: req.body.images || product.images, // 기존 이미지 유지
-    };
-
-    const updatedProduct = await prisma.marketPost.update({
-      where: { id: Number(id) },
-      data: updatedData,
-    });
-    console.log("Updated Product:", updatedProduct); // 수정된 상품 출력
-
-    res.status(200).send(updatedProduct);
-  } catch (error) {
-    next(error); // 에러를 핸들러로 전달
   }
-});
+);
 
 // 상품 삭제 API
 router.delete("/:id", authMiddleware, async (req, res, next) => {
