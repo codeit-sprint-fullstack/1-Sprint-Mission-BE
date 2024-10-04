@@ -17,12 +17,20 @@ const imageRoutes = require("./routes/imageRoutes");
 dotenv.config(); // .env 파일 로드
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true, // 쿠키와 인증 헤더 허용
+  })
+);
+
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
 // Swagger 설정
-const swaggerDocument = yaml.load(fs.readFileSync("./swagger/swagger.yaml", "utf8"));
+const swaggerDocument = yaml.load(
+  fs.readFileSync("./swagger/swagger.yaml", "utf8")
+);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/products", productRoutes);
@@ -42,4 +50,3 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 module.exports = app;
-
