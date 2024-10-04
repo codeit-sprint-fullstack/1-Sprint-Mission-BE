@@ -45,7 +45,6 @@ export const getUserByEmail = async (email, password) => {
   return { user, tokens };
 };
 
-// 토큰 생성 및 저장 함수
 const generateAndSaveTokens = async (user) => {
   // 엑세스 토큰 생성 (3시간 만료)
   const accessToken = jwt.sign(
@@ -54,14 +53,12 @@ const generateAndSaveTokens = async (user) => {
     { expiresIn: "3h" } // 엑세스 토큰 만료 시간 3시간
   );
 
-  // 리프레시 토큰 생성 (7일 만료)
   const refreshToken = jwt.sign(
     { id: user.id, email: user.email },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "7d" } // 리프레시 토큰 만료 시간 7일
   );
 
-  // 토큰 정보를 Auth 테이블에 저장
   const tokens = await prisma.auth.create({
     data: {
       user: { connect: { id: user.id } },
@@ -75,7 +72,13 @@ const generateAndSaveTokens = async (user) => {
   return tokens;
 };
 
-export const refreshToken = async (refreshToken) => {
+export const refreshToken = async (req, res) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return res.status(403).json({ message: "Refresh token not provided" });
+  }
+
   try {
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
@@ -84,25 +87,29 @@ export const refreshToken = async (refreshToken) => {
     });
 
     if (!tokenRecord) {
-      throw new Error("유효하지 않은 리프레시 토큰입니다.");
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-    });
-
-    if (!user) {
-      throw new Error("사용자를 찾을 수 없습니다.");
+      return res.status(403).json({ message: "Invalid refresh token" });
     }
 
     const newAccessToken = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: decoded.id, email: decoded.email },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "3h" }
     );
 
-    return { accessToken: newAccessToken, refreshToken };
+    await prisma.auth.update({
+      where: { refreshToken },
+      data: {
+        accessToken: newAccessToken,
+        accessTokenExp: new Date(Date.now() + 3 * 60 * 60 * 1000),
+      },
+    });
+
+    res.status(200).json({
+      accessToken: newAccessToken,
+      refreshToken,
+    });
   } catch (error) {
-    throw new Error("유효하지 않거나 만료된 리프레시 토큰입니다.");
+    console.error("Error refreshing token:", error);
+    res.status(401).json({ message: "Invalid or expired refresh token" });
   }
 };
