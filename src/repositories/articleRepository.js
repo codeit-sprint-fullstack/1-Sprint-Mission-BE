@@ -1,58 +1,76 @@
 import prisma from "../config/prisma.js";
+import { ARTICLE_FIELDS, OWNER_FIELDS } from "../config/fieldOptions.js";
 
-async function getAll({ searchQuery, sortOption, offset, pageSize }) {
+export async function getAll({ searchQuery, sortOption, offset, pageSize }) {
   const articles = await prisma.article.findMany({
     where: searchQuery,
     orderBy: sortOption,
     skip: offset,
     take: pageSize,
+    select: {
+      ...ARTICLE_FIELDS,
+    },
   });
 
   return articles;
 }
 
-async function getTotalCount(searchQuery) {
+export async function getTotalCount(searchQuery) {
   const totalCount = await prisma.article.count({ where: searchQuery });
   return totalCount;
 }
 
-async function getById(id) {
+export async function getById(id) {
   const article = await prisma.article.findUniqueOrThrow({
     where: { id },
+    select: {
+      ...ARTICLE_FIELDS,
+    },
+    writer: {
+      select: {
+        ...OWNER_FIELDS,
+      },
+    },
   });
 
   return article;
 }
 
-async function create(data) {
+export async function create(data) {
   const newArticle = await prisma.article.create({
-    data,
+    data: {
+      ...data,
+    },
+    select: {
+      ...ARTICLE_FIELDS,
+    },
+    writer: {
+      select: {
+        ...OWNER_FIELDS,
+      },
+    },
   });
   return newArticle;
 }
 
-// patch existed article with id
-async function updateById(id, data) {
+export async function updateById(id, data) {
   const updatedArticle = await prisma.article.update({
     where: { id },
     data: {
       ...data,
     },
+    select: {
+      ...ARTICLE_FIELDS,
+    },
+    writer: {
+      select: {
+        ...OWNER_FIELDS,
+      },
+    },
   });
   return updatedArticle;
 }
 
-// delete an article by id
-async function deleteById(id) {
-  const deletedArticle = await prisma.article.delete({ where: { id } });
-  return deletedArticle;
+export async function deleteById(id) {
+  await prisma.article.delete({ where: { id } });
 }
-
-export default {
-  getAll,
-  getTotalCount,
-  create,
-  getById,
-  updateById,
-  deleteById,
-};

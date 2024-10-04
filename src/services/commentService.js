@@ -1,5 +1,4 @@
-import { assert } from "superstruct";
-import { CreateComment, PatchComment } from "../validations/structs.js";
+import { CreateComment, PatchComment, assert } from "../validations/structs.js";
 import commentRepository from "../repositories/commentRepository.js";
 import { areBothIds } from "../validations/validateFunction.js";
 
@@ -30,5 +29,6 @@ export async function updateComment(id, data) {
 }
 
 export async function deleteComment(id) {
-  return await commentRepository.deleteById(id);
+  await commentRepository.deleteById(id);
+  return { message: "댓글이 삭제되었습니다" };
 }

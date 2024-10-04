@@ -1,5 +1,4 @@
-import { assert } from "superstruct";
-import { CreateArticle, PatchArticle } from "../validations/structs.js";
+import { CreateArticle, PatchArticle, assert } from "../validations/structs.js";
 import articleRepository from "../repositories/articleRepository.js";
 
 export async function getArticles({ orderBy, page, pageSize, keyword }) {
@@ -48,5 +47,6 @@ export async function updateArticle(id, data) {
 }
 
 export async function deleteArticle(id) {
-  return await articleRepository.deleteById(id);
+  await articleRepository.deleteById(id);
+  return { message: "게시글이 삭제되었습니다" };
 }

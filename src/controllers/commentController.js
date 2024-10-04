@@ -43,6 +43,6 @@ export const updateCommentById = async (req, res) => {
 
 export const deleteCommentById = async (req, res) => {
   const { commentId: id } = req.params;
-  await commentService.deleteComment(id);
-  return res.status(200).json({ message: "댓글이 삭제되었습니다" });
+  const result = await commentService.deleteComment(id);
+  return res.status(200).json(result);
 };

@@ -70,11 +70,11 @@ model Comment {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String
+  writerId  String
   articleId String?
   productId String?
 
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  writer  User     @relation(fields: [writerId], references: [id], onDelete: Cascade)
   article Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
   product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
