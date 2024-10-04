@@ -1,7 +1,8 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import { asyncHandler } from './asyncHandler.js';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
 import validateProductFields from '../middlewares/validateProductFields.js';
+import jwtMiddleware from '../middlewares/jwtMiddleware.js';
 import { CreateArticle, PatchArticle } from './struct.js';
 import upload from '../middlewares/multer.middleware.js';
 
@@ -82,6 +83,7 @@ router.get(
 router
   .route('/:id')
   .get(
+    jwtMiddleware.verifyAccessToken,
     asyncHandler(async (req, res) => {
       const { id } = req.params;
       const { userId } = req.body;
@@ -108,6 +110,8 @@ router
     })
   )
   .patch(
+    jwtMiddleware.verifyAccessToken,
+    jwtMiddleware.verifyProductAuth,
     asyncHandler(async (req, res) => {
       const { id } = req.params;
       const article = await prisma.fleaMarket.update({
@@ -118,6 +122,8 @@ router
     })
   )
   .delete(
+    jwtMiddleware.verifyAccessToken,
+    jwtMiddleware.verifyProductAuth,
     asyncHandler(async (req, res) => {
       const { id } = req.params;
 
@@ -134,7 +140,8 @@ router.post(
   '/post',
   upload.array('images', 3),
   validateProductFields,
-
+  jwtMiddleware.verifyAccessToken,
+  jwtMiddleware.verifyProductAuth,
   asyncHandler(async (req, res) => {
     const { price, title, content, tags, userId } = req.body;
 

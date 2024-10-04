@@ -1,12 +1,14 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import { asyncHandler } from './asyncHandler.js';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
+import jwtMiddleware from '../middlewares/jwtMiddleware.js';
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
 router.post(
   '/:id',
+  jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body;
@@ -30,6 +32,7 @@ router.post(
 
 router.delete(
   '/:id',
+  jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body;

@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import { asyncHandler } from './asyncHandler.js';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
+import jwtMiddleware from '../middlewares/jwtMiddleware.js';
 import { CreateArticle, PatchArticle } from './struct.js';
 
 const router = express.Router();
@@ -68,6 +69,7 @@ router.get(
 
 router.post(
   '/post',
+  jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
     const article = await prisma.freeBoard.create({
       data: {

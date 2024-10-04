@@ -2,34 +2,34 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { CreateUser, PatchUser } from './struct.js';
+import {
+  createUserController,
+  loginUserController,
+} from '../controllers/userController.js';
+import userService from '../services/userService.js';
+import {
+  validateUserMiddleware,
+  validateLoginMiddleware,
+} from '../middlewares/validateUserMiddleware.js';
+
 import assert from 'assert';
 import authMiddleware from '../middlewares/authMiddleware.js';
+import jwtMiddleware from '../middlewares/jwtMiddleware.js';
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// 사용자 조회 및 생성 라우트 통합
-router
-  .route('/')
-  .get(
-    asyncHandler(async (req, res) => {
-      const users = await prisma.user.findMany({
-        include: {
-          Favorite: true,
-        },
-      });
-      res.send(users);
-    })
-  )
-  .post(
-    asyncHandler(async (req, res) => {
-      assert(req.body, CreateUser);
-      const user = await prisma.user.create({
-        data: req.body,
-      });
-      res.status(201).send(user);
-    })
-  );
+// 사용자 조회
+router.route('/').get(
+  asyncHandler(async (req, res) => {
+    const users = await prisma.user.findMany({
+      include: {
+        Favorite: true,
+      },
+    });
+    res.send(users);
+  })
+);
 
 // 사용자 ID로 조회, 수정 및 삭제 라우트
 router
@@ -81,5 +81,35 @@ router.get(
     });
   })
 );
+
+router.post(
+  '/token/refresh',
+  jwtMiddleware.verifyRefreshToken,
+  async (req, res, next) => {
+    try {
+      const { refreshToken } = req.cookies;
+      const { userId } = req.auth;
+      const { accessToken, newRefreshToken } = await userService.refreshToken(
+        userId,
+        refreshToken
+      ); // 변경
+      await userService.updateUser(userId, { refreshToken: newRefreshToken }); // 추가
+
+      res.cookie('refreshToken', newRefreshToken, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      });
+
+      return res.json({ accessToken });
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
+router.post('/login', validateLoginMiddleware, loginUserController);
+
+router.post('/signup', validateUserMiddleware, createUserController);
 
 export default router;

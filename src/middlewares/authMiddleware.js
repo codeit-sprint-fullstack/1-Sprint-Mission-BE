@@ -1,20 +1,34 @@
+import jwt from 'jsonwebtoken';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
 const AuthMiddleware = (req, res, next) => {
-  const token = req.accessToken;
+  const token = req.headers['authorization']?.split(' ')[1]; // "Bearer <token>" 형식에서 토큰 추출
 
-  // 토큰을 받아와서
+  if (!token) {
+    return res.status(401).json({ message: 'Access token is required.' });
+  }
 
-  //토큰을 비교 후
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Invalid token.' });
+    }
 
-  //회원 정보 갖고 오기
-
-  req.user = user;
-  serSchema.statics.findByToken = function (token, callback) {
-    const user = this;
-  };
-
-  // jwt.verify(token, 'sectetKey', )
   
-  next();
+    try {
+      const user = await prisma.user.findById(decoded.id);
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found.' });
+      }
+
+      req.user = user;
+      next(); 
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal server error.' });
+    }
+  });
 };
 
 export default AuthMiddleware;
