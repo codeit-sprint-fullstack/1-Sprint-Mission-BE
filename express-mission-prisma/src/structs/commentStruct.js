@@ -21,4 +21,4 @@ const updateComment = s.object({
   ...commendBody,
 });
 
-export {createArticleComment, createProductComment, updateComment}
+export { createArticleComment, createProductComment, updateComment };

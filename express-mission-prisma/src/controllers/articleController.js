@@ -1,12 +1,14 @@
 import express from "express";
 import articleService from "../services/articleService.js";
 import asyncHandler from "../services/errorService.js";
+import validateData from "../middlewares/validateData.js";
 
 const articleController = express.Router();
 
 articleController
   .route("/")
   .post(
+    validateData.article("post"),
     asyncHandler(async (req, res, next) => {
       const article = await articleService.create(req.body);
       res.status(201).send(article);
@@ -32,6 +34,7 @@ articleController
     })
   )
   .patch(
+    validateData.article("patch"),
     asyncHandler(async (req, res) => {
       const { id } = req.params;
       const article = await articleService.update(id, req.body);

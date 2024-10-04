@@ -3,7 +3,6 @@ import { assert } from "superstruct";
 import { createArticle, updateArticle } from "../structs/articleStruct.js";
 
 async function create(createData) {
-  assert(createData, createArticle);
   return await articleRepository.create(createData);
 }
 
@@ -65,7 +64,6 @@ async function getById(id) {
 }
 
 async function update(id, updateData) {
-  assert(updateData, updateArticle);
   const updateDataWithId = { where: { id }, data: updateData };
 
   return await articleRepository.update(updateDataWithId);
