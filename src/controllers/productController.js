@@ -6,13 +6,13 @@ export async function getProducts(req, res, next) {
     const page = parseInt(req.query.page, 10) || 1;
     const pageSize = parseInt(req.query.limit, 10) || 10;
     const skip = (page - 1) * pageSize;
-    const orderBy = req.query.orderBy || "createdAt";
+    const orderByField = req.query.orderByField || "createdAt";
     const orderDir = req.query.orderDir || "desc";
 
     const products = await prisma.product.findMany({
       skip,
       take: pageSize,
-      orderBy: { orderBy: orderDir },
+      orderBy: { [orderByField]: orderDir },
     });
     return res.status(200).json({ message: "상품 정보 추출", products });
   } catch (error) {
