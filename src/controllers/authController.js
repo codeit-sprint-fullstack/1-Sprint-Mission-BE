@@ -100,7 +100,36 @@ export async function login(req, res, next) {
   }
 }
 
+export async function refreshToken(req, res, next) {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+      return res.status(401).json({ message: "인증 토큰가 없습니다." });
+    }
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId },
+    });
+    if (!user) {
+      return res.status(401).json({ message: "인증 토큰가 없습니다." });
+    }
+    if (user.refreshToken !== refreshToken) {
+      return res.status(401).json({ message: "인증 토큰가 없습니다." });
+    }
+    const accessToken = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "15m" }
+    );
+    res.status(200).json({ accessToken });
+  } catch (error) {
+    console.error("인증 토큰 오류:", error);
+    next(error);
+  }
+}
+
 export default {
   signup,
   login,
+  refreshToken,
 };
