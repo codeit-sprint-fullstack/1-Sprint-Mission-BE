@@ -46,17 +46,16 @@ export const getUserByEmail = async (email, password) => {
 };
 
 const generateAndSaveTokens = async (user) => {
-  // 엑세스 토큰 생성 (3시간 만료)
   const accessToken = jwt.sign(
     { id: user.id, email: user.email },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "3h" } // 엑세스 토큰 만료 시간 3시간
+    { expiresIn: "3h" }
   );
 
   const refreshToken = jwt.sign(
     { id: user.id, email: user.email },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "7d" } // 리프레시 토큰 만료 시간 7일
+    { expiresIn: "7d" }
   );
 
   const tokens = await prisma.auth.create({
@@ -64,19 +63,17 @@ const generateAndSaveTokens = async (user) => {
       user: { connect: { id: user.id } },
       accessToken,
       refreshToken,
-      accessTokenExp: new Date(Date.now() + 3 * 60 * 60 * 1000), // 3시간 후 만료
-      refreshTokenExp: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7일 후 만료
+      accessTokenExp: new Date(Date.now() + 3 * 60 * 60 * 1000),
+      refreshTokenExp: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     },
   });
 
   return tokens;
 };
 
-export const refreshToken = async (req, res) => {
-  const { refreshToken } = req.body;
-
+export const refreshToken = async (refreshToken) => {
   if (!refreshToken) {
-    return res.status(403).json({ message: "Refresh token not provided" });
+    throw new Error("Refresh token not provided");
   }
 
   try {
@@ -87,7 +84,7 @@ export const refreshToken = async (req, res) => {
     });
 
     if (!tokenRecord) {
-      return res.status(403).json({ message: "Invalid refresh token" });
+      throw new Error("Invalid refresh token");
     }
 
     const newAccessToken = jwt.sign(
@@ -104,12 +101,9 @@ export const refreshToken = async (req, res) => {
       },
     });
 
-    res.status(200).json({
-      accessToken: newAccessToken,
-      refreshToken,
-    });
+    return { accessToken: newAccessToken };
   } catch (error) {
     console.error("Error refreshing token:", error);
-    res.status(401).json({ message: "Invalid or expired refresh token" });
+    throw new Error("Invalid or expired refresh token");
   }
 };

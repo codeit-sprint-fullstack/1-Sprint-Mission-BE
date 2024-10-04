@@ -22,7 +22,6 @@ if (missingEnvVars.length) {
   process.exit(1);
 }
 
-// Express 애플리케이션 설정
 const app = express();
 app.use(cors());
 app.use(express.json());
