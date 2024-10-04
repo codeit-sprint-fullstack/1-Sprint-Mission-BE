@@ -5,6 +5,7 @@ import {
   createProductComment,
   updateComment,
 } from "../structs/commentStruct.js";
+import { createProduct } from "../structs/productStruct.js";
 
 function article(method) {
   return (req, res, next) => {
@@ -42,7 +43,17 @@ function comment(method, type) {
   };
 }
 
+function product(method) {
+  return (req, res, next) => {
+    if (method === "post") {
+      assert(req.body, createProduct);
+      next();
+    }
+  };
+}
+
 export default {
   article,
   comment,
+  product,
 };

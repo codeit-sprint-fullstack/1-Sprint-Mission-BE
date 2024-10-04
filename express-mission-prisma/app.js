@@ -8,17 +8,19 @@ import {
   commentController,
   productCommentCotroller,
 } from "./src/controllers/commentController.js";
+import productController from "./src/controllers/productController.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/images', express.static('uploads'))
 
 app.use("/article", articleController);
 app.use("/article", articleCommentController);
 app.use('/product', productCommentCotroller)
 app.use('/comment', commentController)
-// app.use('/product', productController)
+app.use('/product', productController)
 
 app.listen(process.env.PORT || 3001, () => console.log("Server Started"));
 

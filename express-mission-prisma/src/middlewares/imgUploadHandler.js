@@ -13,11 +13,11 @@ const fileFilter = (req, file, cb) => {
   };
 
 const imgUploadHandler = multer({
-  dest: "upload/",
+  dest: "uploads/",
   fileFilter,
   limits: {
     fileSize: 1024 * 1024 * 10,
   },
-}).array("image", 3);
+}).array("images", 3);
 
 export default imgUploadHandler
