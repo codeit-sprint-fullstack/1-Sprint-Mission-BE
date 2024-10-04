@@ -40,8 +40,19 @@ router
           createdAt: true,
           marketPostId: true, // postId를 marketPostId로 변경
           userId: true,
+          user: {
+            select: {
+              nickname: true, // 닉네임을 선택
+            },
+          },
         }, // 작성자 ID 포함
       });
+
+      // 닉네임을 댓글 데이터에 포함
+      const commentsWithNicknames = comments.map((comment) => ({
+        ...comment,
+        nickname: comment.user.nickname, // 닉네임 추가
+      }));
 
       res.status(200).json({ totalCount, comments }); // 응답 형식 변경
     } catch (error) {
