@@ -84,26 +84,37 @@ router.get(
   },
   async (req, res, next) => {
     try {
+      console.log("in refresh-token router");
       const { id: userId } = req.user;
-      const refreshToken = req.cookies["refresh-token"];
+      let refreshToken = "";
+      if (req.cookies["refresh-token"]) {
+        refreshToken = req.cookies["refresh-token"];
+      } else {
+        refreshToken = req.headers.refreshtoken;
+      }
+
       //전달 받은 토큰의 사용자와 리프레쉬 토큰을 전달 > 갱신후 반환값 사용
-      const { accessToken, newRefreshToken } = await userService.refreshToken(
-        userId,
-        refreshToken
-      );
+      const existedUser = await userService.refreshToken(userId, refreshToken);
+      if (existedUser) {
+        const accessToken = userService.createToken(existedUser);
+        const newRefreshToken = userService.createToken(existedUser, "refresh");
+        //Db의 갱신된 리프레쉬 토큰 저장
+        const newUser = await userService.updateUser(userId, {
+          refreshToken: newRefreshToken,
+        });
 
-      //Db의 갱신된 리프레쉬 토큰 저장
-      const user = await userService.updateUser(userId, {
-        refreshToken: newRefreshToken,
-      });
-
-      res.cookie("access-token", accessToken, cookiesConfig.accessTokenOption);
-      res.cookie(
-        "refresh-token",
-        newRefreshToken,
-        cookiesConfig.accessTokenOption
-      );
-      res.status(200).send(user);
+        res.cookie(
+          "access-token",
+          accessToken,
+          cookiesConfig.accessTokenOption
+        );
+        res.cookie(
+          "refresh-token",
+          newRefreshToken,
+          cookiesConfig.accessTokenOption
+        );
+        res.status(200).send({ ...newUser, accessToken });
+      }
     } catch (error) {
       next(error);
     }

@@ -36,7 +36,7 @@ const getProduct = async ({ userId, productId }) => {
     throw error;
   }
   //현재 사용자의 좋아요 상태를 확인 후 반환 -> 좋아요 상태가 아니면 null
-  const existingLike = await productModel.existingLike(userId, productId);
+  const existingLike = await productModel.existingLike({ userId, productId });
   return { product, existingLike };
 };
 

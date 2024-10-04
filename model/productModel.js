@@ -77,7 +77,7 @@ const update = async (id, data) => {
   });
 };
 
-const existingLike = async (productId, userId) => {
+const existingLike = async ({ productId, userId }) => {
   return prismaClient.product.findUnique({
     where: {
       id: productId,
@@ -118,7 +118,7 @@ const unlikeProduct = async ({ productId, userId }) => {
     },
     data: {
       favorited: {
-        connect: { id: userId },
+        disconnect: { id: userId },
       },
       favoriteCount: { decrement: 1 },
     },

@@ -57,22 +57,16 @@ const refreshToken = async (userId, refreshToken) => {
   if (!existedUser || existedUser.refreshToken !== refreshToken) {
     //DB의 정보가 없거나 쿠키로 받은 토큰과 DB의 저당된 토큰을 비교한다.
     const error = new Error("토큰이 유효하지 않습니다.");
-    error.status = 401;
+    error.status = 422;
     error.data = { refreshToken };
     throw error;
+  } else {
+    return existedUser;
   }
-
-  //토큰 재생성후 반환
-  const accessToken = createToken(existedUser);
-  const newRefreshToken = createToken(existedUser, "refresh");
-
-  return {
-    accessToken,
-    newRefreshToken,
-  };
 };
 
 const updateUser = async (id, data) => {
+  console.log("in update user");
   const user = await userModel.update(id, data);
   if (!user) {
     const error = new Error("Not Found");

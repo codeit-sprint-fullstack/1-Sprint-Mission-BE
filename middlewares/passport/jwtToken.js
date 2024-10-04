@@ -17,7 +17,7 @@ const refreshExtractor = function (req) {
   if (req && req.cookies["refresh-token"]) {
     token = req.cookies["refresh-token"];
   } else {
-    token = req.headers.authorization;
+    token = req.headers.refreshtoken;
   }
   // console.log("리프레쉬" + token);
   return token;
