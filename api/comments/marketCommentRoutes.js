@@ -61,22 +61,17 @@ router
     }
   })
   .post(authMiddleware, async (req, res, next) => {
-    // next 추가
-    // "/api/market/comments"에 해당
-    const { content, marketPostId } = req.body; // postId를 marketPostId로 변경
+    const { content, marketPostId } = req.body;
 
-    // 데이터 검증
     if (!content || !marketPostId) {
       return res.status(400).json({ error: "댓글 내용을 입력해주세요." });
     }
 
-    // marketPostId를 정수형으로 변환
     const parsedMarketPostId = parseInt(marketPostId);
 
     try {
-      // 게시글 존재 여부 확인
       const postExists = await prisma.marketPost.findUnique({
-        where: { id: parseInt(marketPostId) }, // 정수형으로 변환
+        where: { id: parsedMarketPostId },
       });
 
       if (!postExists) {
@@ -86,16 +81,23 @@ router
       const newComment = await prisma.comment.create({
         data: {
           content,
-          marketPostId: parsedMarketPostId, // 변환된 값 사용
+          marketPostId: parsedMarketPostId,
           boardType: "market",
-          userId: req.user.id, // 로그인한 사용자의 ID 추가
+          userId: req.user.id,
         },
       });
 
-      res.status(201).json(newComment); // 응답 형식 변경
+      // 사용자 닉네임을 가져옵니다.
+      const user = await prisma.user.findUnique({
+        where: { id: req.user.id },
+        select: { nickname: true },
+      });
+
+      // 사용자 정보와 함께 응답
+      res.status(201).json({ ...newComment, user });
     } catch (error) {
       console.error("댓글 등록 중 오류 발생:", error);
-      next(error); // 에러를 핸들러로 전달
+      next(error);
     }
   });
 
@@ -103,6 +105,11 @@ router
 router.patch("/:id", authMiddleware, async (req, res, next) => {
   const { id } = req.params;
   const { content } = req.body;
+
+  // content가 정의되어 있는지 확인
+  if (!content) {
+    return res.status(400).json({ error: "댓글 내용을 입력해주세요." });
+  }
 
   try {
     // 댓글 조회
