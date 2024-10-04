@@ -65,8 +65,16 @@ async function countByFilter(id, type) {
   return await commentRepository.countByFilter(fillter);
 }
 
+async function update(id, updateData) {
+  assert(updateData, updateComment);
+  const updateDataWithId = { where: { id }, data: updateData };
+
+  return await commentRepository.update(updateDataWithId);
+}
+
 export default {
   create,
   getAllByFilter,
   countByFilter,
+  update,
 };

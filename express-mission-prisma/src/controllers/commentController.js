@@ -81,16 +81,12 @@ productCommentCotroller
   );
 
 commentController
-  .route("/")
+  .route("/:id")
   .patch(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      assert(req.body, s.PatchCommend);
-      const freeCommend = await prisma.freeCommend.update({
-        where: { id },
-        data: req.body,
-      });
-      res.status(201).send(freeCommend);
+      const comment = await commentService.update(id, req.body)
+      res.status(201).send(comment);
     })
   )
   .delete(

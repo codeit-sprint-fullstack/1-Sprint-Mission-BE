@@ -30,12 +30,17 @@ async function countByFilter(fillter) {
   });
 }
 
-async function update() {
-    
+async function update(updateData) {
+  const { where, data } = updateData;
+  return await prisma.comment.update({
+    where,
+    data,
+  });
 }
 
 export default {
   create,
   getAllByFilter,
   countByFilter,
+  update,
 };

@@ -27,3 +27,11 @@ Content-Type: application/json
 {
     "content": "안녕?"
 }
+
+###
+PATCH http://localhost:3001/comment/c9920f9f-bf05-4747-aecc-2366e450ecf6
+Content-Type: application/json
+
+{
+    "content": "댓글 수정 테스트"
+}
