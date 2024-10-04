@@ -18,8 +18,7 @@ GET  http://localhost:3001/product/192fce08-09c2-4065-981b-0285f0e452b8/comment
 
 ###
 
-GET  http://localhost:3001/product/192fce08-09c2-4065-981b-0285f0e452b8/comment?cursor=5f04ea72-41d8-4824-92ca-437bffbd4beb
-
+GET  http://localhost:3001/product/192fce08-09c2-4065-981b-0285f0e452b8/comment?pageSize=4&cursor=4e4b1009-cb00-4986-b7e4-71852e9149d3
 ###
 
 POST http://localhost:3001/product/192fce08-09c2-4065-981b-0285f0e452b8/comment

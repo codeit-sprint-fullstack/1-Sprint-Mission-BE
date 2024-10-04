@@ -17,14 +17,12 @@ async function getAllByFilter(fillter) {
   if (cursor === "") {
     return await prisma.comment.findMany({
       orderBy,
-      skip,
       take,
       where,
     });
   } else if (cursor !== "") {
     return await prisma.comment.findMany({
       orderBy,
-      skip,
       take,
       where,
       cursor,

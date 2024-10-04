@@ -29,7 +29,9 @@ articleCommentController
 
       const lastList = list[pageSize || 5];
       const NextCusor = lastList ? lastList.id : "null";
-      list.pop();
+      if (NextCusor !== "null") {
+        list.pop();
+      }
 
       res.send({
         cursorInfo: {
@@ -46,30 +48,23 @@ productCommentCotroller
   .post(
     asyncHandler(async (req, res, next) => {
       const { id } = req.params;
-      const commend = await productCommentService.create(id, req.body);
-      res.status(201).send(commend);
+      const comment = await productCommentService.create(id, req.body);
+      res.status(201).send(comment);
     })
   )
   .get(
     asyncHandler(async (req, res) => {
-      const { cursor = "", pageSize = 2, orderBy = "recent" } = req.query;
-      const skipInt = cursor === "" ? 0 : 1;
-      const findValueDefault = {
-        orderBy: { createdAt: "desc" },
-        skip: parseInt(skipInt),
-        take: parseInt(pageSize),
-      };
-      const findValue =
-        cursor !== ""
-          ? { ...findValueDefault, cursor: { id: cursor } }
-          : { ...findValueDefault };
+      const { id } = req.params;
+      const { pageSize } = req.query;
+      const comment = await productCommentService.getAllByFilter(id, req.query);
+      const count = await productCommentService.countByFilter(id);
+      const [list, total] = await Promise.all([comment, count]);
 
-      const usedCommend = await prisma.usedCommend.findMany(findValue);
-      const count = await prisma.usedCommend.count();
-      const [list, total] = await Promise.all([usedCommend, count]);
-
-      const lastList = list[pageSize - 1];
+      const lastList = list[pageSize || 2];
       const NextCusor = lastList ? lastList.id : "null";
+      if (NextCusor !== "null") {
+        list.pop();
+      }
 
       res.send({
         cursorInfo: {
