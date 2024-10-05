@@ -3,9 +3,10 @@ import prisma from "../models/index.js";
 const parseId = (id) => parseInt(id, 10);
 
 const getCursorOptions = (cursor) => {
-  if (!cursor) return {};
+  const parsedCursor = parseInt(cursor, 10);
+  if (!cursor || isNaN(parsedCursor)) return {};
   return {
-    cursor: { id: parseId(cursor) },
+    cursor: { id: parsedCursor },
     skip: 1,
   };
 };
