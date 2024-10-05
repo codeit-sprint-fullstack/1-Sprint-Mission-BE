@@ -19,6 +19,18 @@ model User {
 
   products          Product[]
   comments          Comment[]
+  favorites         Favorite[]
+}
+
+model Favorite{
+  id                Int         @id @default(autoincrement())
+  userId            Int
+  productId         Int
+  createdAt         DateTime    @default(now())
+  user              User        @relation(fields: [userId],references: [id])
+  product           Product     @relation(fields: [productId],references: [id])
+
+  @@unique([userId,productId])
 }
 
 
@@ -35,7 +47,10 @@ model Product{
   userId            Int
   user              User        @relation(fields: [userId], references: [id])
   comment           Comment[]
+  favorites         Favorite[]
 }
+
+
 
 model Comment{
   id                Int         @id @default(autoincrement())

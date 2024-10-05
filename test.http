@@ -4,9 +4,9 @@ POST http://localhost:3001/auth/signup
 Content-Type: application/json
 
 {
-  "email" : "avvvvv@test.com",
+  "email" : "admin@a.c",
   "password" : "12341234",
-  "nickname" : "minsu"
+  "nickname" : "test"
 }
 
 ### 로그인
@@ -14,12 +14,95 @@ POST http://localhost:3001/auth/login
 Content-Type: application/json
 
 {
-  "email" : "avvvvv@test.com",
+  "email" : "admin@a.c",
+  "password" : "12341234"
+}
+### 로컬 로그인
+POST http://localhost:3001/auth/login
+Content-Type: application/json
+
+{
+  "email" : "baba@test.com",
   "password" : "12341234"
 }
 ### 접속중인 사용자 조회
-GET http://localhost:3001/auth/me
+GET https://ms10-5yps.onrender.com/auth/me
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJlbWFpbCI6ImF2dnZ2dkB0ZXN0LmNvbSIsImlhdCI6MTcyNzg1NTUyMiwiZXhwIjoxNzI3ODU2NDIyfQ.qZpclpcaEShOve-kVTakumUOrdJhpcJWX4WHWAz2qv4
 
 
+### 상품 조회
+GET http://localhost:3001/products
+
+### 상품 등록
+POST http://localhost:3001/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlbWFpbCI6ImJhYmFAdGVzdC5jb20iLCJpYXQiOjE3MjgwMjk1NjAsImV4cCI6MTcyODAzMDQ2MH0.4uAlKrvfx3D0bitPYNWbqbgOgFMjIoZoUALJmfY0poQ
+
+{
+  "images": [],
+  "price":  1000,
+  "tags": [],
+  "description": "test",
+  "name": "test"
+}
+
+### 토큰 재발급
+POST http://localhost:3001/auth/refreshToken
+Content-Type: application/json
+
+{
+  "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlbWFpbCI6ImJhYmFAdGVzdC5jb20iLCJpYXQiOjE3Mjc4NjExOTEsImV4cCI6MTcyODQ2NTk5MX0.U8JFwIeR_UcRPQlY4FQAfjjRzN8rmBQjrw_dRXdCUVs"
+}
+
+
+### 게시글 조회
+GET http://localhost:3001/products/4
+
+### 게시글 삭제
+
+DELETE http://localhost:3001/products/6
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlbWFpbCI6ImJhYmFAdGVzdC5jb20iLCJpYXQiOjE3MjgwMjkyMDUsImV4cCI6MTcyODAzMDEwNX0.lCsAxnjOAxZNf115x3MyDjpMfmvNrXE9dpUFltoJSDg
+
+
+### 게시글 수정
+PATCH http://localhost:3001/products/7
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlbWFpbCI6ImJhYmFAdGVzdC5jb20iLCJpYXQiOjE3MjgwMjk1NjAsImV4cCI6MTcyODAzMDQ2MH0.4uAlKrvfx3D0bitPYNWbqbgOgFMjIoZoUALJmfY0poQ
+
+{
+  "name" : "수정후",
+  "description" : "수정후"
+}
+
+### 댓글 조회
+GET http://localhost:3001/products/7/comments
+Content-Type: application/json
+
+### 댓글 추가
+POST http://localhost:3001/products/7/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlbWFpbCI6ImJhYmFAdGVzdC5jb20iLCJpYXQiOjE3MjgwMzA0OTMsImV4cCI6MTcyODAzMTM5M30.XvSxzy3Woa0oH9SN9IK1kGtaqEwHxi5iyeFBYySyHF4
+
+{
+  "content" : "댓글 추가 API 테스트"
+}
+### 댓글 삭제
+DELETE http://localhost:3001/products/7/comments/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlbWFpbCI6ImJhYmFAdGVzdC5jb20iLCJpYXQiOjE3MjgwMzA0OTMsImV4cCI6MTcyODAzMTM5M30.XvSxzy3Woa0oH9SN9IK1kGtaqEwHxi5iyeFBYySyHF4
+
+### 댓글 수정
+PATCH http://localhost:3001/products/7/comments/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlbWFpbCI6ImJhYmFAdGVzdC5jb20iLCJpYXQiOjE3MjgwMzA0OTMsImV4cCI6MTcyODAzMTM5M30.XvSxzy3Woa0oH9SN9IK1kGtaqEwHxi5iyeFBYySyHF4
+
+{
+  "content" : "댓글 수정 테스트"
+}
+
+### 좋아요 추가
+POST http://localhost:3001/products/1/favorites
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiYWRtaW5AYS5jIiwiaWF0IjoxNzI4MTA1NTE1LCJleHAiOjE3MjgxMDY0MTV9.8m8pgbDGWjAT0llElejt3ap6eh5rOB8EL_EtS1ucgTE

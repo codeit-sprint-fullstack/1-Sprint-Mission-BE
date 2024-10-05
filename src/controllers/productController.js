@@ -63,30 +63,26 @@ export async function deleteProduct(req, res, next) {
   try {
     const { productId } = req.params;
 
-    // 1. 상품 조회 - 작성자 정보 확인
     const product = await prisma.product.findUnique({
       where: { id: parseInt(productId, 10) },
       select: {
         id: true,
-        userId: true, // 작성자의 userId만 가져옵니다.
+        userId: true,
       },
     });
 
-    // 2. 상품이 존재하지 않는 경우
     if (!product) {
       return res
         .status(404)
         .json({ message: "해당 상품이 존재하지 않습니다." });
     }
     console.log(product.userId, req.user.userId);
-    // 3. 상품 작성자와 현재 유저가 동일한지 확인
     if (product.userId !== req.user.userId) {
       return res
         .status(403)
         .json({ message: "해당 상품을 삭제할 권한이 없습니다." });
     }
 
-    // 4. 작성자가 동일하면 상품 삭제 수행
     const deletedProduct = await prisma.product.delete({
       where: { id: parseInt(productId, 10) },
     });
@@ -105,30 +101,25 @@ export async function patchProduct(req, res, next) {
     const { productId } = req.params;
     const { name, description, price, tags, images } = req.body;
 
-    // 1. 해당 상품을 먼저 조회하여 작성자의 userId를 확인합니다.
     const product = await prisma.product.findUnique({
       where: { id: parseInt(productId, 10) },
       select: {
         id: true,
-        userId: true, // 작성자의 userId만 가져옵니다.
+        userId: true,
       },
     });
-
-    // 2. 상품이 존재하지 않는 경우
     if (!product) {
       return res
         .status(404)
         .json({ message: "해당 상품이 존재하지 않습니다." });
     }
 
-    // 3. 현재 사용자와 상품 작성자가 동일한지 확인합니다.
     if (product.userId !== req.user.userId) {
       return res
         .status(403)
         .json({ message: "해당 상품을 수정할 권한이 없습니다." });
     }
 
-    // 4. 클라이언트에서 전달된 데이터를 기반으로 수정할 값을 준비합니다.
     const tagText = tags ? tags.map((tag) => tag.text) : [];
     const parsedPrice = price ? parseInt(price, 10) : undefined;
     const imagesUrls = images ? images.map((image) => image.url) : [];
@@ -154,10 +145,72 @@ export async function patchProduct(req, res, next) {
   }
 }
 
+export async function postFavorites(req, res) {
+  try {
+    const { productId } = req.params; // URL 파라미터에서 productId를 가져옴
+    const userId = req.user.userId; // 인증된 사용자의 id (authenticateToken 미들웨어로부터 제공됨)
+
+    if (!productId) {
+      return res.status(400).json({ message: "Product ID가 필요합니다." });
+    }
+
+    // 현재 사용자가 이미 해당 product에 좋아요를 눌렀는지 확인
+    const existingFavorite = await prisma.favorite.findUnique({
+      where: {
+        userId_productId: {
+          userId: userId,
+          productId: parseInt(productId),
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      // 이미 좋아요가 눌러진 상태라면, 좋아요를 취소 (삭제)
+      await prisma.favorite.delete({
+        where: {
+          id: existingFavorite.id,
+        },
+      });
+
+      // 해당 Product의 favoriteCount 감소
+      await prisma.product.update({
+        where: { id: parseInt(productId) },
+        data: {
+          favoriteCount: { decrement: 1 },
+        },
+      });
+
+      return res.status(200).json({ message: "좋아요가 취소되었습니다." });
+    } else {
+      // 좋아요가 없는 상태라면, 새로운 좋아요를 추가
+      await prisma.favorite.create({
+        data: {
+          userId: userId,
+          productId: parseInt(productId),
+        },
+      });
+
+      // 해당 Product의 favoriteCount 증가
+      await prisma.product.update({
+        where: { id: parseInt(productId) },
+        data: {
+          favoriteCount: { increment: 1 },
+        },
+      });
+
+      return res.status(200).json({ message: "좋아요가 추가되었습니다." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "서버 오류가 발생했습니다." });
+  }
+}
+
 export default {
   getProducts,
   postProduct,
   getProductId,
   deleteProduct,
   patchProduct,
+  postFavorites,
 };

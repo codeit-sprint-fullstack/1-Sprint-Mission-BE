@@ -5,6 +5,7 @@ import userRoutes from "./routes/userRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
 import axios from "axios";
 import productsRoutes from "./routes/productsRotues.js";
+import commentsRoutes from "./routes/commentsRotues.js";
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ app.use(express.json());
 
 app.use("/auth", userRoutes); //유저 회원가입, 로그인
 
-app.use("/products", productsRoutes);
+app.use("/products", productsRoutes, commentsRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "Not Found" });

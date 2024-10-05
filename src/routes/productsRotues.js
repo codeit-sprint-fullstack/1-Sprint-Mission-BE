@@ -6,6 +6,7 @@ import {
   getProductId,
   deleteProduct,
   patchProduct,
+  postFavorites,
 } from "../controllers/productController.js";
 
 const router = express.Router();
@@ -15,4 +16,5 @@ router.post("/", authenticateToken, postProduct);
 router.get("/:productId", getProductId);
 router.delete("/:productId", authenticateToken, deleteProduct);
 router.patch("/:productId", authenticateToken, patchProduct);
+router.post("/:productId/favorites", authenticateToken, postFavorites);
 export default router;
