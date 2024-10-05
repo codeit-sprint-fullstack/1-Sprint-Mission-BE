@@ -46,7 +46,7 @@ model Product {
   name          String
   description   String
   price         Int
-  tag           String
+  tags          String[]
   images        String[]
   createAt      DateTime  @default(now())
   updateAt      DateTime  @updatedAt

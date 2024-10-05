@@ -4,6 +4,8 @@ import productService from "../service/productService.js";
 import { assert } from "superstruct";
 import multer from "multer";
 import passport from "../config/passportConfig.js";
+import { configDotenv } from "dotenv";
+import { PUBLIC_IMAGES_URL } from "../env.js";
 
 const router = express.Router();
 const upload = multer({ dest: "upload/" });
@@ -56,10 +58,13 @@ router.post(
   upload.array("images", 3),
   async (req, res, next) => {
     try {
-      const images = req.files.map((file) => file.path);
+      const images = req.files.map((file) => PUBLIC_IMAGES_URL + file.filename);
+      const tags = req.body.tags.split(",");
       const { id: userId } = req.user;
       const data = await productService.createProduct({
         ...req.body,
+        tags,
+        price: parseInt(req.body.price),
         images,
         ownerId: userId,
       });
