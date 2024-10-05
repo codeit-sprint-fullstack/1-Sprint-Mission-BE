@@ -10,8 +10,8 @@ router.post(
   "/signup",
   [
     body("email").isEmail(),
+    body("nickname").isString().isLength({ min: 2, max: 30 }),
     body("password").isLength({ min: 6 }),
-    body("name").notEmpty(),
   ],
   validate,
   asyncHandler(authController.signUp)
@@ -22,13 +22,6 @@ router.post(
   [body("email").isEmail(), body("password").notEmpty()],
   validate,
   asyncHandler(authController.signIn)
-);
-
-router.post(
-  "/refresh-token",
-  [body("refreshToken").notEmpty()],
-  validate,
-  asyncHandler(authController.refreshToken)
 );
 
 export default router;

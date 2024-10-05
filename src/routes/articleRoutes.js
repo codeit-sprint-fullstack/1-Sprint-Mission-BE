@@ -7,55 +7,56 @@ import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
+router
+  .route("/")
+  .post(
+    authMiddleware,
+    [
+      body("title").isString().isLength({ min: 1, max: 100 }),
+      body("content").isString().notEmpty(),
+    ],
+    validate,
+    asyncHandler(articleController.createArticle)
+  )
+  .get(
+    [
+      query("page").optional().isInt({ min: 1 }),
+      query("limit").optional().isInt({ min: 1, max: 100 }),
+    ],
+    validate,
+    asyncHandler(articleController.getArticles)
+  );
+
+router
+  .route("/:id")
+  .get(
+    [param("id").isInt({ min: 1 })],
+    validate,
+    asyncHandler(articleController.getArticleById)
+  )
+  .put(
+    authMiddleware,
+    [
+      param("id").isInt({ min: 1 }),
+      body("title").optional().isString().isLength({ min: 1, max: 100 }),
+      body("content").optional().isString().notEmpty(),
+    ],
+    validate,
+    asyncHandler(articleController.updateArticle)
+  )
+  .delete(
+    authMiddleware,
+    [param("id").isInt({ min: 1 })],
+    validate,
+    asyncHandler(articleController.deleteArticle)
+  );
+
 router.post(
-  "/",
-  authMiddleware,
-  [
-    body("title").isString().isLength({ min: 1, max: 50 }),
-    body("content").isString().notEmpty(),
-    body("image").isURL(),
-  ],
-  validate,
-  asyncHandler(articleController.createArticle)
-);
-
-router.get(
-  "/",
-  [
-    query("page").optional().isInt({ min: 1 }),
-    query("limit").optional().isInt({ min: 1, max: 100 }),
-    query("order").optional().isIn(["recent", "old"]),
-  ],
-  validate,
-  asyncHandler(articleController.getArticles)
-);
-
-router.get(
-  "/:id",
-  [param("id").isInt({ min: 1 })],
-  validate,
-  asyncHandler(articleController.getArticleById)
-);
-
-router.put(
-  "/:id",
-  authMiddleware,
-  [
-    param("id").isInt({ min: 1 }),
-    body("title").optional().isString().isLength({ min: 1, max: 50 }),
-    body("content").optional().isString().notEmpty(),
-    body("image").optional().isURL(),
-  ],
-  validate,
-  asyncHandler(articleController.updateArticle)
-);
-
-router.delete(
-  "/:id",
+  "/:id/like",
   authMiddleware,
   [param("id").isInt({ min: 1 })],
   validate,
-  asyncHandler(articleController.deleteArticle)
+  asyncHandler(articleController.toggleLike)
 );
 
 export default router;

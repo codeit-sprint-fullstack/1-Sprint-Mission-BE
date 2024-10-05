@@ -2,81 +2,66 @@ import express from "express";
 import { body, param, query } from "express-validator";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { validate } from "../middlewares/validate.js";
-import * as productService from "../services/productService.js";
+import * as productController from "../controllers/productController.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
+router
+  .route("/")
+  .post(
+    authMiddleware,
+    [
+      body("name").isString().isLength({ min: 1, max: 100 }),
+      body("description").isString().notEmpty(),
+      body("price").isFloat({ min: 0 }),
+      body("image").isURL(),
+    ],
+    validate,
+    asyncHandler(productController.createProduct)
+  )
+  .get(
+    [
+      query("page").optional().isInt({ min: 1 }),
+      query("limit").optional().isInt({ min: 1, max: 100 }),
+      query("order").optional().isIn(["recent", "price"]),
+    ],
+    validate,
+    asyncHandler(productController.getProducts)
+  );
+
+router
+  .route("/:id")
+  .get(
+    [param("id").isInt({ min: 1 })],
+    validate,
+    asyncHandler(productController.getProductById)
+  )
+  .put(
+    authMiddleware,
+    [
+      param("id").isInt({ min: 1 }),
+      body("name").optional().isString().isLength({ min: 1, max: 100 }),
+      body("description").optional().isString().notEmpty(),
+      body("price").optional().isFloat({ min: 0 }),
+      body("image").optional().isURL(),
+    ],
+    validate,
+    asyncHandler(productController.updateProduct)
+  )
+  .delete(
+    authMiddleware,
+    [param("id").isInt({ min: 1 })],
+    validate,
+    asyncHandler(productController.deleteProduct)
+  );
+
 router.post(
-  "/",
-  [
-    body("name").isString().isLength({ min: 1, max: 100 }),
-    body("description").isString().notEmpty(),
-    body("price").isFloat({ min: 0 }),
-    body("image").isURL(),
-  ],
-  validate,
-  asyncHandler(async (req, res) => {
-    const product = await productService.createProduct(req.body);
-    res.status(201).json(product);
-  })
-);
-
-router.get(
-  "/",
-  [
-    query("page").optional().isInt({ min: 1 }),
-    query("limit").optional().isInt({ min: 1, max: 100 }),
-    query("order").optional().isIn(["recent", "price"]),
-  ],
-  validate,
-  asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10, order = "recent" } = req.query;
-    const { products, totalCount } = await productService.getProducts(
-      page,
-      limit,
-      order
-    );
-    res.json({ totalCount, list: products });
-  })
-);
-
-router.get(
-  "/:id",
+  "/:id/like",
+  authMiddleware,
   [param("id").isInt({ min: 1 })],
   validate,
-  asyncHandler(async (req, res) => {
-    const product = await productService.getProductById(req.params.id);
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-    res.json(product);
-  })
-);
-
-router.put(
-  "/:id",
-  [
-    param("id").isInt({ min: 1 }),
-    body("name").optional().isString().isLength({ min: 1, max: 100 }),
-    body("description").optional().isString().notEmpty(),
-    body("price").optional().isFloat({ min: 0 }),
-    body("image").optional().isURL(),
-  ],
-  validate,
-  asyncHandler(async (req, res) => {
-    const product = await productService.updateProduct(req.params.id, req.body);
-    res.json(product);
-  })
-);
-
-router.delete(
-  "/:id",
-  [param("id").isInt({ min: 1 })],
-  validate,
-  asyncHandler(async (req, res) => {
-    await productService.deleteProduct(req.params.id);
-    res.status(204).send();
-  })
+  asyncHandler(productController.toggleLike)
 );
 
 export default router;
