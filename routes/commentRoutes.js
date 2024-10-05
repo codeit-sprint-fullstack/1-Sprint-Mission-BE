@@ -6,14 +6,12 @@ const router = express.Router();
 
 router
   .route("/products/:productId/comments")
-  .all(verifyToken)
-  .post(commentController.createProductComment)
+  .post(verifyToken, commentController.createProductComment)
   .get(commentController.getProductComments);
 
 router
   .route("/articles/:articleId/comments")
-  .all(verifyToken)
-  .post(commentController.createArticleComment)
+  .post(verifyToken, commentController.createArticleComment)
   .get(commentController.getArticleComments);
 
 router
