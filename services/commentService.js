@@ -63,6 +63,7 @@ export const updateComment = async (commentId, content) => {
   return prisma.comment.update({
     where: { id: parseId(commentId) },
     data: { content },
+    include: { writer: true },
   });
 };
 
