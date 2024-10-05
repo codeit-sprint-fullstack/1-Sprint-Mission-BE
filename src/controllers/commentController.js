@@ -9,15 +9,26 @@ export async function getComments(req, res, next) {
     const pageSize = parseInt(req.query.pageSize, 10) || 10;
     const skip = (page - 1) * pageSize;
 
+    // 댓글 목록 가져올 때 유저 정보도 함께 포함
     const comments = await prisma.comment.findMany({
       where: { productId: parseInt(productId, 10) },
       skip,
       take: pageSize,
+      include: {
+        user: {
+          select: {
+            id: true,
+            nickName: true,
+            image: true,
+          },
+        },
+      },
     });
-    return res.status(200).json({ message: "샘플 정보 추출", comments });
+
+    return res.status(200).json({ message: "댓글 목록 추출", comments });
   } catch (error) {
-    console.error("샘플 정보 추출 중 오류 발생:", error);
-    return res.status(500).json({ message: "샘플 정보를 추출할 수 없습니다." });
+    console.error("댓글 정보 추출 중 오류 발생:", error);
+    return res.status(500).json({ message: "댓글 정보를 추출할 수 없습니다." });
   }
 }
 
