@@ -1,32 +1,29 @@
-import { prisma } from "../utils/prisma.js";
+import commentModel from "../models/commentModel.js";
 
 export const createComment = async (data) => {
-  return prisma.comment.create({ data });
+  return commentModel.create(data);
 };
 
 export const getComments = async (productId, page, limit) => {
   const skip = (page - 1) * limit;
   const [comments, totalCount] = await Promise.all([
-    prisma.comment.findMany({
-      where: { productId: Number(productId) },
+    commentModel.findMany(
+      { productId: Number(productId) },
       skip,
-      take: Number(limit),
-      orderBy: { createdAt: "desc" },
-      include: { user: { select: { id: true, nickname: true } } },
-    }),
-    prisma.comment.count({ where: { productId: Number(productId) } }),
+      Number(limit),
+      { createdAt: "desc" },
+      { user: { select: { id: true, nickname: true } } }
+    ),
+    commentModel.count({ productId: Number(productId) }),
   ]);
 
   return { comments, totalCount };
 };
 
 export const updateComment = async (id, content) => {
-  return prisma.comment.update({
-    where: { id: Number(id) },
-    data: { content },
-  });
+  return commentModel.update(id, { content });
 };
 
 export const deleteComment = async (id) => {
-  return prisma.comment.delete({ where: { id: Number(id) } });
+  return commentModel.delete(id);
 };

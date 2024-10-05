@@ -2,21 +2,17 @@ import express from "express";
 import { body, param, query } from "express-validator";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { validate } from "../middlewares/validate.js";
-import * as commentService from "../services/commentService.js";
+import * as commentController from "../controllers/commentController.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 router.post(
   "/",
+  authMiddleware,
   [body("content").isString().notEmpty(), body("productId").isInt({ min: 1 })],
   validate,
-  asyncHandler(async (req, res) => {
-    const comment = await commentService.createComment({
-      ...req.body,
-      userId: req.user.id,
-    });
-    res.status(201).json(comment);
-  })
+  asyncHandler(commentController.createComment)
 );
 
 router.get(
@@ -27,39 +23,23 @@ router.get(
     query("limit").optional().isInt({ min: 1, max: 100 }),
   ],
   validate,
-  asyncHandler(async (req, res) => {
-    const { productId } = req.params;
-    const { page = 1, limit = 10 } = req.query;
-    const { comments, totalCount } = await commentService.getComments(
-      productId,
-      page,
-      limit
-    );
-    res.json({ totalCount, list: comments });
-  })
+  asyncHandler(commentController.getComments)
 );
 
 router.put(
   "/:id",
+  authMiddleware,
   [param("id").isInt({ min: 1 }), body("content").isString().notEmpty()],
   validate,
-  asyncHandler(async (req, res) => {
-    const comment = await commentService.updateComment(
-      req.params.id,
-      req.body.content
-    );
-    res.json(comment);
-  })
+  asyncHandler(commentController.updateComment)
 );
 
 router.delete(
   "/:id",
+  authMiddleware,
   [param("id").isInt({ min: 1 })],
   validate,
-  asyncHandler(async (req, res) => {
-    await commentService.deleteComment(req.params.id);
-    res.status(204).send();
-  })
+  asyncHandler(commentController.deleteComment)
 );
 
 export default router;
