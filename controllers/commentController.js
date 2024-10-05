@@ -15,11 +15,12 @@ const createCommentResponse = (comment, type) => ({
 });
 
 const createComment = async (req, res, next, type) => {
+  const serviceType = type.charAt(0).toUpperCase() + type.slice(1);
   const { content } = req.body;
   const id = req.params[`${type}Id`];
   const userId = req.user.id;
   try {
-    const newComment = await commentService[`create${type}Comment`](
+    const newComment = await commentService[`create${serviceType}Comment`](
       content,
       userId,
       parseInt(id)
@@ -33,23 +34,21 @@ const createComment = async (req, res, next, type) => {
 };
 
 export const createProductComment = (req, res, next) => {
-  createComment(req, res, next, "Product");
+  createComment(req, res, next, "product");
 };
 
 export const createArticleComment = (req, res, next) => {
-  createComment(req, res, next, "Article");
+  createComment(req, res, next, "article");
 };
 
 const getComments = async (req, res, next, type) => {
   try {
+    const serviceType = type.charAt(0).toUpperCase() + type.slice(1);
     const { limit = 4, cursor = null } = req.query;
-    const id = req.params[`${type}Id`];
-
-    const { list, nextCursor } = await commentService[`get${type}Comments`](
-      parseInt(limit),
-      cursor,
-      parseInt(id)
-    );
+    const id = req.params?.[`${type}Id`];
+    const { list, nextCursor } = await commentService[
+      `get${serviceType}Comments`
+    ](parseInt(limit), cursor, parseInt(id));
 
     const responseList = list.map((comment) => ({
       id: comment.id,
@@ -70,11 +69,11 @@ const getComments = async (req, res, next, type) => {
 };
 
 export const getProductComments = (req, res, next) => {
-  getComments(req, res, next, "Product");
+  getComments(req, res, next, "product");
 };
 
 export const getArticleComments = (req, res, next) => {
-  getComments(req, res, next, "Article");
+  getComments(req, res, next, "article");
 };
 
 export const updateComment = async (req, res, next) => {

@@ -11,11 +11,13 @@ const getCursorOptions = (cursor) => {
   };
 };
 
-const getCommentOptions = (limit, cursor, whereCondition) => ({
+const getCommentOptions = (limit, cursor, entityId, entityType) => ({
   take: limit,
   orderBy: { createdAt: "desc" },
   include: { writer: true },
-  where: whereCondition,
+  where: {
+    [entityType]: entityId,
+  },
   ...getCursorOptions(cursor),
 });
 
@@ -32,11 +34,7 @@ const createComment = async (content, userId, entityId, entityType) => {
 };
 
 const getComments = async (limit, cursor, entityId, entityType) => {
-  const whereCondition = {};
-  whereCondition[entityType] = parseId(entityId);
-
-  const queryOptions = getCommentOptions(limit, cursor, whereCondition);
-
+  const queryOptions = getCommentOptions(limit, cursor, entityId, entityType);
   const list = await prisma.comment.findMany(queryOptions);
   const nextCursor = list.length === limit ? list[list.length - 1].id : null;
 
