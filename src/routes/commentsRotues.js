@@ -11,7 +11,15 @@ const router = express.Router();
 
 router.get("/:productId/comments", getComments);
 router.post("/:productId/comments", authenticateToken, postComment);
-router.delete("/comments/:commentId", authenticateToken, deleteComment);
-router.patch("/comments/:commentId", authenticateToken, patchComment);
+router.delete(
+  "/:productId/comments/:commentId",
+  authenticateToken,
+  deleteComment
+);
+router.patch(
+  "/:productId/comments/:commentId",
+  authenticateToken,
+  patchComment
+);
 
 export default router;
