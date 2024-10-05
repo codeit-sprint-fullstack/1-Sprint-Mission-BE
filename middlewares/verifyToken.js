@@ -22,7 +22,7 @@ export const verifyToken = async (req, res, next) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    req.user = user;
+    req.user = { id: user.id, email: user.email, nickname: user.nickname };
     next();
   } catch (error) {
     console.error("Error verifying token:", error);

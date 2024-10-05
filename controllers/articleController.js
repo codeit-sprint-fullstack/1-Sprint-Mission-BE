@@ -12,6 +12,7 @@ const formatArticleResponse = (article) => ({
     nickname: article.writer.nickname,
     id: article.writer.id,
   },
+  isLiked: article.isLiked,
 });
 
 const sendResponse = (res, data, status = 200) => res.status(status).json(data);
@@ -57,7 +58,8 @@ export const getArticles = async (req, res, next) => {
 export const getArticleById = async (req, res, next) => {
   try {
     const { articleId } = req.params;
-    const article = await articleService.getArticleById(articleId);
+    const userId = req.user.id;
+    const article = await articleService.getArticleById(articleId, userId);
 
     if (!article) {
       const error = new Error("Article not found");
@@ -102,7 +104,8 @@ export const deleteArticle = async (req, res, next) => {
 export const addLike = async (req, res, next) => {
   try {
     const { articleId } = req.params;
-    const updatedArticle = await articleService.addLike(articleId);
+    const userId = req.user.id;
+    const updatedArticle = await articleService.addLike(articleId, userId);
     const response = formatArticleResponse(updatedArticle);
     sendResponse(res, response);
   } catch (error) {
@@ -113,7 +116,8 @@ export const addLike = async (req, res, next) => {
 export const deleteLike = async (req, res, next) => {
   try {
     const { articleId } = req.params;
-    const updatedArticle = await articleService.deleteLike(articleId);
+    const userId = req.user.id;
+    const updatedArticle = await articleService.deleteLike(articleId, userId);
     const response = formatArticleResponse(updatedArticle);
     sendResponse(res, response);
   } catch (error) {

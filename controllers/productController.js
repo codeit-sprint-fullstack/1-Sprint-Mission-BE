@@ -53,7 +53,11 @@ export const getProducts = async (req, res, next) => {
 export const getProductsById = async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const product = await productService.getProductById(parseInt(productId));
+    const userId = req.user.id;
+    const product = await productService.getProductById(
+      parseInt(productId),
+      userId
+    );
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -99,8 +103,10 @@ export const deleteProduct = async (req, res, next) => {
 export const addFavorite = async (req, res, next) => {
   try {
     const { productId } = req.params;
+    const userId = req.user.id;
     const updatedProduct = await productService.addFavorite(
-      parseInt(productId)
+      parseInt(productId),
+      userId
     );
 
     res.status(200).json(updatedProduct);
@@ -112,8 +118,10 @@ export const addFavorite = async (req, res, next) => {
 export const deleteFavorite = async (req, res, next) => {
   try {
     const { productId } = req.params;
+    const userId = req.user.id;
     const updatedProduct = await productService.deleteFavorite(
-      parseInt(productId)
+      parseInt(productId),
+      userId
     );
 
     res.status(200).json(updatedProduct);
