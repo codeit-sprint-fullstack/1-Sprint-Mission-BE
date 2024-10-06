@@ -2,13 +2,6 @@ import prisma from "../models/index.js";
 
 const parseId = (id) => parseInt(id, 10);
 
-// 태그 유효성 검사
-const validateTags = (tags) => {
-  if (!Array.isArray(tags) || tags.length < 1 || tags.length > 5) {
-    throw new Error("태그는 최소 1개, 최대 5개까지 입력 가능합니다.");
-  }
-};
-
 // 상품 생성
 export const createProduct = async (
   images,
@@ -19,8 +12,6 @@ export const createProduct = async (
   userId,
   userNickname
 ) => {
-  validateTags(tags);
-
   const newProduct = await prisma.product.create({
     data: {
       images,
@@ -105,8 +96,6 @@ export const updateProduct = async (
   userId,
   userNickname
 ) => {
-  validateTags(tags);
-
   const updatedProduct = await prisma.product.update({
     where: { id: parseId(productId) },
     data: {

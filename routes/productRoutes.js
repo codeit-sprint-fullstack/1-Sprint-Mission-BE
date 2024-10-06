@@ -21,7 +21,11 @@ router
   .route("/:productId")
   .all(verifyToken)
   .get(productController.getProductsById)
-  .patch(imageUpload.array("images", 3), productController.updateProduct)
+  .patch(
+    imageUpload.array("images", 3),
+    validateProductFields,
+    productController.updateProduct
+  )
   .delete(productController.deleteProduct);
 
 router

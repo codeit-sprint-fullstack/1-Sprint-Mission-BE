@@ -17,10 +17,16 @@ export const validateProductFields = (req, res, next) => {
       .json({ message: "유효한 가격을 숫자만 입력해주세요." });
   }
 
-  if (!tags || !Array.isArray(tags) || tags.length < 1 || tags.length > 5) {
-    return res
-      .status(400)
-      .json({ message: "태그는 최소 1개, 최대 5개까지 입력 가능합니다." });
+  if (!Array.isArray(tags)) {
+    try {
+      tags = JSON.parse(tags);
+    } catch (error) {
+      throw new Error("태그는 최소 1개, 최대 5개까지 입력 가능합니다.");
+    }
+  }
+
+  if (!Array.isArray(tags) || tags.length < 1 || tags.length > 5) {
+    throw new Error("태그는 최소 1개, 최대 5개까지 입력 가능합니다.");
   }
 
   next();
