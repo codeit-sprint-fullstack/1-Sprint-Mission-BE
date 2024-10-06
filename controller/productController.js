@@ -24,8 +24,8 @@ export const getProductListController = asyncHandler(async (req, res) => {
 
 export const getProductTotalCountController = asyncHandler(async (req, res) => {
   const { search = '' } = req.query;
-  const product = await getProductTotalCountService({ search });
-  res.send(product);
+  const totalCount = await getProductTotalCountService({ search });
+  res.send({ totalCount });
 });
 
 export const patchProductController = asyncHandler(async (req, res) => {
