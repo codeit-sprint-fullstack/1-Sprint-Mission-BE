@@ -32,7 +32,7 @@ model Product {
   name        String
   description String
   price       Int
-  image       String?   // 상품 이미지 경로
+  image       String[]
   tags        String[]
   comments    Comment[] @relation("ProductComments")
   likes       Like[]    // 좋아요 연결
@@ -42,11 +42,12 @@ model Product {
   user        User?     @relation(fields: [userId], references: [id])
 }
 
+
 model Article {
   id          Int       @id @default(autoincrement())
   title       String
   content     String
-  image       String?   // 게시글 이미지 경로
+  image       String[]   // 게시글 이미지 경로
   tags        String[]
   comments    Comment[] @relation("ArticleComments")
   likes       Like[]    // 좋아요 연결
