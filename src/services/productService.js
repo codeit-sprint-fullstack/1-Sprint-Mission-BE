@@ -1,5 +1,5 @@
 import { CreateProduct, PatchProduct, assert } from "../validations/structs.js";
-import productRepository from "../repositories/productRepository.js";
+import * as productRepository from "../repositories/productRepository.js";
 
 export async function getProducts({ orderBy, page, pageSize, keyword }) {
   const offset = (page - 1) * pageSize;

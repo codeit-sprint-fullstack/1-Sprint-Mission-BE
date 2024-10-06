@@ -1,6 +1,5 @@
 import { CreateArticle, PatchArticle, assert } from "../validations/structs.js";
-import articleRepository from "../repositories/articleRepository.js";
-import { findArticle } from "../repositories/userRepository.js";
+import * as articleRepository from "../repositories/articleRepository.js";
 
 export async function getArticles({ orderBy, page, pageSize, keyword }) {
   const offset = (page - 1) * pageSize;

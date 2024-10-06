@@ -1,5 +1,5 @@
 import { CreateComment, PatchComment, assert } from "../validations/structs.js";
-import commentRepository from "../repositories/commentRepository.js";
+import * as commentRepository from "../repositories/commentRepository.js";
 import { areBothIds } from "../validations/validateFunction.js";
 
 export async function getComments({ articleId, productId, limit, lastId }) {

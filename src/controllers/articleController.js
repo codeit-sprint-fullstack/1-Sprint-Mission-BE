@@ -1,4 +1,4 @@
-import articleService from "../services/articleService";
+import * as articleService from "../services/articleService";
 
 export const getArticleList = async (req, res) => {
   const { orderBy } = req.query || "recent";
