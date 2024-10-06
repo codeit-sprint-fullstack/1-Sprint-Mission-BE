@@ -1,10 +1,13 @@
 import * as s from "superstruct";
 import isUuid from "is-uuid";
 import { assert } from "superstruct";
+import isEmail from "is-email";
 
 export { assert };
 
 export const Uuid = s.define("Uuid", (value) => isUuid.v4(value));
+
+const email = () => s.define("email", (value) => isEmail(value));
 
 export const CreateProduct = s.object({
   name: s.size(s.string(), 3, 30),
@@ -27,3 +30,10 @@ export const CreateComment = s.object({
 });
 
 export const PatchComment = s.partial(CreateComment);
+
+export const CreateUser = s.object({
+  email: email(),
+  nickname: s.size(s.string(), 1, 20),
+});
+
+export const PatchUser = s.partial(CreateUser);

@@ -78,12 +78,14 @@ export async function createLike(productId, userId) {
 
 export async function createFavorite(productId, userId) {
   const action = "favorite";
-  return handleUpdateFavorite({ productId, userId, action });
+  const updatedProduct = handleUpdateFavorite({ productId, userId, action });
+  return { ...updatedProduct, isFavorite: true };
 }
 
 export async function deleteFavorite({ productId, userId }) {
   const action = "unfavorite";
-  return handleUpdateFavorite({ productId, userId, action });
+  const updatedProduct = handleUpdateFavorite({ productId, userId, action });
+  return { ...updatedProduct, isFavorite: false };
 }
 
 export async function handleUpdateFavorite({ productId, userId, action }) {
