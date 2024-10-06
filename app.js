@@ -4,8 +4,8 @@ const dotenv = require("dotenv");
 const swaggerUi = require("swagger-ui-express");
 const fs = require("fs");
 const yaml = require("js-yaml");
+const path = require("path");
 const errorHandler = require("./middlewares/errorHandler");
-
 const productRoutes = require("./routes/productRoutes");
 const articleRoutes = require("./routes/articleRoutes");
 const commentRoutes = require("./routes/commentRoutes");
@@ -16,6 +16,12 @@ const imageRoutes = require("./routes/imageRoutes");
 
 dotenv.config(); // .env 파일 로드
 const app = express();
+
+// 서버 시작 시 업로드 디렉토리가 없으면 생성
+const uploadPath = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
 
 app.use(
   cors({
@@ -50,3 +56,4 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 module.exports = app;
+
