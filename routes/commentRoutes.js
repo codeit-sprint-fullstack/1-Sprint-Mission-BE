@@ -9,8 +9,8 @@ router.post('/products/:productId/comments', authMiddleware, createProductCommen
 // 게시글에 대한 댓글 생성 - 로그인한 사용자만 가능
 router.post('/articles/:articleId/comments', authMiddleware, createArticleComment);
 
-// 상품 댓글 목록 조회 - 로그인한 사용자만 가능
-router.get('/products/:productId/comments', authMiddleware, getProductComments);
+// 상품에 대한 댓글 조회 - 로그인 필요 X ( 테스트 중 )
+router.get('/products/:productId/comments', getProductComments);
 
 // 게시글 댓글 목록 조회 - 로그인한 사용자만 가능
 router.get('/articles/:articleId/comments', authMiddleware, getArticleComments);
