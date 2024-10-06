@@ -112,6 +112,7 @@ router.post(
 //로그인
 router.post('/auth/logIn', validateLoginMiddleware, loginUserController);
 
+
 // 회원가입
 router.post('/auth/signUp', validateUserMiddleware, createUserController);
 

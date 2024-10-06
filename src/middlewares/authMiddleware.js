@@ -4,7 +4,9 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const AuthMiddleware = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]; // "Bearer <token>" 형식에서 토큰 추출
+  const token = req.headers.authorization?.split('Bearer ')[1]; // "Bearer <token>" 형식에서 토큰 추출
+
+  console.log(token);
 
   if (!token) {
     return res.status(401).json({ message: 'Access token is required.' });
