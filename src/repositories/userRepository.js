@@ -16,12 +16,18 @@ export async function findByEmail(email) {
   });
 }
 
-export async function create(user) {
+export async function create({
+  email,
+  nickname,
+  encryptedPassword,
+  refreshToken,
+}) {
   return prisma.user.create({
     data: {
-      email: user.email,
-      nickname: user.name,
-      encryptedPassword: user.encryptedPassword,
+      email,
+      nickname,
+      encryptedPassword,
+      refreshToken,
     },
   });
 }

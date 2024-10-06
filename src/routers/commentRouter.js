@@ -5,21 +5,33 @@ import * as controller from "../controllers/commentController.js";
 
 const router = express.Router();
 
-router.use(validateUuid);
-
-router.get("/:articleId/comments", asyncHandler(controller.getArticleComments));
-router.post(
+router.get(
   "/:articleId/comments",
-  asyncHandler(controller.createArticleComment)
+  validateUuid,
+  asyncHandler(controller.getCommentList)
 );
+router.post("/:articleId/comments", asyncHandler(controller.createComment));
 
-router.get("/:productId/comments", asyncHandler(controller.getProductComments));
+router.get(
+  "/:productId/comments",
+  validateUuid,
+  asyncHandler(controller.getCommentList)
+);
 router.post(
   "/:productId/comments",
-  asyncHandler(controller.createProductComment)
+  validateUuid,
+  asyncHandler(controller.createComment)
 );
 
-router.patch("/:commentId", asyncHandler(controller.updateCommentById));
-router.delete("/:commentId", asyncHandler(controller.deleteCommentById));
+router.patch(
+  "/:commentId",
+  validateUuid,
+  asyncHandler(controller.updateCommentById)
+);
+router.delete(
+  "/:commentId",
+  validateUuid,
+  asyncHandler(controller.deleteCommentById)
+);
 
 export default router;

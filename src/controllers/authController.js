@@ -19,7 +19,8 @@ export const createLogin = async (req, res) => {
 };
 
 export const createSignup = async (req, res) => {
-  user = await authService.createUser(req.body);
+  const user = await authService.createUser(req.body);
+
   return res.status(201).json(user);
 };
 

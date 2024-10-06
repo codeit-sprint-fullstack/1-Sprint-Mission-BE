@@ -34,6 +34,7 @@ export const PatchComment = s.partial(CreateComment);
 export const CreateUser = s.object({
   email: email(),
   nickname: s.size(s.string(), 1, 20),
+  password: s.size(s.string(), 8, 14),
 });
 
 export const PatchUser = s.partial(CreateUser);

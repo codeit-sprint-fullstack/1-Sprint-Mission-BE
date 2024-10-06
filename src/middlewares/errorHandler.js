@@ -1,8 +1,11 @@
+import { Prisma } from "@prisma/client";
+
 export default function errorHandler(error, req, res, next) {
   console.error(error.stack);
+
   if (
-    err.name === "StructError" ||
-    err instanceof Prisma.PrismaClientValidationError
+    error.name === "StructError" ||
+    error instanceof Prisma.PrismaClientValidationError
   ) {
     res.status(400).json({
       path: req.path,
@@ -13,8 +16,8 @@ export default function errorHandler(error, req, res, next) {
     });
   }
   if (
-    err instanceof Prisma.PrismaClientKnownRequestError &&
-    err.code === "P2025"
+    error instanceof Prisma.PrismaClientKnownRequestError &&
+    error.code === "P2025"
   ) {
     res.status(404).json({
       path: req.path,
@@ -25,7 +28,7 @@ export default function errorHandler(error, req, res, next) {
     });
   }
 
-  const status = error.status || 500;
+  const status = error.code || 500;
   return res.status(status).json({
     path: req.path,
     method: req.method,

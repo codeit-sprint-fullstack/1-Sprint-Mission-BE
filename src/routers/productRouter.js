@@ -7,19 +7,24 @@ import { authentication, productAuthorization } from "../middlewares/auth.js";
 const router = express.Router();
 
 router.use(authentication);
-router.use("/:productId", validateUuid);
 
 router.get("/", asyncHandler(controller.getProducts));
-router.get("/:productId", asyncHandler(controller.getProductById));
+router.get(
+  "/:productId",
+  validateUuid,
+  asyncHandler(controller.getProductById)
+);
 router.post("/", productAuthorization, asyncHandler(controller.createProduct));
 router.patch(
   "/:productId",
   productAuthorization,
+  validateUuid,
   asyncHandler(controller.updateProductById)
 );
 router.delete(
   "/:productId",
   productAuthorization,
+  validateUuid,
   asyncHandler(controller.deleteProductById)
 );
 

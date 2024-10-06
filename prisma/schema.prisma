@@ -19,7 +19,7 @@ model User {
   nickname          String
   image             String?
   encryptedPassword String
-  refreshToken      String
+  refreshToken      String?
   provider          String?  @default("local")
   providerId        String?  @unique
   createdAt         DateTime @default(now())

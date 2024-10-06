@@ -21,9 +21,20 @@ async function hashingPassword(password) {
   return await bcrypt.hash(password, 10);
 }
 
+export async function getUser(email, password) {
+  const user = await userRepository.findByEmail(email);
+  if (!user) {
+    const error = new Error("없는 이메일이거나 비밀번호 입니다.");
+    error.code = 404;
+    throw error;
+  }
+  await verifyPassword(password, user.password);
+  return filteredSensitiveUserData(user);
+}
+
 export async function createUser(user) {
   assert(user, CreateUser);
-  const existedUser = await userRepository.findByEmail(user.findByEmail);
+  const existedUser = await userRepository.findByEmail(user.email);
   if (existedUser) {
     const error = new Error("이미 사용중인 이메일입니다");
     error.code = 422;
@@ -32,16 +43,18 @@ export async function createUser(user) {
   }
 
   const hashedPassword = await hashingPassword(user.password);
+
   const createUser = await userRepository.create({
-    ...user,
+    email: user.email,
+    nickname: user.nickname,
     encryptedPassword: hashedPassword,
   });
 
   return filteredSensitiveUserData(createUser);
 }
 
-export async function createToken(user) {
-  const payload = { userId: user.userId };
+export async function createToken(user, type = "access") {
+  const payload = { userId: user.id };
 
   const options = {
     expiresIn: type === "refresh" ? "2w" : "1h",
@@ -49,6 +62,10 @@ export async function createToken(user) {
   };
 
   return jwt.sign(payload, process.env.JWT_SECRET, options);
+}
+export async function updateUser(id, data) {
+  assert(PatchUser, data);
+  return await userRepository.update(id, data);
 }
 
 export async function validateRefreshToken(userId, refreshToken) {
