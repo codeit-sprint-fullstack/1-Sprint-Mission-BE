@@ -3,8 +3,6 @@ import path from "path";
 
 export const createProduct = async (req, res, next) => {
   try {
-    console.log("Files:", req.files);
-    console.log("Body:", req.body);
     const images = req.files
       ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
       : req.body.images || [];
@@ -73,16 +71,20 @@ export const getProductsById = async (req, res, next) => {
 
 export const updateProduct = async (req, res, next) => {
   try {
-    const { productId } = req.params;
-    const { images, tags, price, description, name } = req.body;
+    const images = req.files
+      ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
+      : req.body.images || [];
+    const { name, price, description, tags } = req.body;
+    const { id: userId, nickname: userNickname } = req.user;
 
-    const updatedProduct = await productService.updateProduct(
-      parseInt(productId),
+    const newProduct = await productService.updateProduct(
       images,
-      tags,
-      price,
+      name,
+      parseInt(price),
       description,
-      name
+      tags,
+      userId,
+      userNickname
     );
 
     res.status(200).json(updatedProduct);

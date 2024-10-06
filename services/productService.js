@@ -101,7 +101,9 @@ export const updateProduct = async (
   tags,
   price,
   description,
-  name
+  name,
+  userId,
+  userNickname
 ) => {
   validateTags(tags);
 
@@ -113,6 +115,8 @@ export const updateProduct = async (
       description,
       images,
       tags,
+      ownerId: userId,
+      ownerNickname: userNickname,
     },
   });
 
