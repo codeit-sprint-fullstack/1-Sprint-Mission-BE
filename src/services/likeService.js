@@ -1,6 +1,6 @@
 // 좋아요 기능 구현
 // src/services/likeService.js
-import prisma from "../utils/prisma.js";
+import { prisma } from "../utils/prisma.js";
 
 export const toggleLike = async (userId, itemId, itemType) => {
   return prisma.$transaction(async (prisma) => {

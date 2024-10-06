@@ -1,3 +1,5 @@
+// productRoutes.js
+
 import express from "express";
 import { body, param, query } from "express-validator";
 import { asyncHandler } from "../utils/asyncHandler.js";

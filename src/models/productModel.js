@@ -1,4 +1,4 @@
-import prisma from "../utils/prisma.js";
+import { prisma } from "../utils/prisma.js";
 
 const productModel = {
   create: async (data) => {
