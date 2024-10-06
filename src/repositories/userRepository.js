@@ -11,7 +11,7 @@ export const userRepository = {
 
   update: async (id, data) => {
     return await prisma.user.update({
-      where: { id: Number(id) },
+      where: { id: id },
       data,
     });
   },
