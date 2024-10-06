@@ -1,5 +1,3 @@
-const upload = require('../utils/multer');
-
 // 이미지 업로드 처리
 const imageUpload = (req, res) => {
   if (!req.file) {
@@ -12,5 +10,4 @@ const imageUpload = (req, res) => {
 module.exports = {
   imageUpload,
 };
-
 
