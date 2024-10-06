@@ -1,10 +1,10 @@
 import * as dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
-
-import productRoutes from "./routes/productRoutes.js";
-import articleRoutes from "./routes/articleRoutes.js";
-import commentRoutes from "./routes/commentRoutes.js";
+import authRouter from "./routers/authRouter.js";
+import productRouter from "./routes/productRouter.js";
+import articleRouter from "./routes/articleRouter.js";
+import commentRouter from "./routes/commentRouter.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
 dotenv.config();
@@ -14,11 +14,11 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/articles", articleRoutes);
-app.use("/api", commentRoutes);
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
+app.use("/api/products", productRouter);
+app.use("/api/articles", articleRouter);
+app.use("/api", commentRouter);
 
 app.use(errorHandler);
 
