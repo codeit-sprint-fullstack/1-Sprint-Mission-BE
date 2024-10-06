@@ -1,9 +1,13 @@
 import { expressjwt } from 'express-jwt';
+import { PrismaClient } from '@prisma/client';
 
-//로그인 한 유저만 좋아요, 게시물 등록, 저회 가능하게끔
+const prisma = new PrismaClient();
+
+//로그인 한 유저만 좋아요, 게시물 등록, 조회 가능하게끔
 const verifyAccessToken = expressjwt({
   secret: process.env.JWT_SECRET,
   algorithms: ['HS256'],
+  userProperty: 'auth',
 });
 
 //리프레시 토큰으로 엑세스토큰 발급
@@ -20,18 +24,20 @@ const verifyProductAuth = async (req, res, next) => {
   try {
     const product = await prisma.fleaMarket.findUnique({
       where: {
-        id: Number(id),
+        id: Number(productId),
       },
     });
 
     if (!product) {
-      const error = new Error('Product not found');
+      const error = new Error('중고게시글이 없습니다.');
       error.code = 404;
       throw error;
     }
 
-    if (product.authorId !== req.auth.userId) {
-      const error = new Error('Forbidden');
+ 
+
+    if (product.userId !== req.auth.userId) {
+      const error = new Error('Unauthorized');
       error.code = 403;
       throw error;
     }

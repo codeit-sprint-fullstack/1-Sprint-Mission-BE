@@ -70,7 +70,8 @@ const userService = {
   createToken: (user, type) => {
     const payload = { userId: user.id };
     const options = {
-      expiresIn: type === 'refresh' ? '2w' : '1h',
+      // expiresIn: type === 'refresh' ? '2w' : '1h',
+      expiresIn: '2w',
     };
     return jwt.sign(payload, process.env.JWT_SECRET, options);
   },

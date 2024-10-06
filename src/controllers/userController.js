@@ -14,9 +14,13 @@ export const loginUserController = async (req, res) => {
 
   try {
     const user = await userService.loginUser(email, encryptedPassword);
+
     const accessToken = userService.createToken(user);
+
     console.log(accessToken);
+
     const refreshToken = userService.createToken(user, 'refresh');
+
     await userService.updateUser(user.id, { refreshToken });
 
     res.cookie('refreshToken', refreshToken, {
