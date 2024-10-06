@@ -176,4 +176,31 @@ router.patch(
   })
 );
 
+router.patch(
+  '/:id/edit',
+  upload.array('images', 3),
+  validateProductFields,
+  jwtMiddleware.verifyAccessToken,
+  asyncHandler(async (req, res) => {
+    const { price, title, content, tags, userId } = req.body;
+    const { id } = req.params;
+
+    const imagePaths = req.files ? req.files.map((file) => file.path) : [];
+    const tagsArray = tags ? tags.split(',') : [];
+
+    const article = await prisma.fleaMarket.update({
+      where: { id: Number(id) },
+      data: {
+        title,
+        content,
+        price: Number(price),
+        tags: tagsArray,
+        images: imagePaths,
+      },
+    });
+
+    res.status(201).json(article);
+  })
+);
+
 export default router;
