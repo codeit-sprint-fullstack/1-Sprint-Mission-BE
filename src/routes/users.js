@@ -13,7 +13,6 @@ import {
 } from '../middlewares/validateUserMiddleware.js';
 
 import assert from 'assert';
-import authMiddleware from '../middlewares/authMiddleware.js';
 import jwtMiddleware from '../middlewares/jwtMiddleware.js';
 
 const router = express.Router();
@@ -69,18 +68,7 @@ router
     })
   );
 
-// 인증된 사용자 정보 조회
-router.get(
-  '/auth',
-  authMiddleware,
-  asyncHandler(async (req, res) => {
-    res.status(200).json({
-      id: req.user.id,
-      email: req.user.email,
-      name: req.user.name,
-    });
-  })
-);
+
 
 // 리프레시 토큰을 사용한 엑세스토큰 재발급
 router.post(
@@ -111,7 +99,6 @@ router.post(
 
 //로그인
 router.post('/auth/logIn', validateLoginMiddleware, loginUserController);
-
 
 // 회원가입
 router.post('/auth/signUp', validateUserMiddleware, createUserController);

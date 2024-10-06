@@ -3,8 +3,8 @@ dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
-import path from 'path';
 import userRoute from './src/routes/users.js';
+import authRoute from './src/routes/auth.js';
 import freeboardRoute from './src/routes/freeboard.js';
 import fleamarketRoute from './src/routes/fleamarket.js';
 import articleRoute from './src/routes/articles.js';
@@ -25,6 +25,7 @@ app.use('/fleamarket', fleamarketRoute);
 app.use('/comments', commentRoute);
 app.use('/users', userRoute);
 app.use('/favorite', favoriteRoute);
+app.use('/auth', authRoute);
 
 app.use('/uploads', express.static('uploads'));
 

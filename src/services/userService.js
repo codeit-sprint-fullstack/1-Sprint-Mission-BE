@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { userRepository } from '../repositories/userRepository.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -46,19 +45,26 @@ const userService = {
   },
 
   updateUser: async (id, data) => {
-    return await userRepository.update(id, data);
+    return await prisma.user.update({
+      where: { id: id },
+      data,
+    });
   },
 
   refreshToken: async (userId, refreshToken) => {
-    const user = await userRepository.findById(userId);
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
     if (!user || user.refreshToken !== refreshToken) {
       const error = new Error('Unauthorized');
       error.code = 401;
       throw error;
     }
-    const accessToken = createToken(user); // 변경
-    const newRefreshToken = createToken(user, 'refresh'); // 추가
-    return { accessToken, newRefreshToken }; // 변경
+
+    const accessToken = createToken(user);
+    const newRefreshToken = createToken(user, 'refresh');
+    return { accessToken, newRefreshToken };
   },
 
   createToken: (user, type) => {
@@ -77,7 +83,7 @@ function filterSensitiveUserData(createdUser) {
 
 async function hashingPassword(password) {
   if (!password) {
-    throw new Error('Password is required'); // 비밀번호가 없을 경우 예외 처리
+    throw new Error('비밀번호는 필수입니다.');
   }
   const salt = await bcrypt.genSalt(10);
   return bcrypt.hash(password, salt);

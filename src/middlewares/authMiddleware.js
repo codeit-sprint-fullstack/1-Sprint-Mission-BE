@@ -4,22 +4,36 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const AuthMiddleware = (req, res, next) => {
-  const token = req.headers.authorization?.split('Bearer ')[1]; // "Bearer <token>" 형식에서 토큰 추출
+  const { authorization } = req.headers;
 
-  console.log(token);
+  const [tokenType, accessToken] = authorization.split(' ');
 
-  if (!token) {
-    return res.status(401).json({ message: 'Access token is required.' });
+  if (tokenType !== 'Bearer') {
+    return res.status(400).json({
+      success: false,
+      message: '지원하지 않는 인증 방식입니다.',
+    });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+  if (!accessToken) {
+    return res.status(400).json({
+      success: false,
+      message: 'AccessToken이 없습니다.',
+    });
+  }
+
+  // if (!token) {
+  //   return res.status(401).json({ message: 'Access token is required.' });
+  // }
+
+  jwt.verify(accessToken, process.env.JWT_SECRET, async (err, decoded) => {
     if (err) {
       return res.status(401).json({ message: 'Invalid token.' });
     }
 
     try {
       const user = await prisma.user.findUnique({
-        where: { id: decoded.id },
+        where: { id: decoded.userId },
       });
 
       if (!user) {

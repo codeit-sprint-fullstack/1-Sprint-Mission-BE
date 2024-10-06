@@ -1,7 +1,6 @@
 import { expressjwt } from 'express-jwt';
-import productRepository from '../repositories/productRepository.js';
 
-//로그인 한 유저만 리뷰를 등록할 수 있게 하기
+//로그인 한 유저만 좋아요, 게시물 등록, 저회 가능하게끔
 const verifyAccessToken = expressjwt({
   secret: process.env.JWT_SECRET,
   algorithms: ['HS256'],
@@ -19,7 +18,11 @@ const verifyProductAuth = async (req, res, next) => {
   const { id: productId } = req.params;
 
   try {
-    const product = await productRepository.getById(productId);
+    const product = await prisma.fleaMarket.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
 
     if (!product) {
       const error = new Error('Product not found');
