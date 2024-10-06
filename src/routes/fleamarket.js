@@ -141,7 +141,6 @@ router.post(
   upload.array('images', 3),
   validateProductFields,
   jwtMiddleware.verifyAccessToken,
-  jwtMiddleware.verifyProductAuth,
   asyncHandler(async (req, res) => {
     const { price, title, content, tags, userId } = req.body;
 
