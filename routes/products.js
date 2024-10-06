@@ -15,6 +15,6 @@ router.get('/', getProductListController);
 router.post('/', postProductController);
 router.patch('/:id', patchProductController);
 router.delete('/:id', deleteProductController);
-router.get('/', getProductTotalCountController);
+router.get('/total', getProductTotalCountController);
 
 export default router;
