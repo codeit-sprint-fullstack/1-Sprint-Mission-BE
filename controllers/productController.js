@@ -75,16 +75,13 @@ export const updateProduct = async (req, res, next) => {
       ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
       : req.body.images || [];
     const { name, price, description, tags } = req.body;
-    const { id: userId, nickname: userNickname } = req.user;
 
     const updatedProduct = await productService.updateProduct(
       images,
       name,
       parseInt(price),
       description,
-      tags,
-      userId,
-      userNickname
+      tags
     );
 
     res.status(200).json(updatedProduct);
