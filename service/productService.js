@@ -4,6 +4,7 @@ import {
   postProductRepository,
   patchProductRepository,
   deleteProductRepository,
+  getProductTotalCountRepository,
 } from '../repository/productRepository.js';
 
 export const getProductService = async ({ id }) => {
@@ -17,6 +18,10 @@ export const getProductListService = async ({
   search,
 }) => {
   return await getProductListRepository({ offset, limit, order, search });
+};
+
+export const getProductTotalCountService = async ({ search }) => {
+  return await getProductTotalCountRepository({ search });
 };
 
 export const postProductService = async ({

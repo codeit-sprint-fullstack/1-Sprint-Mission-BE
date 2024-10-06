@@ -3,6 +3,7 @@ import {
   deleteProductController,
   getProductController,
   getProductListController,
+  getProductTotalCountController,
   patchProductController,
   postProductController,
 } from '../controller/productController.js';
@@ -14,5 +15,6 @@ router.get('/', getProductListController);
 router.post('/', postProductController);
 router.patch('/:id', patchProductController);
 router.delete('/:id', deleteProductController);
+router.get('/', getProductTotalCountController);
 
 export default router;

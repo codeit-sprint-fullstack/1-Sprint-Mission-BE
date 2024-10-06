@@ -5,6 +5,7 @@ import {
   deleteProductService,
   getProductListService,
   getProductService,
+  getProductTotalCountService,
   patchProductService,
   postProductService,
 } from '../service/productService.js';
@@ -18,6 +19,12 @@ export const getProductController = asyncHandler(async (req, res) => {
 export const getProductListController = asyncHandler(async (req, res) => {
   const { offset = 0, limit = 10, order = 'recent', search = '' } = req.query;
   const product = await getProductListService({ offset, limit, order, search });
+  res.send(product);
+});
+
+export const getProductTotalCountController = asyncHandler(async (req, res) => {
+  const { search = '' } = req.query;
+  const product = await getProductTotalCountService({ search });
   res.send(product);
 });
 

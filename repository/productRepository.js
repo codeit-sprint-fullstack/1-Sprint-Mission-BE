@@ -61,6 +61,17 @@ export const getProductListRepository = async ({
   });
 };
 
+export const getProductTotalCountRepository = async ({ search }) => {
+  return await prisma.product.count({
+    where: {
+      OR: [
+        { name: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+      ],
+    },
+  });
+};
+
 export const postProductRepository = async ({
   name,
   description,
