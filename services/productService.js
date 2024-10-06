@@ -89,20 +89,20 @@ export const getProductById = async (productId, userId) => {
 export const updateProduct = async (
   productId,
   images,
-  tags,
+  name,
   price,
   description,
-  name,
+  tags,
   userId,
   userNickname
 ) => {
   const updatedProduct = await prisma.product.update({
     where: { id: parseId(productId) },
     data: {
+      images,
       name,
       price,
       description,
-      images,
       tags,
       ownerId: userId,
       ownerNickname: userNickname,

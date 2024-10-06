@@ -77,7 +77,7 @@ export const updateProduct = async (req, res, next) => {
     const { name, price, description, tags } = req.body;
     const { id: userId, nickname: userNickname } = req.user;
 
-    const newProduct = await productService.updateProduct(
+    const updatedProduct = await productService.updateProduct(
       images,
       name,
       parseInt(price),
