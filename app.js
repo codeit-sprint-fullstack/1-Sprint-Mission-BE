@@ -4,7 +4,6 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import { fileURLToPath } from 'url'; // 추가
 import userRoute from './src/routes/users.js';
 import freeboardRoute from './src/routes/freeboard.js';
 import fleamarketRoute from './src/routes/fleamarket.js';

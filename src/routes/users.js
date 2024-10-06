@@ -82,8 +82,9 @@ router.get(
   })
 );
 
+// 리프레시 토큰을 사용한 엑세스토큰 재발급
 router.post(
-  '/token/refresh',
+  '/auth/refresh-token',
   jwtMiddleware.verifyRefreshToken,
   async (req, res, next) => {
     try {
@@ -92,8 +93,8 @@ router.post(
       const { accessToken, newRefreshToken } = await userService.refreshToken(
         userId,
         refreshToken
-      ); // 변경
-      await userService.updateUser(userId, { refreshToken: newRefreshToken }); // 추가
+      );
+      await userService.updateUser(userId, { refreshToken: newRefreshToken });
 
       res.cookie('refreshToken', newRefreshToken, {
         httpOnly: true,
@@ -108,8 +109,10 @@ router.post(
   }
 );
 
-router.post('/login', validateLoginMiddleware, loginUserController);
+//로그인
+router.post('/auth/logIn', validateLoginMiddleware, loginUserController);
 
-router.post('/signup', validateUserMiddleware, createUserController);
+// 회원가입
+router.post('/auth/signUp', validateUserMiddleware, createUserController);
 
 export default router;
