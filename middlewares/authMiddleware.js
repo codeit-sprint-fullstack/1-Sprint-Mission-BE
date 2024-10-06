@@ -8,7 +8,7 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified;
+    req.user = { id: verified.userId }; // userId만 저장
     next();
   } catch (error) {
     res.status(401).json({ error: '유효한 토큰이 만료되었습니다.' });
