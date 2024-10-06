@@ -43,16 +43,26 @@ exports.createArticleComment = async (req, res, next) => {
 exports.getProductComments = async (req, res, next) => {
   const { productId } = req.params;
 
+  if (!productId) {
+    return res.status(400).json({ error: "상품 ID가 제공되지 않았습니다." });
+  }
+
   try {
     const comments = await prisma.comment.findMany({
       where: { productId: parseInt(productId) },
       include: { user: true }, // 댓글 작성자 정보 포함
     });
+
+    if (comments.length === 0) {
+      return res.status(404).json({ message: "댓글이 없습니다." });
+    }
+
     res.status(200).json(comments);
   } catch (error) {
-    next(error); // 에러 전달
+    next(error);  // 에러 처리 미들웨어로 전달
   }
 };
+
 
 // 게시글 댓글 목록 조회
 exports.getArticleComments = async (req, res, next) => {
