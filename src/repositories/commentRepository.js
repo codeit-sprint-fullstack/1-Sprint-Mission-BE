@@ -28,6 +28,24 @@ export async function getAll({ articleId, limit, productId, lastId }) {
   return comments;
 }
 
+export async function getById(id) {
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      ...COMMENT_FIELD,
+      writer: {
+        select: {
+          ...OWNER_FIELDS,
+        },
+      },
+    },
+  });
+
+  return comment;
+}
+
 export async function create({ productId, articleId, userId, data }) {
   const queryOptions = {
     data: {
