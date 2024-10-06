@@ -9,7 +9,7 @@ const validateProductFields = (req, res, next) => {
     return res.status(400).json({ error: '상품 설명은 필수입니다.' });
   }
 
-  if (typeof price !== 'number' || price <= 0) {
+  if (!price || price.trim() === '' || price <= 0) {
     return res.status(400).json({ error: '상품 가격은 0 이상이어야 합니다.' });
   }
 
