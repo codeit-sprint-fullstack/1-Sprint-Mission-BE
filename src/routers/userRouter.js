@@ -5,3 +5,5 @@ import * as controller from "../controllers/userController.js";
 const router = express.Router();
 
 router.get("/me", asyncHandler(controller.getUserMe));
+
+export default router;

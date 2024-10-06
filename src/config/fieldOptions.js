@@ -30,7 +30,7 @@ export const COMMENT_FIELD = {
   ...TIME_STAMP,
 };
 
-export const OWNEßR_FIELDS = {
+export const OWNER_FIELDS = {
   id: true,
   nickname: true,
   image: true,

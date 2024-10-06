@@ -1,5 +1,5 @@
-import * as authService from "../services/authService";
-import { cookieOptions } from "../config/authOptions";
+import * as authService from "../services/authService.js";
+import { cookieOptions } from "../config/authOptions.js";
 
 export const createLogin = async (req, res) => {
   const user = req.user;

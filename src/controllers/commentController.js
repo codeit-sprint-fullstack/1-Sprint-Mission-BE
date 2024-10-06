@@ -1,5 +1,5 @@
-import * as commentService from "../services/commentService";
-import { areBothIdsNull } from "../validations/validateFunction";
+import * as commentService from "../services/commentService.js";
+import { areBothIdsNull } from "../validations/validateFunction.js";
 
 export const getCommentList = async (req, res) => {
   const { articleId, productId } = req.params || null;

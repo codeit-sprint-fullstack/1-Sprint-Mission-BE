@@ -1,5 +1,5 @@
 import { Strategy as LocalStrategy } from "passport-local";
-import * as userService from "../../services/userService";
+import * as userService from "../../services/userService.js";
 
 const localStrategy = new LocalStrategy(
   {

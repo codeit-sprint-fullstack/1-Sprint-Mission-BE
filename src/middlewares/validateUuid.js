@@ -1,5 +1,5 @@
 import { assert } from "superstruct";
-import { Uuid } from "../validations/structs";
+import { Uuid } from "../validations/structs.js";
 
 const idParams = ["articleId", "productId", "commentId"];
 

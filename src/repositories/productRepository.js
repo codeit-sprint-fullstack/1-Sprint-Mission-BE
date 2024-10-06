@@ -1,5 +1,5 @@
-import prisma from "../config/prisma";
-import { OWNER_FIELDS, PRODUCT_FIELDS } from "../config/fieldOptions";
+import prisma from "../config/prisma.js";
+import { OWNER_FIELDS, PRODUCT_FIELDS } from "../config/fieldOptions.js";
 
 export async function getAll({ searchQuery, sortOption, offset, pageSize }) {
   const products = await prisma.product.findMany({

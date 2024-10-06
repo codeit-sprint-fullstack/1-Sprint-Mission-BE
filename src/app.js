@@ -1,10 +1,12 @@
 import * as dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
+import passport from "./config/passport.js";
 import authRouter from "./routers/authRouter.js";
-import productRouter from "./routes/productRouter.js";
-import articleRouter from "./routes/articleRouter.js";
-import commentRouter from "./routes/commentRouter.js";
+import userRouter from "./routers/userRouter.js";
+import productRouter from "./routers/productRouter.js";
+import articleRouter from "./routers/articleRouter.js";
+import commentRouter from "./routers/commentRouter.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
 dotenv.config();
@@ -13,6 +15,7 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
+app.use(passport.initialize());
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);

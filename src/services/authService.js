@@ -1,7 +1,7 @@
-import { assert, CreateUser } from "../validations/structs";
+import { assert, CreateUser } from "../validations/structs.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import * as userRepository from "../repositories/userRepository";
+import * as userRepository from "../repositories/userRepository.js";
 
 async function filteredSensitiveUserData(user) {
   const { encryptedPassword, refreshToken, ...rest } = user;

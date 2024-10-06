@@ -1,4 +1,4 @@
-import * as productService from "../services/productService";
+import * as productService from "../services/productService.js";
 
 export const getProducts = async (req, res) => {
   const { orderBy } = req.query;
