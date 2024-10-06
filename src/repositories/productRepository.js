@@ -72,3 +72,62 @@ export async function updateById(id, data) {
 export async function deleteById(id) {
   await prisma.product.delete({ where: { id } });
 }
+
+export async function fineFavoriteUser({ productId, userId }) {
+  const hasUserAddFavoriteToProduct = await prisma.product.findFirst({
+    where: {
+      id: productId,
+      favoriteUsers: { some: { userId } },
+    },
+  });
+
+  return hasUserAddFavoriteToProduct;
+}
+
+export async function addFavorite({ productId, currentFavoriteCount, userId }) {
+  const updatedProduct = await prisma.product.update({
+    where: {
+      id: productId,
+      favoriteCount: currentFavoriteCount,
+    },
+    data: {
+      favoriteUsers: { connect: { userId } },
+      favoriteCount: { increment: 1 },
+    },
+    select: {
+      ...PRODUCT_FIELDS,
+    },
+    writer: {
+      select: {
+        ...OWNER_FIELDS,
+      },
+    },
+  });
+  return updatedProduct;
+}
+
+export async function removeFavorite({
+  productId,
+  currentFavoriteCount,
+  userId,
+}) {
+  const updatedProduct = await prisma.product.update({
+    where: {
+      id: productId,
+      favoriteCount: currentFavoriteCount,
+    },
+    data: {
+      favoriteUsers: { disconnect: { userId } },
+      favoriteCount: { decrement: 1 },
+    },
+    select: {
+      ...PRODUCT_FIELDS,
+    },
+    writer: {
+      select: {
+        ...OWNER_FIELDS,
+      },
+    },
+  });
+  return updatedProduct;
+}

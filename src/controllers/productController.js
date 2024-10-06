@@ -36,7 +36,6 @@ export const getProducts = async (req, res) => {
   res.json({ totalCount, list: products });
 };
 
-//get product by id
 export const getProductById = async (req, res) => {
   const { id } = req.params;
 
@@ -55,7 +54,6 @@ export const getProductById = async (req, res) => {
   res.json(product);
 };
 
-// create new product
 export const createProduct = async (req, res) => {
   assert(req.body, CreateProduct);
   const newProduct = await prisma.product.create({
@@ -64,7 +62,6 @@ export const createProduct = async (req, res) => {
   res.status(201).json(newProduct);
 };
 
-// patch existed product with id
 export const updateProductById = async (req, res) => {
   assert(req.body, PatchProduct);
   const { id } = req.params;
@@ -75,10 +72,21 @@ export const updateProductById = async (req, res) => {
   res.json(product);
 };
 
-// delete a product by id
 export const deleteProductById = async (req, res) => {
   const { id } = req.params;
   await prisma.product.delete({ where: { id } });
 
   res.status(200).json({ message: "Product has deleted successfully" });
+};
+
+export const createFavoriteOnProduct = async (req, res) => {
+  const { productId } = req.params;
+  const product = await productService.createFavorite(productId, userId);
+  return res.json(product);
+};
+
+export const deleteFavoriteOnProduct = async (req, res) => {
+  const { productId } = req.params;
+  const product = await productService.deleteFavorite(productId, userId);
+  return res.json(product);
 };

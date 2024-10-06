@@ -29,8 +29,8 @@ model User {
   articles Article[]
   products Product[]
 
-  likedArticles Article[] @relation("ArticleLike")
-  likedProducts Product[] @relation("ProductLike")
+  likedArticles    Article[] @relation("ArticleLike")
+  favoriteProducts Product[] @relation("ProductFavorite")
 }
 
 model Product {
@@ -46,8 +46,8 @@ model Product {
   ownerId       String
   owner         User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
-  likedUsers User[]    @relation("ProductLike")
-  comments   Comment[]
+  FavoriteUsers User[]    @relation("ProductFavorite")
+  comments      Comment[]
 }
 
 model Article {
