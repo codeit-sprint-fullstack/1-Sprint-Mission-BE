@@ -6,6 +6,10 @@ exports.createProductComment = async (req, res, next) => {
   const { content } = req.body;
   const { productId } = req.params;
 
+  // userId 로그 추가
+  console.log("댓글 작성자 userId:", req.user ? req.user.id : "userId가 없습니다.");
+  console.log("등록할 상품 ID:", productId);
+
   try {
     const comment = await prisma.comment.create({
       data: {
@@ -19,6 +23,7 @@ exports.createProductComment = async (req, res, next) => {
     next(error); // 에러 전달
   }
 };
+
 
 // 게시글에 댓글 추가
 exports.createArticleComment = async (req, res, next) => {
@@ -42,6 +47,9 @@ exports.createArticleComment = async (req, res, next) => {
 // 상품 댓글 목록 조회
 exports.getProductComments = async (req, res, next) => {
   const { productId } = req.params;
+
+  // productId 로그 추가
+  console.log("불러올 상품 ID:", productId);
 
   if (!productId) {
     return res.status(400).json({ error: "상품 ID가 제공되지 않았습니다." });
