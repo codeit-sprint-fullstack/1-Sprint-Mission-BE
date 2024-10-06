@@ -3,6 +3,8 @@ import path from "path";
 
 export const createProduct = async (req, res, next) => {
   try {
+    console.log("Files:", req.files);
+    console.log("Body:", req.body);
     const images = req.files
       ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
       : req.body.images || [];
