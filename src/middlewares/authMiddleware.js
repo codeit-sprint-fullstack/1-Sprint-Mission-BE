@@ -15,16 +15,17 @@ const AuthMiddleware = (req, res, next) => {
       return res.status(401).json({ message: 'Invalid token.' });
     }
 
-  
     try {
-      const user = await prisma.user.findById(decoded.id);
+      const user = await prisma.user.findUnique({
+        where: { id: decoded.id },
+      });
 
       if (!user) {
         return res.status(404).json({ message: 'User not found.' });
       }
 
       req.user = user;
-      next(); 
+      next();
     } catch (error) {
       return res.status(500).json({ message: 'Internal server error.' });
     }
