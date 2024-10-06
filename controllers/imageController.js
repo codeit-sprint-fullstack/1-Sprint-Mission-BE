@@ -11,3 +11,7 @@ const imageUpload = (req, res) => {
   res.status(200).json({ url: imageUrl });
 };
 
+module.exports = {
+  imageUpload, // 이 부분이 export되고 있는지 확인
+};
+
