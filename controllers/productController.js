@@ -71,12 +71,14 @@ export const getProductsById = async (req, res, next) => {
 
 export const updateProduct = async (req, res, next) => {
   try {
+    const { productId } = req.params;
     const images = req.files
       ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
       : req.body.images || [];
     const { name, price, description, tags } = req.body;
 
     const updatedProduct = await productService.updateProduct(
+      parseInt(productId),
       images,
       name,
       parseInt(price),
