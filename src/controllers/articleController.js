@@ -40,3 +40,15 @@ export const deleteArticleById = async (req, res) => {
   await articleService.deleteArticle(articleId);
   return res.status(204).json({ message: "게시글이 삭제되었습니다" });
 };
+
+export const createLikeOnArticle = async (req, res) => {
+  const { articleId } = req.params;
+  const article = await articleService.createLike(articleId, userId);
+  return res.json(article);
+};
+
+export const deleteLikeOnArticle = async (req, res) => {
+  const { articleId } = req.params;
+  const article = await articleService.createLike(articleId, userId);
+  return res.json(article);
+};

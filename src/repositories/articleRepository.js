@@ -72,5 +72,90 @@ export async function updateById(id, data) {
 }
 
 export async function deleteById(id) {
-  await prisma.article.delete({ where: { id } });
+  return await prisma.article.delete({ where: { id } });
+}
+
+export async function findLikedUser(articleId, userId) {
+  const hasLiked = await prisma.article.findFirst({
+    where: { id: articleId },
+    LikedUsers: { some: { writerId: userId } },
+  });
+
+  return hasLiked;
+}
+
+export async function updateLike(id, currentLikeCount) {
+  const updatedArticle = await prisma.article.update({
+    where: {
+      id,
+      likeCount: currentLikeCount,
+    },
+    data: {
+      likedUsers: { connect: { writerId: userId } },
+      likeCount: { increment: 1 },
+    },
+    select: {
+      ...ARTICLE_FIELDS,
+    },
+    writer: {
+      select: {
+        ...OWNER_FIELDS,
+      },
+    },
+  });
+  return updatedArticle;
+}
+
+export async function createLikedUser(id, currentLikeCount, option) {
+  const updatedArticle = await prisma.article.update({
+    where: {
+      id,
+      likeCount: currentLikeCount,
+    },
+    data: {
+      likedUsers: { connect: { writerId: userId } },
+      likeCount: option,
+    },
+    select: {
+      ...ARTICLE_FIELDS,
+    },
+    writer: {
+      select: {
+        ...OWNER_FIELDS,
+      },
+    },
+  });
+  return updatedArticle;
+}
+
+export async function deleteLikedUser(id, currentLikeCount, option) {
+  const updatedArticle = await prisma.article.update({
+    where: {
+      id,
+      likeCount: currentLikeCount,
+    },
+    data: {
+      likedUsers: { disconnect: { writerId: userId } },
+      likeCount: option,
+    },
+    select: {
+      ...ARTICLE_FIELDS,
+    },
+    writer: {
+      select: {
+        ...OWNER_FIELDS,
+      },
+    },
+  });
+  return updatedArticle;
+}
+
+export async function findLikeCount(id) {
+  const article = await prisma.article.findUnique({
+    where: id,
+    select: {
+      likeCount: true,
+    },
+  });
+  return article;
 }
