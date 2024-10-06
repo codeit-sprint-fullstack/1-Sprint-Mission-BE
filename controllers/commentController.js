@@ -6,7 +6,6 @@ exports.createProductComment = async (req, res, next) => {
   const { content } = req.body;
   const { productId } = req.params;
 
-  // userId 로그 추가
   console.log("댓글 작성자 userId:", req.user ? req.user.id : "userId가 없습니다.");
   console.log("등록할 상품 ID:", productId);
 
@@ -20,6 +19,7 @@ exports.createProductComment = async (req, res, next) => {
     });
     res.status(201).json(comment);
   } catch (error) {
+    console.error("댓글 등록 중 오류:", error);  // 에러 로그 추가
     next(error); // 에러 전달
   }
 };
@@ -48,7 +48,6 @@ exports.createArticleComment = async (req, res, next) => {
 exports.getProductComments = async (req, res, next) => {
   const { productId } = req.params;
 
-  // productId 로그 추가
   console.log("불러올 상품 ID:", productId);
 
   if (!productId) {
@@ -67,9 +66,11 @@ exports.getProductComments = async (req, res, next) => {
 
     res.status(200).json(comments);
   } catch (error) {
-    next(error);  // 에러 처리 미들웨어로 전달
+    console.error("댓글 목록 불러오기 중 오류:", error);  // 에러 로그 추가
+    next(error); // 에러 전달
   }
 };
+
 
 
 // 게시글 댓글 목록 조회
