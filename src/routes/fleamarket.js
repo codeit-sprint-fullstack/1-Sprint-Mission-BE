@@ -109,18 +109,6 @@ router
       res.status(200).json({ article, isLiked });
     })
   )
-  .patch(
-    jwtMiddleware.verifyAccessToken,
-    jwtMiddleware.verifyProductAuth,
-    asyncHandler(async (req, res) => {
-      const { id } = req.params;
-      const article = await prisma.fleaMarket.update({
-        where: { id: Number(id) },
-        data: req.body,
-      });
-      res.status(201).json(article);
-    })
-  )
   .delete(
     jwtMiddleware.verifyAccessToken,
     jwtMiddleware.verifyProductAuth,
@@ -155,6 +143,33 @@ router.post(
         tags: tagsArray,
         images: imagePaths,
         userId: userId,
+      },
+    });
+  })
+);
+
+router.patch(
+  '/:id/edit',
+  upload.array('images', 3),
+  validateProductFields,
+  jwtMiddleware.verifyAccessToken,
+  jwtMiddleware.verifyProductAuth,
+  asyncHandler(async (req, res) => {
+    const { price, title, content, tags, userId } = req.body;
+
+    const imagePaths = req.files ? req.files.map((file) => file.path) : [];
+    const tagsArray = tags ? tags.split(',') : [];
+
+    console.log(imagePaths);
+
+    const article = await prisma.fleaMarket.update({
+      where: { id: Number(id) },
+      data: {
+        title,
+        content,
+        price: Number(price),
+        tags: tagsArray,
+        images: imagePaths,
       },
     });
 
