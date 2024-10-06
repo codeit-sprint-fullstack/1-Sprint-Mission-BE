@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 exports.createProduct = async (req, res, next) => {
   const { name, description, price, tags } = req.body;
   const images = req.body.images || [];
+  console.log("사용자 정보:", req.user); // req.user 로그 추가
 
   try {
     const product = await prisma.product.create({
