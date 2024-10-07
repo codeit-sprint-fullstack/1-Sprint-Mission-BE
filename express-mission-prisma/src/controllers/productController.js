@@ -10,15 +10,36 @@ productController.route("/").post(
   imgUploadHandler,
   validateData.product("post"),
   asyncHandler(async (req, res, next) => {
-    const product = await productService.create(req.body);
-    const path = {};
+    let creatData = {};
+    let path = {};
+    let product;
+
     if (req.files && req.files.length > 0) {
+      creatData = { ...req.body, image: req.files };
+      product = await productService.create(creatData);
+
       req.files.map((file) => {
         path[file.originalname] = file.path;
       });
+    } else {
+      creatData = { ...req.body, image: [] };
+      product = await productService.create(creatData);
     }
 
-    res.status(201).send({ product, path });
+    const resBody = {
+      product: {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        tags: product.tags,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+      },
+      path,
+    };
+
+    res.status(201).send(resBody);
   })
 );
 
