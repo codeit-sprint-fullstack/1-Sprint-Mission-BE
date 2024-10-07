@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 // import { USER, COMMENT } from "./mock.js";
-import { users, articles, comments } from "./mock_2.js"; // mook.js 파일에서 데이터 가져오기
-
+// import { users, articles, comments } from "./mock_2.js"; // mook.js 파일에서 데이터 가져오기
+import { articleComments } from "./commentsMock.js";
 const prisma = new PrismaClient();
 // async function main() {
 //   // 기존 데이터 삭제
@@ -26,11 +26,11 @@ async function main() {
   // console.log("Seeding database...");
 
   // 사용자 데이터 시딩
-  await prisma.user.deleteMany();
-  await prisma.user.createMany({
-    data: users,
-    // skipDuplicates: true,
-  });
+  //await prisma.user.deleteMany();
+  //await prisma.user.createMany({
+  //  data: users,
+  //  // skipDuplicates: true,
+  //});
 
   // 글 데이터 시딩
   // await prisma.article.deleteMany();
@@ -41,10 +41,10 @@ async function main() {
 
   // // 댓글 데이터 시딩
   // await prisma.comment.deleteMany();
-  // await prisma.comment.createMany({
-  // data: comments,
-  // skipDuplicates: true,
-  // });
+  await prisma.comment.createMany({
+    data: articleComments,
+    skipDuplicates: true,
+  });
 
   console.log("Seeding completed!");
 }
