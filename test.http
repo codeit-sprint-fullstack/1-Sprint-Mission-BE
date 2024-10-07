@@ -4,7 +4,7 @@ POST http://localhost:3001/auth/signup
 Content-Type: application/json
 
 {
-  "email" : "test@test.c",
+  "email" : "1111@1111.c",
   "password" : "12341234",
   "nickname" : "test"
 }
@@ -14,7 +14,7 @@ POST http://localhost:3001/auth/login
 Content-Type: application/json
 
 {
-  "email" : "test@test.com",
+  "email" : "test@test.c",
   "password" : "12341234"
 }
 ### 로컬 로그인
@@ -112,3 +112,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtY
 ### 자유게시판
 
 GET http://localhost:3001/article/1
+
+### 게시판 수정
+PATCH http://localhost:3001/article/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyODMxMjEsImV4cCI6MTcyODI4NDAyMX0.ZKA5Yzxet8lKhC61oIyZ5JLdWRu9EtL9Jc4EiFiabNk
+
+{
+  "content" : "테스트",
+  "name" : "테스트"
+}
+
+### 게시판 삭제
+DELETE http://localhost:3001/article/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyODMxMjEsImV4cCI6MTcyODI4NDAyMX0.ZKA5Yzxet8lKhC61oIyZ5JLdWRu9EtL9Jc4EiFiabNk

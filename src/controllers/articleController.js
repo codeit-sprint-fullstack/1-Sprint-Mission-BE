@@ -41,3 +41,71 @@ export async function getArticleId(req, res, next) {
       .json({ message: "게시물 정보를 추출할 수 없습니다." });
   }
 }
+
+export async function patchArticle(req, res, next) {
+  try {
+    const { articleId } = req.params;
+    const { name, content, images } = req.body;
+
+    const article = await prisma.article.findUnique({
+      where: { id: parseInt(articleId, 10) },
+      select: {
+        id: true,
+        userId: true,
+      },
+    });
+    if (!article) {
+      return res.status(404).json({ message: "게시물이 존재하지 않습니다." });
+    }
+    if (article.userId !== req.user.userId) {
+      return res
+        .status(403)
+        .json({ message: "게시물을 변경할 권한이 없습니다." });
+    }
+
+    const imagesUrls = images ? images.map((image) => image.url) : [];
+
+    const updatedArticle = await prisma.article.update({
+      where: { id: parseInt(articleId, 10) },
+      data: {
+        name: name || undefined,
+        content: content || undefined,
+        images: imagesUrls.length ? imagesUrls : undefined,
+      },
+    });
+    return res
+      .status(200)
+      .json({ message: "게시물 정보 변경 성공", updatedArticle });
+  } catch (error) {
+    console.error("게시물 정보 변경 중 오류 발생:", error);
+    return res
+      .status(500)
+      .json({ message: "게시물 정보를 변경할 수 없습니다." });
+  }
+}
+
+export async function deleteArticle(req, res, next) {
+  try {
+    const { articleId } = req.params;
+    const article = await prisma.article.findUnique({
+      where: { id: parseInt(articleId, 10) },
+      select: {
+        id: true,
+        userId: true,
+      },
+    });
+    if (!article) {
+      return res.status(404).json({ message: "게시물이 존재하지 않습니다." });
+    }
+    if (article.userId !== req.user.userId) {
+      return res
+        .status(403)
+        .json({ message: "게시물을 삭제할 권한이 없습니다." });
+    }
+    await prisma.article.delete({ where: { id: parseInt(articleId, 10) } });
+    return res.status(200).json({ message: "게시물 삭제 성공" });
+  } catch (error) {
+    console.error("게시물 삭제 중 오류 발생:", error);
+    return res.status(500).json({ message: "게시물를 삭제할 수 없습니다." });
+  }
+}
