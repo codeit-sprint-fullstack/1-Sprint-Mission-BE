@@ -29,7 +29,7 @@ model Comment {
   updatedAt DateTime @updatedAt
   product   Product? @relation(fields: [productId], references: [id])
   productId String?
-  article   Article?  @relation(fields: [articleId], references: [id])
+  article   Article? @relation(fields: [articleId], references: [id])
   articleId String?
 }
 
@@ -42,4 +42,14 @@ model Product {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   Comment     Comment[]
+}
+
+model User {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  nickname          String
+  image             String?
+  encryptedPassword String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
