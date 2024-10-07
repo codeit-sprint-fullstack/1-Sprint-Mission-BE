@@ -12,16 +12,6 @@
     "https"
   ],
   "paths": {
-    "/api/test": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/articles/": {
       "get": {
         "description": "",

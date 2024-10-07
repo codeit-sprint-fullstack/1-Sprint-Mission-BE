@@ -65,6 +65,7 @@ router.post(
         productId,
         userId,
       });
+      console.log(data);
       return res.status(201).send(data);
     } catch (error) {
       next(error);

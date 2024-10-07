@@ -6,13 +6,6 @@ import articleService from "../service/articleService.js";
 import passport from "../config/passportConfig.js";
 import authUser from "../middlewares/authUser.js";
 
-/**
- * @swagger
- * tags:
- *   name: Articles
- *   description: 게시글
- */
-
 const router = express.Router();
 
 router.get(

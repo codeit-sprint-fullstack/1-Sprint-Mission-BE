@@ -113,7 +113,7 @@ router.get(
           newRefreshToken,
           cookiesConfig.accessTokenOption
         );
-        res.status(200).send({ ...newUser, accessToken });
+        res.status(200).send({ ...newUser });
       }
     } catch (error) {
       next(error);

@@ -22,10 +22,6 @@ app.use(cookieParser());
 app.use("/uploads", express.static("upload"));
 
 // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
-app.get("/api/test", (req, res) => {
-  res.send("API 테스트 엔드포인트");
-});
-
 app.use("/articles", articles);
 
 app.use("/comments", comments);
