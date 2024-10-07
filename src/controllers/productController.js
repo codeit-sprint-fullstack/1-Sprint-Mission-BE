@@ -29,6 +29,7 @@ export async function postProduct(req, res, next) {
     const tagText = tags.map((tag) => tag.text);
     const parsedPrice = parseInt(price, 10);
     const imagesUrls = images.map((image) => image.url);
+    console.log(images);
     const product = await prisma.product.create({
       data: {
         name,

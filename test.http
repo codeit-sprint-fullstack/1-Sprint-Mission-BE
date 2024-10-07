@@ -14,7 +14,7 @@ POST http://localhost:3001/auth/login
 Content-Type: application/json
 
 {
-  "email" : "admin@a.c",
+  "email" : "test@test.com",
   "password" : "12341234"
 }
 ### 로컬 로그인
@@ -37,15 +37,16 @@ GET http://localhost:3001/products
 ### 상품 등록
 POST http://localhost:3001/products
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlbWFpbCI6ImJhYmFAdGVzdC5jb20iLCJpYXQiOjE3MjgwMjk1NjAsImV4cCI6MTcyODAzMDQ2MH0.4uAlKrvfx3D0bitPYNWbqbgOgFMjIoZoUALJmfY0poQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTcyODExODA4NSwiZXhwIjoxNzI4MTE4OTg1fQ.PKulI7_Wu_r5Yi975AuJGchnpFnqZqmq4VjZSCMV-0k
 
 {
   "images": [],
-  "price":  1000,
+  "price": 1000,
   "tags": [],
-  "description": "test",
-  "name": "test"
+  "description": "666666",
+  "name": "6666666"
 }
+
 
 ### 토큰 재발급
 POST http://localhost:3001/auth/refreshToken
@@ -106,3 +107,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlb
 POST http://localhost:3001/products/1/favorites
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiYWRtaW5AYS5jIiwiaWF0IjoxNzI4MTA1NTE1LCJleHAiOjE3MjgxMDY0MTV9.8m8pgbDGWjAT0llElejt3ap6eh5rOB8EL_EtS1ucgTE
+
+
+### 자유게시판
+
+GET http://localhost:3001/article
