@@ -30,7 +30,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback", // 구글에서 리다이렉트할 URL
+      callbackURL: "/api/users/auth/google/callback", // 구글에서 리다이렉트할 URL
     },
     async (accessToken, refreshToken, profile, done) => {
       // 사용자 생성 또는 조회 로직
