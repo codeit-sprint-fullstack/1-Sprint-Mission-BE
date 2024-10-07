@@ -2,7 +2,7 @@ import express from "express";
 import articleService from "../services/articleService.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import validateData from "../middlewares/validateData.js";
-import { attachUserId, verifyAccessToken } from "../middlewares/authorizationMiddleware.js";
+import { attachUserId, verifyAccessToken, verifyArticleAuth } from "../middlewares/authorizationMiddleware.js";
 
 const articleController = express.Router();
 
@@ -38,6 +38,8 @@ articleController
     })
   )
   .patch(
+    verifyAccessToken,
+    verifyArticleAuth,
     validateData.article("patch"),
     asyncHandler(async (req, res) => {
       const { id } = req.params;
@@ -46,6 +48,8 @@ articleController
     })
   )
   .delete(
+    verifyAccessToken,
+    verifyArticleAuth,
     asyncHandler(async (req, res) => {
       const { id } = req.params;
       await articleService.deleteById(id);

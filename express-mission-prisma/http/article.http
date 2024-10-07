@@ -20,7 +20,8 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3001/article/30be5a95-1e05-4e11-a7e6-728671781e38
+PATCH http://localhost:3001/article/1792c900-891b-47b8-aaae-9f184d904841
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3MjgyODk0OTksImV4cCI6MTcyODI5MzA5OX0.OHeymlkZUYKNVTEUITb0xv24sqZ011ewjXzox2gpfx4
 Content-Type: application/json
 
 {
@@ -30,4 +31,5 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3001/article/329c83eb-ff90-4cc4-b2b0-0b1528864d2d
+DELETE http://localhost:3001/article/1792c900-891b-47b8-aaae-9f184d904841
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjM4MmU0ZC0wNDRkLTRmMzAtYmJiYy0xODk2NDg2ZjFlYjYiLCJpYXQiOjE3MjgyODY5ODksImV4cCI6MTcyODI5MDU4OX0.OxNxs4OBYzu37P7gpi0DCNokRDVzSC44M68MgGTlurM

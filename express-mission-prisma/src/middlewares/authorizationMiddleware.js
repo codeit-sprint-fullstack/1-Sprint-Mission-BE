@@ -18,14 +18,16 @@ async function verifyArticleAuth(req, res, next) {
     const { id } = req.params;
     const article = await articleRepository.getById(id);
 
-    // if (article.authorId !== req.auth.userId) {
-    //   const error = new Error('Forbidden');
-    //   error.code = 403;
-    //   throw error;
-    // }
+    if (article.userId !== req.auth.userId) {
+      const error = new Error('Forbidden');
+      error.code = 403;
+      throw error;
+    }
 
     return next();
-  } catch (error) {}
+  } catch (error) {
+    return next(error);
+  }
 }
 
-export { verifyAccessToken, attachUserId };
+export { verifyAccessToken, attachUserId, verifyArticleAuth };
