@@ -1,8 +1,8 @@
 function filterSensitiveUserData(authResult) {
-  const { password, ...rest } = authResult;
+  const { encryptedPassword, ...rest } = authResult;
   return rest;
 }
 
 export default {
-    filterSensitiveUserData
-}
+  filterSensitiveUserData,
+};

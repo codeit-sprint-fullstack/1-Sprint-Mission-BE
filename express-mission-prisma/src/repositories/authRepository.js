@@ -1,4 +1,4 @@
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 
 async function singUp(singUpData) {
   return await prisma.user.create({

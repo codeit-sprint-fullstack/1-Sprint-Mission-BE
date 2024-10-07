@@ -10,6 +10,7 @@ import {
 } from "./src/controllers/commentController.js";
 import productController from "./src/controllers/productController.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
+import authController from "./src/controllers/authController.js";
 
 const app = express();
 
@@ -22,7 +23,7 @@ app.use("/article", articleCommentController);
 app.use('/product', productCommentCotroller)
 app.use('/comment', commentController)
 app.use('/product', productController)
-// app.use('/auth', authController)
+app.use('/auth', authController)
 
 app.use(errorHandler)
 

@@ -26,8 +26,8 @@ https://panda-market-api.vercel.app의 API를 사용한 코드를 본인의 백�
 #### 인증
 [0] User 스키마를 작성해 주세요.
 [0] id, email, nickname, image, encryptedPassword, createdAt, updatedAt 필드를 가집니다.
-[ ] 회원가입 API를 만들어 주세요.
-[ ] email, nickname, password 를 입력하여 회원가입을 진행합니다.
+[0] 회원가입 API를 만들어 주세요.
+[0] email, nickname, password 를 입력하여 회원가입을 진행합니다.
 [ ] password는 해싱해 저장합니다.
 [ ] 로그인 API를 만들어 주세요.
 [ ] 사용자의 신원을 확인하고, 성공적인 인증 후에는 액세스 토큰을 발급해 response 객체에 포함해 반환합니다.
