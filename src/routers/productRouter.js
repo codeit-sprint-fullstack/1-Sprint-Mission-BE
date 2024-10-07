@@ -28,4 +28,15 @@ router.delete(
   asyncHandler(controller.deleteProductById)
 );
 
+router.post(
+  "/:productId/favorite",
+  validateUuid,
+  asyncHandler(controller.createFavoriteOnProduct)
+);
+router.delete(
+  "/:productId/favorite",
+  validateUuid,
+  asyncHandler(controller.deleteFavoriteOnProduct)
+);
+
 export default router;

@@ -10,6 +10,7 @@ export const authentication = passport.authenticate("access-token", {
 export async function productAuthorization(req, res, next) {
   try {
     const { productId } = req.params;
+
     if (!req.user) {
       const error = new Error("사용자가 없음");
       error.code = 400;

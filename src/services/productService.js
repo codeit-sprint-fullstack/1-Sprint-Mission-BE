@@ -64,54 +64,80 @@ export async function deleteProduct(id) {
 
 export async function createFavorite(productId, userId) {
   const action = "favorite";
-  const updatedProduct = handleUpdateFavorite({ productId, userId, action });
+  const updatedProduct = await handleUpdateFavorite({
+    productId,
+    userId,
+    action,
+  });
+  if (!updatedProduct) {
+    const error = new Error("트랜젝션 실패");
+    error.code = 404;
+    throw error;
+  }
   return { ...updatedProduct, isFavorite: true };
 }
 
-export async function deleteFavorite({ productId, userId }) {
+export async function deleteFavorite(productId, userId) {
   const action = "unfavorite";
-  const updatedProduct = handleUpdateFavorite({ productId, userId, action });
+  const updatedProduct = await handleUpdateFavorite({
+    productId,
+    userId,
+    action,
+  });
+
+  if (!updatedProduct) {
+    const error = new Error("트랜젝션 실패");
+    error.code = 404;
+    throw error;
+  }
+
   return { ...updatedProduct, isFavorite: false };
 }
 
 export async function handleUpdateFavorite({ productId, userId, action }) {
-  const productWithUpdatedFavorite = await prisma.$transaction(async () => {
-    const isActionFavorite = action === "favorite";
-    const updateOption = isActionFavorite ? "connect" : "disconnect";
-    const hasFavorite = await productRepository.fineFavoriteUser({
-      productId,
-      userId,
+  try {
+    const productWithUpdatedFavorite = await prisma.$transaction(async (tx) => {
+      const isActionFavorite = action === "favorite";
+      const updateOption = isActionFavorite ? "connect" : "disconnect";
+
+      const hasFavorite = await productRepository.findFavoriteUser(tx, {
+        productId,
+        userId,
+      });
+
+      if (action === "favorite" && hasFavorite) {
+        const error = new Error("이미 좋아요를 한 상품입니다.");
+        error.code = 409;
+        throw error;
+      }
+
+      if (action === "unfavorite" && !hasFavorite) {
+        const error = new Error("이미 좋아요를 취소 한 상품입니다.");
+        error.code = 409;
+        throw error;
+      }
+
+      const product = await productRepository.findFavoriteCount(tx, productId);
+
+      if (!product) {
+        const error = new Error("존재하지 않는 상품입니다.");
+        error.code = 404;
+        throw error;
+      }
+
+      const currentFavoriteCount = product.favoriteCount;
+      console.log(currentFavoriteCount);
+
+      return await productRepository.updateFavoriteStatus(tx, {
+        productId,
+        currentFavoriteCount,
+        userId,
+        updateOption,
+      });
     });
-
-    if (action === "favorite" && hasFavorite) {
-      const error = new Error("이미 좋아요를 한 상품입니다.");
-      error.code = 409;
-      throw error;
-    }
-
-    if (action === "unfavorite" && !hasFavorite) {
-      const error = new Error("이미 좋아요를 취소 한 상품입니다.");
-      error.code = 409;
-      throw error;
-    }
-
-    const product = await productRepository.findFavoriteCount(tx, articleId);
-
-    if (!product) {
-      const error = new Error("존재하지 않는 상품입니다.");
-      error.code = 404;
-      throw error;
-    }
-
-    const currentFavoriteCount = product.favoriteCount;
-
-    return await productRepository.updateFavoriteStatus(tx, {
-      productId,
-      currentFavoriteCount,
-      userId,
-      updateOption,
-    });
-  });
-
-  return productWithUpdatedFavorite;
+    return productWithUpdatedFavorite;
+  } catch (error) {
+    console.error("transaction failed:", error);
+    throw error;
+  }
 }

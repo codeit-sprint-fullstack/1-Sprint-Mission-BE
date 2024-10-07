@@ -76,43 +76,47 @@ export async function deleteLike(articleId, userId) {
 }
 
 export async function handleUpdateLike({ articleId, userId, action }) {
-  const articleWithUpdatedLike = await prisma.$transaction(async (tx) => {
-    const isActionLike = action === "like";
-    const updateOption = isActionLike ? "connect" : "disconnect";
+  try {
+    const articleWithUpdatedLike = await prisma.$transaction(async (tx) => {
+      const isActionLike = action === "like";
+      const updateOption = isActionLike ? "connect" : "disconnect";
 
-    const hasLike = await articleRepository.findLikedUser(tx, {
-      articleId,
-      userId,
+      const hasLike = await articleRepository.findLikedUser(tx, {
+        articleId,
+        userId,
+      });
+
+      if (action === "like" && hasLike) {
+        const error = new Error("이미 좋아요를 한 게시글입니다.");
+        error.code = 409;
+        throw error;
+      }
+
+      if (action === "unlike" && !hasLike) {
+        const error = new Error("이미 좋아요를 취소 한 게시글입니다.");
+        error.code = 409;
+        throw error;
+      }
+
+      const article = await articleRepository.findLikeCount(tx, articleId);
+
+      if (!article) {
+        const error = new Error("존재하지 않는 게시물입니다.");
+        error.code = 404;
+        throw error;
+      }
+
+      const currentLikeCount = article.likeCount;
+
+      return await articleRepository.updateLikeStatus(tx, {
+        articleId,
+        currentLikeCount,
+        userId,
+        updateOption,
+      });
     });
-
-    if (action === "like" && hasLike) {
-      const error = new Error("이미 좋아요를 한 게시글입니다.");
-      error.code = 409;
-      throw error;
-    }
-
-    if (action === "unlike" && !hasLike) {
-      const error = new Error("이미 좋아요를 취소 한 게시글입니다.");
-      error.code = 409;
-      throw error;
-    }
-
-    const article = await articleRepository.findLikeCount(tx, articleId);
-
-    if (!article) {
-      const error = new Error("존재하지 않는 게시물입니다.");
-      error.code = 404;
-      throw error;
-    }
-
-    const currentLikeCount = article.likeCount;
-
-    return await articleRepository.updateLikeStatus(tx, {
-      articleId,
-      currentLikeCount,
-      userId,
-      updateOption,
-    });
-  });
-  return articleWithUpdatedLike;
+    return articleWithUpdatedLike;
+  } catch (error) {
+    console.error("transaction failed:", error);
+  }
 }

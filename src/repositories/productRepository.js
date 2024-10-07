@@ -89,6 +89,7 @@ export async function findFavoriteUser(tx, { productId, userId }) {
       id: productId,
       favoriteUsers: { some: { id: userId } },
     },
+    include: { favoriteUsers: true },
   });
 
   return hasUserFavorite;
@@ -102,7 +103,7 @@ export async function findFavoriteCount(tx, productId) {
     },
   });
 
-  return product.favoriteCount;
+  return product;
 }
 
 export async function updateFavoriteStatus(
@@ -121,7 +122,7 @@ export async function updateFavoriteStatus(
     },
     select: {
       ...PRODUCT_FIELDS,
-      writer: {
+      owner: {
         select: {
           ...OWNER_FIELDS,
         },

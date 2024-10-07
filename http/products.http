@@ -1,11 +1,11 @@
 ### GET /products
 GET http://localhost:3000/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
 
 ### POST /products
 POST http://localhost:3000/api/products
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
 
 {
       "name": "새로운 상품 이름입니다.",
@@ -18,13 +18,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmM
 
 ### GET /products/{productId}
 GET http://localhost:3000/api/products/241cc1e3-df67-4530-85ac-7e2277f61fa8
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
 
 
 ### PATCH /products/{productId}
 PATCH http://localhost:3000/api/products/241cc1e3-df67-4530-85ac-7e2277f61fa8
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
+
 
 {
       "name": "수정된 상품 이름입니다.",
@@ -35,15 +36,13 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1m
 
 
 ### DELETE /products/{productId}
-DELETE http://localhost:3000/api/products/6daab3f0-d964-4e19-97c0-768e9dcf8ae2
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
+DELETE http://localhost:3000/api/products/241cc1e3-df67-4530-85ac-7e2277f61fa8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
 
-### POST /products/{productId}/like
-POST http://localhost:3000/api/products/adc668be-9b35-458b-91ad-903ca7d73d7e/like
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
+### POST /products/{productId}/favorite
+POST http://localhost:3000/api/products/13e88c48-b497-44ed-802e-41c02b4cffd1/favorite
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
 
-
-### DELETE /products/{productId}/like
-DELETE http://localhost:3000/api/products/adc668be-9b35-458b-91ad-903ca7d73d7e/like
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
-
+### DELETE /products/{productId}/favorite
+DELETE http://localhost:3000/api/products/13e88c48-b497-44ed-802e-41c02b4cffd1/favorite
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
