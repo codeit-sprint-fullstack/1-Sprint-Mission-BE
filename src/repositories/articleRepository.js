@@ -9,6 +9,11 @@ export async function getAll({ searchQuery, sortOption, offset, pageSize }) {
     take: pageSize,
     select: {
       ...ARTICLE_FIELDS,
+      writer: {
+        select: {
+          ...OWNER_FIELDS,
+        },
+      },
     },
   });
 
@@ -20,15 +25,15 @@ export async function getTotalCount(searchQuery) {
   return totalCount;
 }
 
-export async function getById(id) {
+export async function getArticleById(id) {
   const article = await prisma.article.findUniqueOrThrow({
     where: { id },
     select: {
       ...ARTICLE_FIELDS,
-    },
-    writer: {
-      select: {
-        ...OWNER_FIELDS,
+      writer: {
+        select: {
+          ...OWNER_FIELDS,
+        },
       },
     },
   });
@@ -64,10 +69,10 @@ export async function updateById(id, data) {
     },
     select: {
       ...ARTICLE_FIELDS,
-    },
-    writer: {
-      select: {
-        ...OWNER_FIELDS,
+      writer: {
+        select: {
+          ...OWNER_FIELDS,
+        },
       },
     },
   });
@@ -99,10 +104,10 @@ export async function updateLike(id, currentLikeCount) {
     },
     select: {
       ...ARTICLE_FIELDS,
-    },
-    writer: {
-      select: {
-        ...OWNER_FIELDS,
+      writer: {
+        select: {
+          ...OWNER_FIELDS,
+        },
       },
     },
   });
@@ -121,10 +126,10 @@ export async function createLikedUser(id, currentLikeCount, option) {
     },
     select: {
       ...ARTICLE_FIELDS,
-    },
-    writer: {
-      select: {
-        ...OWNER_FIELDS,
+      writer: {
+        select: {
+          ...OWNER_FIELDS,
+        },
       },
     },
   });
@@ -143,10 +148,10 @@ export async function deleteLikedUser(id, currentLikeCount, option) {
     },
     select: {
       ...ARTICLE_FIELDS,
-    },
-    writer: {
-      select: {
-        ...OWNER_FIELDS,
+      writer: {
+        select: {
+          ...OWNER_FIELDS,
+        },
       },
     },
   });

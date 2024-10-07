@@ -20,7 +20,7 @@ export async function getTotalCount(searchQuery) {
   return totalCount;
 }
 
-export async function getById(id) {
+export async function getProductById(id) {
   const product = await prisma.product.findUniqueOrThrow({
     where: { id },
     select: {

@@ -1,4 +1,4 @@
-
+###
 GET http://localhost:3000/api/articles
 
 
@@ -11,3 +11,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwN
       "content": "게시글 내용입니다.",
       "title": "게시글 제목입니다."
 } 
+
+
+###
+GET http://localhost:3000/api/articles/052a4cd0-b7cc-4d65-812d-2d3b0b6be20d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyODUyMDEsImV4cCI6MTcyODI4ODgwMX0.42wVnsKgLk9Q1DvflIHBqLzdcSFWQJqjV9UKrQEVztc

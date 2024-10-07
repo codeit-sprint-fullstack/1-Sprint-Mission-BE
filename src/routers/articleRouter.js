@@ -9,29 +9,32 @@ const router = express.Router();
 router.get("/", asyncHandler(controller.getArticleList));
 router.get(
   "/:articleId",
-  validateUuid,
+  validateUuid(),
+  authentication,
   asyncHandler(controller.getArticleById)
 );
 router.post("/", authentication, asyncHandler(controller.createArticle));
 router.patch(
   "/:articleId",
-  validateUuid,
+  validateUuid(),
   asyncHandler(controller.updateArticleById)
 );
 router.delete(
   "/:articleId",
-  validateUuid,
+  validateUuid(),
   asyncHandler(controller.deleteArticleById)
 );
 
 router.post(
   "/:articleId/like",
-  validateUuid,
+  validateUuid(),
+  authentication,
   asyncHandler(controller.createLikeOnArticle)
 );
 router.delete(
   "/:articleId/like",
-  validateUuid,
+  validateUuid(),
+  authentication,
   asyncHandler(controller.deleteLikeOnArticle)
 );
 

@@ -33,7 +33,7 @@ export async function getArticles({ orderBy, page, pageSize, keyword }) {
 }
 
 export async function getArticle(id) {
-  return await articleRepository.getById(id);
+  return await articleRepository.getArticleById(id);
 }
 
 export async function createArticle(userId, data) {

@@ -28,7 +28,7 @@ export async function getAll({ articleId, limit, productId, lastId }) {
   return comments;
 }
 
-export async function getById(id) {
+export async function getCommentById(id) {
   const comment = await prisma.comment.findUnique({
     where: {
       id,
