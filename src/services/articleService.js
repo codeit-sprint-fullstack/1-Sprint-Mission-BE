@@ -36,9 +36,9 @@ export async function getArticle(id) {
   return await articleRepository.getById(id);
 }
 
-export async function createArticle(data) {
+export async function createArticle(userId, data) {
   assert(data, CreateArticle);
-  return await articleRepository.create(data);
+  return await articleRepository.create(userId, data);
 }
 
 export async function updateArticle(id, data) {

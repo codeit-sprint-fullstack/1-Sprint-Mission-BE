@@ -1,0 +1,13 @@
+
+GET http://localhost:3000/api/articles
+
+
+###
+POST http://localhost:3000/api/articles
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyODUyMDEsImV4cCI6MTcyODI4ODgwMX0.42wVnsKgLk9Q1DvflIHBqLzdcSFWQJqjV9UKrQEVztc
+
+{
+      "content": "게시글 내용입니다.",
+      "title": "게시글 제목입니다."
+} 

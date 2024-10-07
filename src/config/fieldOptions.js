@@ -27,7 +27,6 @@ export const ARTICLE_FIELDS = {
   image: true,
   likeCount: true,
   content: true,
-  tags: true,
   ...TIME_STAMP,
 };
 

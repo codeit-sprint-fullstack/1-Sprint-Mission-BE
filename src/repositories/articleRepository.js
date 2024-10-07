@@ -36,17 +36,20 @@ export async function getById(id) {
   return article;
 }
 
-export async function create(data) {
+export async function create(userId, data) {
   const newArticle = await prisma.article.create({
     data: {
       ...data,
+      writer: {
+        connect: { id: userId },
+      },
     },
     select: {
       ...ARTICLE_FIELDS,
-    },
-    writer: {
-      select: {
-        ...OWNER_FIELDS,
+      writer: {
+        select: {
+          ...OWNER_FIELDS,
+        },
       },
     },
   });

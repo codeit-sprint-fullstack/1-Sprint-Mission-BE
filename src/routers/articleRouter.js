@@ -2,6 +2,7 @@ import express from "express";
 import validateUuid from "../middlewares/validateUuid.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import * as controller from "../controllers/articleController.js";
+import { authentication } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.get(
   validateUuid,
   asyncHandler(controller.getArticleById)
 );
-router.post("/", asyncHandler(controller.createArticle));
+router.post("/", authentication, asyncHandler(controller.createArticle));
 router.patch(
   "/:articleId",
   validateUuid,
