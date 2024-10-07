@@ -3,6 +3,7 @@ dotenv.config(); // 환경 변수 설정
 
 import express from "express";
 import cors from "cors";
+import session from "express-session"; // Passport 초기화
 import path from "path";
 import { fileURLToPath } from "url";
 import productRoutes from "./api/products/productRoutes.js"; // 제품 관련 API import
@@ -11,8 +12,7 @@ import boardCommentRoutes from "./api/comments/boardCommentRoutes.js"; // 자유
 import marketCommentRoutes from "./api/comments/marketCommentRoutes.js"; // 중고마켓 댓글 API import
 import { PrismaClient } from "@prisma/client"; // Prisma Client import
 import userRoutes from "./api/user.js"; // 사용자 관련 API import
-
-// Swagger 관련 import
+import passport from "passport"; // passport import
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
@@ -24,7 +24,12 @@ const app = express();
 app.use(express.json()); // JSON 형식의 요청 본문을 파싱
 
 // CORS 설정
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // 프론트엔드 URL
+    credentials: true,
+  })
+);
 
 // Prisma Client 생성
 const prisma = new PrismaClient();
@@ -38,6 +43,19 @@ const prisma = new PrismaClient();
     console.error("PostgreSQL connection error:", err);
   }
 })();
+
+// 세션 설정
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "default-secret-key", // 비밀 키
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+// Passport 초기화
+app.use(passport.initialize());
+app.use(passport.session()); // 세션 관리
 
 // Swagger 설정
 const swaggerOptions = {
