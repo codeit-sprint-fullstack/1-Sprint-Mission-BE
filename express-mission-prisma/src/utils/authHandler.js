@@ -3,6 +3,8 @@ function filterSensitiveUserData(authResult) {
   return rest;
 }
 
+
+
 export default {
   filterSensitiveUserData,
 };
