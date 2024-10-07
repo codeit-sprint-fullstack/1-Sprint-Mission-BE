@@ -1,76 +1,11 @@
-import express from "express";
 import { PrismaClient } from "@prisma/client";
-import jwt from "jsonwebtoken"; // JWT 토큰 생성을 위한 라이브러리
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import errorHandler from "../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
-import passport from "passport"; // 구글 OAuth 전략을 설정
-import { Strategy as GoogleStrategy } from "passport-google-oauth20"; // 구글 OAuth 전략을 설정
 
 const prisma = new PrismaClient();
-const router = express.Router();
-
-// 사용자 정보를 세션에 저장하기 위한 과정(사용자 직렬화)
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-// 세션에 저장된 정보를 기반으로 사용자 정보를 복원하는 과정(사용자 역직렬화)
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await prisma.user.findUnique({ where: { id } });
-    done(null, user);
-  } catch (error) {
-    done(error, null);
-  }
-});
-
-// 구글 OAuth 전략 설정
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/api/users/auth/google/callback", // 구글에서 리다이렉트할 URL
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      // 사용자 생성 또는 조회 로직
-      const user = await prisma.user.upsert({
-        where: { googleId: profile.id }, // Google ID를 기준으로 사용자 조회
-        update: {},
-        create: {
-          email: profile.emails[0].value,
-          nickname: profile.displayName,
-          googleId: profile.id, // Google ID 저장
-        },
-      });
-      done(null, user);
-    }
-  )
-);
-
-// 구글 로그인 요청
-router.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["email", "profile"] })
-);
-
-// 구글 로그인 콜백
-router.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  (req, res) => {
-    // 성공적으로 로그인된 후, JWT 토큰 생성 및 응답
-    const token = jwt.sign(
-      { userId: req.user.id, nickname: req.user.nickname },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-    res.redirect(`http://localhost:3000?token=${token}`); // 프론트엔드 URL로 리다이렉트
-  }
-);
 
 // 회원가입 API
-router.route("/signUp").post(async (req, res, next) => {
+export const signup = async (req, res, next) => {
   const { email, nickname, password } = req.body;
 
   try {
@@ -91,10 +26,10 @@ router.route("/signUp").post(async (req, res, next) => {
     console.error(error);
     next(error); // 에러를 에러 핸들러로 전달
   }
-});
+};
 
 // 로그인 API
-router.route("/login").post(async (req, res, next) => {
+export const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
@@ -112,9 +47,7 @@ router.route("/login").post(async (req, res, next) => {
     const token = jwt.sign(
       { userId: user.id, nickname: user.nickname },
       process.env.JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
+      { expiresIn: "1h" }
     );
 
     // 리프레시 토큰 생성
@@ -138,10 +71,10 @@ router.route("/login").post(async (req, res, next) => {
     console.error(error);
     next(error); // 에러를 에러 핸들러로 전달
   }
-});
+};
 
 // 리프레시 토큰으로 새로운 액세스 토큰 발급
-router.post("/refresh", async (req, res, next) => {
+export const refreshAccessToken = async (req, res, next) => {
   const { refreshToken } = req.body;
 
   if (!refreshToken) {
@@ -173,10 +106,10 @@ router.post("/refresh", async (req, res, next) => {
     console.error(error);
     res.status(403).json({ error: "리프레시 토큰이 유효하지 않습니다." });
   }
-});
+};
 
 // 리프레시 토큰 삭제 (로그아웃 시 등)
-router.delete("/logout", async (req, res, next) => {
+export const logout = async (req, res, next) => {
   const { refreshToken } = req.body;
 
   try {
@@ -188,10 +121,10 @@ router.delete("/logout", async (req, res, next) => {
     console.error(error);
     next(error);
   }
-});
+};
 
 // 사용자 정보 가져오기 API (현재 사용자)
-router.get("/me", async (req, res, next) => {
+export const getCurrentUser = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1]; // "Bearer TOKEN"에서 TOKEN 부분 추출
 
@@ -218,9 +151,4 @@ router.get("/me", async (req, res, next) => {
     console.error(error);
     res.status(403).json({ error: "유효하지 않은 액세스 토큰입니다." });
   }
-});
-
-// 에러 핸들러 미들웨어 등록
-router.use(errorHandler);
-
-export default router;
+};

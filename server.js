@@ -6,12 +6,12 @@ import cors from "cors";
 import session from "express-session"; // Passport 초기화
 import path from "path";
 import { fileURLToPath } from "url";
-import productRoutes from "./api/products/productRoutes.js"; // 제품 관련 API import
-import articleRoutes from "./api/articles/articleRoutes.js"; // 게시글 관련 API import
-import boardCommentRoutes from "./api/comments/boardCommentRoutes.js"; // 자유게시판 댓글 API import
-import marketCommentRoutes from "./api/comments/marketCommentRoutes.js"; // 중고마켓 댓글 API import
+import productRoutes from "./routes/products/productRoutes.js"; // 제품 관련 API import
+import articleRoutes from "./routes/articles/articleRoutes.js"; // 게시글 관련 API import
+import boardCommentRoutes from "./routes/comments/boardCommentRoutes.js"; // 자유게시판 댓글 API import
+import marketCommentRoutes from "./routes/comments/marketCommentRoutes.js"; // 중고마켓 댓글 API import
 import { PrismaClient } from "@prisma/client"; // Prisma Client import
-import userRoutes from "./api/user.js"; // 사용자 관련 API import
+import userRoutes from "./routes/user.js"; // 사용자 관련 API import
 import passport from "passport"; // passport import
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
