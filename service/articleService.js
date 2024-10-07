@@ -3,10 +3,9 @@ import articleModel from "../model/articleModel.js";
 
 const getArticles = async (query) => {
   const { orderBy = "recent", keyword = "", cursor = "" } = query;
-  const limit = parseInt(query.limit) || 10;
+  const limit = parseInt(query.limit) || 5;
   // const offset = parseInt(req.query.offset) - 1 || 0;
   const orderbyQuery = setOrderByQuery(orderBy);
-
   const whereConditions = {};
   if (keyword) {
     whereConditions.OR = [
