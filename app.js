@@ -3,11 +3,12 @@ dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
-import userRoute from './src/routes/users.js';
+import userRoute from './src/routes/user.js';
 import authRoute from './src/routes/auth.js';
 import freeboardRoute from './src/routes/freeboard.js';
 import fleamarketRoute from './src/routes/fleamarket.js';
-import commentRoute from './src/routes/comments.js';
+import articleRoute from './src/routes/articles.js';
+import commentRoute from './src/routes/comment.js';
 import favoriteRoute from './src/routes/favorite.js';
 
 const app = express();
@@ -20,8 +21,8 @@ app.get('/', (req, res) => {
 
 app.use('/freeboard', freeboardRoute);
 app.use('/fleamarket', fleamarketRoute);
-app.use('/comments', commentRoute);
-app.use('/users', userRoute);
+app.use('/comment', commentRoute);
+app.use('/user', userRoute);
 app.use('/favorite', favoriteRoute);
 app.use('/auth', authRoute);
 

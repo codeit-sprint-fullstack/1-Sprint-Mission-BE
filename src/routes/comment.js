@@ -2,6 +2,7 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { CreateComment, PatchComment } from './struct.js';
+import jwtMiddleware from '../middlewares/jwtMiddleware.js';
 import assert from 'assert';
 
 const router = express.Router();
@@ -9,6 +10,7 @@ const prisma = new PrismaClient();
 
 router.get(
   '/:articleCategory/:articleId',
+  jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
     const { cursor, limit } = req.query;
     const { articleId, articleCategory } = req.params;
@@ -73,6 +75,7 @@ router.get(
 
 router.post(
   '/:articleCategory/:articleId',
+  jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
     const { articleId, articleCategory } = req.params;
     assert(req.body, CreateComment);
@@ -108,6 +111,8 @@ router.post(
 
 router.patch(
   '/:id',
+  jwtMiddleware.verifyAccessToken,
+  jwtMiddleware.verifyCommentAuth,
   asyncHandler(async (req, res) => {
     assert(req.body, PatchComment);
     const { id } = req.params;
@@ -116,7 +121,9 @@ router.patch(
       where: {
         id: Number(id),
       },
-      data: req.body,
+      data: {
+        content: req.body.content,
+      },
       include: {
         user: true,
       },
@@ -128,6 +135,8 @@ router.patch(
 
 router.delete(
   '/:id',
+  jwtMiddleware.verifyAccessToken,
+  jwtMiddleware.verifyCommentAuth,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     await prisma.comment.delete({
