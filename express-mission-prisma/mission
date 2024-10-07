@@ -24,8 +24,8 @@ https://panda-market-api.vercel.app의 API를 사용한 코드를 본인의 백�
 [0] 서버 오류(500), 사용자 입력 오류(400 시리즈), 리소스 찾을 수 없음(404) 등 상황에 맞는 상태값을 반환합니다.
 
 #### 인증
-[ ] User 스키마를 작성해 주세요.
-[ ] id, email, nickname, image, encryptedPassword, createdAt, updatedAt 필드를 가집니다.
+[0] User 스키마를 작성해 주세요.
+[0] id, email, nickname, image, encryptedPassword, createdAt, updatedAt 필드를 가집니다.
 [ ] 회원가입 API를 만들어 주세요.
 [ ] email, nickname, password 를 입력하여 회원가입을 진행합니다.
 [ ] password는 해싱해 저장합니다.

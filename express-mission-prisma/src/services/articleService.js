@@ -1,6 +1,4 @@
 import articleRepository from "../repositories/articleRepository.js";
-import { assert } from "superstruct";
-import { createArticle, updateArticle } from "../structs/articleStruct.js";
 
 async function create(createData) {
   return await articleRepository.create(createData);

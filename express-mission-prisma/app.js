@@ -22,6 +22,7 @@ app.use("/article", articleCommentController);
 app.use('/product', productCommentCotroller)
 app.use('/comment', commentController)
 app.use('/product', productController)
+// app.use('/auth', authController)
 
 app.use(errorHandler)
 
