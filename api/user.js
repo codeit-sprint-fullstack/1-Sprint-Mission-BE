@@ -9,12 +9,12 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20"; // 구글 
 const prisma = new PrismaClient();
 const router = express.Router();
 
-// 사용자 직렬화
+// 사용자 정보를 세션에 저장하기 위한 과정(사용자 직렬화)
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-// 사용자 역직렬화
+// 세션에 저장된 정보를 기반으로 사용자 정보를 복원하는 과정(사용자 역직렬화)
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await prisma.user.findUnique({ where: { id } });
