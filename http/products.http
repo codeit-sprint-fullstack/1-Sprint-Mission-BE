@@ -1,44 +1,49 @@
 ### GET /products
 GET http://localhost:3000/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgzMDI5OTAsImV4cCI6MTcyODMwNjU5MH0.IwImwPW4wvKdZH45i5JoFMASVLLPbm0ci1i4dkyhF2o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
 
 ### POST /products
 POST http://localhost:3000/api/products
 Content-Type: application/json
-Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgzMDI5OTAsImV4cCI6MTcyODMwNjU5MH0.IwImwPW4wvKdZH45i5JoFMASVLLPbm0ci1i4dkyhF2o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
 
 {
-      "content": "게시글 내용입니다.",
-      "title": "게시글 제목입니다."
+      "name": "새로운 상품 이름입니다.",
+      "description": "새로운 상품 내용입니다.",
+      "price": 1234,
+      "tags":["상품", "태그"]
 } 
 
 
-### GET /products/{articleId}
-GET http://localhost:3000/api/products/6daab3f0-d964-4e19-97c0-768e9dcf8ae2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyOTQxOTMsImV4cCI6MTcyODI5Nzc5M30.gvLvAbhlILItayLgwuux1z0Yn5RnLAKgGXmjl6UtDOg
+
+### GET /products/{productId}
+GET http://localhost:3000/api/products/241cc1e3-df67-4530-85ac-7e2277f61fa8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
 
 
-### PATCH /products/{articleId}
-PATCH http://localhost:3000/api/products/6daab3f0-d964-4e19-97c0-768e9dcf8ae2
+### PATCH /products/{productId}
+PATCH http://localhost:3000/api/products/241cc1e3-df67-4530-85ac-7e2277f61fa8
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyOTQxOTMsImV4cCI6MTcyODI5Nzc5M30.gvLvAbhlILItayLgwuux1z0Yn5RnLAKgGXmjl6UtDOg
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
 
 {
-      "content": "수정된 게시글 내용입니다.",
-      "title": "수정된 게시글 제목입니다."
+      "name": "수정된 상품 이름입니다.",
+      "description": "수정된 상품 내용입니다.",
+      "price": 10000,
+      "tags":["수정", "했다"]
 } 
 
 
-### DELETE /products/{articleId}
+### DELETE /products/{productId}
 DELETE http://localhost:3000/api/products/6daab3f0-d964-4e19-97c0-768e9dcf8ae2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyOTQxOTMsImV4cCI6MTcyODI5Nzc5M30.gvLvAbhlILItayLgwuux1z0Yn5RnLAKgGXmjl6UtDOg
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
 
-### POST /products/{articleId}/like
+### POST /products/{productId}/like
 POST http://localhost:3000/api/products/adc668be-9b35-458b-91ad-903ca7d73d7e/like
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgzMDI5OTAsImV4cCI6MTcyODMwNjU5MH0.IwImwPW4wvKdZH45i5JoFMASVLLPbm0ci1i4dkyhF2o
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
 
 
-### DELETE /products/{articleId}/like
+### DELETE /products/{productId}/like
 DELETE http://localhost:3000/api/products/adc668be-9b35-458b-91ad-903ca7d73d7e/like
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgzMDI5OTAsImV4cCI6MTcyODMwNjU5MH0.IwImwPW4wvKdZH45i5JoFMASVLLPbm0ci1i4dkyhF2o
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
 

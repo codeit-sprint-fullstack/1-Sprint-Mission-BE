@@ -14,7 +14,7 @@ router.get(
   validateUuid,
   asyncHandler(controller.getProductById)
 );
-router.post("/", productAuthorization, asyncHandler(controller.createProduct));
+router.post("/", asyncHandler(controller.createProduct));
 router.patch(
   "/:productId",
   productAuthorization,

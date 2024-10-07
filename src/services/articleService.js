@@ -74,13 +74,13 @@ export async function handleUpdateLike({ articleId, userId, action }) {
 
     if (action === "like" && hasLike) {
       const error = new Error("이미 좋아요를 한 게시글입니다.");
-      error.statCode = 409;
+      error.code = 409;
       throw error;
     }
 
     if (action === "unlike" && !hasLike) {
       const error = new Error("이미 좋아요를 취소 한 게시글입니다.");
-      error.statCode = 409;
+      error.code = 409;
       throw error;
     }
 
@@ -88,7 +88,7 @@ export async function handleUpdateLike({ articleId, userId, action }) {
 
     if (!article) {
       const error = new Error("존재하지 않는 게시물입니다.");
-      error.statCode = 404;
+      error.code = 404;
       throw error;
     }
 

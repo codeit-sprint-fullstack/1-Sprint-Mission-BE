@@ -32,8 +32,21 @@ export async function getProducts({ orderBy, page, pageSize, keyword }) {
   return { totalCount, list };
 }
 
-export async function getProduct(id) {
-  return await productRepository.getProductById(id);
+export async function getProduct(productId, userId) {
+  const product = await productRepository.getProductById(productId);
+  if (!product) {
+    const error = new Error("없는 상품입니다");
+    error.code = 404;
+    throw error;
+  }
+  const hasFavorite = await productRepository.findFavoriteUser(prisma, {
+    productId,
+    userId,
+  });
+  if (!hasFavorite) {
+    return { ...product, isFavorite: false };
+  }
+  return { ...product, isFavorite: true };
 }
 
 export async function createProduct(userId, data) {
@@ -72,13 +85,13 @@ export async function handleUpdateFavorite({ productId, userId, action }) {
 
     if (action === "favorite" && hasFavorite) {
       const error = new Error("이미 좋아요를 한 상품입니다.");
-      error.statCode = 409;
+      error.code = 409;
       throw error;
     }
 
     if (action === "unfavorite" && !hasFavorite) {
       const error = new Error("이미 좋아요를 취소 한 상품입니다.");
-      error.statCode = 409;
+      error.code = 409;
       throw error;
     }
 
@@ -86,7 +99,7 @@ export async function handleUpdateFavorite({ productId, userId, action }) {
 
     if (!product) {
       const error = new Error("존재하지 않는 상품입니다.");
-      error.statCode = 404;
+      error.code = 404;
       throw error;
     }
 

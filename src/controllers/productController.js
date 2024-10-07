@@ -19,7 +19,8 @@ export const getProductList = async (req, res) => {
 
 export const getProductById = async (req, res) => {
   const { productId } = req.params;
-  const product = await productService.getProduct(productId);
+  const userId = req.user.id;
+  const product = await productService.getProduct(productId, userId);
   res.json(product);
 };
 

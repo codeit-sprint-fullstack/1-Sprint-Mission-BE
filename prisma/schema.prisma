@@ -46,7 +46,7 @@ model Product {
   ownerId       String
   owner         User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
-  FavoriteUsers User[]    @relation("ProductFavorite")
+  favoriteUsers User[]    @relation("ProductFavorite")
   comments      Comment[]
 }
 

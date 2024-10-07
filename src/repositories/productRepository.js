@@ -83,11 +83,11 @@ export async function deleteById(id) {
   await prisma.product.delete({ where: { id } });
 }
 
-export async function fineFavoriteUser(tx, { productId, userId }) {
+export async function findFavoriteUser(tx, { productId, userId }) {
   const hasUserFavorite = await tx.product.findFirst({
     where: {
       id: productId,
-      favoriteUsers: { some: { userId } },
+      favoriteUsers: { some: { id: userId } },
     },
   });
 
