@@ -25,7 +25,8 @@
     "dev": "nodemon src/app.js",
     "start": "node app.js",
     "migrate": "prisma migrate dev",
-    "test": "nodemon test.js"
+    "test": "nodemon test.js",
+    "reset": "prisma migrate reset --skip-seed"
   },
   "prisma": {
     "seed": "node prisma/seed.js",

@@ -2,7 +2,7 @@ import { USER_FIELDS } from "../config/fieldOptions.js";
 import prisma from "../config/prisma.js";
 
 export async function findById(id) {
-  return prisma.user.findUnique({
+  return await prisma.user.findUnique({
     where: {
       id,
     },
@@ -29,7 +29,7 @@ export async function create({
   encryptedPassword,
   refreshToken,
 }) {
-  return prisma.user.create({
+  return await prisma.user.create({
     data: {
       email,
       nickname,
@@ -43,7 +43,7 @@ export async function create({
 }
 
 export async function update(id, data) {
-  return prisma.user.update({
+  return await prisma.user.update({
     where: { id },
     data,
     select: {
@@ -52,16 +52,29 @@ export async function update(id, data) {
   });
 }
 
+export async function updateRefreshToken(id, refreshToken) {
+  return await prisma.user.update({
+    where: { id },
+    data: {
+      refreshToken,
+    },
+    select: {
+      ...USER_FIELDS,
+      refreshToken: true,
+    },
+  });
+}
+
 export async function createOrUpdateOauth({
   provider,
   providerId,
   email,
-  name,
+  nickname,
 }) {
-  return prisma.user.upsert({
+  return await prisma.user.upsert({
     where: { provider, providerId },
-    create: { provider, providerId, email, name },
-    update: { email, name },
+    create: { provider, providerId, email, nickname },
+    update: { email, nickname },
     select: {
       ...USER_FIELDS,
     },

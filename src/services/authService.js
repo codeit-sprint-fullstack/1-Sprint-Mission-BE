@@ -38,17 +38,13 @@ export async function createUser(user) {
 
   const hashedPassword = await hashingPassword(user.password);
 
-  const accessToken = createToken(user);
-  const refreshToken = createToken(user, "refresh");
-
   const newUser = await userRepository.create({
     email: user.email,
     nickname: user.nickname,
     encryptedPassword: hashedPassword,
-    refreshToken,
   });
-
-  return { ...newUser, accessToken, refreshToken };
+  const tokens = await updateTokens(newUser);
+  return { ...newUser, ...tokens };
 }
 
 export function createToken(user, type = "access") {
@@ -64,9 +60,22 @@ export function createToken(user, type = "access") {
   return jwt.sign(payload, secret, options);
 }
 
-export async function updateRefreshTokenOnDB(id, refreshToken) {
+export async function updateTokens(user) {
+  if (!user || !user.id) {
+    const error = new Error("id가 없어서 token을 만들수 없음.");
+    error.code = 404;
+    throw error;
+  }
+  const accessToken = createToken(user);
+  const refreshToken = createToken(user, "refresh");
+
   assert({ refreshToken }, PatchUser);
-  return await userRepository.update(id, { refreshToken });
+
+  const updatedUser = await userRepository.updateRefreshToken(
+    user.id,
+    refreshToken
+  );
+  return { ...updatedUser, accessToken };
 }
 
 export async function validateRefreshToken(userId, refreshToken) {
@@ -76,22 +85,21 @@ export async function validateRefreshToken(userId, refreshToken) {
     error.code = 401;
     throw error;
   }
-  const accessToken = createToken(user);
-  const newRefreshToken = createToken(user, "refresh");
-  return { accessToken, newRefreshToken };
+
+  return userFromDB;
 }
 
 export async function oauthCreateOrUpdate({
   provider,
   providerId,
   email,
-  name,
+  nickname,
 }) {
   const user = await userRepository.createOrUpdateOauth({
     provider,
     providerId,
     email,
-    name,
+    nickname,
   });
   return user;
 }

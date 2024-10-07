@@ -10,12 +10,12 @@ const googleStrategyOptions = {
 
 async function verify(accessToken, refreshToken, profile, done) {
   try {
-    const user = await authService.oauthCreateOrUpdate(
-      profile.provider,
-      profile.id,
-      profile.email[0].value,
-      profile.displayName
-    );
+    const user = await authService.oauthCreateOrUpdate({
+      provider: profile.provider,
+      providerId: profile.id,
+      email: profile.email[0].value,
+      nickname: profile.displayName,
+    });
 
     done(null, user);
   } catch (error) {

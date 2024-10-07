@@ -1,5 +1,5 @@
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import * as authService from "../../services/authService.js";
+import { getUserById } from "../../services/userService.js";
 
 const accessTokenOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -23,8 +23,14 @@ const refreshTokenOptions = {
 
 async function jwtVerify(payload, done) {
   try {
-    const user = await authService.getUserById(payload.userId);
+    const { userId } = payload;
+    if (!userId) {
+      const error = new Error("JWT인증: userId가 없습니다.");
+      return done(error, false);
+    }
+    const user = await getUserById(userId);
     if (!user) {
+      const error = new Error("JWT인증: user가 없습니다.");
       return done(error, false);
     }
     return done(null, user);
