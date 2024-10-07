@@ -2,7 +2,7 @@ POST http://localhost:3001/auth/singUp
 Content-Type: application/json
 
 {
-    "email": "stremor254@naver.com",
+    "email": "stremor255@naver.com",
     "nickname": "송영섭",
     "password": "12345678"
 }

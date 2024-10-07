@@ -1,5 +1,5 @@
 import authRepository from "../repositories/authRepository.js";
-import authHandler from "../utils/authHandler.js";
+import { filterSensitiveUserData, hashPassword } from "../utils/authHandler.js";
 
 async function singUp(singUpData) {
   const { email, nickname, password } = singUpData;
@@ -11,15 +11,17 @@ async function singUp(singUpData) {
     error.data = { email };
     throw error;
   }
-  
+
+  const encryptedPassword = await hashPassword(password);
+
   const userPayload = {
     email,
     nickname,
-    encryptedPassword: password,
+    encryptedPassword,
   };
 
   const singUpUser = await authRepository.singUp(userPayload);
-  return authHandler.filterSensitiveUserData(singUpUser);
+  return filterSensitiveUserData(singUpUser);
 }
 
 export default {
