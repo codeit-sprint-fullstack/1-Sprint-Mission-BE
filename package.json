@@ -9,10 +9,10 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "build": "npm install",
-    "seed:articles": "node prisma/seeds/seedArticles.js",
-    "seed:Boardcomments": "node prisma/seeds/seedBoardComment.js",
-    "seed:Marketcomments": "node prisma/seeds/seedMarketComment.js",
-    "seed:User": "node prisma/seeds/seedUser.js"
+    "seed:articles": "node models/seeds/seedArticles.js",
+    "seed:Boardcomments": "node models/seeds/seedBoardComment.js",
+    "seed:Marketcomments": "node models/seeds/seedMarketComment.js",
+    "seed:User": "node models/seeds/seedUser.js"
   },
   "author": "",
   "license": "ISC",
