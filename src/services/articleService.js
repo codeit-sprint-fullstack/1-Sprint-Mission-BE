@@ -1,5 +1,6 @@
 import { CreateArticle, assert } from "../validations/structs.js";
 import * as articleRepository from "../repositories/articleRepository.js";
+import prisma from "../config/prisma.js";
 
 export async function getArticles({ orderBy, page, pageSize, keyword }) {
   const offset = (page - 1) * pageSize;
@@ -51,46 +52,56 @@ export async function deleteArticle(id) {
 }
 
 export async function createLike(articleId, userId) {
-  const { likeCount: currentLikeCount } = await articleRepository.findLikeCount(
-    articleId
-  );
-  const hasLiked = await articleRepository.findLikedUser(articleId, userId);
-
-  if (hasLiked) {
-    const error = new Error("이미 좋아요를 눌렀습니다.");
-    error.statCode = 409;
-    throw error;
-  }
-  const option = { increment: 1 };
-
-  const updatedArticle = await articleRepository.updateLikedUser(
-    articleId,
-    currentLikeCount,
-    option
-  );
+  const action = "like";
+  const updatedArticle = await handleUpdateLike({ articleId, userId, action });
 
   return { ...updatedArticle, isLiked: true };
 }
-
 export async function deleteLike(articleId, userId) {
-  const { likeCount: currentLikeCount } = await articleRepository.findLikeCount(
-    articleId
-  );
-  const hasLiked = await articleRepository.findLikedUser(articleId, userId);
-
-  if (!hasLiked) {
-    const error = new Error("이미 좋아요를 취소했습니다.");
-    error.statCode = 409;
-    throw error;
-  }
-
-  const option = { decrement: 1 };
-
-  const updatedArticle = await articleRepository.deleteLikedUser(
-    articleId,
-    currentLikeCount,
-    option
-  );
+  const action = "unlike";
+  const updatedArticle = await handleUpdateLike({ articleId, userId, action });
 
   return { ...updatedArticle, isLiked: false };
+}
+
+export async function handleUpdateLike({ articleId, userId, action }) {
+  const articleWithUpdatedLike = await prisma.$transaction(async (tx) => {
+    const isActionLike = action === "like";
+    const updateOption = isActionLike ? "connect" : "disconnect";
+
+    const hasLike = await articleRepository.findLikedUser(tx, {
+      articleId,
+      userId,
+    });
+
+    if (action === "like" && hasLike) {
+      const error = new Error("이미 좋아요를 한 게시글입니다.");
+      error.statCode = 409;
+      throw error;
+    }
+
+    if (action === "unlike" && !hasLike) {
+      const error = new Error("이미 좋아요를 취소 한 게시글입니다.");
+      error.statCode = 409;
+      throw error;
+    }
+
+    const article = await articleRepository.findLikeCount(tx, articleId);
+
+    if (!article) {
+      const error = new Error("존재하지 않는 게시물입니다.");
+      error.statCode = 404;
+      throw error;
+    }
+
+    const currentLikeCount = article.likeCount;
+
+    return await articleRepository.updateLikeStatus(tx, {
+      articleId,
+      currentLikeCount,
+      userId,
+      updateOption,
+    });
+  });
+  return articleWithUpdatedLike;
 }

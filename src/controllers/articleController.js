@@ -47,12 +47,14 @@ export const deleteArticleById = async (req, res) => {
 
 export const createLikeOnArticle = async (req, res) => {
   const { articleId } = req.params;
+  const userId = req.user.id;
   const article = await articleService.createLike(articleId, userId);
   return res.json(article);
 };
 
 export const deleteLikeOnArticle = async (req, res) => {
   const { articleId } = req.params;
-  const article = await articleService.createLike(articleId, userId);
+  const userId = req.user.id;
+  const article = await articleService.deleteLike(articleId, userId);
   return res.json(article);
 };

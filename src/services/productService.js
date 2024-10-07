@@ -51,31 +51,6 @@ export async function deleteProduct(id) {
   return { message: "상품이 삭제되었습니다" };
 }
 
-export async function createLike(productId, userId) {
-  const updatedProduct = await prisma.$transaction(async () => {
-    const hasUserLiked = await productRepository.findLikedUser(
-      productId,
-      userId
-    );
-
-    if (hasUserLiked) {
-      const error = new Error("이미 좋아요를 한 상품입니다.");
-      error.statCode = 409;
-      throw error;
-    }
-
-    const currentFavoriteCount = hasUserLiked.favoriteCount;
-    const updatedProduct = await productRepository.updateLike(
-      productId,
-      currentFavoriteCount,
-      userId
-    );
-    return updatedProduct;
-  });
-
-  return updatedProduct;
-}
-
 export async function createFavorite(productId, userId) {
   const action = "favorite";
   const updatedProduct = handleUpdateFavorite({ productId, userId, action });
