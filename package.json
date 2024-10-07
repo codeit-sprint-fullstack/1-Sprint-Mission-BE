@@ -109,6 +109,8 @@
     "sparse-bitfield": "^3.0.3",
     "statuses": "^2.0.1",
     "supports-color": "^5.5.0",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1",
     "to-regex-range": "^5.0.1",
     "toidentifier": "^1.0.1",
     "touch": "^3.1.1",

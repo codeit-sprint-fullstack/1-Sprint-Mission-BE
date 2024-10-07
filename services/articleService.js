@@ -1,6 +1,5 @@
 import prisma from "../models/index.js";
 
-// Helper function to include writer and favorites relation
 const includeRelations = (userId) => ({
   writer: true,
   favorites: {
@@ -9,7 +8,6 @@ const includeRelations = (userId) => ({
   },
 });
 
-// Generate where condition based on keyword
 const generateWhereCondition = (keyword) => {
   return keyword
     ? {
@@ -21,7 +19,6 @@ const generateWhereCondition = (keyword) => {
     : {};
 };
 
-// Generate order condition based on order type
 const generateOrderCondition = (orderBy) => {
   if (orderBy === "favorite") {
     return { likeCount: "desc" };
@@ -29,7 +26,6 @@ const generateOrderCondition = (orderBy) => {
   return { createdAt: "desc" };
 };
 
-// Create new article
 export const createArticle = async (image, content, title, userId) => {
   return prisma.article.create({
     data: { image, content, title, userId },
@@ -37,7 +33,6 @@ export const createArticle = async (image, content, title, userId) => {
   });
 };
 
-// Get articles list with pagination and keyword filter
 export const getArticles = async (
   page = 1,
   pageSize = 10,
@@ -66,7 +61,6 @@ export const getArticles = async (
   return { list: listWithLikeStatus, totalCount, page, pageSize };
 };
 
-// Get specific article by id with like status
 export const getArticleById = async (articleId, userId) => {
   const article = await prisma.article.findUnique({
     where: { id: parseInt(articleId) },
@@ -74,15 +68,12 @@ export const getArticleById = async (articleId, userId) => {
   });
 
   if (!article) throw new Error("Article not found");
-  console.log(article.favorites.length);
 
-  // Check if the user has liked the article
   const isLiked = article.favorites.length > 0;
 
   return { ...article, isLiked };
 };
 
-// Update article by id
 export const updateArticle = async (articleId, image, title, content) => {
   return prisma.article.update({
     where: { id: parseInt(articleId) },
@@ -91,12 +82,10 @@ export const updateArticle = async (articleId, image, title, content) => {
   });
 };
 
-// Delete article by id
 export const deleteArticle = async (articleId) => {
   await prisma.article.delete({ where: { id: parseInt(articleId) } });
 };
 
-// Add like to article
 export const addLike = async (articleId, userId) => {
   await prisma.favorite.create({
     data: { articleId: parseInt(articleId), userId: parseInt(userId) },
@@ -111,7 +100,6 @@ export const addLike = async (articleId, userId) => {
   });
 };
 
-// Delete like from article
 export const deleteLike = async (articleId, userId) => {
   await prisma.favorite.deleteMany({
     where: { articleId: parseInt(articleId), userId: parseInt(userId) },

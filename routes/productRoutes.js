@@ -6,7 +6,6 @@ import { imageUpload } from "../middlewares/imageUpload.js";
 
 const router = express.Router();
 
-//https://thrift-shop.onrender.com/products
 router
   .route("/")
   .post(

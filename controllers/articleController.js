@@ -62,9 +62,7 @@ export const getArticleById = async (req, res, next) => {
     const article = await articleService.getArticleById(articleId, userId);
 
     if (!article) {
-      const error = new Error("Article not found");
-      error.name = "NotFoundError";
-      throw error;
+      return res.status(404).json({ message: "Article not found" });
     }
 
     const response = formatArticleResponse(article);

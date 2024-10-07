@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import prisma from "../models/index.js";
 
-// 토큰 검증 미들웨어
 export const verifyToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
