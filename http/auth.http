@@ -1,15 +1,17 @@
 ### 회원가입
-POST http://localhost:3000/api/users/signUp
+POST http://localhost:3000/auth/signUp
 Content-Type: application/json
 
 {
   "email": "testuser@example.com",
   "nickname": "테스트",
-  "password": "testpassword"
+  "password": "testpassword",
+  "passwordConfirmation": "testpassword"
 }
 
-### 로그인 요청
-POST http://localhost:3000/api/users/login
+
+### 로그인
+POST http://localhost:3000/auth/signIn
 Content-Type: application/json
 
 {

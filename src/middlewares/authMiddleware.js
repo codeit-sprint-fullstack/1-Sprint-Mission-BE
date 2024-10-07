@@ -1,3 +1,5 @@
+// authMiddleware.js
+
 import jwt from "jsonwebtoken";
 import { UnauthorizedError } from "./errorMiddleware.js";
 

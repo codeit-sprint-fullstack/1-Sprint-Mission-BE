@@ -1,3 +1,5 @@
+// authService.js
+
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { prisma } from "../utils/prisma.js";
