@@ -72,10 +72,16 @@ export const getProductsById = async (req, res, next) => {
 export const updateProduct = async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const images = req.files
+    const newImagePaths = req.files
       ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
-      : req.body.images;
-    console.log(images);
+      : [];
+
+    const existingImages =
+      typeof req.body.images === "string"
+        ? JSON.parse(req.body.images)
+        : req.body.images || [];
+
+    const images = [...existingImages, ...newImagePaths];
     const { name, price, description, tags } = req.body;
 
     const updatedProduct = await productService.updateProduct(
@@ -89,6 +95,7 @@ export const updateProduct = async (req, res, next) => {
 
     res.status(200).json(updatedProduct);
   } catch (error) {
+    console.error("Error updating product:", error);
     next(error);
   }
 };
