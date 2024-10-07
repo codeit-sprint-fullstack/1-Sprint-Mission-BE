@@ -86,7 +86,7 @@ router
     jwtMiddleware.verifyAccessToken,
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      const { userId } = req.body;
+      const { userId } = req.query;
 
       const article = await prisma.fleaMarket.findUnique({
         where: {
@@ -182,7 +182,7 @@ router.patch(
   validateProductFields,
   jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
-    const { price, title, content, tags, userId } = req.body;
+    const { price, title, content, tags } = req.body;
     const { id } = req.params;
 
     const imagePaths = req.files ? req.files.map((file) => file.path) : [];
