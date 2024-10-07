@@ -7,16 +7,19 @@ function errorHandler(error, req, res, next) {
   if (
     error.name === "StructError" ||
     error instanceof Prisma.PrismaClientValidationError ||
-    error instanceof multer.MulterError
+    error instanceof multer.MulterError ||
+    error.code === "P2003"
   ) {
     status = 400;
   } else if (error.name === "UnauthorizedError") {
-    status = 401
-  } else if (
+    status = 401;
+  }  else if (
     error instanceof Prisma.PrismaClientKnownRequestError &&
     error.code === "P2025"
   ) {
     status = 404;
+  } else if (error.code === "P2002") {
+    status = 409;
   } else {
     status = error.code ?? 500;
   }

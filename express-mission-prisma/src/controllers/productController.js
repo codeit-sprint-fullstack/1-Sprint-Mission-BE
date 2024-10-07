@@ -3,7 +3,7 @@ import imgUploadHandler from "../middlewares/imgUploadHandler.js";
 import validateData from "../middlewares/validateData.js";
 import productService from "../services/productService.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import { verifyAccessToken } from "../middlewares/authorizationMiddleware.js";
+import { attachUserId, verifyAccessToken } from "../middlewares/authorizationMiddleware.js";
 
 const productController = express.Router();
 
@@ -11,9 +11,10 @@ productController.route("/").post(
   verifyAccessToken,
   imgUploadHandler,
   validateData.product("post"),
+  attachUserId,
   asyncHandler(async (req, res, next) => {
     let creatData = {};
-    let path = {};
+    let imagePath = {};
     let product;
 
     if (req.files && req.files.length > 0) {
@@ -21,7 +22,7 @@ productController.route("/").post(
       product = await productService.create(creatData);
 
       req.files.map((file) => {
-        path[file.originalname] = file.path;
+        imagePath[file.originalname] = file.path;
       });
     } else {
       creatData = { ...req.body, image: [] };
@@ -35,6 +36,7 @@ productController.route("/").post(
         description: product.description,
         price: product.price,
         tags: product.tags,
+        userId: product.userId,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
       },

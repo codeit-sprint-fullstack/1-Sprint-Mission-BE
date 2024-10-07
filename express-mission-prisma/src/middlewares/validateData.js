@@ -29,12 +29,12 @@ function comment(method, type) {
       if (type === "article") {
         createDataWithId = { ...req.body, articleId: id };
         assert(createDataWithId, createArticleComment);
-        req.createData = createDataWithId;
+        req.body = createDataWithId;
         next();
       } else if (type === "product") {
         createDataWithId = { ...req.body, productId: id };
         assert(createDataWithId, createProductComment);
-        req.createData = createDataWithId;
+        req.body = createDataWithId;
         next();
       }
     } else if (method === "patch") {

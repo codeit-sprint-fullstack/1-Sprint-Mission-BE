@@ -2,7 +2,7 @@ import express from "express";
 import articleService from "../services/articleService.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import validateData from "../middlewares/validateData.js";
-import { verifyAccessToken } from "../middlewares/authorizationMiddleware.js";
+import { attachUserId, verifyAccessToken } from "../middlewares/authorizationMiddleware.js";
 
 const articleController = express.Router();
 
@@ -11,7 +11,9 @@ articleController
   .post(
     verifyAccessToken,
     validateData.article("post"),
+    attachUserId,
     asyncHandler(async (req, res, next) => {
+      console.log(req.body)
       const article = await articleService.create(req.body);
       res.status(201).send(article);
     })
