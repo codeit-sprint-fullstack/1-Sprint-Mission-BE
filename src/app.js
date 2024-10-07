@@ -8,14 +8,15 @@ import productRouter from "./routers/productRouter.js";
 import articleRouter from "./routers/articleRouter.js";
 import commentRouter from "./routers/commentRouter.js";
 import errorHandler from "./middlewares/errorHandler.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
 
 app.use(cors());
-
 app.use(express.json());
 app.use(passport.initialize());
+app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);

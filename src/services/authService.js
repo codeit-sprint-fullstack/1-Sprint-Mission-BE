@@ -1,12 +1,7 @@
-import { assert, CreateUser } from "../validations/structs.js";
+import * as userRepository from "../repositories/userRepository.js";
+import { assert, PatchUser } from "../validations/structs.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import * as userRepository from "../repositories/userRepository.js";
-
-async function filteredSensitiveUserData(user) {
-  const { encryptedPassword, refreshToken, ...rest } = user;
-  return rest;
-}
 
 async function verifyPassword(inputPassword, savedPassword) {
   const isValid = await bcrypt.compare(inputPassword, savedPassword);
@@ -29,11 +24,10 @@ export async function getUser(email, password) {
     throw error;
   }
   await verifyPassword(password, user.password);
-  return filteredSensitiveUserData(user);
+  return user;
 }
 
 export async function createUser(user) {
-  assert(user, CreateUser);
   const existedUser = await userRepository.findByEmail(user.email);
   if (existedUser) {
     const error = new Error("이미 사용중인 이메일입니다");
@@ -44,28 +38,35 @@ export async function createUser(user) {
 
   const hashedPassword = await hashingPassword(user.password);
 
-  const createUser = await userRepository.create({
+  const accessToken = createToken(user);
+  const refreshToken = createToken(user, "refresh");
+
+  const newUser = await userRepository.create({
     email: user.email,
     nickname: user.nickname,
     encryptedPassword: hashedPassword,
+    refreshToken,
   });
 
-  return filteredSensitiveUserData(createUser);
+  return { ...newUser, accessToken, refreshToken };
 }
 
-export async function createToken(user, type = "access") {
+export function createToken(user, type = "access") {
   const payload = { userId: user.id };
+
+  const secret = process.env.JWT_SECRET;
 
   const options = {
     expiresIn: type === "refresh" ? "2w" : "1h",
     algorithm: "HS256",
   };
 
-  return jwt.sign(payload, process.env.JWT_SECRET, options);
+  return jwt.sign(payload, secret, options);
 }
-export async function updateUser(id, data) {
-  assert(PatchUser, data);
-  return await userRepository.update(id, data);
+
+export async function updateRefreshTokenOnDB(id, refreshToken) {
+  assert({ refreshToken }, PatchUser);
+  return await userRepository.update(id, { refreshToken });
 }
 
 export async function validateRefreshToken(userId, refreshToken) {
@@ -92,5 +93,5 @@ export async function oauthCreateOrUpdate({
     email,
     name,
   });
-  return filteredSensitiveUserData(user);
+  return user;
 }

@@ -9,6 +9,7 @@
     "express-jwt": "^8.4.1",
     "is-email": "^1.0.2",
     "is-uuid": "^1.0.2",
+    "jsonwebtoken": "^9.0.2",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
@@ -21,9 +22,10 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon src/app.js",
+    "dev": "nodemon src/app.js",
     "start": "node app.js",
-    "migrate": "prisma migrate dev"
+    "migrate": "prisma migrate dev",
+    "test": "nodemon test.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js",

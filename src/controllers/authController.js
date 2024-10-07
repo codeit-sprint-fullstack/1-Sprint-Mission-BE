@@ -1,5 +1,11 @@
 import * as authService from "../services/authService.js";
 import { cookieOptions } from "../config/authOptions.js";
+import { assert, CreateUser } from "../validations/structs.js";
+
+function filterSensitiveUserData(user) {
+  const { password, refreshToken, ...rest } = user;
+  return rest;
+}
 
 export const createLogin = async (req, res) => {
   const user = req.user;
@@ -19,9 +25,17 @@ export const createLogin = async (req, res) => {
 };
 
 export const createSignup = async (req, res) => {
-  const user = await authService.createUser(req.body);
+  const userData = req.body;
 
-  return res.status(201).json(user);
+  assert(userData, CreateUser);
+
+  const user = await authService.createUser(userData);
+
+  res.cookie("refreshToken", user.refreshToken, cookieOptions);
+
+  const filteredData = filterSensitiveUserData(user);
+
+  return res.status(201).json(filteredData);
 };
 
 export const createRefreshToken = async (req, res) => {
@@ -30,10 +44,10 @@ export const createRefreshToken = async (req, res) => {
   const { accessToken, newRefreshToken } =
     await authService.validateRefreshToken(user.id, refreshToken);
 
-  await authService.updateUser(user.id, { refreshToken: newRefreshToken });
-  res.cookie("refreshToken", refreshToken, {
-    cookieOptions,
+  await authService.updateRefreshTokenOnDB(user.id, {
+    refreshToken: newRefreshToken,
   });
+  res.cookie("refreshToken", refreshToken, cookieOptions);
   return res.json({ accessToken });
 };
 
@@ -41,8 +55,6 @@ export const getGoogleLogin = async (req, res) => {
   const user = req.user;
   const accessToken = authService.createToken(user);
   const refreshToken = authService.createToken(user, "refresh");
-  res.cookie("refreshToken", refreshToken, {
-    cookieOptions,
-  });
+  res.cookie("refreshToken", refreshToken, cookieOptions);
   return res.json({ accessToken });
 };

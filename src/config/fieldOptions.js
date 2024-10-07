@@ -3,6 +3,13 @@ const TIME_STAMP = {
   updatedAt: true,
 };
 
+export const USER_FIELDS = {
+  id: true,
+  nickname: true,
+  image: true,
+  ...TIME_STAMP,
+};
+
 export const PRODUCT_FIELDS = {
   id: true,
   name: true,

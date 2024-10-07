@@ -35,6 +35,7 @@ export const CreateUser = s.object({
   email: email(),
   nickname: s.size(s.string(), 1, 20),
   password: s.size(s.string(), 8, 14),
+  refreshToken: s.optional(s.string()),
 });
 
 export const PatchUser = s.partial(CreateUser);
