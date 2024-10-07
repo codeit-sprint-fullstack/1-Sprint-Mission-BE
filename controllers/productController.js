@@ -74,7 +74,7 @@ export const updateProduct = async (req, res, next) => {
     const { productId } = req.params;
     const images = req.files
       ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
-      : req.body.images || [];
+      : req.body.images;
     const { name, price, description, tags } = req.body;
 
     const updatedProduct = await productService.updateProduct(
