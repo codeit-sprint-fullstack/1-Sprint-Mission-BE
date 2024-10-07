@@ -6,7 +6,6 @@ import comments from "./routes/comments.js";
 import products from "./routes/products.js";
 import users from "./routes/users.js";
 import cors from "cors";
-import swaggerUi, { specs } from "./swagger.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
@@ -22,16 +21,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static("upload"));
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+app.get("/api/test", (req, res) => {
+  res.send("API 테스트 엔드포인트");
+});
 
 app.use("/articles", articles);
-
-/**
- * @swagger
- * tags:
- *   name: Comments
- *   description: 댓글
- */
 
 app.use("/comments", comments);
 app.use("/products", products);

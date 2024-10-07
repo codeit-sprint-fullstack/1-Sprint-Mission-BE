@@ -16,7 +16,8 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "prisma": "^5.4.2",
-    "superstruct": "^1.0.3"
+    "superstruct": "^1.0.3",
+    "swagger-autogen": "^2.23.7"
   },
   "devDependencies": {
     "nodemon": "^3.1.4",
@@ -27,7 +28,8 @@
   "scripts": {
     "dev": "nodemon app.js",
     "start": "node app.js",
-    "seed": "node data/seed.js"
+    "seed": "node data/seed.js",
+    "swagger": "node swagger.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js"

@@ -8,7 +8,7 @@ const getArticleComments = async (cursor, limit, id) => {
     skip: cursor ? 1 : 0, //커서 자신을 스킵하기 위함
     cursor: cursor ? { id: cursor } : undefined,
     orderBy: {
-      createAt: "asc",
+      createAt: "desc",
     },
     include: {
       user: {
@@ -28,7 +28,7 @@ const getProductComments = async (cursor, limit, id) => {
     skip: cursor ? 1 : 0, //커서 자신을 스킵하기 위함
     cursor: cursor ? { id: cursor } : undefined,
     orderBy: {
-      createAt: "asc",
+      createAt: "desc",
     },
     include: {
       user: {

@@ -1,4 +1,3 @@
-import { date } from "superstruct";
 import commentModel from "../model/commentModel.js";
 
 const getArticleComments = async (req) => {
