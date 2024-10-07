@@ -156,11 +156,10 @@ router.patch(
   jwtMiddleware.verifyProductAuth,
   asyncHandler(async (req, res) => {
     const { price, title, content, tags, userId } = req.body;
+    const { id } = req.params;
 
     const imagePaths = req.files ? req.files.map((file) => file.path) : [];
     const tagsArray = tags ? tags.split(',') : [];
-
-    console.log(imagePaths);
 
     const article = await prisma.fleaMarket.update({
       where: { id: Number(id) },

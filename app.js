@@ -7,7 +7,6 @@ import userRoute from './src/routes/users.js';
 import authRoute from './src/routes/auth.js';
 import freeboardRoute from './src/routes/freeboard.js';
 import fleamarketRoute from './src/routes/fleamarket.js';
-import articleRoute from './src/routes/articles.js';
 import commentRoute from './src/routes/comments.js';
 import favoriteRoute from './src/routes/favorite.js';
 
@@ -19,7 +18,6 @@ app.get('/', (req, res) => {
   res.send('default path');
 });
 
-app.use('/articles', articleRoute);
 app.use('/freeboard', freeboardRoute);
 app.use('/fleamarket', fleamarketRoute);
 app.use('/comments', commentRoute);
