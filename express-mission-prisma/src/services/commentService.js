@@ -1,59 +1,20 @@
 import commentRepository from "../repositories/commentRepository.js";
-import { assert } from "superstruct";
 import {
-  createArticleComment,
-  createProductComment,
-  updateComment,
-} from "../structs/commentStruct.js";
+  createCursorFilterOptions,
+  createFillterByType,
+} from "../utils/filterOptions.js";
 
 async function create(createData) {
   return await commentRepository.create(createData);
 }
 
 async function getAllByFilter(id, query, type) {
-  const { cursor = "", pageSize, orderBy } = query;
-  const order = orderBy || "recent";
-  let findValueDefault;
-
-  if (type === "article") {
-    let pageSizeNum = parseInt(pageSize) || 5;
-    if (pageSizeNum) {
-      pageSizeNum++;
-    }
-    findValueDefault = {
-      orderBy: { createdAt: "desc" },
-      take: pageSizeNum,
-      where: { articleId: id },
-    };
-  } else if (type === "product") {
-    let pageSizeNum = parseInt(pageSize) || 2;
-    if (pageSizeNum) {
-      pageSizeNum++;
-    }
-    findValueDefault = {
-      orderBy: { createdAt: "desc" },
-      take: pageSizeNum,
-      where: { productId: id },
-    };
-  }
-
-  const findValue =
-    cursor !== ""
-      ? { ...findValueDefault, cursor: { id: cursor } }
-      : { ...findValueDefault };
-
-  return await commentRepository.getAllByFilter(findValue);
+  const filterByCursor = createCursorFilterOptions(id, query, type);
+  return await commentRepository.getAllByFilter(filterByCursor);
 }
 
 async function countByFilter(id, type) {
-  let fillter;
-
-  if (type === "article") {
-    fillter = { articleId: id };
-  } else if (type === "product") {
-    fillter = { productId: id };
-  }
-
+  const fillterByType = createFillterByType(id, type);
   return await commentRepository.countByFilter(fillter);
 }
 
