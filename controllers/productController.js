@@ -1,20 +1,6 @@
 import { PrismaClient } from "@prisma/client"; // PrismaClient import
-import multer from "multer"; // 파일 업로드를 처리하기 위한 미들웨어
 
 const prisma = new PrismaClient(); // PrismaClient 인스턴스 생성
-
-// Multer 설정
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // 파일을 저장할 경로
-  },
-  filename: (req, file, cb) => {
-    const sanitizedFileName = file.originalname.replace(/[^a-zA-Z0-9.]/g, "_"); // 안전한 파일 이름으로 변경
-    cb(null, Date.now() + "-" + sanitizedFileName); // 수정된 파일 이름 사용
-  },
-});
-
-const upload = multer({ storage });
 
 // 상품 목록 조회 및 등록 API
 export const getProducts = async (req, res, next) => {
