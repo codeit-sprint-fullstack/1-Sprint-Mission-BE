@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"; // JWT 토큰 생성을 위한 라이브러리
 import passport from "passport"; // 구글 OAuth 전략을 설정
 import { Strategy as GoogleStrategy } from "passport-google-oauth20"; // 구글 OAuth 전략을 설정
 import errorHandler from "../middlewares/errorHandler.js"; // 에러 핸들러 미들웨어 import
-import * as authController from "../controllers/authController.js"; // 컨트롤러 import
+import * as userController from "../controllers/userController.js"; // 컨트롤러 import
 
 const prisma = new PrismaClient();
 const router = express.Router();
@@ -70,19 +70,19 @@ router.get(
 );
 
 // 회원가입 API
-router.route("/signUp").post(authController.signup);
+router.route("/signUp").post(userController.signup);
 
 // 로그인 API
-router.route("/login").post(authController.login);
+router.route("/login").post(userController.login);
 
 // 리프레시 토큰으로 새로운 액세스 토큰 발급
-router.post("/refresh", authController.refreshAccessToken);
+router.post("/refresh", userController.refreshAccessToken);
 
 // 리프레시 토큰 삭제 (로그아웃 시 등)
-router.delete("/logout", authController.logout);
+router.delete("/logout", userController.logout);
 
 // 사용자 정보 가져오기 API (현재 사용자)
-router.get("/me", authController.getCurrentUser);
+router.get("/me", userController.getCurrentUser);
 
 // 에러 핸들러 미들웨어 등록
 router.use(errorHandler);
