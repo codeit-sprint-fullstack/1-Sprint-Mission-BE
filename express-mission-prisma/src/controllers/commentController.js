@@ -2,7 +2,11 @@ import express from "express";
 import asyncHandler from "../utils/asyncHandler.js";
 import commentService from "../services/commentService.js";
 import validateData from "../middlewares/validateData.js";
-import { attachUserId, verifyAccessToken } from "../middlewares/authorizationMiddleware.js";
+import {
+  attachUserId,
+  verifyAccessToken,
+  verifyCommentAuth,
+} from "../middlewares/authorizationMiddleware.js";
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
 const articleCommentController = express.Router(); // 게시글 댓글 router
@@ -89,6 +93,8 @@ productCommentCotroller
 commentController
   .route("/:id")
   .patch(
+    verifyAccessToken,
+    verifyCommentAuth,
     validateData.comment("patch"),
     asyncHandler(async (req, res, next) => {
       const { id } = req.params;
@@ -97,6 +103,8 @@ commentController
     })
   )
   .delete(
+    verifyAccessToken,
+    verifyCommentAuth,
     asyncHandler(async (req, res, next) => {
       const { id } = req.params;
       await commentService.deleteById(id);

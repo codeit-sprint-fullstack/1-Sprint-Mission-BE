@@ -44,10 +44,17 @@ async function deleteById(id) {
   });
 }
 
+async function getById(id) {
+  return await prisma.comment.findUniqueOrThrow({
+    where: { id },
+  });
+}
+
 export default {
   create,
   getAllByFilter,
   countByFilter,
   update,
   deleteById,
+  getById,
 };

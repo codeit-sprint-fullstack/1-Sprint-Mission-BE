@@ -7,7 +7,7 @@ async function singUp(singUpData) {
 }
 
 async function findByEmail(email) {
-  return await prisma.user.findUnique({
+  return await prisma.user.findUniqueOrThrow({
     where: {
       email,
     },

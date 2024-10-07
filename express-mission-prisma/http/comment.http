@@ -1,4 +1,4 @@
-GET  http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58/comment
+GET  http://localhost:3001/article/6e8d93de-f480-488a-9215-8a623631ab35/comment
 
 ###
 
@@ -31,7 +31,8 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3001/comment/c9920f9f-bf05-4747-aecc-236e450ecf6
+PATCH http://localhost:3001/comment/48651b38-2a67-4926-bb01-ce7859843da7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjM4MmU0ZC0wNDRkLTRmMzAtYmJiYy0xODk2NDg2ZjFlYjYiLCJpYXQiOjE3MjgyODY5ODksImV4cCI6MTcyODI5MDU4OX0.OxNxs4OBYzu37P7gpi0DCNokRDVzSC44M68MgGTlurM
 Content-Type: application/json
 
 {
@@ -39,4 +40,5 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3001/comment/b69d1742-7df2-4bd7-9057-2f596c33dfdc
+DELETE http://localhost:3001/comment/48651b38-2a67-4926-bb01-ce7859843da7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjM4MmU0ZC0wNDRkLTRmMzAtYmJiYy0xODk2NDg2ZjFlYjYiLCJpYXQiOjE3MjgyODY5ODksImV4cCI6MTcyODI5MDU4OX0.OxNxs4OBYzu37P7gpi0DCNokRDVzSC44M68MgGTlurM
