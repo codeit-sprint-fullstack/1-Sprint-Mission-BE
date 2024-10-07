@@ -16,8 +16,14 @@ authController.route("/singUp").post(
 authController.route("/singIn").post(
   validateData.singIn(),
   asyncHandler(async (req, res, next) => {
-    const singIn = await authService.singIn(req.body)
-    res.send(singIn)
+    const singIn = await authService.singIn(req.body);
+    const accessToken = await authService.createToken(singIn);
+    res.send({
+      user: singIn,
+      Token: {
+        accessToken,
+      },
+    });
   })
 );
 

@@ -4,6 +4,7 @@ import {
   hashPassword,
   verifyPassword,
 } from "../utils/authHandler.js";
+import jwt from "jsonwebtoken";
 
 async function singUp(singUpData) {
   const { email, nickname, password } = singUpData;
@@ -42,7 +43,14 @@ async function singIn(singInData) {
   return filterSensitiveUserData(user);
 }
 
+async function createToken(user) {
+  const payload = { userId: user.id };
+  const options = { expiresIn: "1h" };
+  return jwt.sign(payload, process.env.JWT_SECRET, options);
+}
+
 export default {
   singUp,
   singIn,
+  createToken,
 };
