@@ -26,7 +26,7 @@ export async function getTotalCount(searchQuery) {
 }
 
 export async function getArticleById(id) {
-  const article = await prisma.article.findUniqueOrThrow({
+  const article = await prisma.article.findUnique({
     where: { id },
     select: {
       ...ARTICLE_FIELDS,

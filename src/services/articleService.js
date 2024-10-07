@@ -1,4 +1,4 @@
-import { CreateArticle, PatchArticle, assert } from "../validations/structs.js";
+import { CreateArticle, assert } from "../validations/structs.js";
 import * as articleRepository from "../repositories/articleRepository.js";
 
 export async function getArticles({ orderBy, page, pageSize, keyword }) {
@@ -42,7 +42,6 @@ export async function createArticle(userId, data) {
 }
 
 export async function updateArticle(id, data) {
-  assert(data, PatchArticle);
   return await articleRepository.updateById(id, data);
 }
 

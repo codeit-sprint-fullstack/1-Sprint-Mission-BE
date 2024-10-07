@@ -24,6 +24,7 @@ const refreshTokenOptions = {
 async function jwtVerify(payload, done) {
   try {
     const { userId } = payload;
+
     if (!userId) {
       const error = new Error("JWT인증: userId가 없습니다.");
       return done(error, false);

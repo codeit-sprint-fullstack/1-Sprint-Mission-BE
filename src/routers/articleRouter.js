@@ -14,15 +14,18 @@ router.get(
   asyncHandler(controller.getArticleById)
 );
 router.post("/", authentication, asyncHandler(controller.createArticle));
+
 router.patch(
   "/:articleId",
   validateUuid,
+  authentication,
   articleAuthorization,
   asyncHandler(controller.updateArticleById)
 );
 router.delete(
   "/:articleId",
   validateUuid,
+  authentication,
   articleAuthorization,
   asyncHandler(controller.deleteArticleById)
 );

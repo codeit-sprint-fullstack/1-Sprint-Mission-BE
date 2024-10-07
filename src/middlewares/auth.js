@@ -32,9 +32,15 @@ export async function productAuthorization(req, res, next) {
 }
 
 export async function articleAuthorization(req, res, next) {
-  const { articleId } = req.params;
-
   try {
+    const { articleId } = req.params;
+
+    if (!req.user) {
+      const error = new Error("사용자가 없음");
+      error.code = 400;
+      return next(error);
+    }
+
     const article = await getArticleById(articleId);
 
     if (!article) {
@@ -43,7 +49,7 @@ export async function articleAuthorization(req, res, next) {
       return next(error);
     }
 
-    if (article.owner.id !== req.user.id) {
+    if (article.writer.id !== req.user.id) {
       const error = new Error("수정 또는 삭제 권한이 없습니다.");
       error.code = 403;
       return next(error);
