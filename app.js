@@ -7,7 +7,6 @@ import userRoute from './src/routes/user.js';
 import authRoute from './src/routes/auth.js';
 import freeboardRoute from './src/routes/freeboard.js';
 import fleamarketRoute from './src/routes/fleamarket.js';
-import articleRoute from './src/routes/articles.js';
 import commentRoute from './src/routes/comment.js';
 import favoriteRoute from './src/routes/favorite.js';
 
