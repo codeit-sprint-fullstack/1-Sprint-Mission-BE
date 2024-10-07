@@ -10,4 +10,8 @@ const singUpUser = s.object({
   nickname: s.size(s.string(), 1, Infinity),
 });
 
-export { singUpUser };
+const singInUser = s.object({
+  ...authUserBody,
+});
+
+export { singUpUser, singInUser };

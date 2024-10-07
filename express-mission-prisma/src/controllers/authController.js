@@ -13,4 +13,12 @@ authController.route("/singUp").post(
   })
 );
 
+authController.route("/singIn").post(
+  validateData.singIn(),
+  asyncHandler(async (req, res, next) => {
+    const singIn = await authService.singIn(req.body)
+    res.send(singIn)
+  })
+);
+
 export default authController;

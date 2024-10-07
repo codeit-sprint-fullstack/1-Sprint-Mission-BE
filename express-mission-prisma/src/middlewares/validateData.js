@@ -6,7 +6,7 @@ import {
   updateComment,
 } from "../structs/commentStruct.js";
 import { createProduct } from "../structs/productStruct.js";
-import { singUpUser } from "../structs/userStruct.js";
+import { singInUser, singUpUser } from "../structs/userStruct.js";
 
 function article(method) {
   return (req, res, next) => {
@@ -60,9 +60,17 @@ function singUp() {
   };
 }
 
+function singIn() {
+  return (req, res, next) => {
+    assert(req.body, singInUser);
+    next();
+  };
+}
+
 export default {
   article,
   comment,
   product,
   singUp,
+  singIn,
 };

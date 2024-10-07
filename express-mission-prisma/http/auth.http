@@ -6,3 +6,11 @@ Content-Type: application/json
     "nickname": "송영섭",
     "password": "12345678"
 }
+###
+POST http://localhost:3001/auth/singIn
+Content-Type: application/json
+
+{
+    "email": "stremor255@naver.com",
+    "password": "12345688"
+}
