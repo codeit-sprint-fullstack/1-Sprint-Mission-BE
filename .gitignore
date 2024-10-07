@@ -10,5 +10,3 @@ node_modules
 #etc
 test.http
 uploads/
-swagger.js
-swagger_output.json
