@@ -65,7 +65,7 @@ function createCursorFilterOptions(id, query, type) {
   return fillterOptions;
 }
 
-function createFillterOtionsByKeyword(query) {
+function createKeywordFillterOtions(query) {
   const { keyWord = "" } = query;
 
   const fillterBody = {
@@ -86,7 +86,7 @@ function createFillterOtionsByKeyword(query) {
   return fillterOptions;
 }
 
-function createFillterByType(id, type) {
+function createTypeFillterOptions(id, type) {
   let fillterOptions;
 
   if (type === "article") {
@@ -101,6 +101,6 @@ function createFillterByType(id, type) {
 export {
   createPageSizeFilterOptions,
   createCursorFilterOptions,
-  createFillterOtionsByKeyword,
-  createFillterByType,
+  createKeywordFillterOtions,
+  createTypeFillterOptions,
 };

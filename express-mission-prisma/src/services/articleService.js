@@ -1,6 +1,6 @@
 import articleRepository from "../repositories/articleRepository.js";
 import {
-  createFillterOtionsByKeyword,
+  createKeywordFillterOtions,
   createPageSizeFilterOptions,
 } from "../utils/filterOptions.js";
 
@@ -14,7 +14,7 @@ async function getAllByFilter(query) {
 }
 
 async function countByFilter(query) {
-  const fillterByKeword = createFillterOtionsByKeyword(query);
+  const fillterByKeword = createKeywordFillterOtions(query);
   return await articleRepository.countByFilter(fillterByKeword);
 }
 
