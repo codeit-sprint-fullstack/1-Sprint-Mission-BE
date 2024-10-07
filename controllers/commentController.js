@@ -54,22 +54,20 @@ exports.createArticleComment = async (req, res, next) => {
 exports.getProductComments = async (req, res, next) => {
   const { productId } = req.params;
 
-  // 상품 ID가 제대로 전달되는지 확인
-  console.log("불러올 상품 ID:", productId);
+  console.log("불러올 상품 ID:", productId); // 추가된 로그
 
   if (!productId) {
+    console.error("상품 ID가 제공되지 않았습니다.");  // 추가된 로그
     return res.status(400).json({ error: "상품 ID가 제공되지 않았습니다." });
   }
 
   try {
-    // 댓글 조회 직전에 콘솔 찍기
     const comments = await prisma.comment.findMany({
       where: { productId: parseInt(productId) },
       include: { user: true }, // 댓글 작성자 정보 포함
     });
 
-    // 조회된 댓글 데이터 콘솔 출력
-    console.log("조회된 댓글:", comments);
+    console.log("불러온 댓글 목록:", comments); // 추가된 로그
 
     if (comments.length === 0) {
       return res.status(404).json({ message: "댓글이 없습니다." });
@@ -77,11 +75,11 @@ exports.getProductComments = async (req, res, next) => {
 
     res.status(200).json(comments);
   } catch (error) {
-    // 에러 발생 시 오류 로그 추가
-    console.error("댓글 목록 불러오기 중 오류:", error);
+    console.error("댓글 목록 불러오기 중 오류:", error);  // 추가된 로그
     next(error); // 에러 전달
   }
 };
+
 
 
 // 게시글 댓글 목록 조회
