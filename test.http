@@ -37,7 +37,7 @@ GET http://localhost:3001/products
 ### 상품 등록
 POST http://localhost:3001/products
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTcyODExODA4NSwiZXhwIjoxNzI4MTE4OTg1fQ.PKulI7_Wu_r5Yi975AuJGchnpFnqZqmq4VjZSCMV-0k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyODQ3NDIsImV4cCI6MTcyODI4NTY0Mn0.8V9oLLfnPKRVL9bjTvpvQD5P9Zz9tOyOydISJtLJgbo
 
 {
   "images": [],
@@ -78,13 +78,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlb
 }
 
 ### 댓글 조회
-GET http://localhost:3001/products/7/comments
+GET http://localhost:3001/products/1/comments
 Content-Type: application/json
 
 ### 댓글 추가
-POST http://localhost:3001/products/7/comments
+POST http://localhost:3001/products/1/comments
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlbWFpbCI6ImJhYmFAdGVzdC5jb20iLCJpYXQiOjE3MjgwMzA0OTMsImV4cCI6MTcyODAzMTM5M30.XvSxzy3Woa0oH9SN9IK1kGtaqEwHxi5iyeFBYySyHF4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyODQ3NDIsImV4cCI6MTcyODI4NTY0Mn0.8V9oLLfnPKRVL9bjTvpvQD5P9Zz9tOyOydISJtLJgbo
 
 {
   "content" : "댓글 추가 API 테스트"
@@ -104,7 +104,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlb
 }
 
 ### 좋아요 추가
-POST http://localhost:3001/products/1/favorites
+POST http://localhost:3001/comment/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiYWRtaW5AYS5jIiwiaWF0IjoxNzI4MTA1NTE1LCJleHAiOjE3MjgxMDY0MTV9.8m8pgbDGWjAT0llElejt3ap6eh5rOB8EL_EtS1ucgTE
 
@@ -127,3 +127,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtY
 DELETE http://localhost:3001/article/1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyODMxMjEsImV4cCI6MTcyODI4NDAyMX0.ZKA5Yzxet8lKhC61oIyZ5JLdWRu9EtL9Jc4EiFiabNk
+
+### 댓글 조회
+GET http://localhost:3001/article/article/3/comments
+Content-Type: application/json
+
+### 댓글 삭제
+DELETE http://localhost:3001/article/comments/4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyODY1NjAsImV4cCI6MTcyODI4NzQ2MH0.boOBlPb4dfKE8E_7V5Cx8rDz-_yr2NaZ_eyAlOyob34
+
+### 댓글 수정
+PATCH http://localhost:3001/article/comments/4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyODc3NjYsImV4cCI6MTcyODI4ODY2Nn0.ZfrX29Vh938fWCj5UQtMIpzhdMaUMChzQ2Es81vEFbs
+
+{
+  "content" : "gdsadfhgfgdsf"
+}
