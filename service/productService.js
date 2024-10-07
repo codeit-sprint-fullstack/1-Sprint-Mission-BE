@@ -1,4 +1,5 @@
 import productModel from "../model/productModel.js";
+import { setOrderByQuery } from "../utils/orderByQuery.js";
 
 const getProducts = async ({
   orderBy,
@@ -7,18 +8,7 @@ const getProducts = async ({
   keyword = "",
 }) => {
   const offset = (page - 1) * pageSize; //page가 3이면 3-1 = 2 * count 만큼 스킵
-  let orderOption;
-  switch (orderBy) {
-    case "recent":
-      orderOption = { createAt: "desc" };
-      break;
-    case "favoriteCount":
-      orderOption = { favoriteCount: "desc" };
-      break;
-    default:
-      orderOption = { createAt: "desc" };
-      break;
-  }
+  const orderOption = setOrderByQuery(orderBy);
   const [totalCount, products] = await Promise.all([
     productModel.getTotalCount(keyword),
     productModel.getList(pageSize, offset, orderOption, keyword),
