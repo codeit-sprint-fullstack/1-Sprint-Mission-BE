@@ -9,6 +9,21 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20"; // 구글 
 const prisma = new PrismaClient();
 const router = express.Router();
 
+// 사용자 직렬화
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// 사용자 역직렬화
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await prisma.user.findUnique({ where: { id } });
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
+});
+
 // 구글 OAuth 전략 설정
 passport.use(
   new GoogleStrategy(
@@ -50,7 +65,7 @@ router.get(
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    res.redirect(`http://yourfrontend.com?token=${token}`); // 프론트엔드 URL로 리다이렉트
+    res.redirect(`http://localhost:3000?token=${token}`); // 프론트엔드 URL로 리다이렉트
   }
 );
 
