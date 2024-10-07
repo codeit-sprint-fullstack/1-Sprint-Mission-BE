@@ -23,3 +23,18 @@ export async function getArticles(req, res, next) {
       .json({ message: "게시물 정보를 추출할 수 없습니다." });
   }
 }
+
+export async function getArticleId(req, res, next) {
+  try {
+    const { articleId } = req.params;
+    const article = await prisma.article.findUnique({
+      where: { id: parseInt(articleId, 10) },
+    });
+    return res.status(200).json({ message: "게시물 정보 추출", article });
+  } catch (error) {
+    console.error("게시물 정보 추출 중 오류 발생:", error);
+    return res
+      .status(500)
+      .json({ message: "게시물 정보를 추출할 수 없습니다." });
+  }
+}

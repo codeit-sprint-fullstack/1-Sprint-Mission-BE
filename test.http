@@ -4,7 +4,7 @@ POST http://localhost:3001/auth/signup
 Content-Type: application/json
 
 {
-  "email" : "admin@a.c",
+  "email" : "test@test.c",
   "password" : "12341234",
   "nickname" : "test"
 }
@@ -111,4 +111,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtY
 
 ### 자유게시판
 
-GET http://localhost:3001/article
+GET http://localhost:3001/article/1
