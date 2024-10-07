@@ -76,9 +76,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJlb
   "name" : "수정후",
   "description" : "수정후"
 }
-
+### GET http://localhost:3001/article/article/3/comments
 ### 댓글 조회
-GET http://localhost:3001/products/1/comments
+GET http://localhost:3001/products/products/1/comments
 Content-Type: application/json
 
 ### 댓글 추가
