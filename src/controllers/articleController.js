@@ -1,5 +1,5 @@
 import * as articleService from "../services/articleService.js";
-import { PatchArticle, assert } from "../validations/structs.js";
+import { CreateArticle, assert, PatchArticle } from "../validations/structs.js";
 
 export const getArticleList = async (req, res) => {
   const { orderBy } = req.query || "recent";
@@ -33,6 +33,7 @@ export const createArticle = async (req, res) => {
 export const updateArticleById = async (req, res) => {
   const { articleId } = req.params;
   const data = req.body;
+
   assert(data, PatchArticle);
 
   const updatedArticle = await articleService.updateArticle(articleId, data);

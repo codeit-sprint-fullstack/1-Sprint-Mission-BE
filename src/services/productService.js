@@ -1,4 +1,3 @@
-import { CreateProduct, PatchProduct, assert } from "../validations/structs.js";
 import * as productRepository from "../repositories/productRepository.js";
 import prisma from "../config/prisma.js";
 
@@ -34,16 +33,14 @@ export async function getProducts({ orderBy, page, pageSize, keyword }) {
 }
 
 export async function getProduct(id) {
-  return await productRepository.getById(id);
+  return await productRepository.getProductById(id);
 }
 
-export async function createProduct(data) {
-  assert(data, CreateProduct);
-  return await productRepository.create(data);
+export async function createProduct(userId, data) {
+  return await productRepository.create(userId, data);
 }
 
 export async function updateProduct(id, data) {
-  assert(data, PatchProduct);
   return await productRepository.updateById(id, data);
 }
 

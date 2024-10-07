@@ -1,4 +1,3 @@
-import { CreateArticle, assert } from "../validations/structs.js";
 import * as articleRepository from "../repositories/articleRepository.js";
 import prisma from "../config/prisma.js";
 
@@ -38,7 +37,6 @@ export async function getArticle(id) {
 }
 
 export async function createArticle(userId, data) {
-  assert(data, CreateArticle);
   return await articleRepository.create(userId, data);
 }
 

@@ -9,6 +9,11 @@ export async function getAll({ searchQuery, sortOption, offset, pageSize }) {
     take: pageSize,
     select: {
       ...PRODUCT_FIELDS,
+      owner: {
+        select: {
+          ...OWNER_FIELDS,
+        },
+      },
     },
   });
 
@@ -21,7 +26,7 @@ export async function getTotalCount(searchQuery) {
 }
 
 export async function getProductById(id) {
-  const product = await prisma.product.findUniqueOrThrow({
+  const product = await prisma.product.findUnique({
     where: { id },
     select: {
       ...PRODUCT_FIELDS,
@@ -36,9 +41,14 @@ export async function getProductById(id) {
   return product;
 }
 
-export async function create(data) {
+export async function create(userId, data) {
   const newProduct = await prisma.product.create({
-    data: { ...data },
+    data: {
+      ...data,
+      owner: {
+        connect: { id: userId },
+      },
+    },
     select: {
       ...PRODUCT_FIELDS,
       owner: {

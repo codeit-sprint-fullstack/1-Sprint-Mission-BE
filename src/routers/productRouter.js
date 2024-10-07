@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.use(authentication);
 
-router.get("/", asyncHandler(controller.getProducts));
+router.get("/", asyncHandler(controller.getProductList));
 router.get(
   "/:productId",
   validateUuid,
