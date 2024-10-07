@@ -31,7 +31,7 @@ async function singUp(singUpData) {
 async function singIn(singInData) {
   const { email, password } = singInData;
   const user = await authRepository.findByEmail(email);
-  
+
   if (!user) {
     const error = new Error("Unauthorized");
     error.code = 401;
