@@ -11,7 +11,7 @@ router.post(
   jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { userId } = req.body;
+    const { userId } = req.query;
 
     await prisma.$transaction([
       prisma.favorite.create({
@@ -35,7 +35,7 @@ router.delete(
   jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { userId } = req.body;
+    const { userId } = req.query;
 
     const existingFavorite = await prisma.favorite.findFirst({
       where: {
