@@ -23,7 +23,7 @@ export function validateAccessToken(req, res, next) {
     }
 
     req.id = decoded.id;
-    console.log("validateAccessToken req.id : ", req.id);
+
     return next();
   });
 }

@@ -9,7 +9,8 @@ import { DB_URL, PORT } from "./config.js";
 // import { Comment } from "./structs/comment.js";
 
 import authRouter from "./routes/auth.js";
-import { userRouter } from "./routes/users.js";
+import userRouter from "./routes/users.js";
+import productRouter from "./routes/products.js";
 
 import {
   logErrors,
@@ -25,6 +26,7 @@ app.use(express.json());
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/products", productRouter);
 
 app.use(logErrors);
 app.use(clientErrorHandler);

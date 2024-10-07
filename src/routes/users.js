@@ -6,14 +6,10 @@ import {
   validateIdPassword,
 } from "../middlewares/auth.js";
 import { createHashedPassword } from "../lib/password.js";
-import {
-  userSelect,
-  productSelect,
-  productInclude,
-} from "../structs/res-template.js";
+import { userSelect, productSelect } from "../structs/res-template.js";
 
 const prisma = new PrismaClient();
-export const userRouter = express.Router();
+const userRouter = express.Router();
 
 /** GET /users/me 
  * res : {
@@ -152,7 +148,6 @@ userRouter.get("/me/products", validateAccessToken, (req, res, next) => {
           ],
         },
         select: productSelect,
-        include: productInclude,
       },
     },
   });
@@ -169,14 +164,9 @@ userRouter.get("/me/products", validateAccessToken, (req, res, next) => {
 
   Promise.all([userProductsPromise, totalCountPromise]).then(
     ([userProducts, totalCount]) => {
-      const transformedUserProducts = userProducts.Product.map((product) => ({
-        ...product,
-        images: product.ProductImage.image,
-        tags: product.ProductTag.tag,
-        ownerId: product.User.id,
-        ownerImage: product.User.image,
-        ownerNickname: product.User.nickname,
-      }));
+      const transformedUserProducts = userProducts.Product.map((product) =>
+        productForm(product)
+      );
       res.status(200).send({ totalCount, products: transformedUserProducts });
     }
   );
@@ -242,7 +232,6 @@ userRouter.get(
                 ],
               },
               select: productSelect,
-              include: productInclude,
             },
           },
         },
@@ -261,19 +250,18 @@ userRouter.get(
 
     Promise.all([favoriteProductsPromise, totalCountPromise]).then(
       ([favoriteProducts, totalCount]) => {
-        const transformedUserProducts =
-          favoriteProducts.FavoriteProduct.Product.map((product) => ({
-            ...product,
-            images: product.ProductImage.image,
-            tags: product.ProductTag.tag,
-            ownerId: product.User.id,
-            ownerImage: product.User.image,
-            ownerNickname: product.User.nickname,
-          }));
-        res.status(200).send({ totalCount, products: transformedUserProducts });
+        const transformedFavoriteProducts =
+          favoriteProducts.FavoriteProduct.Product.map((product) =>
+            productForm(product)
+          );
+        res
+          .status(200)
+          .send({ totalCount, products: transformedFavoriteProducts });
       }
     );
   }
 );
 
 /** GET /users/me/favorite-posts */
+
+export default userRouter;
