@@ -1,9 +1,9 @@
 ### 회원가입
-POST http://localhost:3000/auth/signUp
+POST https://one-sprint-mission-be-fv23.onrender.com/auth/signUp
 Content-Type: application/json
 
 {
-  "email": "testuser@example.com",
+  "email": "testuser1@example.com",
   "nickname": "테스트",
   "password": "testpassword",
   "passwordConfirmation": "testpassword"
