@@ -12,29 +12,29 @@ const prisma = new PrismaClient();
 
 async function main() {
   await prisma.user.deleteMany();
-  await prisma.user.createMany({
-    data: User,
-  });
-  await prisma.product.deleteMany();
-  await prisma.product.createMany({
-    data: Product,
-  });
-  await prisma.post.deleteMany();
-  await prisma.post.createMany({
-    data: Post,
-  });
-  await prisma.postfavoritepost.deleteMany();
-  await prisma.postfavoritepost.createMany({
-    data: FavoritePost,
-  });
-  await prisma.postComment.deleteMany();
-  await prisma.postComment.createMany({
-    data: PostComment,
-  });
-  await prisma.productComment.deleteMany();
-  await prisma.productComment.createMany({
-    data: ProductComment,
-  });
+  // await prisma.user.createMany({
+  //   data: User,
+  // });
+  // await prisma.product.deleteMany();
+  // await prisma.product.createMany({
+  //   data: Product,
+  // });
+  // await prisma.post.deleteMany();
+  // await prisma.post.createMany({
+  //   data: Post,
+  // });
+  // await prisma.postfavoritepost.deleteMany();
+  // await prisma.postfavoritepost.createMany({
+  //   data: FavoritePost,
+  // });
+  // await prisma.postComment.deleteMany();
+  // await prisma.postComment.createMany({
+  //   data: PostComment,
+  // });
+  // await prisma.productComment.deleteMany();
+  // await prisma.productComment.createMany({
+  //   data: ProductComment,
+  // });
   // await prisma.user.deleteMany();
   // await prisma.product.deleteMany();
   // await prisma.article.deleteMany();

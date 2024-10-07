@@ -13,4 +13,6 @@ console.log(`PORT: ${process.env.PORT}`);
 export const config = {
   DB_URL: process.env.DB_URL,
   PORT: process.env.PORT,
+  ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
 };

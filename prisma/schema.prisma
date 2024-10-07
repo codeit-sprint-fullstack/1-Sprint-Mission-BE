@@ -17,19 +17,19 @@ datasource db {
 }
 
 model User {
-  id              String            @id @default(uuid())
-  name            String            @db.VarChar(255)
-  nickname        String            @unique @db.VarChar(50)
-  password        String            @db.VarChar(60)
-  email           String            @unique @db.VarChar(255)
-  image           String            @db.VarChar(2048)
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  Product         Product[]
-  FavoriteProduct FavoriteProduct[]
-  Post            Post[]
-  PostFavorite    PostFavorite[]
-  PostComment     PostComment[]
+  id                String            @id @default(uuid())
+  email             String            @unique @db.VarChar(255)
+  encryptedPassword String            @db.VarChar(60)
+  name              String            @db.VarChar(255)
+  nickname          String            @unique @db.VarChar(50)
+  image             String?           @db.VarChar(2048)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  Product           Product[]
+  FavoriteProduct   FavoriteProduct[]
+  Post              Post[]
+  PostFavorite      PostFavorite[]
+  PostComment       PostComment[]
 
   @@map("user")
 }
@@ -46,7 +46,7 @@ model Product {
   updatedAt     DateTime @updatedAt
 
   FavoriteProduct FavoriteProduct[]
-  ProductTags     ProductTags[]
+  ProductTag      ProductTag[]
   ProductImage    ProductImage[]
   ProductComment  ProductComment[]
 
@@ -65,7 +65,7 @@ model FavoriteProduct {
   @@map("favorite_product")
 }
 
-model ProductTags {
+model ProductTag {
   id        String   @id @default(uuid())
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String   @map("product_id")

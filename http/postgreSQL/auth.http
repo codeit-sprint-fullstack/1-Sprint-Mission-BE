@@ -1,0 +1,27 @@
+###
+POST http://localhost:3000/auth/sign-up
+Content-Type : application/json
+
+{
+    "email" : "codeit01@codeit.com",
+    "password" : "!codeit01",
+    "name" : "이진우",
+    "nickname" : "설랑"
+}
+
+###
+POST http://localhost:3000/auth/sign-in
+Content-Type : application/json
+
+{
+    "email" : "codeit01@codeit.com",
+    "password" : "!codeit01"
+}
+
+### 
+POST http://localhost:3000/auth/refresh-token
+Content-Type : application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM5YTllNzFjLWM1ODYtNGEwYS1hNTgzLTBiMTIxOGM0YzQwNiIsImlhdCI6MTcyODI3OTEwMCwiZXhwIjoxNzI4ODgzOTAwfQ.RmxMdJO9296R4A1IsmGsLBhIkUHCGdjlwVlL2OS_MFo"
+}
