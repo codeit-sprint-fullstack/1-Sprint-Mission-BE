@@ -19,7 +19,9 @@ router.post("/logIn", authentication, asyncHandler(controller.createLogin));
 router.post("/signUp", asyncHandler(controller.createSignup));
 router.post(
   "/refresh-token",
-  authentication,
+  passport.authenticate("refresh-token", {
+    session: false,
+  }),
   asyncHandler(controller.createRefreshToken)
 );
 
