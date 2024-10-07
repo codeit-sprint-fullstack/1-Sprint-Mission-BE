@@ -3,10 +3,12 @@ import imgUploadHandler from "../middlewares/imgUploadHandler.js";
 import validateData from "../middlewares/validateData.js";
 import productService from "../services/productService.js";
 import asyncHandler from "../utils/asyncHandler.js";
+import verifyAccessToken from "../middlewares/verifyAccessToken .js";
 
 const productController = express.Router();
 
 productController.route("/").post(
+  verifyAccessToken,
   imgUploadHandler,
   validateData.product("post"),
   asyncHandler(async (req, res, next) => {
@@ -36,7 +38,7 @@ productController.route("/").post(
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
       },
-      path,
+      imagePath,
     };
 
     res.status(201).send(resBody);

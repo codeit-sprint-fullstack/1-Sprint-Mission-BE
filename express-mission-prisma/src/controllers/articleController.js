@@ -2,12 +2,14 @@ import express from "express";
 import articleService from "../services/articleService.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import validateData from "../middlewares/validateData.js";
+import verifyAccessToken from "../middlewares/verifyAccessToken .js";
 
 const articleController = express.Router();
 
 articleController
   .route("/")
   .post(
+    verifyAccessToken,
     validateData.article("post"),
     asyncHandler(async (req, res, next) => {
       const article = await articleService.create(req.body);

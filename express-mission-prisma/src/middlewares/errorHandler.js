@@ -10,6 +10,8 @@ function errorHandler(error, req, res, next) {
     error instanceof multer.MulterError
   ) {
     status = 400;
+  } else if (error.name === "UnauthorizedError") {
+    status = 401
   } else if (
     error instanceof Prisma.PrismaClientKnownRequestError &&
     error.code === "P2025"

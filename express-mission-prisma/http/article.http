@@ -9,6 +9,7 @@ GET http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58
 ###
 
 POST http://localhost:3001/article
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZjJkNDBhZC0yZGNjLTRhMjctOTgxZi00Nzk1OWRiNzA3NDMiLCJpYXQiOjE3MjgyODIwMjksImV4cCI6MTcyODI4NTYyOX0.7eDHRNvo2pw7gDM8gBpv3XFGtoQil5h7oWrzt6ljooc
 Content-Type: application/json
 
 {

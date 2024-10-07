@@ -2,6 +2,7 @@ import express from "express";
 import asyncHandler from "../utils/asyncHandler.js";
 import commentService from "../services/commentService.js";
 import validateData from "../middlewares/validateData.js";
+import verifyAccessToken from "../middlewares/verifyAccessToken .js";
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
 const articleCommentController = express.Router(); // 게시글 댓글 router
@@ -10,6 +11,7 @@ const productCommentCotroller = express.Router(); // 상품 댓글 router
 articleCommentController
   .route("/:id/comment")
   .post(
+    verifyAccessToken,
     validateData.comment("post", "article"),
     asyncHandler(async (req, res, next) => {
       const comment = await commentService.create(req.createData);
@@ -47,6 +49,7 @@ articleCommentController
 productCommentCotroller
   .route("/:id/comment")
   .post(
+    verifyAccessToken,
     validateData.comment("post", "product"),
     asyncHandler(async (req, res, next) => {
       const comment = await commentService.create(req.createData);
