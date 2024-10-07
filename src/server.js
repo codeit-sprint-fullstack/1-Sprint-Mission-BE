@@ -17,8 +17,8 @@ app.use(express.json());
 app.use("/auth", userRoutes); //유저 회원가입, 로그인
 
 app.use("/products", productsRoutes, commentsRoutes);
-app.use("/article", articleRoutes);
-app.use("/article/", commentsRoutes);
+app.use("/articles", articleRoutes);
+app.use("/articles/", commentsRoutes);
 app.use((req, res, next) => {
   res.status(404).json({ message: "Not Found" });
 });
