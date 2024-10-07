@@ -29,6 +29,9 @@ export async function getArticleId(req, res, next) {
     const { articleId } = req.params;
     const article = await prisma.article.findUnique({
       where: { id: parseInt(articleId, 10) },
+      include: {
+        comment: true,
+      },
     });
     return res.status(200).json({ message: "게시물 정보 추출", article });
   } catch (error) {
