@@ -35,10 +35,6 @@
     {
       "description": "SwaggerHub API Auto Mocking",
       "url": "https://thrift-shop.onrender.com"
-    },
-    {
-      "description": "SwaggerHub API Auto Mocking",
-      "url": "https://virtserver.swaggerhub.com/JUYE981203/panda-api/1.0.0"
     }
   ],
   "paths": {
