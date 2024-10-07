@@ -72,10 +72,35 @@ export const getProductsById = async (req, res, next) => {
 export const updateProduct = async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const images = req.files
+    const {
+      name,
+      price,
+      description,
+      tags,
+      existingImages = [],
+      deletedImages = [],
+    } = req.body;
+
+    // 새로 업로드된 이미지 파일들을 배열로 변환
+    const newImages = req.files
       ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
-      : req.body.images || [];
-    const { name, price, description, tags } = req.body;
+      : [];
+
+    // 기존 이미지에서 삭제할 이미지를 제외한 최종 이미지 목록 생성
+    const finalImages = existingImages.filter(
+      (url) => !deletedImages.includes(url)
+    );
+
+    // 최종적으로 업데이트할 이미지 목록을 생성
+    const images = [...finalImages, ...newImages];
+
+    // 여기서 `deletedImages`에 있는 이미지를 서버 파일 시스템에서 삭제하는 로직을 구현할 수 있음
+    deletedImages.forEach((img) => {
+      const filePath = path.join(process.cwd(), img);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath); // 파일 삭제
+      }
+    });
 
     const updatedProduct = await productService.updateProduct(
       parseInt(productId),
