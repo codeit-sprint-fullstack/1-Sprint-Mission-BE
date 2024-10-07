@@ -26,6 +26,9 @@ export const getArticleById = async (req, res) => {
 export const createArticle = async (req, res) => {
   const user = req.user;
   const data = req.body;
+
+  assert(data, CreateArticle);
+
   const newArticle = await articleService.createArticle(user.id, data);
   return res.status(201).json(newArticle);
 };

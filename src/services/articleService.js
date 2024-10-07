@@ -32,8 +32,21 @@ export async function getArticles({ orderBy, page, pageSize, keyword }) {
   return { totalCount, list };
 }
 
-export async function getArticle(id) {
-  return await articleRepository.getArticleById(id);
+export async function getArticle(articleId, userId) {
+  const article = await articleRepository.getArticleById(articleId);
+  if (!article) {
+    const error = new Error("없는 상품입니다");
+    error.code = 404;
+    throw error;
+  }
+  const hasLiked = await articleRepository.findLikedUser(prisma, {
+    articleId,
+    userId,
+  });
+  if (!hasLiked) {
+    return { ...article, isLiked: false };
+  }
+  return { ...article, isLiked: true };
 }
 
 export async function createArticle(userId, data) {

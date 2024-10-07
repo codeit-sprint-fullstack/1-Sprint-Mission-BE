@@ -5,7 +5,7 @@ GET http://localhost:3000/api/articles
 ### POST /articles
 POST http://localhost:3000/api/articles
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyOTIzMDQsImV4cCI6MTcyODI5NTkwNH0.xau3tJdJR5G0Nq0O7TM4myVayVBSEqx5NgAH-vnUSS4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
 
 {
       "content": "게시글 내용입니다.",
@@ -14,8 +14,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwN
 
 
 ### GET /articles/{articleId}
-GET http://localhost:3000/api/articles/6daab3f0-d964-4e19-97c0-768e9dcf8ae2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyOTQxOTMsImV4cCI6MTcyODI5Nzc5M30.gvLvAbhlILItayLgwuux1z0Yn5RnLAKgGXmjl6UtDOg
+GET http://localhost:3000/api/articles/d3ada2c0-de05-4897-95f9-ee53a53f62b3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyODMxMzgyOX0.m6ep7v286abM1OBux-Q0Ui50GBLzrWxnyer2UwU00yw
 
 
 ### PATCH /articles/{articleId}
