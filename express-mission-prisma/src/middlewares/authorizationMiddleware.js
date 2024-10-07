@@ -5,4 +5,4 @@ const verifyAccessToken = expressjwt({
   algorithms: ["HS256"],
 });
 
-export default verifyAccessToken
+export { verifyAccessToken };

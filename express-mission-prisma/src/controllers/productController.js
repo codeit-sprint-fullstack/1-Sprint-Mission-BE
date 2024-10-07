@@ -3,7 +3,7 @@ import imgUploadHandler from "../middlewares/imgUploadHandler.js";
 import validateData from "../middlewares/validateData.js";
 import productService from "../services/productService.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import verifyAccessToken from "../middlewares/verifyAccessToken .js";
+import { verifyAccessToken } from "../middlewares/authorizationMiddleware.js";
 
 const productController = express.Router();
 

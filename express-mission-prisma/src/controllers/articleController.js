@@ -2,7 +2,7 @@ import express from "express";
 import articleService from "../services/articleService.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import validateData from "../middlewares/validateData.js";
-import verifyAccessToken from "../middlewares/verifyAccessToken .js";
+import { verifyAccessToken } from "../middlewares/authorizationMiddleware.js";
 
 const articleController = express.Router();
 

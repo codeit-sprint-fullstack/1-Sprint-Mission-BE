@@ -2,7 +2,7 @@ import express from "express";
 import asyncHandler from "../utils/asyncHandler.js";
 import commentService from "../services/commentService.js";
 import validateData from "../middlewares/validateData.js";
-import verifyAccessToken from "../middlewares/verifyAccessToken .js";
+import { verifyAccessToken } from "../middlewares/authorizationMiddleware.js";
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
 const articleCommentController = express.Router(); // 게시글 댓글 router
