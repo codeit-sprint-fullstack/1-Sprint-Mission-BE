@@ -60,7 +60,6 @@ export async function updateRefreshToken(id, refreshToken) {
     },
     select: {
       ...USER_FIELDS,
-      refreshToken: true,
     },
   });
 }

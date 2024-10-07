@@ -7,7 +7,7 @@ export const USER_FIELDS = {
   id: true,
   nickname: true,
   image: true,
-  ...TIME_STAMP,
+  refreshToken: true,
 };
 
 export const PRODUCT_FIELDS = {

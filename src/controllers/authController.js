@@ -31,7 +31,7 @@ export const createSignup = async (req, res) => {
 
 export const createRefreshToken = async (req, res) => {
   const { refreshToken: oldRefreshToken } = req.cookies;
-  const { user } = req.user;
+  const user = req.user;
   const verifiedUser = await authService.validateRefreshToken(
     user.id,
     oldRefreshToken
