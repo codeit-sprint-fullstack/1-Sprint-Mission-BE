@@ -17,7 +17,7 @@ const verifyRefreshToken = expressjwt({
   getToken: (req) => req.cookies.refreshToken,
 });
 
-//본인의 리뷰만 수정 및 삭제 할 수 있게 하기
+//본인의 게시물만 수정 및 삭제 할 수 있게 하기
 const verifyProductAuth = async (req, res, next) => {
   const { id: productId } = req.params;
 
@@ -34,9 +34,35 @@ const verifyProductAuth = async (req, res, next) => {
       throw error;
     }
 
- 
-
     if (product.userId !== req.auth.userId) {
+      const error = new Error('Unauthorized');
+      error.code = 403;
+      throw error;
+    }
+
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const verifyCommentAuth = async (req, res, next) => {
+  const { id: commentId } = req.params;
+
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: Number(commentId),
+      },
+    });
+
+    if (!comment) {
+      const error = new Error('작성한 댓글이 없습니다');
+      error.code = 404;
+      throw error;
+    }
+
+    if (comment.userId !== req.auth.userId) {
       const error = new Error('Unauthorized');
       error.code = 403;
       throw error;
@@ -52,4 +78,5 @@ export default {
   verifyAccessToken,
   verifyRefreshToken,
   verifyProductAuth,
+  verifyCommentAuth,
 };
