@@ -82,9 +82,9 @@ GET http://localhost:3001/products/product/1/comments
 Content-Type: application/json
 
 ### 댓글 추가
-POST http://localhost:3001/products/1/comments
+POST http://localhost:3001/articles/article/3/comments
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyODQ3NDIsImV4cCI6MTcyODI4NTY0Mn0.8V9oLLfnPKRVL9bjTvpvQD5P9Zz9tOyOydISJtLJgbo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyOTAxNzQsImV4cCI6MTcyODI5MTA3NH0.yOQ0OhUJRf8q24MxCv9aIhC4-2H6Xm-CbCnzdwB3v3M
 
 {
   "content" : "댓글 추가 API 테스트"
@@ -111,7 +111,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtY
 
 ### 자유게시판
 
-GET http://localhost:3001/article/1
+GET http://localhost:3001/articles
 
 ### 게시판 수정
 PATCH http://localhost:3001/article/2

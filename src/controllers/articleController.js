@@ -2,6 +2,26 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+export async function postArticle(req, res, next) {
+  try {
+    const { name, content, images } = req.body;
+    const { userId } = req.user;
+    const imagesUrls = images ? images.map((image) => image.url) : [];
+    const article = await prisma.article.create({
+      data: {
+        name,
+        content,
+        images: imagesUrls,
+        userId,
+      },
+    });
+    return res.status(200).json({ message: "게시물 추가 성공", article });
+  } catch (error) {
+    console.error("게시물 추가 중 오류 발생:", error);
+    return res.status(500).json({ message: "게시물를 추가할 수 없습니다." });
+  }
+}
+
 export async function getArticles(req, res, next) {
   try {
     const page = parseInt(req.query.page, 10) || 1;
