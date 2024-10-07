@@ -19,11 +19,11 @@ async function hashingPassword(password) {
 export async function getUser(email, password) {
   const user = await userRepository.findByEmail(email);
   if (!user) {
-    const error = new Error("없는 이메일이거나 비밀번호 입니다.");
+    const error = new Error("없는 이메일이거나 틀린 비밀번호 입니다.");
     error.code = 404;
     throw error;
   }
-  await verifyPassword(password, user.password);
+  await verifyPassword(password, user.encryptedPassword);
   return user;
 }
 

@@ -39,3 +39,8 @@ export const CreateUser = s.object({
 });
 
 export const PatchUser = s.partial(CreateUser);
+
+export const validateLogin = s.object({
+  email: email(),
+  password: s.size(s.string(), 8, 14),
+});

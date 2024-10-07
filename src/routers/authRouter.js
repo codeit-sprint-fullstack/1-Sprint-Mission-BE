@@ -15,7 +15,7 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   asyncHandler(controller.getGoogleLogin)
 );
-router.post("/logIn", authentication, asyncHandler(controller.createLogin));
+router.post("/logIn", asyncHandler(controller.createLogin));
 router.post("/signUp", asyncHandler(controller.createSignup));
 router.post(
   "/refresh-token",

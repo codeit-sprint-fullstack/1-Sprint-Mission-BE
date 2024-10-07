@@ -1,17 +1,17 @@
 import * as authService from "../services/authService.js";
 import { cookieOptions } from "../config/authOptions.js";
-import { assert, CreateUser } from "../validations/structs.js";
+import { assert, CreateUser, validateLogin } from "../validations/structs.js";
 import { filterUserData } from "../utils/utilFunctions.js";
 
 export const createLogin = async (req, res) => {
-  const user = req.user;
-  if (!user) {
-    return res
-      .status(401)
-      .json({ message: "비밀번호나 이메일이 일치하지 않습니다." });
-  }
+  const user = req.body;
 
-  const loggedInUser = await authService.updateTokens(user);
+  const { email, password } = user;
+  assert({ email, password }, validateLogin);
+
+  const verifiedUser = await authService.getUser(email, password);
+
+  const loggedInUser = await authService.updateTokens(verifiedUser);
 
   res.cookie("refreshToken", loggedInUser.refreshToken, cookieOptions);
   return res.json(filterUserData(loggedInUser));

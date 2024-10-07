@@ -19,6 +19,7 @@ export async function findByEmail(email) {
     },
     select: {
       ...USER_FIELDS,
+      encryptedPassword: true,
     },
   });
 }
