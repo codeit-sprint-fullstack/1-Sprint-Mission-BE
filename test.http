@@ -129,7 +129,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyODMxMjEsImV4cCI6MTcyODI4NDAyMX0.ZKA5Yzxet8lKhC61oIyZ5JLdWRu9EtL9Jc4EiFiabNk
 
 ### 댓글 조회
-GET http://localhost:3001/article/article/3/comments
+GET http://localhost:3001/articles
 Content-Type: application/json
 
 ### 댓글 삭제
@@ -144,4 +144,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtY
 
 {
   "content" : "gdsadfhgfgdsf"
+}
+
+### 자유 게시판 추가
+POST http://localhost:3001/articles
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyOTUyOTEsImV4cCI6MTcyODI5NjE5MX0.OxlJr7K3esnRsvi4icP5MAKtuW4A81iLc59QZmjww5E
+
+{
+  "name" : "name",
+  "content" : "content"
 }

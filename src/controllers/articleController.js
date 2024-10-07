@@ -4,21 +4,24 @@ const prisma = new PrismaClient();
 
 export async function postArticle(req, res, next) {
   try {
+    console.log("Request Body:", req.body); // 요청 데이터 확인
+
     const { name, content, images } = req.body;
     const { userId } = req.user;
-    const imagesUrls = images ? images.map((image) => image.url) : [];
     const article = await prisma.article.create({
       data: {
         name,
         content,
-        images: imagesUrls,
+        images: images || undefined,
         userId,
       },
     });
     return res.status(200).json({ message: "게시물 추가 성공", article });
   } catch (error) {
     console.error("게시물 추가 중 오류 발생:", error);
-    return res.status(500).json({ message: "게시물를 추가할 수 없습니다." });
+    console.error("에러 메시지:", error.message);
+    console.error("에러 스택:", error.stack); // 에러 스택 출력
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
