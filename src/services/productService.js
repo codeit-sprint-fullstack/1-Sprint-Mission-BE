@@ -1,5 +1,6 @@
 import { CreateProduct, PatchProduct, assert } from "../validations/structs.js";
 import * as productRepository from "../repositories/productRepository.js";
+import prisma from "../config/prisma.js";
 
 export async function getProducts({ orderBy, page, pageSize, keyword }) {
   const offset = (page - 1) * pageSize;
@@ -64,8 +65,10 @@ export async function deleteFavorite({ productId, userId }) {
 }
 
 export async function handleUpdateFavorite({ productId, userId, action }) {
-  const updatedProduct = await prisma.$transaction(async () => {
-    const hasFavorite = await productRepository.findFavoriteUser({
+  const productWithUpdatedFavorite = await prisma.$transaction(async () => {
+    const isActionFavorite = action === "favorite";
+    const updateOption = isActionFavorite ? "connect" : "disconnect";
+    const hasFavorite = await productRepository.fineFavoriteUser({
       productId,
       userId,
     });
@@ -82,20 +85,23 @@ export async function handleUpdateFavorite({ productId, userId, action }) {
       throw error;
     }
 
-    if (action === "favorite") {
-      return await productRepository.addFavorite({
-        productId,
-        currentFavoriteCount,
-        userId,
-      });
-    } else if (action === "unfavorite") {
-      return await productRepository.removeFavorite({
-        productId,
-        currentFavoriteCount,
-        userId,
-      });
+    const product = await productRepository.findFavoriteCount(tx, articleId);
+
+    if (!product) {
+      const error = new Error("존재하지 않는 상품입니다.");
+      error.statCode = 404;
+      throw error;
     }
+
+    const currentFavoriteCount = product.favoriteCount;
+
+    return await productRepository.updateFavoriteStatus(tx, {
+      productId,
+      currentFavoriteCount,
+      userId,
+      updateOption,
+    });
   });
 
-  return updatedProduct;
+  return productWithUpdatedFavorite;
 }

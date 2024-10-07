@@ -73,59 +73,48 @@ export async function deleteById(id) {
   await prisma.product.delete({ where: { id } });
 }
 
-export async function fineFavoriteUser({ productId, userId }) {
-  const hasUserAddFavoriteToProduct = await prisma.product.findFirst({
+export async function fineFavoriteUser(tx, { productId, userId }) {
+  const hasUserFavorite = await tx.product.findFirst({
     where: {
       id: productId,
       favoriteUsers: { some: { userId } },
     },
   });
 
-  return hasUserAddFavoriteToProduct;
+  return hasUserFavorite;
 }
 
-export async function addFavorite({ productId, currentFavoriteCount, userId }) {
-  const updatedProduct = await prisma.product.update({
-    where: {
-      id: productId,
-      favoriteCount: currentFavoriteCount,
-    },
-    data: {
-      favoriteUsers: { connect: { userId } },
-      favoriteCount: { increment: 1 },
-    },
+export async function findFavoriteCount(tx, productId) {
+  const product = await tx.product.findUnique({
+    where: { id: productId },
     select: {
-      ...PRODUCT_FIELDS,
-    },
-    writer: {
-      select: {
-        ...OWNER_FIELDS,
-      },
+      favoriteCount: true,
     },
   });
-  return updatedProduct;
+
+  return product.favoriteCount;
 }
 
-export async function removeFavorite({
-  productId,
-  currentFavoriteCount,
-  userId,
-}) {
-  const updatedProduct = await prisma.product.update({
+export async function updateFavoriteStatus(
+  tx,
+  { productId, currentFavoriteCount, userId, updateOption }
+) {
+  const updatedProduct = await tx.product.update({
     where: {
       id: productId,
       favoriteCount: currentFavoriteCount,
     },
     data: {
-      favoriteUsers: { disconnect: { userId } },
-      favoriteCount: { decrement: 1 },
+      favoriteUsers: { [updateOption]: { id: userId } },
+      favoriteCount:
+        updateOption === "connect" ? { increment: 1 } : { decrement: 1 },
     },
     select: {
       ...PRODUCT_FIELDS,
-    },
-    writer: {
-      select: {
-        ...OWNER_FIELDS,
+      writer: {
+        select: {
+          ...OWNER_FIELDS,
+        },
       },
     },
   });

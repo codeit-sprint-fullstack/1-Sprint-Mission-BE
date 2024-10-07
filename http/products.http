@@ -1,0 +1,44 @@
+### GET /products
+GET http://localhost:3000/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgzMDI5OTAsImV4cCI6MTcyODMwNjU5MH0.IwImwPW4wvKdZH45i5JoFMASVLLPbm0ci1i4dkyhF2o
+
+### POST /products
+POST http://localhost:3000/api/products
+Content-Type: application/json
+Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgzMDI5OTAsImV4cCI6MTcyODMwNjU5MH0.IwImwPW4wvKdZH45i5JoFMASVLLPbm0ci1i4dkyhF2o
+
+{
+      "content": "게시글 내용입니다.",
+      "title": "게시글 제목입니다."
+} 
+
+
+### GET /products/{articleId}
+GET http://localhost:3000/api/products/6daab3f0-d964-4e19-97c0-768e9dcf8ae2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyOTQxOTMsImV4cCI6MTcyODI5Nzc5M30.gvLvAbhlILItayLgwuux1z0Yn5RnLAKgGXmjl6UtDOg
+
+
+### PATCH /products/{articleId}
+PATCH http://localhost:3000/api/products/6daab3f0-d964-4e19-97c0-768e9dcf8ae2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyOTQxOTMsImV4cCI6MTcyODI5Nzc5M30.gvLvAbhlILItayLgwuux1z0Yn5RnLAKgGXmjl6UtDOg
+
+{
+      "content": "수정된 게시글 내용입니다.",
+      "title": "수정된 게시글 제목입니다."
+} 
+
+
+### DELETE /products/{articleId}
+DELETE http://localhost:3000/api/products/6daab3f0-d964-4e19-97c0-768e9dcf8ae2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyOTQxOTMsImV4cCI6MTcyODI5Nzc5M30.gvLvAbhlILItayLgwuux1z0Yn5RnLAKgGXmjl6UtDOg
+
+### POST /products/{articleId}/like
+POST http://localhost:3000/api/products/adc668be-9b35-458b-91ad-903ca7d73d7e/like
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgzMDI5OTAsImV4cCI6MTcyODMwNjU5MH0.IwImwPW4wvKdZH45i5JoFMASVLLPbm0ci1i4dkyhF2o
+
+
+### DELETE /products/{articleId}/like
+DELETE http://localhost:3000/api/products/adc668be-9b35-458b-91ad-903ca7d73d7e/like
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgzMDI5OTAsImV4cCI6MTcyODMwNjU5MH0.IwImwPW4wvKdZH45i5JoFMASVLLPbm0ci1i4dkyhF2o
+
