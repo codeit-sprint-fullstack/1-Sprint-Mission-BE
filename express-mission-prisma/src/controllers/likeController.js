@@ -15,8 +15,15 @@ articleLikeController.route("/:id/like").post(
   validateData.like("article"),
   attachUserId,
   asyncHandler(async (req, res, next) => {
-    const like = await likeService.create(req.body);
-    res.status(201).send(like);
+    const isDuplicate = await likeService.getByFillter(req.body, "article");
+    if (!isDuplicate) {
+      const like = await likeService.create(req.body);
+      res.status(201).send(like);
+    } else if (isDuplicate) {
+      const error = new Error("Duplicate entry: like already exists");
+      error.code = 409;
+      throw error;
+    }
   })
 );
 
