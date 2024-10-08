@@ -149,9 +149,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtY
 ### 자유 게시판 추가
 POST http://localhost:3001/articles
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgyOTUyOTEsImV4cCI6MTcyODI5NjE5MX0.OxlJr7K3esnRsvi4icP5MAKtuW4A81iLc59QZmjww5E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgzNDYwNzYsImV4cCI6MTcyODM0Njk3Nn0.ZN6eJ4CLergZam4QKOwY5NrNsIrqwYOZ-UedmC6A1Co
 
 {
   "name" : "name",
-  "content" : "content"
+  "content" : "content",
+  "images" : []
 }
+
+### 좋아요 기능
+POST http://localhost:3001/articles/8/favorites
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmMiLCJpYXQiOjE3MjgzNDc2MTQsImV4cCI6MTcyODM0ODUxNH0.gd3LIbvhl2GMQYb8VhB4NIa7czXw5m4IAEsB6bdBbSo
