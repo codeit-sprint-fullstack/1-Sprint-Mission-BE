@@ -1,19 +1,26 @@
-// authService.js
-
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { prisma } from "../utils/prisma.js";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { prisma } from '../utils/prisma.js';
 import {
   ValidationError,
   UnauthorizedError,
-} from "../middlewares/errorMiddleware.js";
+} from '../middlewares/errorMiddleware.js';
 
 export const signUp = async (userData) => {
   const { email, nickname, password } = userData;
 
+  // 이메일 중복 검사
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) {
-    throw new ValidationError("이미 존재하는 이메일입니다.");
+    throw new ValidationError('이미 존재하는 이메일입니다.');
+  }
+
+  // 닉네임 중복 검사 추가
+  const existingNickname = await prisma.user.findUnique({
+    where: { nickname },
+  });
+  if (existingNickname) {
+    throw new ValidationError('이미 존재하는 닉네임입니다.');
   }
 
   const encryptedPassword = await bcrypt.hash(password, 10);
@@ -32,7 +39,7 @@ export const signUp = async (userData) => {
 export const signIn = async (email, password) => {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
-    throw new UnauthorizedError("이메일 또는 비밀번호가 올바르지 않습니다.");
+    throw new UnauthorizedError('이메일 또는 비밀번호가 올바르지 않습니다.');
   }
 
   const isPasswordValid = await bcrypt.compare(
@@ -40,11 +47,11 @@ export const signIn = async (email, password) => {
     user.encryptedPassword
   );
   if (!isPasswordValid) {
-    throw new UnauthorizedError("이메일 또는 비밀번호가 올바르지 않습니다.");
+    throw new UnauthorizedError('이메일 또는 비밀번호가 올바르지 않습니다.');
   }
 
   const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
+    expiresIn: '1h',
   });
 
   return { accessToken };
