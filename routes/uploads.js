@@ -54,4 +54,4 @@ const router = express.Router();
 //   res.status(200).json({ imageUrl: data.Location });
 // });
 
-// export default router;
+export default router;
