@@ -84,13 +84,11 @@ export const updateArticle = async (req, res, next) => {
       : [];
 
     let existingImages = [];
-    if (req.body.images) {
-      try {
-        existingImages = Array.isArray(req.body.images)
-          ? req.body.images
-          : JSON.parse(req.body.images);
-      } catch (parseError) {
-        return res.status(400).json({ message: "Invalid images format." });
+    if (req.body["existingImages"]) {
+      if (Array.isArray(req.body["existingImages"])) {
+        existingImages = req.body["existingImages"];
+      } else {
+        existingImages = [req.body["existingImages"]];
       }
     }
 
