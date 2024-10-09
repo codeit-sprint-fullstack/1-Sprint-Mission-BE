@@ -6,6 +6,7 @@ import articleRoutes from './routes/articles.js';
 import productRoutes from './routes/products.js';
 import articleCommentRoutes from './routes/articleComments.js';
 import productCommentRoutes from './routes/productComments.js';
+import uploadRoutes from './routes/uploads.js';
 
 const app = express();
 app.use(express.json());
@@ -20,5 +21,6 @@ app.use('/articles', articleRoutes);
 app.use('/articles/:articleId/comments', articleCommentRoutes);
 app.use('/products', productRoutes);
 app.use('/products/:productId/comments', productCommentRoutes);
+app.use('/upload', uploadRoutes);
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
