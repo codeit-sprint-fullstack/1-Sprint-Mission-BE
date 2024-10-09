@@ -83,10 +83,21 @@ export const updateArticle = async (req, res, next) => {
       ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
       : [];
 
-    const existingImages =
-      typeof req.body.images === "string"
-        ? JSON.parse(req.body.images)
-        : req.body.images || [];
+    let existingImages = [];
+    if (req.body.images) {
+      try {
+        existingImages = Array.isArray(req.body.images)
+          ? req.body.images
+          : JSON.parse(req.body.images);
+      } catch (parseError) {
+        return res.status(400).json({ message: "Invalid images format." });
+      }
+    }
+
+    // const existingImages =
+    //   typeof req.body.images === "string"
+    //     ? JSON.parse(req.body.images)
+    //     : req.body.images || [];
 
     const images = [...existingImages, ...newImagePaths];
     const { title, content } = req.body;
