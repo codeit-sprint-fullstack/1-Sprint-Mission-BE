@@ -1,11 +1,11 @@
-import * as productService from "../services/productService.js";
-import { CreateProduct, PatchProduct, assert } from "../validations/structs.js";
+import * as productService from '../services/productService.js';
+import { CreateProduct, PatchProduct, assert } from '../validations/structs.js';
 
 export const getProductList = async (req, res) => {
   const { orderBy } = req.query;
   const page = parseInt(req.query.page) * 1 || 1;
   const pageSize = parseInt(req.query.pageSize) * 1 || 10;
-  const keyword = req.query.keyword || "";
+  const keyword = req.query.keyword || '';
 
   const products = await productService.getProducts({
     orderBy,
@@ -26,8 +26,28 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   const userId = req.user.id;
-  const data = req.body;
+  const { name, description, price } = req.body;
+  const tags = req.body['tag[]'];
+
+  const imgUrls =
+    req.files && req.files.length > 0
+      ? req.files.map((file) => {
+          return `${req.protocol}://${req.get('host')}/api/images/${
+            file.filename
+          }`;
+        })
+      : [];
+
+  const data = {
+    name,
+    description,
+    price: parseInt(price, 10),
+    tags,
+    images: imgUrls,
+  };
+
   assert(data, CreateProduct);
+
   const newProduct = await productService.createProduct(userId, data);
   res.status(201).json(newProduct);
 };
@@ -45,7 +65,7 @@ export const updateProductById = async (req, res) => {
 export const deleteProductById = async (req, res) => {
   const { productId } = req.params;
   await productService.deleteProduct(productId);
-  return res.status(204).json({ message: "게시글이 삭제되었습니다" });
+  return res.status(204).json({ message: '게시글이 삭제되었습니다' });
 };
 
 export const createFavoriteOnProduct = async (req, res) => {

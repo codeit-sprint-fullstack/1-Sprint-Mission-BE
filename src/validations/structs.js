@@ -1,19 +1,20 @@
-import * as s from "superstruct";
-import isUuid from "is-uuid";
-import { assert } from "superstruct";
-import isEmail from "is-email";
+import * as s from 'superstruct';
+import isUuid from 'is-uuid';
+import { assert } from 'superstruct';
+import isEmail from 'is-email';
 
 export { assert };
 
-export const Uuid = s.define("Uuid", (value) => isUuid.v4(value));
+export const Uuid = s.define('Uuid', (value) => isUuid.v4(value));
 
-const email = () => s.define("email", (value) => isEmail(value));
+const email = () => s.define('email', (value) => isEmail(value));
 
 export const CreateProduct = s.object({
   name: s.size(s.string(), 3, 30),
   description: s.size(s.string(), 10, 200),
   price: s.min(s.number(), 0),
   tags: s.optional(s.array(s.string())),
+  images: s.optional(s.size(s.array(s.string()), 0, 3)),
 });
 
 export const PatchProduct = s.partial(CreateProduct);

@@ -3,6 +3,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import * as controller from '../controllers/productController.js';
 import validateUuid from '../middlewares/validateUuid.js';
 import { authentication, productAuthorization } from '../middlewares/auth.js';
+import uploadImg from '../config/multer.js';
 
 const router = express.Router();
 
@@ -11,7 +12,11 @@ router.use('/:productId', validateUuid);
 
 router.get('/', asyncHandler(controller.getProductList));
 router.get('/:productId', asyncHandler(controller.getProductById));
-router.post('/', asyncHandler(controller.createProduct));
+router.post(
+  '/',
+  uploadImg.array('images', 3),
+  asyncHandler(controller.createProduct)
+);
 router.patch(
   '/:productId',
   productAuthorization,

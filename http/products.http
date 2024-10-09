@@ -4,15 +4,39 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmM
 
 ### POST /products
 POST http://localhost:3000/api/products
-Content-Type: application/json
+Content-Type: multipart/form-data; boundary=Boundary01234567890123456789
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
 
-{
-      "name": "새로운 상품 이름입니다.",
-      "description": "새로운 상품 내용입니다.",
-      "price": 1234,
-      "tags":["상품", "태그"]
-} 
+--Boundary01234567890123456789
+Content-Disposition: form-data; name="name"
+Content-Type: text/plain
+
+새로운 상품 이름입니다.
+--Boundary01234567890123456789
+Content-Disposition: form-data; name="description"
+Content-Type: text/plain
+
+새로운 상품 내용입니다.
+--Boundary01234567890123456789
+Content-Disposition: form-data; name="price"
+Content-Type: text/plain
+
+1234
+--Boundary01234567890123456789
+Content-Disposition: form-data; name="tags[]"
+Content-Type: text/plain
+
+태그1
+--Boundary01234567890123456789
+Content-Disposition: form-data; name="tags[]"
+Content-Type: text/plain
+
+태그2
+--Boundary01234567890123456789--
+
+
+
+
 
 
 ### GET /products/{productId}
