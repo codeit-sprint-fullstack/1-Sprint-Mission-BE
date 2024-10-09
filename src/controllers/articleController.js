@@ -5,18 +5,15 @@ const prisma = new PrismaClient();
 export async function postArticle(req, res, next) {
   try {
     console.log('Request Body:', req.body); // 요청 데이터 확인
-    const images = req.files
-      ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
-      : req.body.images || [];
-    const { name, content } = req.body;
-    const { id: userId, nickname: userNickname } = req.user;
+
+    const { name, content, images } = req.body;
+    const { userId } = req.user;
     const article = await prisma.article.create({
       data: {
         name,
         content,
         images: images || undefined,
         userId,
-        userNickname,
       },
     });
     return res.status(200).json({ message: '게시물 추가 성공', article });
