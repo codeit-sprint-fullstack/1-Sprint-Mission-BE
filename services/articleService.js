@@ -21,7 +21,7 @@ const generateWhereCondition = (keyword) => {
 
 const generateOrderCondition = (orderBy) => {
   if (orderBy === "favorite") {
-    return { likeCount: "desc" };
+    return { likeCount: "desc", createdAt: "desc" };
   }
   return { createdAt: "desc" };
 };
