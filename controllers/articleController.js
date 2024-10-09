@@ -1,4 +1,5 @@
 import * as articleService from "../services/articleService.js";
+import path from "path";
 
 const formatArticleResponse = (article) => ({
   id: article.id,

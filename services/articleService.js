@@ -26,9 +26,9 @@ const generateOrderCondition = (orderBy) => {
   return { createdAt: "desc" };
 };
 
-export const createArticle = async (image, content, title, userId) => {
+export const createArticle = async (images, content, title, userId) => {
   return prisma.article.create({
-    data: { image, content, title, userId },
+    data: { images, content, title, userId },
     include: includeRelations(userId),
   });
 };
