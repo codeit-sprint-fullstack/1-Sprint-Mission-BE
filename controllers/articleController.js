@@ -4,7 +4,7 @@ const formatArticleResponse = (article) => ({
   id: article.id,
   title: article.title,
   content: article.content,
-  image: article.image,
+  images: Array.isArray(article.images) ? article.images : [],
   likeCount: article.likeCount,
   createdAt: article.createdAt,
   updatedAt: article.updatedAt,
@@ -78,10 +78,20 @@ export const getArticleById = async (req, res, next) => {
 export const updateArticle = async (req, res, next) => {
   try {
     const { articleId } = req.params;
-    const { image, title, content } = req.body;
+    const newImagePaths = req.files
+      ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
+      : [];
+
+    const existingImages =
+      typeof req.body.images === "string"
+        ? JSON.parse(req.body.images)
+        : req.body.images || [];
+
+    const images = [...existingImages, ...newImagePaths];
+    const { title, content } = req.body;
     const updatedArticle = await articleService.updateArticle(
       articleId,
-      image,
+      images,
       title,
       content
     );
