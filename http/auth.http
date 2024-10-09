@@ -3,8 +3,8 @@ POST http://localhost:3000/api/auth/signUp
 Content-Type: application/json
 
 {
-  "email": "blue@gmail.com",
-  "nickname": "blue",
+  "email": "cream@gmail.com",
+  "nickname": "cream",
   "password": "yourPasrd123!"
 }
 
@@ -24,6 +24,5 @@ Content-Type: application/json
 POST http://localhost:3000/api/auth/refresh-token
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWUwNjExYS1kZmFjLTRhYTktODg5NC04MmYzZjAxYmQyMGMiLCJpYXQiOjE3MjgyOTQxNjYsImV4cCI6MTcyODI5Nzc2Nn0.CCrkfmrVqClyN1VrICgqZFhaFU2Vy92gEQtMVeLpGvo
-Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTAyMjksImV4cCI6MTcyOTUxOTgyOX0.y0Tg82EDBU-MjpyuJcqXSsy_Zkh9DdOSy-DtFNY1mxA
-
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
 

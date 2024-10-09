@@ -1,13 +1,13 @@
-import prisma from "../config/prisma.js";
-import { COMMENT_FIELD, OWNER_FIELDS } from "../config/fieldOptions.js";
+import prisma from '../config/prisma.js';
+import { COMMENT_FIELD, OWNER_FIELDS } from '../config/fieldOptions.js';
 
-export async function getAll({ articleId, limit, productId, lastId }) {
+export async function getAll({ whichEntity, whichId, limit, lastId }) {
   const queryOptions = {
-    where: {},
+    where: { [whichEntity]: { id: whichId } },
     take: limit,
     skip: lastId ? 1 : 0,
     cursor: lastId ? { id: lastId } : undefined,
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: 'desc' },
     select: {
       ...COMMENT_FIELD,
       writer: {
@@ -18,12 +18,6 @@ export async function getAll({ articleId, limit, productId, lastId }) {
     },
   };
 
-  if (articleId) {
-    queryOptions.where.articleId = { articleId };
-  }
-  if (productId) {
-    queryOptions.where.productId = { productId };
-  }
   const comments = await prisma.comment.findMany(queryOptions);
   return comments;
 }
@@ -46,11 +40,12 @@ export async function getCommentById(id) {
   return comment;
 }
 
-export async function create({ productId, articleId, userId, data }) {
-  const queryOptions = {
+export async function create({ whichId, whichEntity, userId, data }) {
+  const newComment = await prisma.comment.create({
     data: {
       ...data,
-      user: { connect: { id: userId } },
+      writer: { connect: { id: userId } },
+      [whichEntity]: { connect: { id: whichId } },
     },
     select: {
       ...COMMENT_FIELD,
@@ -60,15 +55,8 @@ export async function create({ productId, articleId, userId, data }) {
         },
       },
     },
-  };
+  });
 
-  if (articleId) {
-    queryOptions.data.article = { connect: { id: articleId } };
-  }
-  if (productId) {
-    queryOptions.data.product = { connect: { id: productId } };
-  }
-  const newComment = await prisma.comment.create(queryOptions);
   return newComment;
 }
 

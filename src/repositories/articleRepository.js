@@ -1,5 +1,5 @@
-import prisma from "../config/prisma.js";
-import { ARTICLE_FIELDS, OWNER_FIELDS } from "../config/fieldOptions.js";
+import prisma from '../config/prisma.js';
+import { ARTICLE_FIELDS, OWNER_FIELDS } from '../config/fieldOptions.js';
 
 export async function getAll({ searchQuery, sortOption, offset, pageSize }) {
   const articles = await prisma.article.findMany({
@@ -117,7 +117,7 @@ export async function updateLikeStatus(
     data: {
       likedUsers: { [updateOption]: { id: userId } },
       likeCount:
-        updateOption === "connect" ? { increment: 1 } : { decrement: 1 },
+        updateOption === 'connect' ? { increment: 1 } : { decrement: 1 },
     },
     select: {
       ...ARTICLE_FIELDS,

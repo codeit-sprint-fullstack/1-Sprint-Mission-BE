@@ -1,32 +1,33 @@
-import * as commentService from "../services/commentService.js";
-import { areBothIdsNull } from "../validations/validateFunction.js";
+import * as commentService from '../services/commentService.js';
+import { assert, CreateComment, PatchComment } from '../validations/structs.js';
 
 export const getCommentList = async (req, res) => {
-  const { articleId, productId } = req.params || null;
+  const idParamName = req.idParamName;
+  const whichId = req.params[idParamName] || null;
   const limit = parseInt(req.query.limit) * 1 || 5;
   const { cursor: lastId } = req.query;
 
-  areBothIdsNull(articleId, productId);
-
   const comments = await commentService.getComments({
-    articleId,
+    idParamName,
+    whichId,
     limit,
     lastId,
-    productId,
   });
 
   return res.json(comments);
 };
 
 export const createComment = async (req, res) => {
-  const { articleId, productId } = req.params || null;
+  const userId = req.user.id;
   const data = req.body;
+  const idParamName = req.idParamName;
+  const whichId = req.params[idParamName] || null;
 
-  areBothIdsNull(articleId, productId);
+  assert(data, CreateComment);
 
   const comment = await commentService.createComment({
-    productId,
-    articleId,
+    idParamName,
+    whichId,
     userId,
     data,
   });
@@ -36,7 +37,11 @@ export const createComment = async (req, res) => {
 
 export const updateCommentById = async (req, res) => {
   const { commentId: id } = req.params;
+  const userId = req.user.id;
   const data = req.body;
+
+  assert(data, PatchComment);
+
   const comment = await commentService.updateComment(id, data);
   return res.status(201).json(comment);
 };

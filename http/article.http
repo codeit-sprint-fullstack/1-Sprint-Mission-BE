@@ -5,7 +5,7 @@ GET http://localhost:3000/api/articles
 ### POST /articles
 POST http://localhost:3000/api/articles
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
 
 {
       "content": "게시글 내용입니다.",
@@ -14,14 +14,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmM
 
 
 ### GET /articles/{articleId}
-GET http://localhost:3000/api/articles/d3ada2c0-de05-4897-95f9-ee53a53f62b3
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
-
+GET http://localhost:3000/api/articles/a31fed14-c595-4326-aa71-dd667dcc9175
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
 
 ### PATCH /articles/{articleId}
-PATCH http://localhost:3000/api/articles/6daab3f0-d964-4e19-97c0-768e9dcf8ae2
+PATCH http://localhost:3000/api/articles/a31fed14-c595-4326-aa71-dd667dcc9175
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
 
 {
       "content": "수정된 게시글 내용입니다.",
@@ -30,17 +29,16 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1m
 
 
 ### DELETE /articles/{articleId}
-DELETE http://localhost:3000/api/articles/6daab3f0-d964-4e19-97c0-768e9dcf8ae2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
+DELETE http://localhost:3000/api/articles/a31fed14-c595-4326-aa71-dd667dcc9175
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
 
 ### POST /articles/{articleId}/like
-POST http://localhost:3000/api/articles/cb21c3b0-faf8-4744-93fe-6f688c1dad0d/like
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
-
+POST http://localhost:3000/api/articles/a31fed14-c595-4326-aa71-dd667dcc9175/like
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
 
 ### DELETE /articles/{articleId}/like
-DELETE http://localhost:3000/api/articles/cb21c3b0-faf8-4744-93fe-6f688c1dad0d/like
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3MjgzMTM4ODQsImV4cCI6MTcyODMxNzQ4NH0.RsWgJtFS4-GxndU9jGiIjUhXVA7MunwW_59_WEWng6o
+DELETE http://localhost:3000/api/articles/a31fed14-c595-4326-aa71-dd667dcc9175/like
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
 
 
 

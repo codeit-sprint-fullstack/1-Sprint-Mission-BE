@@ -1,0 +1,44 @@
+### POST /products/{productId}/comments
+POST http://localhost:3000/api/products/49b482a2-ff08-4938-9279-1a776fcde4c0/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDAzOTMsImV4cCI6MTcyODQ0Mzk5M30.MWsS8_IMYmDzFoJIKguqi8UIgYIH6gVNIaHEmWys2YI
+
+{
+      "content": "상품댓글 입니다."
+     
+} 
+
+
+### GET /products/{productId}/comments
+GET http://localhost:3000/api/products/49b482a2-ff08-4938-9279-1a776fcde4c0/comments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDAzOTMsImV4cCI6MTcyODQ0Mzk5M30.MWsS8_IMYmDzFoJIKguqi8UIgYIH6gVNIaHEmWys2YI
+
+### POST /articles/{articleId}/comments
+POST http://localhost:3000/api/articles/dec1b09b-9c8c-42a0-ae24-bee6f3b0369e/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDAzOTMsImV4cCI6MTcyODQ0Mzk5M30.MWsS8_IMYmDzFoJIKguqi8UIgYIH6gVNIaHEmWys2YI
+
+{
+      "content": "게시글 댓글 입니다."
+     
+} 
+
+### GET /articles/{articleId}/comments
+GET http://localhost:3000/api/articles/cb21c3b0-faf8-4744-93fe-6f688c1dad0d/comments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDAzOTMsImV4cCI6MTcyODQ0Mzk5M30.MWsS8_IMYmDzFoJIKguqi8UIgYIH6gVNIaHEmWys2YI
+
+
+### PATCH /comments/{commentId}
+PATCH http://localhost:3000/api/comments/153bdf1e-d7ab-4cac-b941-e1bb93470a51
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MWRjODhlOS04MWJiLTQ4MmItYjVmNi0zNzhhM2UwZDJkY2YiLCJpYXQiOjE3Mjg0NDM3MTcsImV4cCI6MTcyODQ0NzMxN30.k_n_C_RZtIqan_H_J_k46nb888xDVnE6JQy1iFJJiik
+
+{
+      "content": "수정된 댓글 입니다."
+     
+} 
+
+
+### DELETE /comments/{commentId}
+DELETE http://localhost:3000/api/comments/ce64403d-a029-4211-a07c-2cdb2ad47500
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDAzOTMsImV4cCI6MTcyODQ0Mzk5M30.MWsS8_IMYmDzFoJIKguqi8UIgYIH6gVNIaHEmWys2YI

@@ -1,36 +1,45 @@
-import express from "express";
-import validateUuid from "../middlewares/validateUuid.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import * as controller from "../controllers/commentController.js";
+import express from 'express';
+import validateUuid from '../middlewares/validateUuid.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import * as controller from '../controllers/commentController.js';
+import { authentication, commentAuthorization } from '../middlewares/auth.js';
 
 const router = express.Router();
 
-router.get(
-  "/:articleId/comments",
-  validateUuid,
-  asyncHandler(controller.getCommentList)
-);
-router.post("/:articleId/comments", asyncHandler(controller.createComment));
+router.use('/comments', authentication);
 
 router.get(
-  "/:productId/comments",
+  '/products/:productId/comments',
   validateUuid,
   asyncHandler(controller.getCommentList)
 );
 router.post(
-  "/:productId/comments",
+  '/products/:productId/comments',
+  validateUuid,
+  asyncHandler(controller.createComment)
+);
+
+router.get(
+  '/articles/:articleId/comments',
+  validateUuid,
+  asyncHandler(controller.getCommentList)
+);
+router.post(
+  '/articles/:articleId/comments',
   validateUuid,
   asyncHandler(controller.createComment)
 );
 
 router.patch(
-  "/:commentId",
+  '/comments/:commentId',
   validateUuid,
+  commentAuthorization,
   asyncHandler(controller.updateCommentById)
 );
 router.delete(
-  "/:commentId",
+  '/comments/:commentId',
   validateUuid,
+  commentAuthorization,
   asyncHandler(controller.deleteCommentById)
 );
 
