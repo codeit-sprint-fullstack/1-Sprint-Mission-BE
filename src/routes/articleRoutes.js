@@ -6,7 +6,8 @@ import {
   patchArticle,
   deleteArticle,
   postArticle,
-  postArticleFavorite,
+  removeFavorite,
+  addFavorite,
 } from '../controllers/articleController.js';
 
 const router = express.Router();
@@ -16,6 +17,11 @@ router.get('/:articleId', getArticleId);
 router.patch('/:articleId', authenticateToken, patchArticle);
 router.delete('/:articleId', authenticateToken, deleteArticle);
 router.post('/', authenticateToken, postArticle);
-router.post('/:articleId/favorites', authenticateToken, postArticleFavorite);
+router.post(
+  '/:articleId/favorites',
+  authenticateToken,
+  addFavorite,
+  removeFavorite
+);
 
 export default router;

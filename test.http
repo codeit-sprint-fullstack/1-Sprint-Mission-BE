@@ -111,7 +111,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtY
 
 ### 자유게시판
 
-GET http://localhost:3001/articles
+GET http://localhost:3001/articles/5
 
 ### 게시판 수정
 PATCH http://localhost:3001/article/2
