@@ -3,8 +3,8 @@ POST https://one-sprint-mission-be-fv23.onrender.com/auth/signUp
 Content-Type: application/json
 
 {
-  "email": "aibao0005@naver.com",
-  "nickname": "테스트",
+  "email": "tyson0006@naver.com",
+  "nickname": "아이바오",
   "password": "wns0423^^",
   "passwordConfirmation": "wns0423^^"
 }
