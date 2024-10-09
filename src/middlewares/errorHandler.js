@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { cookieOptions } from '../config/authOptions.js';
 
 export default function errorHandler(error, req, res, next) {
   console.error(error.stack);
@@ -26,6 +27,11 @@ export default function errorHandler(error, req, res, next) {
       data: error.data ?? undefined,
       date: new Date(),
     });
+  }
+
+  if (error.message === 'Not available refresh token') {
+    res.clearCookie('refreshToken', cookieOptions);
+    res.status(401);
   }
 
   const status = error.code || 500;

@@ -31,6 +31,12 @@ export const createSignup = async (req, res) => {
 
 export const createRefreshToken = async (req, res) => {
   const { refreshToken: oldRefreshToken } = req.cookies;
+
+  if (!oldRefreshToken) {
+    res.clearCookie('refreshToken', cookieOptions);
+    return res.status(401).json({ message: 'No refresh token in cookie' });
+  }
+
   const user = req.user;
   const verifiedUser = await authService.validateRefreshToken(
     user.id,

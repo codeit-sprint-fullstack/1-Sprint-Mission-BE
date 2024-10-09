@@ -81,7 +81,7 @@ export async function updateTokens(user) {
 export async function validateRefreshToken(userId, refreshToken) {
   const userFromDB = await userRepository.findById(userId);
   if (!userFromDB || userFromDB.refreshToken !== refreshToken) {
-    const error = new Error('Not available token');
+    const error = new Error('Not available refresh token');
     error.code = 401;
     throw error;
   }
