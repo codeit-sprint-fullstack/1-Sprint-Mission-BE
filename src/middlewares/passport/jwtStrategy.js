@@ -34,7 +34,6 @@ async function jwtVerify(payload, done) {
       const error = new Error('JWT인증: user가 없습니다.');
       return done(error, false);
     }
-    console.log(user);
 
     return done(null, user);
   } catch (error) {

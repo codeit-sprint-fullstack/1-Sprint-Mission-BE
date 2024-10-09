@@ -3,7 +3,6 @@ import { checkEntityName } from '../utils/utilFunctions.js';
 
 export async function getComments({ idParamName, whichId, limit, lastId }) {
   const whichEntity = checkEntityName(idParamName);
-  console.log('whichEntity', whichEntity);
   const list = await commentRepository.getAll({
     whichEntity,
     whichId,

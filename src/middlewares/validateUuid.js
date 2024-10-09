@@ -15,8 +15,6 @@ function validateUuid(req, res, next) {
 
     req.idParamName = whichIdParam;
 
-    console.log(whichIdParam);
-
     next();
   } catch (error) {
     next(error);

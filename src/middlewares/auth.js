@@ -46,7 +46,6 @@ export async function articleAuthorization(req, res, next) {
       error.code = 400;
       return next(error);
     }
-    console.log(req.user);
 
     const article = await getArticleById(articleId);
 
