@@ -92,11 +92,6 @@ export const updateArticle = async (req, res, next) => {
       }
     }
 
-    // const existingImages =
-    //   typeof req.body.images === "string"
-    //     ? JSON.parse(req.body.images)
-    //     : req.body.images || [];
-
     const images = [...existingImages, ...newImagePaths];
     const { title, content } = req.body;
     const updatedArticle = await articleService.updateArticle(

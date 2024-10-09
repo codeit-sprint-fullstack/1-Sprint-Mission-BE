@@ -76,10 +76,14 @@ export const updateProduct = async (req, res, next) => {
       ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
       : [];
 
-    const existingImages =
-      typeof req.body.images === "string"
-        ? JSON.parse(req.body.images)
-        : req.body.images || [];
+    let existingImages = [];
+    if (req.body["existingImages"]) {
+      if (Array.isArray(req.body["existingImages"])) {
+        existingImages = req.body["existingImages"];
+      } else {
+        existingImages = [req.body["existingImages"]];
+      }
+    }
 
     const images = [...existingImages, ...newImagePaths];
     const { name, price, description, tags } = req.body;
