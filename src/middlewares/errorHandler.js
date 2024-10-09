@@ -1,10 +1,10 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client';
 
 export default function errorHandler(error, req, res, next) {
   console.error(error.stack);
 
   if (
-    error.name === "StructError" ||
+    error.name === 'StructError' ||
     error instanceof Prisma.PrismaClientValidationError
   ) {
     res.status(400).json({
@@ -17,7 +17,7 @@ export default function errorHandler(error, req, res, next) {
   }
   if (
     error instanceof Prisma.PrismaClientKnownRequestError &&
-    error.code === "P2025"
+    error.code === 'P2025'
   ) {
     res.status(404).json({
       path: req.path,
@@ -32,7 +32,7 @@ export default function errorHandler(error, req, res, next) {
   return res.status(status).json({
     path: req.path,
     method: req.method,
-    message: error.message ?? "Internal Server Error",
+    message: error.message ?? 'Internal Server Error',
     data: error.data ?? undefined,
     date: new Date(),
   });

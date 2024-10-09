@@ -1,5 +1,5 @@
-import prisma from "../config/prisma.js";
-import { OWNER_FIELDS, PRODUCT_FIELDS } from "../config/fieldOptions.js";
+import prisma from '../config/prisma.js';
+import { OWNER_FIELDS, PRODUCT_FIELDS } from '../config/fieldOptions.js';
 
 export async function getAll({ searchQuery, sortOption, offset, pageSize }) {
   const products = await prisma.product.findMany({
@@ -118,7 +118,7 @@ export async function updateFavoriteStatus(
     data: {
       favoriteUsers: { [updateOption]: { id: userId } },
       favoriteCount:
-        updateOption === "connect" ? { increment: 1 } : { decrement: 1 },
+        updateOption === 'connect' ? { increment: 1 } : { decrement: 1 },
     },
     select: {
       ...PRODUCT_FIELDS,

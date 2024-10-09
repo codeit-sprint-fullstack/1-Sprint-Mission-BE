@@ -1,5 +1,5 @@
-import { USER_FIELDS } from "../config/fieldOptions.js";
-import prisma from "../config/prisma.js";
+import { USER_FIELDS } from '../config/fieldOptions.js';
+import prisma from '../config/prisma.js';
 
 export async function findById(id) {
   return await prisma.user.findUnique({

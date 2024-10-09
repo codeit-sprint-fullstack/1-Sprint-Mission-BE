@@ -1,7 +1,7 @@
-import * as authService from "../services/authService.js";
-import { cookieOptions } from "../config/authOptions.js";
-import { assert, CreateUser, validateLogin } from "../validations/structs.js";
-import { filterUserData } from "../utils/utilFunctions.js";
+import * as authService from '../services/authService.js';
+import { cookieOptions } from '../config/authOptions.js';
+import { assert, CreateUser, validateLogin } from '../validations/structs.js';
+import { filterUserData } from '../utils/utilFunctions.js';
 
 export const createLogin = async (req, res) => {
   const user = req.body;
@@ -13,7 +13,7 @@ export const createLogin = async (req, res) => {
 
   const loggedInUser = await authService.updateTokens(verifiedUser);
 
-  res.cookie("refreshToken", loggedInUser.refreshToken, cookieOptions);
+  res.cookie('refreshToken', loggedInUser.refreshToken, cookieOptions);
   return res.json(filterUserData(loggedInUser));
 };
 
@@ -24,7 +24,7 @@ export const createSignup = async (req, res) => {
 
   const newUser = await authService.createUser(userData);
 
-  res.cookie("refreshToken", newUser.refreshToken, cookieOptions);
+  res.cookie('refreshToken', newUser.refreshToken, cookieOptions);
   const user = filterUserData(newUser);
   return res.status(201).json(user);
 };
@@ -40,13 +40,13 @@ export const createRefreshToken = async (req, res) => {
   const { accessToken, refreshToken } = await authService.updateTokens(
     verifiedUser
   );
-  res.cookie("refreshToken", refreshToken, cookieOptions);
+  res.cookie('refreshToken', refreshToken, cookieOptions);
   return res.json({ accessToken });
 };
 
 export const getGoogleLogin = async (req, res) => {
   const user = req.user;
   const { accessToken, refreshToken } = await authService.updateTokens(user);
-  res.cookie("refreshToken", refreshToken, cookieOptions);
+  res.cookie('refreshToken', refreshToken, cookieOptions);
   return res.json({ accessToken });
 };

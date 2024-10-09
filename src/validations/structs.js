@@ -1,5 +1,5 @@
-import * as s from 'superstruct';
 import isUuid from 'is-uuid';
+import * as s from 'superstruct';
 import { assert } from 'superstruct';
 import isEmail from 'is-email';
 
@@ -35,7 +35,7 @@ export const PatchComment = s.partial(CreateComment);
 export const CreateUser = s.object({
   email: email(),
   nickname: s.size(s.string(), 1, 20),
-  password: s.size(s.string(), 8, 14),
+  password: s.size(s.pattern(s.string(), /^([a-zA-Z0-9!@#$%^&*])+$/), 8, 14),
   refreshToken: s.optional(s.string()),
 });
 

@@ -10,17 +10,21 @@ import commentRouter from './routers/commentRouter.js';
 import errorHandler from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 
+const corsOptions = {
+  origin: 'http://localhost:3001',
+  credentials: true,
+};
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cookieParser());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(passport.initialize());
-app.use(cookieParser());
 app.use('/images', express.static('uploads'));
 
 app.use('/api/auth', authRouter);
-app.use('/api/user', userRouter);
+app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/articles', articleRouter);
 app.use('/api', commentRouter);
