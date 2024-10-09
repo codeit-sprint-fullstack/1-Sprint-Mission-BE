@@ -54,11 +54,6 @@ export async function getArticleId(req, res, next) {
       where: { id: parseInt(articleId, 10) },
       include: {
         comment: true,
-        favorites: {
-          include: {
-            user: true,
-          },
-        },
       },
     });
     return res.status(200).json({ message: '게시물 정보 추출', article });
@@ -137,133 +132,67 @@ export async function deleteArticle(req, res, next) {
     return res.status(500).json({ message: '게시물를 삭제할 수 없습니다.' });
   }
 }
-// export async function postArticleFavorite(req, res) {
-//   try {
-//     const { articleId } = req.params; // URL 파라미터에서 articleId를 가져옴
-//     const userId = req.user.userId; // 인증된 사용자의 id (authenticateToken 미들웨어로부터 제공됨)
-
-//     if (!articleId) {
-//       return res.status(400).json({ message: 'Article ID가 필요합니다.' });
-//     }
-
-//     // 현재 사용자가 이미 해당 article에 좋아요를 눌렀는지 확인
-//     const existingFavorite = await prisma.favorite.findUnique({
-//       where: {
-//         userId_articleId: {
-//           userId: userId,
-//           articleId: parseInt(articleId),
-//         },
-//       },
-//     });
-
-//     if (existingFavorite) {
-//       // 이미 좋아요가 눌러진 상태라면, 좋아요를 취소 (삭제)
-//       await prisma.favorite.delete({
-//         where: {
-//           id: existingFavorite.id,
-//         },
-//       });
-
-//       // 해당 Article의 favoriteCount 감소
-//       await prisma.article.update({
-//         where: { id: parseInt(articleId) },
-//         data: {
-//           favoriteCount: { decrement: 1 },
-//         },
-//       });
-
-//       return res.status(200).json({ message: '좋아요가 취소되었습니다.' });
-//     } else {
-//       // 좋아요가 없는 상태라면, 새로운 좋아요를 추가
-//       await prisma.favorite.create({
-//         data: {
-//           user: {
-//             connect: { id: userId }, // User와 연결
-//           },
-//           article: {
-//             connect: { id: parseInt(articleId) }, // Article과 연결
-//           },
-//         },
-//       });
-
-//       // 해당 Article의 favoriteCount 증가
-//       await prisma.article.update({
-//         where: { id: parseInt(articleId) },
-//         data: {
-//           favoriteCount: { increment: 1 },
-//         },
-//       });
-
-//       return res.status(200).json({ message: '좋아요가 추가되었습니다.' });
-//     }
-//   } catch (error) {
-//     console.error('좋아요 처리 중 오류 발생:', error);
-//     return res.status(500).json({ message: '서버 오류가 발생했습니다.' });
-//   }
-// }
-
-export async function addFavorite(req, res) {
+export async function postArticleFavorite(req, res) {
   try {
     const { articleId } = req.params; // URL 파라미터에서 articleId를 가져옴
-    const userId = req.user.userId; // 인증된 사용자의 userId를 가져옴
+    const userId = req.user.userId; // 인증된 사용자의 id (authenticateToken 미들웨어로부터 제공됨)
 
     if (!articleId) {
       return res.status(400).json({ message: 'Article ID가 필요합니다.' });
     }
 
-    // 좋아요 추가
-    await prisma.favorite.create({
-      data: {
-        user: {
-          connect: { id: userId }, // userId로 User와 연결
-        },
-        article: {
-          connect: { id: parseInt(articleId) }, // articleId로 Article과 연결
-        },
-      },
-    });
-
-    // 업데이트된 Article 정보 가져오기
-    const updatedArticle = await prisma.article.findUnique({
-      where: { id: parseInt(articleId, 10) },
-    });
-
-    return res
-      .status(200)
-      .json({ message: '좋아요가 추가되었습니다.', article: updatedArticle });
-  } catch (error) {
-    console.error('좋아요 추가 중 오류 발생:', error);
-    return res.status(500).json({ message: '서버 오류가 발생했습니다.' });
-  }
-}
-
-export async function removeFavorite(req, res) {
-  try {
-    const { articleId } = req.params; // URL 파라미터에서 articleId를 가져옴
-    const userId = req.user.userId; // 인증된 사용자의 userId를 가져옴
-
-    if (!articleId) {
-      return res.status(400).json({ message: 'Article ID가 필요합니다.' });
-    }
-
-    // 좋아요 삭제
-    await prisma.favorite.deleteMany({
+    // 현재 사용자가 이미 해당 article에 좋아요를 눌렀는지 확인
+    const existingFavorite = await prisma.favorite.findUnique({
       where: {
-        userId: userId,
-        articleId: parseInt(articleId),
+        userId_articleId: {
+          userId: userId,
+          articleId: parseInt(articleId),
+        },
       },
     });
 
-    // 업데이트된 Article 정보 가져오기
-    const updatedArticle = await prisma.article.findUnique({
-      where: { id: parseInt(articleId, 10) },
-    });
+    if (existingFavorite) {
+      // 이미 좋아요가 눌러진 상태라면, 좋아요를 취소 (삭제)
+      await prisma.favorite.delete({
+        where: {
+          id: existingFavorite.id,
+        },
+      });
 
-    return res
-      .status(200)
-      .json({ message: '좋아요가 취소되었습니다.', article: updatedArticle });
+      // 해당 Article의 favoriteCount 감소
+      await prisma.article.update({
+        where: { id: parseInt(articleId) },
+        data: {
+          favoriteCount: { decrement: 1 },
+        },
+      });
+
+      return res.status(200).json({ message: '좋아요가 취소되었습니다.' });
+    } else {
+      // 좋아요가 없는 상태라면, 새로운 좋아요를 추가
+      await prisma.favorite.create({
+        data: {
+          user: {
+            connect: { id: userId }, // User와 연결
+          },
+          article: {
+            connect: { id: parseInt(articleId) }, // Article과 연결
+          },
+        },
+      });
+
+      // 해당 Article의 favoriteCount 증가
+      await prisma.article.update({
+        where: { id: parseInt(articleId) },
+        data: {
+          favoriteCount: { increment: 1 },
+        },
+      });
+
+      return res.status(200).json({ message: '좋아요가 추가되었습니다.' });
+    }
   } catch (error) {
-    console.error('좋아요 취소 중 오류 발생:', error);
+    console.error('좋아요 처리 중 오류 발생:', error);
     return res.status(500).json({ message: '서버 오류가 발생했습니다.' });
   }
 }
