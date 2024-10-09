@@ -47,7 +47,7 @@ export const getProducts = async (
 
   const orderCondition =
     orderBy === "favorite"
-      ? { favoriteCount: "desc", createdAt: "desc" }
+      ? [{ favoriteCount: "desc" }, { createdAt: "desc" }]
       : { createdAt: "desc" };
 
   const [list, totalCount] = await prisma.$transaction([
