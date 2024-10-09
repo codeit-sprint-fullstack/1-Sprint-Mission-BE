@@ -4,7 +4,7 @@ import path from "path";
 export const createProduct = async (req, res, next) => {
   try {
     const images = req.files
-      ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
+      ? req.files.map((file) => file.location)
       : req.body.images || [];
     const { name, price, description, tags } = req.body;
     const { id: userId, nickname: userNickname } = req.user;
@@ -73,7 +73,7 @@ export const updateProduct = async (req, res, next) => {
   try {
     const { productId } = req.params;
     const newImagePaths = req.files
-      ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
+      ? req.files.map((file) => file.location)
       : [];
 
     let existingImages = [];

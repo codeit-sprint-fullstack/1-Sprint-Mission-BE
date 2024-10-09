@@ -20,7 +20,7 @@ const sendResponse = (res, data, status = 200) => res.status(status).json(data);
 
 export const createArticle = async (req, res, next) => {
   const images = req.files
-    ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
+    ? req.files.map((file) => file.location)
     : req.body.images || [];
   const { content, title } = req.body;
   try {
@@ -80,7 +80,7 @@ export const updateArticle = async (req, res, next) => {
   try {
     const { articleId } = req.params;
     const newImagePaths = req.files
-      ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
+      ? req.files.map((file) => file.location)
       : [];
 
     let existingImages = [];
