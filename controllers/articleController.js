@@ -18,11 +18,14 @@ const formatArticleResponse = (article) => ({
 const sendResponse = (res, data, status = 200) => res.status(status).json(data);
 
 export const createArticle = async (req, res, next) => {
-  const { image, content, title } = req.body;
+  const images = req.files
+    ? req.files.map((file) => `/uploads/${path.basename(file.path)}`)
+    : req.body.images || [];
+  const { content, title } = req.body;
   try {
     const userId = req.user.id;
     const newArticle = await articleService.createArticle(
-      image,
+      images,
       content,
       title,
       userId
