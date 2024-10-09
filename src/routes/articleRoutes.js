@@ -1,6 +1,6 @@
 import express from 'express';
 import { authenticateToken } from '../middleware/authenticateToken.js';
-import imageUpload from '../middleware/imagesFileUpload.js';
+import { imageUpload } from '../middleware/imagesFileUpload.js';
 import {
   getArticles,
   getArticleId,
