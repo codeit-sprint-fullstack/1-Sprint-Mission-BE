@@ -20,7 +20,7 @@ router
   .route("/:articleId")
   .all(verifyToken)
   .get(articleController.getArticleById)
-  .patch(articleController.updateArticle)
+  .patch(imageUpload.array("images", 3), articleController.updateArticle)
   .delete(articleController.deleteArticle);
 
 router

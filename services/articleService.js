@@ -74,10 +74,10 @@ export const getArticleById = async (articleId, userId) => {
   return { ...article, isLiked };
 };
 
-export const updateArticle = async (articleId, image, title, content) => {
+export const updateArticle = async (articleId, images, title, content) => {
   return prisma.article.update({
     where: { id: parseInt(articleId) },
-    data: { image, title, content },
+    data: { images, title, content },
     include: { writer: true },
   });
 };
