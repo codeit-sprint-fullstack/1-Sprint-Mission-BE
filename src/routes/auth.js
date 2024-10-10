@@ -7,7 +7,8 @@ import {
 } from "../middlewares/auth.js";
 import { createHashedPassword } from "../lib/password.js";
 import { createAccessToken, createRefreshToken } from "../lib/token.js";
-import { userSelect } from "../structs/res-template.js";
+import { userSelect } from "../responses/user-res.js";
+import { authUserForm, authTokenForm } from "../mappers/auth-mapper.js";
 
 const prisma = new PrismaClient();
 const authRouter = express.Router();
@@ -24,10 +25,13 @@ authRouter.post("/sign-up", (req, res, next) => {
       .then((createdData) => {
         const accessToken = createAccessToken(createdData.id);
         const refreshToken = createRefreshToken(createdData.id);
+        const result = authUserForm({
+          accessToken,
+          refreshToken,
+          user: createdData,
+        });
 
-        return res
-          .status(201)
-          .send({ accessToken, refreshToken, user: createdData });
+        return res.status(201).send(result);
       })
       .catch((err) => {
         next(err);
@@ -42,23 +46,15 @@ authRouter.post("/sign-in", validateEmailPassword, (req, res, next) => {
    넘겨주기는 하는네, 함수명을 생각하면 좋은건지는 모르겠네
    */
   const user = req.user;
-
   const accessToken = createAccessToken(user.id);
   const refreshToken = createRefreshToken(user.id);
+  const result = authUserForm({
+    accessToken,
+    refreshToken,
+    user,
+  });
 
-  return res.status(200).send({ accessToken, refreshToken, user });
-
-  // prisma.user
-  //   .findUnique({ where: { user.id } })
-  //   .then((data) => {
-  //     const accessToken = createAccessToken(id);
-  //     const refreshToken = createRefreshToken(id);
-
-  //     return res.status(200).send({ accessToken, refreshToken, user: data });
-  //   })
-  //   .catch((err) => {
-  //     next(err);
-  //   });
+  return res.status(200).send(result);
 });
 
 // 임시로 로그인할 때만 refresh 토큰 발급 : refresh-token을 be에서 관리하지 못한다면 발급을 제한하는 것으로 제한
@@ -68,8 +64,9 @@ authRouter.post("/refresh-token", validateRefreshToken, (req, res, next) => {
 
   const accessToken = createAccessToken(req.id);
   // const refreshToken = createRefreshToken(userId);
+  const result = authTokenForm({ accessToken, refreshToken });
 
-  return res.status(200).send({ accessToken, refreshToken });
+  return res.status(200).send(result);
 });
 
 export default authRouter;

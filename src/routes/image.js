@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer";
 
+import { createCustomError } from "../lib/error.js";
 import { validateAccessToken } from "../middlewares/auth.js";
 
 const upload = multer({ dest: "uploads/" });
@@ -12,14 +13,14 @@ imageRouter.post(
   upload.array("images", 3),
   (req, res, next) => {
     if (!req.files || req.files.length === 0) {
-      const err = { message: `Fail upload images` };
-      return next(err);
+      return next(
+        createCustomError({ status: 500, message: `Fail upload images` })
+      );
     }
 
-    const fileUrls = req.files.map((file) => ({
-      filename: file.filename,
-      images: `http://localhost:3000/uploads/${file.filename}`,
-    }));
+    const fileUrls = req.files.map(
+      (file) => `http://localhost:3000/uploads/${file.filename}`
+    );
 
     return res.status(200).send({ url: fileUrls });
   }

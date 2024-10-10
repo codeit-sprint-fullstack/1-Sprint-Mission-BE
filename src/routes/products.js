@@ -1,25 +1,15 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 
-import {
-  validateAccessToken,
-  includeToken,
-  validateIdPassword,
-} from "../middlewares/auth.js";
-import { createHashedPassword } from "../lib/password.js";
-import {
-  userSelect,
-  productSelect,
-  productForm,
-} from "../structs/res-template.js";
+import { validateAccessToken, includeToken } from "../middlewares/auth.js";
+import { productSelect } from "../responses/product-res.js";
+import { productForm } from "../mappers/product-mapper.js";
 
 const prisma = new PrismaClient();
 const productRouter = express.Router();
 
 /** POST /products */
 productRouter.post("/", validateAccessToken, (req, res, next) => {
-  // images 선행 처리 필요. 따로 서버를 만들까...?
-  // 임시로 이미지 주소로 생성
   const { name, description, price, images, tags } = req.body;
   const newProductData = {
     name,

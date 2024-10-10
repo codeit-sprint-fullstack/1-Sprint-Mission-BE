@@ -6,7 +6,9 @@ import {
   validateIdPassword,
 } from "../middlewares/auth.js";
 import { createHashedPassword } from "../lib/password.js";
-import { userSelect, productSelect } from "../structs/res-template.js";
+
+import { userSelect } from "../responses/user-res.js";
+import { productSelect } from "../responses/product-res.js";
 
 const prisma = new PrismaClient();
 const userRouter = express.Router();

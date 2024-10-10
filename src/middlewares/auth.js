@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { createCustomError } from "../lib/error.js";
 import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../config.js";
-import { userSelect } from "../structs/res-template.js";
+import { userSelect } from "../responses/user-res.js";
 
 /** validate authorizaton(accessToken) */
 export function validateAccessToken(req, res, next) {
