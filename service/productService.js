@@ -29,8 +29,15 @@ export const postProductService = async ({
   description,
   price,
   tags,
+  imageUrls,
 }) => {
-  return await postProductRepository({ name, description, price, tags });
+  return await postProductRepository({
+    name,
+    description,
+    price,
+    tags,
+    imageUrls,
+  });
 };
 
 export const patchProductService = async ({ id, body }) => {
