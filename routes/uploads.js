@@ -32,8 +32,8 @@ router.post('/', upload.single('image'), async (req, res) => {
     Bucket: process.env.AWS_S3_BUCKET_NAME, // S3 버킷 이름
     Key: `${Date.now()}_${file.originalname}`, // 파일명 중복 방지를 위해 타임스탬프 추가
     Body: fs.createReadStream(file.path),
-    ACL: 'public-read', // 공개 읽기 권한 설정
     ContentType: file.mimetype, // 파일 타입 설정
+    ServerSideEncryption: 'AES256', // SSE-S3 암호화 설정
   };
 
   try {
