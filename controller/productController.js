@@ -37,8 +37,14 @@ export const patchProductController = asyncHandler(async (req, res) => {
 
 export const postProductController = asyncHandler(async (req, res) => {
   assert(req.body, CreateProduct);
-  const { name, description, price, tags } = req.body;
-  const product = await postProductService({ name, description, price, tags });
+  const { name, description, price, tags, imageUrls } = req.body;
+  const product = await postProductService({
+    name,
+    description,
+    price,
+    tags,
+    imageUrls,
+  });
   res.send(product);
 });
 
