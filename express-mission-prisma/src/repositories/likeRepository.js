@@ -16,16 +16,6 @@ async function createArticleAndRelatedData(transactionData) {
   ]);
 }
 
-async function createProductAndRelatedData(transactionData) {
-  const { likeIdentifiers, countFillter, userId, productId } = transactionData;
-  return await prisma.$transaction([
-    prisma.like.create({ data: likeIdentifiers }),
-    prisma.like.count({ where: countFillter }),
-    prisma.user.findUniqueOrThrow({ where: { id: userId } }),
-    prisma.product.findFirstOrThrow({ where: { id: productId } }),
-  ]);
-}
-
 async function deleteArticleAndRelatedData(transactionData) {
   const { likeIdentifiers, countFillter, userId, articleId } = transactionData;
   return await prisma.$transaction([
@@ -33,6 +23,16 @@ async function deleteArticleAndRelatedData(transactionData) {
     prisma.like.count({ where: countFillter }),
     prisma.user.findUniqueOrThrow({ where: { id: userId } }),
     prisma.article.findFirstOrThrow({ where: { id: articleId } }),
+  ]);
+}
+
+async function createProductAndRelatedData(transactionData) {
+  const { likeIdentifiers, countFillter, userId, productId } = transactionData;
+  return await prisma.$transaction([
+    prisma.like.create({ data: likeIdentifiers }),
+    prisma.like.count({ where: countFillter }),
+    prisma.user.findUniqueOrThrow({ where: { id: userId } }),
+    prisma.product.findFirstOrThrow({ where: { id: productId } }),
   ]);
 }
 
@@ -49,7 +49,7 @@ async function deleteProductAndRelatedData(transactionData) {
 export default {
   getByFillter,
   createArticleAndRelatedData,
-  createProductAndRelatedData,
   deleteArticleAndRelatedData,
+  createProductAndRelatedData,
   deleteProductAndRelatedData,
 };

@@ -26,16 +26,6 @@ async function createArticleAndRelatedData(reqBody) {
   return await likeRepository.createArticleAndRelatedData(transactionData);
 }
 
-async function createProductAndRelatedData(reqBody) {
-  const transactionData = {
-    createData: reqBody,
-    countFillter: { productId: reqBody.productId },
-    userId: reqBody.userId,
-    productId: reqBody.productId,
-  };
-  return await likeRepository.createProductAndRelatedData(transactionData);
-}
-
 async function deleteArticleAndRelatedData(reqBody) {
   const transactionData = {
     likeIdentifiers: { id: reqBody.likeId },
@@ -44,6 +34,16 @@ async function deleteArticleAndRelatedData(reqBody) {
     articleId: reqBody.articleId,
   };
   return await likeRepository.deleteArticleAndRelatedData(transactionData);
+}
+
+async function createProductAndRelatedData(reqBody) {
+  const transactionData = {
+    createData: reqBody,
+    countFillter: { productId: reqBody.productId },
+    userId: reqBody.userId,
+    productId: reqBody.productId,
+  };
+  return await likeRepository.createProductAndRelatedData(transactionData);
 }
 
 async function deleteProductAndRelatedData(reqBody) {
@@ -59,7 +59,7 @@ async function deleteProductAndRelatedData(reqBody) {
 export default {
   getByFillter,
   createArticleAndRelatedData,
-  createProductAndRelatedData,
   deleteArticleAndRelatedData,
-  deleteProductAndRelatedData
+  createProductAndRelatedData,
+  deleteProductAndRelatedData,
 };
