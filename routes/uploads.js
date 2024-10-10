@@ -19,9 +19,9 @@ const s3 = new S3Client({
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/', upload.array('image', 3), async (req, res) => {
-  const files = req.file;
+  const files = req.files;
 
-  if (!files) {
+  if (!files || files.length === 0) {
     return res.status(400).json({ message: '파일이 업로드되지 않았습니다.' });
   }
 
