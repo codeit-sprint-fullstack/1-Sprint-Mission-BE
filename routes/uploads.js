@@ -9,7 +9,7 @@ const router = express.Router();
 
 // S3 클라이언트 생성
 const s3 = new S3Client({
-  region: 'ap-northeast-2',
+  region: AWS_S3_REGION,
   credentials: {
     accessKeyId: process.env.AWS_S3_ACCESS_KEY,
     secretAccessKey: process.env.AWS_S3_SECRET_KEY,
