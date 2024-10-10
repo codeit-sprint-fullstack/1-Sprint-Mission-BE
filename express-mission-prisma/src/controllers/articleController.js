@@ -37,7 +37,7 @@ articleController
   .route("/:id")
   .get(
     setUserIdFromToken,
-    asyncHandler(async (req, res) => {
+    asyncHandler(async (req, res, next) => {
       const { id } = req.params;
       const article = await articleService.getById(id);
       if (req.body.userId) {
@@ -64,7 +64,7 @@ articleController
     verifyAccessToken,
     verifyArticleAuth,
     validateData.article("patch"),
-    asyncHandler(async (req, res) => {
+    asyncHandler(async (req, res, next) => {
       const { id } = req.params;
       const article = await articleService.update(id, req.body);
       res.status(200).send(article);
@@ -73,7 +73,7 @@ articleController
   .delete(
     verifyAccessToken,
     verifyArticleAuth,
-    asyncHandler(async (req, res) => {
+    asyncHandler(async (req, res, next) => {
       const { id } = req.params;
       await articleService.deleteById(id);
       res.sendStatus(204);

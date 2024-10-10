@@ -3,7 +3,10 @@ import imgUploadHandler from "../middlewares/imgUploadHandler.js";
 import validateData from "../middlewares/validateData.js";
 import productService from "../services/productService.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import { attachUserId, verifyAccessToken } from "../middlewares/authorizationMiddleware.js";
+import {
+  attachUserId,
+  verifyAccessToken,
+} from "../middlewares/authorizationMiddleware.js";
 
 const productController = express.Router();
 
@@ -46,5 +49,10 @@ productController.route("/").post(
     res.status(201).send(resBody);
   })
 );
+
+productController.route("/:id").get(
+  setUserIdFromToken,
+  
+)
 
 export default productController;
