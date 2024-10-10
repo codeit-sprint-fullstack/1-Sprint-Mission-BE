@@ -8,7 +8,7 @@ import {
   verifyAccessToken,
   verifyArticleAuth,
 } from "../middlewares/authorizationMiddleware.js";
-import likeService from "../services/likeService.js";
+import checkArticleLikeStatus from "../utils/checkArticleLikeStatus.js";
 
 const articleController = express.Router();
 
@@ -41,15 +41,7 @@ articleController
       const { id } = req.params;
       const article = await articleService.getById(id);
       if (req.body.userId) {
-        req.body.articleId = id;
-        const like = await likeService.getByFillter(req.body, "article");
-
-        let isLiked;
-        if (like) {
-          isLiked = true;
-        } else if (!like) {
-          isLiked = false;
-        }
+        const isLiked = await checkArticleLikeStatus(req.body, id);
         const resBody = {
           ...article,
           isLiked,

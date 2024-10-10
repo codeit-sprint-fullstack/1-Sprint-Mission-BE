@@ -2,7 +2,7 @@ import articleRepository from "../repositories/articleRepository.js";
 import {
   createKeywordFillterOtions,
   createPageSizeFilterOptions,
-} from "../utils/filterOptions.js";
+} from "../utils/fillterOptions/articleFillterOptions.js";
 
 async function create(createData) {
   return await articleRepository.create(createData);
