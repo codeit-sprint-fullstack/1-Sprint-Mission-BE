@@ -1,14 +1,14 @@
 ###
 POST http://localhost:3000/products
 Content-Type : application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkNzAwNWJlLWU3YTctNGNkZi04NTE3LTE2YmVjMjUzOGEwMiIsImlhdCI6MTcyODI4OTIwMywiZXhwIjoxNzI4NTQ4NDAzfQ.L_joNRkM2K-owV_tktltAVyDKcg5_5BtRbsDDjFPRig
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkNzAwNWJlLWU3YTctNGNkZi04NTE3LTE2YmVjMjUzOGEwMiIsImlhdCI6MTcyODUyNzAxNSwiZXhwIjoxNzI4Nzg2MjE1fQ.NirtWHfa1lfusE2rX1OYsVFcnmClXcXmKKDnLvpEBB4
 
 {
-    "name" : "테스트 상품 등록1",
-    "description" : "상품 설명1",
-    "price" : 777777,
+    "name" : "테스트 상품 등록3",
+    "description" : "상품 설명3",
+    "price" : 666666,
     "images" : ["https://ifh.cc/g/GvzJSH.png", "https://ifh.cc/g/Jv7bzz.png"],
-    "tags" : ["태그1", "태그2"] 
+    "tags" : ["태그1", "태그2", "12345678901234567890123456789012345678901234567890"] 
 }
 
 ###
@@ -19,4 +19,4 @@ Content-Type : application/json
 ###
 DELETE http://localhost:3000/products/4f0b65ab-28fb-449c-bd94-1088eb665122
 Content-Type : application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkNzAwNWJlLWU3YTctNGNkZi04NTE3LTE2YmVjMjUzOGEwMiIsImlhdCI6MTcyODI4OTIwMywiZXhwIjoxNzI4NTQ4NDAzfQ.L_joNRkM2K-owV_tktltAVyDKcg5_5BtRbsDDjFPRig
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkNzAwNWJlLWU3YTctNGNkZi04NTE3LTE2YmVjMjUzOGEwMiIsImlhdCI6MTcyODUyNzAxNSwiZXhwIjoxNzI4Nzg2MjE1fQ.NirtWHfa1lfusE2rX1OYsVFcnmClXcXmKKDnLvpEBB4

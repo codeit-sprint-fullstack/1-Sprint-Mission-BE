@@ -2,6 +2,7 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 
 import { validateAccessToken, includeToken } from "../middlewares/auth.js";
+import { validateProductInput } from "../middlewares/validateInput.js";
 import { productSelect } from "../responses/product-res.js";
 import { productForm } from "../mappers/product-mapper.js";
 
@@ -9,29 +10,34 @@ const prisma = new PrismaClient();
 const productRouter = express.Router();
 
 /** POST /products */
-productRouter.post("/", validateAccessToken, (req, res, next) => {
-  const { name, description, price, images, tags } = req.body;
-  const newProductData = {
-    name,
-    description,
-    price,
-    userId: req.id,
-    ProductImage: {
-      create: images.map((image) => ({ image })),
-    },
-    ProductTag: {
-      create: tags.map((tag) => ({ tag })),
-    },
-  };
+productRouter.post(
+  "/",
+  validateAccessToken,
+  validateProductInput,
+  (req, res, next) => {
+    const { name, description, price, images, tags } = req.body;
+    const newProductData = {
+      name,
+      description,
+      price,
+      userId: req.id,
+      ProductImage: {
+        create: images.map((image) => ({ image })),
+      },
+      ProductTag: {
+        create: tags.map((tag) => ({ tag })),
+      },
+    };
 
-  prisma.product
-    .create({
-      data: newProductData,
-      select: productSelect,
-    })
-    .then((data) => res.status(201).send(productForm(data)))
-    .catch((err) => next(err));
-});
+    prisma.product
+      .create({
+        data: newProductData,
+        select: productSelect,
+      })
+      .then((data) => res.status(201).send(productForm(data)))
+      .catch((err) => next(err));
+  }
+);
 
 /** GET /products */
 productRouter.get("/", includeToken, (req, res, next) => {
@@ -97,24 +103,29 @@ productRouter.get("/:id", validateAccessToken, (req, res, next) => {
 });
 
 /** PATCH /products/:id */
-productRouter.patch("/:id", validateAccessToken, (req, res, next) => {
-  const { id } = req.params;
-  const { name, description, price, images, tags } = req.body;
-  const updateData = {
-    ...(name && { name }),
-    ...(description && { description }),
-    ...(price && { price }),
-    ...(images && { images }),
-    ...(tags && { tags }),
-  };
+productRouter.patch(
+  "/:id",
+  validateAccessToken,
+  validateProductInput,
+  (req, res, next) => {
+    const { id } = req.params;
+    const { name, description, price, images, tags } = req.body;
+    const updateData = {
+      ...(name && { name }),
+      ...(description && { description }),
+      ...(price && { price }),
+      ...(images && { images }),
+      ...(tags && { tags }),
+    };
 
-  prisma.product
-    .update({ where: { id }, data: updateData })
-    .then((data) => {
-      res.status(200).send(productForm(data));
-    })
-    .catch((err) => next(err));
-});
+    prisma.product
+      .update({ where: { id }, data: updateData })
+      .then((data) => {
+        res.status(200).send(productForm(data));
+      })
+      .catch((err) => next(err));
+  }
+);
 
 /** DELETE /products/:id */
 productRouter.delete("/:id", validateAccessToken, (req, res, next) => {

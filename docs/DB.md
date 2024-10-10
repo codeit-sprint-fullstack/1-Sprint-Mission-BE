@@ -103,14 +103,6 @@
 - unique : false
 - 참고 : middleware로 양수 검증 예정
 
-#### price
-
-- description : 상품 가격
-- type : int
-- require : true
-- unique : false
-- 참고 : middleware로 양수 검증 예정
-
 #### favoriteCount (favorite_count)
 
 - description : 좋아요 수
@@ -145,7 +137,7 @@
 - unique : false
 - space : 문자열 마지막의 공백은 인정 안함
 - max-length : 2048
-- 참고 : 임시로 상품당 최대 5개의 이미지 등록 가능. middleware로 최대 수 검증 예정. URL의 길이는 보통 최대 2048자까지 허용
+- 참고 : 임시로 상품당 최대 3개의 이미지 등록 가능. middleware로 최대 수 검증 예정. URL의 길이는 보통 최대 2048자까지 허용
 
 ### ProductTag (product_tag)
 
