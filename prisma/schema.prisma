@@ -35,9 +35,9 @@ model Product {
   favoriteCount Int?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  ownerId       Int
+  ownerId       Int?
   comment       Comment[]
-  owner         User      @relation(fields: [ownerId], references: [id])
+  owner         User?     @relation(fields: [ownerId], references: [id])
 }
 
 model Article {
