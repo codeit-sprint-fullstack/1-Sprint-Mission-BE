@@ -1,15 +1,15 @@
+dotenv.config();
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
 import * as dotenv from 'dotenv';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-dotenv.config();
 
 const router = express.Router();
 
 // S3 클라이언트 생성
 const s3 = new S3Client({
-  region: process.env.AWS_S3_REGION,
+  region: 'ap-northeast-2',
   credentials: {
     accessKeyId: process.env.AWS_S3_ACCESS_KEY,
     secretAccessKey: process.env.AWS_S3_SECRET_KEY,
