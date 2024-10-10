@@ -1,7 +1,7 @@
 import prisma from "../config/prisma.js";
 
 async function getByFillter(fillter) {
-  return await prisma.like.findUnique({
+  return await prisma.like.findFirst({
     where: fillter,
   });
 }
