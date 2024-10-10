@@ -11,6 +11,7 @@ import { DB_URL, PORT } from "./config.js";
 import authRouter from "./routes/auth.js";
 import userRouter from "./routes/users.js";
 import productRouter from "./routes/products.js";
+import imageRouter from "./routes/image.js";
 
 import {
   logErrors,
@@ -27,6 +28,8 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/products", productRouter);
+app.use("/uploads", express.static("uploads"));
+app.use("/images", imageRouter);
 
 app.use(logErrors);
 app.use(clientErrorHandler);
