@@ -17,19 +17,21 @@ datasource db {
 }
 
 model User {
-  id                String            @id @default(uuid())
-  email             String            @unique @db.VarChar(255)
-  encryptedPassword String            @db.VarChar(60)
-  name              String            @db.VarChar(255)
-  nickname          String            @unique @db.VarChar(50)
-  image             String?           @db.VarChar(2048)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  Product           Product[]
-  FavoriteProduct   FavoriteProduct[]
-  Post              Post[]
-  PostFavorite      PostFavorite[]
-  PostComment       PostComment[]
+  id                String   @id @default(uuid())
+  email             String   @unique @db.VarChar(255)
+  encryptedPassword String   @db.VarChar(60)
+  name              String   @db.VarChar(255)
+  nickname          String   @unique @db.VarChar(50)
+  image             String?  @db.VarChar(2048)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  Product         Product[]
+  FavoriteProduct FavoriteProduct[]
+  ProductComment  ProductComment[]
+  Post            Post[]
+  FavoritePost    FavoritePost[]
+  PostComment     PostComment[]
 
   @@map("user")
 }
@@ -62,6 +64,7 @@ model FavoriteProduct {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([userId, productId])
   @@map("favorite_product")
 }
 
@@ -94,6 +97,8 @@ model ProductComment {
   content   String   @db.VarChar(500)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 
   @@map("product_comment")
 }
@@ -109,7 +114,7 @@ model Post {
   updatedAt     DateTime @updatedAt
 
   PostImage    PostImage[]
-  PostFavorite PostFavorite[]
+  FavoritePost FavoritePost[]
   PostComment  PostComment[]
 
   @@map("post")
@@ -126,7 +131,7 @@ model PostImage {
   @@map("post_images")
 }
 
-model PostFavorite {
+model FavoritePost {
   id        String   @id @default(uuid())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String   @map("user_id")
@@ -135,7 +140,8 @@ model PostFavorite {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("post_favorite")
+  @@unique([userId, PostId])
+  @@map("favorite_post")
 }
 
 model PostComment {

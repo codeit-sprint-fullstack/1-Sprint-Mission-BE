@@ -1,27 +1,33 @@
 ###
-POST http://localhost:3000/product/7890abc1-def2-g345-h6789012345678/comment
+POST http://localhost:3000/product/ef18bb26-0ea2-4e25-bb63-615ec48d9341/comment
 Content-Type : application/json
-Authorization : 123e4567-e89b-12d3-a456-426614174001
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlmYmEwODRjLTgzZDgtNDAwMC04ZjI5LWE1MzIyMTZkN2YyYyIsImlhdCI6MTcyODU0MzIwNSwiZXhwIjoxNzI4ODAyNDA1fQ.HJaPsEZMBiNGr1tPQV0HpHZOcpX-NXVm1fMJeA4IEAA
 
 {
-    "content" : "댓글 추가9"
+    "content" : "댓글 추가2"
 }
 
 ###
-GET http://localhost:3000/product/7890abc1-def2-g345-h6789012345678/comment?cursor=f6c27c96-8f63-4cab-bf9e-3713c076616a&pageSize=4
-
-###
-GET http://localhost:3000/product/comment/ff0fbd9a-69ae-4868-a58c-f91a823e6334
-
-###
-PATCH http://localhost:3000/product/comment/ff0fbd9a-69ae-4868-a58c-f91a823e6334
+GET http://localhost:3000/product/ef18bb26-0ea2-4e25-bb63-615ec48d9341/comment
 Content-Type : application/json
-Authorization : 123e4567-e89b-12d3-a456-426614174001
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlmYmEwODRjLTgzZDgtNDAwMC04ZjI5LWE1MzIyMTZkN2YyYyIsImlhdCI6MTcyODU0MzIwNSwiZXhwIjoxNzI4ODAyNDA1fQ.HJaPsEZMBiNGr1tPQV0HpHZOcpX-NXVm1fMJeA4IEAA
+
+###
+GET http://localhost:3000/product/comment/
+Content-Type : application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlmYmEwODRjLTgzZDgtNDAwMC04ZjI5LWE1MzIyMTZkN2YyYyIsImlhdCI6MTcyODU0MzIwNSwiZXhwIjoxNzI4ODAyNDA1fQ.HJaPsEZMBiNGr1tPQV0HpHZOcpX-NXVm1fMJeA4IEAA
+
+###
+PATCH http://localhost:3000/product/comment/
+Content-Type : application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlmYmEwODRjLTgzZDgtNDAwMC04ZjI5LWE1MzIyMTZkN2YyYyIsImlhdCI6MTcyODU0MzIwNSwiZXhwIjoxNzI4ODAyNDA1fQ.HJaPsEZMBiNGr1tPQV0HpHZOcpX-NXVm1fMJeA4IEAA
+
 
 {
     "content" : "댓글 수정"
 }
 
 ###
-DELETE http://localhost:3000/product/comment/ff0fbd9a-69ae-4868-a58c-f91a823e6334
-Authorization : 123e4567-e89b-12d3-a456-426614174001
+DELETE http://localhost:3000/product/comment/4ef3cb91-2f61-4627-80f8-037e8757ef30
+Content-Type : application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlmYmEwODRjLTgzZDgtNDAwMC04ZjI5LWE1MzIyMTZkN2YyYyIsImlhdCI6MTcyODU0MzIwNSwiZXhwIjoxNzI4ODAyNDA1fQ.HJaPsEZMBiNGr1tPQV0HpHZOcpX-NXVm1fMJeA4IEAA

@@ -3,8 +3,12 @@ import { PrismaClient } from "@prisma/client";
 
 import { validateAccessToken, includeToken } from "../middlewares/auth.js";
 import { validateProductInput } from "../middlewares/validateInput.js";
-import { productSelect } from "../responses/product-res.js";
-import { productForm } from "../mappers/product-mapper.js";
+import {
+  productSelect,
+  productFavoriteSelect,
+  productDetailSelect,
+} from "../responses/product-res.js";
+import { productForm, productDetailForm } from "../mappers/product-mapper.js";
 
 const prisma = new PrismaClient();
 const productRouter = express.Router();
@@ -43,8 +47,6 @@ productRouter.post(
 productRouter.get("/", includeToken, (req, res, next) => {
   const { page, pageSize, order, keyWord = "" } = req.query;
 
-  // includeToken 로 유효한 토큰 정보가 있을 때 user id를 기준으로 favorite 정보까지 추가할 예정
-
   let orderBy;
   switch (order) {
     case "oldest":
@@ -58,6 +60,7 @@ productRouter.get("/", includeToken, (req, res, next) => {
   const pageNum = Number(page) || 1;
   const pageSizeNum = Number(pageSize) || 10;
   const skipInt = (pageNum - 1) * pageSizeNum;
+  const select = req.id ? productFavoriteSelect(req.id) : productSelect;
 
   const productsPromise = prisma.product.findMany({
     orderBy,
@@ -69,7 +72,7 @@ productRouter.get("/", includeToken, (req, res, next) => {
         { description: { contains: keyWord } },
       ],
     },
-    select: productSelect,
+    select: select,
   });
 
   const totalCountPromise = prisma.product.count({
@@ -92,42 +95,70 @@ productRouter.get("/", includeToken, (req, res, next) => {
   );
 });
 
-/** GET /products/:id */
+/** GET /products/:productId */
 productRouter.get("/:id", validateAccessToken, (req, res, next) => {
   const { id } = req.params;
 
   prisma.product
-    .findUnique({ where: { id } })
-    .then((data) => res.status(200).send(productForm(data)))
+    .findUnique({ where: { id }, select: productDetailSelect })
+    .then((data) => res.status(200).send(productDetailForm(data)))
     .catch((err) => next(err));
 });
 
-/** PATCH /products/:id */
+/** PATCH /products/:productId */
 productRouter.patch(
-  "/:id",
+  "/:productId",
   validateAccessToken,
   validateProductInput,
   (req, res, next) => {
-    const { id } = req.params;
+    const { productId: id } = req.params;
     const { name, description, price, images, tags } = req.body;
     const updateData = {
       ...(name && { name }),
       ...(description && { description }),
       ...(price && { price }),
-      ...(images && { images }),
-      ...(tags && { tags }),
     };
 
-    prisma.product
-      .update({ where: { id }, data: updateData })
+    const deleteImgs = images
+      ? prisma.productImage.deleteMany({
+          where: { productId: id },
+        })
+      : null;
+
+    const deleteTags = tags
+      ? prisma.productTag.deleteMany({
+          where: { productId: id },
+        })
+      : null;
+
+    const createImgs = images
+      ? prisma.productImage.createMany({
+          data: images.map((image) => ({ productId: id, image })),
+        })
+      : null;
+
+    const createTags = tags
+      ? prisma.productTag.createMany({
+          data: tags.map((tag) => ({ productId: id, tag })),
+        })
+      : null;
+
+    prisma
+      .$transaction(
+        [deleteImgs, deleteTags, createImgs, createTags].filter(Boolean)
+      )
       .then((data) => {
-        res.status(200).send(productForm(data));
+        prisma.product
+          .update({ where: { id }, data: updateData, select: productSelect })
+          .then((data) => {
+            return res.status(200).send(productForm(data));
+          });
       })
       .catch((err) => next(err));
   }
 );
 
-/** DELETE /products/:id */
+/** DELETE /products/:productId */
 productRouter.delete("/:id", validateAccessToken, (req, res, next) => {
   const { id } = req.params;
   prisma.product
@@ -136,3 +167,61 @@ productRouter.delete("/:id", validateAccessToken, (req, res, next) => {
 });
 
 export default productRouter;
+
+/** POST /products/:productId/favorite */
+productRouter.post(
+  "/:productId/favorite",
+  validateAccessToken,
+  (req, res, next) => {
+    const { productId } = req.params;
+    const newFavoriteProductData = { userId: req.id, productId: productId };
+
+    prisma
+      .$transaction([
+        prisma.favoriteProduct.create({ data: newFavoriteProductData }),
+        prisma.product.update({
+          where: { id: productId },
+          data: {
+            favoriteCount: {
+              increment: 1,
+            },
+          },
+          select: productFavoriteSelect(req.id),
+        }),
+      ])
+      .then(([createFavoriteProduct, productData]) => {
+        return res.status(200).send(productForm(productData));
+      })
+      .catch((err) => next(err));
+  }
+);
+
+/** DELETE /products/:productId/favorite */
+productRouter.delete(
+  "/:productId/favorite",
+  validateAccessToken,
+  (req, res, next) => {
+    const { productId } = req.params;
+    const condition = { AND: [{ userId: req.id }, { productId: productId }] };
+
+    prisma
+      .$transaction([
+        prisma.favoriteProduct.deleteMany({
+          where: condition,
+        }),
+        prisma.product.update({
+          where: { id: productId },
+          data: {
+            favoriteCount: {
+              decrement: 1,
+            },
+          },
+          select: productFavoriteSelect(req.id),
+        }),
+      ])
+      .then(([deleteFavoriteProduct, productData]) => {
+        return res.status(200).send(productForm(productData));
+      })
+      .catch((err) => next(err));
+  }
+);
