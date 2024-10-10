@@ -112,4 +112,8 @@ commentController
     })
   );
 
-export { commentController, articleCommentController, productCommentController };
+export {
+  commentController,
+  articleCommentController,
+  productCommentController,
+};

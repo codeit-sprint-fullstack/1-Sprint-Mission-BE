@@ -23,6 +23,7 @@ function setUserIdFromToken(req, res, next) {
       const decoded = jwt.decode(token);
       if (decoded) {
         req.body.userId = decoded.userId;
+        return next();
       } else {
         const error = new Error("Invalid token format.");
         error.code = 401;
@@ -32,6 +33,7 @@ function setUserIdFromToken(req, res, next) {
       return next(error);
     }
   }
+  req.body.userId = null;
   next();
 }
 

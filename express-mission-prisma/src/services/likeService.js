@@ -38,7 +38,7 @@ async function deleteArticleAndRelatedData(reqBody) {
 
 async function createProductAndRelatedData(reqBody) {
   const transactionData = {
-    createData: reqBody,
+    likeIdentifiers: reqBody,
     countFillter: { productId: reqBody.productId },
     userId: reqBody.userId,
     productId: reqBody.productId,

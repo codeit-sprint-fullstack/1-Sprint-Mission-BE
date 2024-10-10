@@ -3,8 +3,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2N
 Content-Type: application/json
 
 ###
-POST http://localhost:3001/product/44de7226-3fcf-4c68-b7f8-7f444ccd2b3d/favorite
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1MzM1MDgsImV4cCI6MTcyODUzNzEwOH0.6Et_ynU1cU9ftddV3_tOAIle4EW8y3X0Vdf3z6b4oBs
+POST http://localhost:3001/product/5b951caa-a747-4ab2-a274-f077708118b5/favorite
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1NDQyNzgsImV4cCI6MTcyODU0Nzg3OH0.x0YwlMA5SnWCnDmeasr457rhvMJggZd2wyiz3P_cDjI
 Content-Type: application/json
 
 ###
@@ -13,6 +13,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2N
 Content-Type: application/json
 
 ###
-DELETE  http://localhost:3001/product/44de7226-3fcf-4c68-b7f8-7f444ccd2b3d/favorite
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1MzM1MDgsImV4cCI6MTcyODUzNzEwOH0.6Et_ynU1cU9ftddV3_tOAIle4EW8y3X0Vdf3z6b4oBs
+DELETE  http://localhost:3001/product/5b951caa-a747-4ab2-a274-f077708118b5/favorite
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1NDQyNzgsImV4cCI6MTcyODU0Nzg3OH0.x0YwlMA5SnWCnDmeasr457rhvMJggZd2wyiz3P_cDjI
 Content-Type: application/json

@@ -6,6 +6,13 @@ async function create(createData) {
   });
 }
 
+async function getById(id) {
+  return await prisma.product.findUniqueOrThrow({
+    where: { id },
+  });
+}
+
 export default {
   create,
+  getById,
 };
