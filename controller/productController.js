@@ -1,6 +1,4 @@
 import asyncHandler from '../utils/asyncHandler.js';
-import { assert } from 'superstruct';
-import { CreateProduct, PatchProduct } from '../structs.js';
 import {
   deleteProductService,
   getProductListService,
