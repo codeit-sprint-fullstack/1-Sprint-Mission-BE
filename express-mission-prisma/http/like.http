@@ -1,5 +1,5 @@
-POST http://localhost:3001/article/d2bee68d-2ff9-4b36-8b87-476bfacefa79/like
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1MzM1MDgsImV4cCI6MTcyODUzNzEwOH0.6Et_ynU1cU9ftddV3_tOAIle4EW8y3X0Vdf3z6b4oBs
+POST http://localhost:3001/article/03e2f269-55e5-491b-aace-e2315568ec26/like
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1NDAyMjAsImV4cCI6MTcyODU0MzgyMH0.YUvnnbdxZSI_XVx0ZnlHXYCkQamW-v6WY7QKbahMy5Y
 Content-Type: application/json
 
 ###

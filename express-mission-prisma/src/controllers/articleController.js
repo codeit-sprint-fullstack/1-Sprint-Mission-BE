@@ -4,9 +4,11 @@ import asyncHandler from "../utils/asyncHandler.js";
 import validateData from "../middlewares/validateData.js";
 import {
   attachUserId,
+  setUserIdFromToken,
   verifyAccessToken,
   verifyArticleAuth,
 } from "../middlewares/authorizationMiddleware.js";
+import likeService from "../services/likeService.js";
 
 const articleController = express.Router();
 
@@ -34,10 +36,28 @@ articleController
 articleController
   .route("/:id")
   .get(
+    setUserIdFromToken,
     asyncHandler(async (req, res) => {
       const { id } = req.params;
       const article = await articleService.getById(id);
-      res.send(article);
+      if (req.body.userId) {
+        req.body.articleId = id;
+        const like = await likeService.getByFillter(req.body, "article");
+
+        let isLiked;
+        if (like) {
+          isLiked = true;
+        } else if (!like) {
+          isLiked = false;
+        }
+        const resBody = {
+          ...article,
+          isLiked,
+        };
+        res.send(resBody);
+      } else {
+        res.send(article);
+      }
     })
   )
   .patch(
