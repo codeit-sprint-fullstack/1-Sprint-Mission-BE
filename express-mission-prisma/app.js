@@ -11,7 +11,7 @@ import {
 import productController from "./src/controllers/productController.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import authController from "./src/controllers/authController.js";
-import { articleLikeController } from "./src/controllers/likeController.js";
+import { articleLikeController, productLikeController } from "./src/controllers/likeController.js";
 
 const app = express();
 
@@ -26,7 +26,7 @@ app.use('/comment', commentController)
 app.use('/product', productController)
 app.use('/auth', authController)
 app.use('/article', articleLikeController)
-// app.use('/product', )
+app.use('/product', productLikeController)
 
 app.use(errorHandler)
 

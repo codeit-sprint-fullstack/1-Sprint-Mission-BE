@@ -1,9 +1,9 @@
 POST http://localhost:3001/product
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjM4MmU0ZC0wNDRkLTRmMzAtYmJiYy0xODk2NDg2ZjFlYjYiLCJpYXQiOjE3MjgyODY5ODksImV4cCI6MTcyODI5MDU4OX0.OxNxs4OBYzu37P7gpi0DCNokRDVzSC44M68MgGTlurM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1MzM1MDgsImV4cCI6MTcyODUzNzEwOH0.6Et_ynU1cU9ftddV3_tOAIle4EW8y3X0Vdf3z6b4oBs
 Content-Type: application/json
 
 {
-    "name": "테스트",
+    "name": "테스트7",
     "description": "테스트",
     "price": 0,
     "tags": []
