@@ -2,7 +2,7 @@ import commentRepository from "../repositories/commentRepository.js";
 import {
   createCursorFilterOptions,
   createTypeFillterOptions,
-} from "../utils/filterOptions.js";
+} from "../utils/fillterOptions/commentFillterOptions.js";
 
 async function create(createData) {
   return await commentRepository.create(createData);
