@@ -8,7 +8,10 @@ export const CreateArticle = s.object({
 export const PatchArticle = s.partial(CreateArticle);
 
 export const CreateProduct = s.object({
-  price: s.number(),
+  name: size(string(), 1, 10),
+  description: size(string(), 1, 300),
+  price: number(),
+  tags: array(string()),
 });
 
 export const PatchProduct = s.partial(CreateProduct);
