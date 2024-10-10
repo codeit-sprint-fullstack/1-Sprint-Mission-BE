@@ -1,8 +1,8 @@
+import * as dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
-import * as dotenv from 'dotenv';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 const router = express.Router();
@@ -20,6 +20,8 @@ const upload = multer({ dest: 'uploads/' });
 
 router.post('/', upload.single('image'), async (req, res) => {
   const file = req.file;
+
+  console.log('파일 정보:', req.file);
 
   if (!file) {
     return res.status(400).json({ message: '파일이 업로드되지 않았습니다.' });
