@@ -80,7 +80,7 @@ export const postProductRepository = async ({
   imageUrls,
 }) => {
   return await prisma.product.create({
-    data: { name, description, price, tags, imageUrls },
+    data: { name, description, price, tags, images: imageUrls },
   });
 };
 
