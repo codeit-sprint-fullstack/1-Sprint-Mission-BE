@@ -20,7 +20,7 @@ async function getByFillter(findData, type) {
   return await likeRepository.getByFillter(fillterOptions);
 }
 
-async function countByFilter(findData, type) {
+async function countByFillter(findData, type) {
   let fillterOptions;
   if (type === "article") {
     fillterOptions = {
@@ -31,11 +31,22 @@ async function countByFilter(findData, type) {
       productId: findData.productId,
     };
   }
-  return await likeRepository.countByFilter(fillterOptions);
+  return await likeRepository.countByFillter(fillterOptions);
+}
+
+async function fetchArticleAndRelatedData(reqBody) {
+  const transactionData = {
+    createData: reqBody,
+    countFillter: { articleId: reqBody.articleId },
+    userId: reqBody.userId,
+    articleId: reqBody.articleId,
+  };
+  return await likeRepository.fetchArticleAndRelatedData(transactionData);
 }
 
 export default {
   create,
   getByFillter,
-  countByFilter,
+  countByFillter,
+  fetchArticleAndRelatedData,
 };

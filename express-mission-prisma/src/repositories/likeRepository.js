@@ -12,14 +12,25 @@ async function getByFillter(fillter) {
   });
 }
 
-async function countByFilter(fillter) {
+async function countByFillter(fillter) {
   return await prisma.like.count({
     where: fillter,
   });
 }
 
+async function fetchArticleAndRelatedData(transactionData) {
+  const { createData, countFillter, userId, articleId } = transactionData;
+  return await prisma.$transaction([
+    prisma.like.create({ data: createData }),
+    prisma.like.count({ where: countFillter }),
+    prisma.user.findUniqueOrThrow({ where: { id: userId } }),
+    prisma.article.findFirstOrThrow({ where: { id: articleId } }),
+  ]);
+}
+
 export default {
   create,
   getByFillter,
-  countByFilter,
+  countByFillter,
+  fetchArticleAndRelatedData,
 };
