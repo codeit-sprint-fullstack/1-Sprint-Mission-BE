@@ -6,6 +6,8 @@ import {
 } from "../middlewares/authorizationMiddleware.js";
 import validateData from "../middlewares/validateData.js";
 import likeService from "../services/likeService.js";
+import userService from "../services/userService.js";
+import articleService from "../services/articleService.js";
 
 const articleLikeController = express.Router();
 const productLikeController = express.Router();
@@ -18,7 +20,25 @@ articleLikeController.route("/:id/like").post(
     const isDuplicate = await likeService.getByFillter(req.body, "article");
     if (!isDuplicate) {
       const like = await likeService.create(req.body);
-      res.status(201).send(like);
+      const likeCount = await likeService.countByFilter(req.body, "article");
+      const user = await userService.getbyId(req.body.userId);
+      const article = await articleService.getById(req.body.articleId);
+
+      const resData = {
+        updatedAt: like.updatedAt,
+        createdAt: like.createdAt,
+        likeCount: likeCount,
+        writer: {
+          nickname: user.nickname,
+          id: user.id,
+        },
+        content: article.content,
+        title: article.title,
+        id: article.id,
+        isLiked: true,
+      };
+      
+      res.status(201).send(resData);
     } else if (isDuplicate) {
       const error = new Error("Duplicate entry: like already exists");
       error.code = 409;
@@ -26,8 +46,5 @@ articleLikeController.route("/:id/like").post(
     }
   })
 );
-
-// 같은 유저로 중복 좋아요 방지하는 코드 테스트 필요
-// 현재 기본 일반 API 처럼 만들고 있는중
 
 export { articleLikeController };
