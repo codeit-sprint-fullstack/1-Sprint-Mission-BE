@@ -30,8 +30,8 @@ model Product {
   name          String
   description   String
   price         Int
-  tags          String
-  images        String?
+  tags          String[]
+  images        String[]
   favoriteCount Int?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
