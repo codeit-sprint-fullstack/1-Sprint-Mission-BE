@@ -9,12 +9,13 @@ GET http://localhost:3001/article/d99d5b4a-b957-4211-a01e-e1a5a8fe1d58
 ###
 
 POST http://localhost:3001/article
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjM4MmU0ZC0wNDRkLTRmMzAtYmJiYy0xODk2NDg2ZjFlYjYiLCJpYXQiOjE3MjgyODY5ODksImV4cCI6MTcyODI5MDU4OX0.OxNxs4OBYzu37P7gpi0DCNokRDVzSC44M68MgGTlurM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3MjgzNzg3NDYsImV4cCI6MTcyODM4MjM0Nn0.3Brs2NXP0z1hRKrHwqh-epJMMvp9Aa6DDXgiXVvIzBk
 Content-Type: application/json
 
 {
     "title": "테스트",
-    "content": "xotmxm 3"
+    "content": "xotmxm 3",
+    "jdj": "sdfhb"
 }
 
 

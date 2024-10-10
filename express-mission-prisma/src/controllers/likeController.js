@@ -27,7 +27,7 @@ articleLikeController.route("/:id/like").post(
   })
 );
 
-// 같은 유저로 중복 좋아요 방지하는 코드 추가 작성 필요
+// 같은 유저로 중복 좋아요 방지하는 코드 테스트 필요
 // 현재 기본 일반 API 처럼 만들고 있는중
 
 export { articleLikeController };

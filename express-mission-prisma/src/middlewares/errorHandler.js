@@ -13,7 +13,7 @@ function errorHandler(error, req, res, next) {
     status = 400;
   } else if (error.name === "UnauthorizedError") {
     status = 401;
-  }  else if (
+  } else if (
     error instanceof Prisma.PrismaClientKnownRequestError &&
     error.code === "P2025"
   ) {

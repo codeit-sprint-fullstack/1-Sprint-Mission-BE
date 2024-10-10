@@ -2,7 +2,11 @@ import express from "express";
 import articleService from "../services/articleService.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import validateData from "../middlewares/validateData.js";
-import { attachUserId, verifyAccessToken, verifyArticleAuth } from "../middlewares/authorizationMiddleware.js";
+import {
+  attachUserId,
+  verifyAccessToken,
+  verifyArticleAuth,
+} from "../middlewares/authorizationMiddleware.js";
 
 const articleController = express.Router();
 
@@ -13,7 +17,6 @@ articleController
     validateData.article("post"),
     attachUserId,
     asyncHandler(async (req, res, next) => {
-      console.log(req.body)
       const article = await articleService.create(req.body);
       res.status(201).send(article);
     })
@@ -44,7 +47,7 @@ articleController
     asyncHandler(async (req, res) => {
       const { id } = req.params;
       const article = await articleService.update(id, req.body);
-      res.status(201).send(article);
+      res.status(200).send(article);
     })
   )
   .delete(

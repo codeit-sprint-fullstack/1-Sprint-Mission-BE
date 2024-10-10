@@ -6,7 +6,7 @@ import articleController from "./src/controllers/articleController.js";
 import {
   articleCommentController,
   commentController,
-  productCommentCotroller,
+  productCommentController,
 } from "./src/controllers/commentController.js";
 import productController from "./src/controllers/productController.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
@@ -21,7 +21,7 @@ app.use('/images', express.static('uploads'))
 
 app.use("/article", articleController);
 app.use("/article", articleCommentController);
-app.use('/product', productCommentCotroller)
+app.use('/product', productCommentController)
 app.use('/comment', commentController)
 app.use('/product', productController)
 app.use('/auth', authController)

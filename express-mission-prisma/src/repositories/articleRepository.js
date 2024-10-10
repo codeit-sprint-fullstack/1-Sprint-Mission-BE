@@ -1,7 +1,6 @@
 import prisma from "../config/prisma.js";
 
 async function create(createData) {
-  console.log(createData)
   return await prisma.article.create({
     data: createData,
   });

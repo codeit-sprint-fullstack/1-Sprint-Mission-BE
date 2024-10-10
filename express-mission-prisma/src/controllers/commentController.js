@@ -10,7 +10,7 @@ import {
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
 const articleCommentController = express.Router(); // 게시글 댓글 router
-const productCommentCotroller = express.Router(); // 상품 댓글 router
+const productCommentController = express.Router(); // 상품 댓글 router
 
 articleCommentController
   .route("/:id/comment")
@@ -27,13 +27,13 @@ articleCommentController
     asyncHandler(async (req, res) => {
       const { id } = req.params;
       const { pageSize } = req.query;
-      const freeCommend = await commentService.getAllByFilter(
+      const freeComment = await commentService.getAllByFilter(
         id,
         req.query,
         "article"
       );
       const count = await commentService.countByFilter(id, "article");
-      const [list, total] = await Promise.all([freeCommend, count]);
+      const [list, total] = await Promise.all([freeComment, count]);
 
       const lastList = list[pageSize || 5];
       const NextCusor = lastList ? lastList.id : "null";
@@ -51,7 +51,7 @@ articleCommentController
     })
   );
 
-productCommentCotroller
+productCommentController
   .route("/:id/comment")
   .post(
     verifyAccessToken,
@@ -112,4 +112,4 @@ commentController
     })
   );
 
-export { commentController, articleCommentController, productCommentCotroller };
+export { commentController, articleCommentController, productCommentController };
