@@ -1,4 +1,4 @@
-function buildCursorResponse(list, total, pageSize) {
+function createCursorResponse(list, total, pageSize) {
   const lastList = list[pageSize];
   const NextCusor = lastList ? lastList.id : "null";
   if (NextCusor !== "null") {
@@ -14,4 +14,4 @@ function buildCursorResponse(list, total, pageSize) {
   };
 }
 
-export default buildCursorResponse;
+export default createCursorResponse;

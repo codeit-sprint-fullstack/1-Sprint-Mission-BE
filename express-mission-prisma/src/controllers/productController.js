@@ -11,7 +11,10 @@ import {
 } from "../middlewares/authorizationMiddleware.js";
 import commentService from "../services/commentService.js";
 import likeService from "../services/likeService.js";
-import prepareProductData from "../utils/prepareProductData.js";
+import prepareProductData from "../utils/product/prepareProductData.js";
+import { createPostResponse } from "../utils/product/createProductResponse.js";
+import createCursorResponse from "../utils/createCursorResponse.js";
+import checkProductLikeStatus from "../utils/product/checkProductLikeStatus.js";
 
 const productController = express.Router();
 
@@ -26,20 +29,7 @@ productController
       const { creatData, imagePath } = prepareProductData(req);
       const product = await productService.create(creatData);
 
-      const resBody = {
-        product: {
-          id: product.id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          tags: product.tags,
-          userId: product.userId,
-          createdAt: product.createdAt,
-          updatedAt: product.updatedAt,
-        },
-        imagePath,
-      };
-
+      const resBody = createPostResponse(product, imagePath);
       res.status(201).send(resBody);
     })
   )
@@ -59,6 +49,7 @@ productController
     setUserIdFromToken,
     asyncHandler(async (req, res, next) => {
       const { id } = req.params;
+      const { pageSize } = req.query;
       const product = await productService.getById(id);
       const comment = await commentService.getAllByFilter(
         id,
@@ -68,32 +59,16 @@ productController
       const count = await commentService.countByFilter(id, "product");
       const [data, list, total] = await Promise.all([product, comment, count]);
 
-      const lastList = list[2];
-      const NextCusor = lastList ? lastList.id : "null";
-      if (NextCusor !== "null") {
-        list.pop();
-      }
+      const currentPageSize = parseInt(pageSize) || 2;
+      const comments = createCursorResponse(list, total, currentPageSize);
 
       const resBody = {
         product: data,
-        comments: {
-          cursorInfo: {
-            total,
-            NextCusor,
-          },
-          list,
-        },
+        comments,
       };
 
       if (req.body.userId) {
-        req.body.productId = id;
-        const like = await likeService.getByfilter(req.body, "product");
-        let isLiked;
-        if (like) {
-          isLiked = true;
-        } else if (!like) {
-          isLiked = false;
-        }
+        const isLiked = checkProductLikeStatus(req.body, id)
         const resBodyWithLike = {
           isLiked,
           ...resBody,

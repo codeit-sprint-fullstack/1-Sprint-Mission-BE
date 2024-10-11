@@ -7,7 +7,7 @@ import {
   verifyAccessToken,
   verifyCommentAuth,
 } from "../middlewares/authorizationMiddleware.js";
-import buildCursorResponse from "../utils/buildCursorResponse.js";
+import createCursorResponse from "../utils/createCursorResponse.js";
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
 const articleCommentController = express.Router(); // 게시글 댓글 router
@@ -37,7 +37,7 @@ articleCommentController
       const [list, total] = await Promise.all([freeComment, count]);
 
       const currentPageSize = parseInt(pageSize) || 5;
-      const resBody = buildCursorResponse(list, total, currentPageSize);
+      const resBody = createCursorResponse(list, total, currentPageSize);
       res.send(resBody);
     })
   );
@@ -66,7 +66,7 @@ productCommentController
       const [list, total] = await Promise.all([comment, count]);
 
       const currentPageSize = parseInt(pageSize) || 2;
-      const resBody = buildCursorResponse(list, total, currentPageSize);
+      const resBody = createCursorResponse(list, total, currentPageSize);
       res.send(resBody);
     })
   );
