@@ -41,7 +41,7 @@ export const signIn = async (req, res, next) => {
     res.json({
       message: '로그인 성공',
       accessToken: result.accessToken,
-      refreshToken: result.refreshToken, // 리프레시 토큰 추가
+      refreshToken: result.refreshToken,
     });
   } catch (error) {
     // 에러 로그

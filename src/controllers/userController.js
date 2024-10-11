@@ -47,6 +47,34 @@ const userController = {
     // 내가 좋아요한 상품 조회 로직
     res.json({ message: '내가 좋아요한 상품 목록' });
   },
+
+  // 사용자 정보 가져오기
+  getMe: async (req, res, next) => {
+    try {
+      console.log('getMe 요청 시작');
+
+      // req.user는 인증 미들웨어에서 설정된 사용자 정보입니다.
+      const user = req.user;
+
+      if (!user) {
+        throw new UnauthorizedError('인증된 사용자가 아닙니다.');
+      }
+
+      // 필요한 사용자 정보만 선택하여 반환
+      const userInfo = {
+        id: user.id,
+        nickname: user.nickname,
+        email: user.email,
+      };
+
+      console.log('getMe 성공:', userInfo);
+
+      res.json(userInfo);
+    } catch (error) {
+      console.error('getMe 에러:', error);
+      next(error);
+    }
+  },
 };
 
 export default userController;

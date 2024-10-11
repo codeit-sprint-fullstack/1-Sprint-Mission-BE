@@ -1,22 +1,21 @@
 // authMiddleware.js
 
-import jwt from "jsonwebtoken";
-import { UnauthorizedError } from "./errorMiddleware.js";
+import jwt from 'jsonwebtoken';
+import { UnauthorizedError } from './errorMiddleware.js';
 
-const authMiddleware = (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+export const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-  if (!token) {
-    throw new UnauthorizedError("인증이 필요합니다.");
+  if (token == null) {
+    return next(new UnauthorizedError('인증 토큰이 필요합니다.'));
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return next(new UnauthorizedError('유효하지 않은 토큰입니다.'));
+    }
+    req.user = user;
     next();
-  } catch (error) {
-    throw new UnauthorizedError("유효하지 않은 토큰입니다.");
-  }
+  });
 };
-
-export default authMiddleware;
