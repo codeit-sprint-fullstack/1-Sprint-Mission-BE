@@ -5,8 +5,8 @@ import {
   validateEmailPassword,
   validateRefreshToken,
 } from "../middlewares/auth.js";
-import { createHashedPassword } from "../lib/password.js";
-import { createAccessToken, createRefreshToken } from "../lib/token.js";
+import { createHashedPassword } from "../utils/authUtil.js";
+import { createAccessToken, createRefreshToken } from "../utils/token.js";
 import { userSelect } from "../responses/user-res.js";
 import { authUserForm, authTokenForm } from "../mappers/auth-mapper.js";
 

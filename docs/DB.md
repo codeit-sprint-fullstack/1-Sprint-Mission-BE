@@ -30,7 +30,7 @@
 - max-length : 50
 - 참고 : 다국어 고려. 50자도 너무 길어서 FE에서 nickname 관련 tag max-length 설정을 통해 디자인이 무너지지 않도록 해야함
 
-#### password
+#### encryptedPassword
 
 - description : 사용자 비밀번호. bcrypt 해시 data 저장
 - type : varchar
@@ -38,7 +38,7 @@
 - unique : false
 - space : 문자열 마지막의 공백은 인정 안함
 - max-length : 60
-- 참고 : max-length는 네이버가 16. 구글은 100. 중간은 아니지만 8~24자 제한으로 하되 저장은 bcrypt 해시 data가 들어가서 60자로 제한
+- 참고 : password의 max-length는 네이버가 16. 구글은 100. 중간은 아니지만 8~24자 제한으로 하되 저장은 bcrypt 해시 data가 들어가서 60자로 제한
 
 #### email
 

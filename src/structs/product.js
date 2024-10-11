@@ -1,6 +1,6 @@
 import * as ss from "superstruct";
 
-import { url } from "../pattern/pattern.js";
+import { urlPattern } from "../pattern/pattern.js";
 import { productSchema } from "../constants/product.js";
 import { tagSchema } from "../constants/tag.js";
 
@@ -17,12 +17,12 @@ export const Product = ss.object({
   ),
   price: ss.refine(
     ss.integer(),
-    "price-range",
+    "Price Range",
     (value) =>
       productSchema.MIN_PRICE <= value && value <= productSchema.MAX_PRICE
   ),
   images: ss.size(
-    ss.array(url),
+    ss.array(urlPattern),
     productSchema.MIN_COUNT_IMAGE,
     productSchema.MAX_COUNT_IMAGE
   ),

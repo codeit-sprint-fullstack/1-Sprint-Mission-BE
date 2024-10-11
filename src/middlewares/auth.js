@@ -2,9 +2,11 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
 
-import { createCustomError } from "../lib/error.js";
+import { createCustomError } from "../utils/error.js";
 import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../config.js";
 import { userSelect } from "../responses/user-res.js";
+import authRepository from "../repositories/authRepository.js";
+import { validatePassword } from "../utils/authUtil.js";
 
 /** validate authorizaton(accessToken) */
 export function validateAccessToken(req, res, next) {
@@ -125,47 +127,19 @@ export function validateEmailPassword(req, res, next) {
 }
 
 /** PATCH users/password 과정에서 사용 */
-export function validateIdPassword(req, res, next) {
-  const prisma = new PrismaClient();
+export async function validateIdPassword(req, res, next) {
   const { currentPassword } = req.body;
 
-  console.log("validateIdPassword req.id : ", req.id);
-  prisma.user
-    .findUnique({
-      where: { id: req.id },
-      select: {
-        ...userSelect,
-        encryptedPassword: true,
-      },
-    })
-    .then((data) => {
-      if (!data) {
-        // 잘못된 id
-        return next(
-          createCustomError({
-            status: 400,
-            message: "잘못된 id 입니다",
-          })
-        );
-      }
-
-      return bcrypt
-        .compare(currentPassword, data.encryptedPassword)
-        .then((isCorrect) => {
-          if (!isCorrect) {
-            // 잘못된 password
-            return next(
-              createCustomError({
-                status: 400,
-                message: "잘못된 password 입니다",
-              })
-            );
-          }
-
-          return next();
-        })
-        .catch((err) => {
-          return next(err);
-        });
-    });
+  try {
+    const userData = await authRepository.getUserDataByUserId(req.id);
+    const validateData = {
+      password: currentPassword,
+      encryptedPassword: userData.encryptedPassword,
+    };
+    const isCorrect = await validatePassword(validateData);
+    req.isCorrect = isCorrect;
+    next();
+  } catch (err) {
+    next(err);
+  }
 }

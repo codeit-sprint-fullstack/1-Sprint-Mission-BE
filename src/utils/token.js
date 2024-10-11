@@ -16,3 +16,5 @@ export function createRefreshToken(userId) {
     expiresIn: REFRESH_TOKEN_EXPIRY,
   });
 }
+
+export function validateAccessToken(accessToken) {}

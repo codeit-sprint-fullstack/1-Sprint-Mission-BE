@@ -13,18 +13,17 @@ Content-Type : application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlmYmEwODRjLTgzZDgtNDAwMC04ZjI5LWE1MzIyMTZkN2YyYyIsImlhdCI6MTcyODU0MzIwNSwiZXhwIjoxNzI4ODAyNDA1fQ.HJaPsEZMBiNGr1tPQV0HpHZOcpX-NXVm1fMJeA4IEAA
 
 ###
-GET http://localhost:3000/product/comment/
+GET http://localhost:3000/product/comment/9590c57e-1e3f-4eb4-965f-ba43bd3b85d9
 Content-Type : application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlmYmEwODRjLTgzZDgtNDAwMC04ZjI5LWE1MzIyMTZkN2YyYyIsImlhdCI6MTcyODU0MzIwNSwiZXhwIjoxNzI4ODAyNDA1fQ.HJaPsEZMBiNGr1tPQV0HpHZOcpX-NXVm1fMJeA4IEAA
 
 ###
-PATCH http://localhost:3000/product/comment/
+PATCH http://localhost:3000/product/comment/9590c57e-1e3f-4eb4-965f-ba43bd3b85d9
 Content-Type : application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlmYmEwODRjLTgzZDgtNDAwMC04ZjI5LWE1MzIyMTZkN2YyYyIsImlhdCI6MTcyODU0MzIwNSwiZXhwIjoxNzI4ODAyNDA1fQ.HJaPsEZMBiNGr1tPQV0HpHZOcpX-NXVm1fMJeA4IEAA
 
-
 {
-    "content" : "댓글 수정"
+    "content" : "댓글2 수정"
 }
 
 ###

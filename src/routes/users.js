@@ -5,7 +5,9 @@ import {
   validateAccessToken,
   validateIdPassword,
 } from "../middlewares/auth.js";
-import { createHashedPassword } from "../lib/password.js";
+import { createHashedPassword } from "../utils/authUtil.js";
+import userRepository from "../repositories/userRepository.js";
+import { createCustomError } from "../utils/error.js";
 
 import { userSelect } from "../responses/user-res.js";
 import { productSelect } from "../responses/product-res.js";
@@ -71,27 +73,25 @@ userRouter.patch(
   "/password",
   validateAccessToken,
   validateIdPassword,
-  (req, res, next) => {
+  async (req, res, next) => {
     const { password } = req.body;
+    if (req.isCorrect) {
+      const newHashedPassword = await createHashedPassword(password);
+      const userInfo = {
+        userId: req.id,
+        newHashedPassword,
+      };
+      const result = await userRepository.updateUserPasswordByUserId(userInfo);
 
-    createHashedPassword(password)
-      .then((encryptedPassword) => {
-        prisma.user
-          .update({
-            where: { id: req.id },
-            data: { encryptedPassword },
-            select: userSelect,
-          })
-          .then((user) => {
-            return res.status(200).send(user);
-          })
-          .catch((err) => {
-            next(err);
-          });
+      return res.status(200).send(result);
+    }
+
+    return next(
+      createCustomError({
+        status: 400,
+        message: "Incorrect password",
       })
-      .catch((err) => {
-        next(err);
-      });
+    );
   }
 );
 

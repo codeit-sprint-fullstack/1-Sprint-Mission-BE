@@ -8,7 +8,8 @@ import { DB_URL, PORT } from "./config.js";
 // import { Article } from "./structs/article.js";
 // import { Comment } from "./structs/comment.js";
 
-import authRouter from "./routes/auth.js";
+// import authRouter from "./routes/auth.js";
+import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/users.js";
 import productRouter from "./routes/products.js";
 import imageRouter from "./routes/image.js";

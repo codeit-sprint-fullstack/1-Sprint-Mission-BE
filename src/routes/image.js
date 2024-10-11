@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 
-import { createCustomError } from "../lib/error.js";
+import { createCustomError } from "../utils/error.js";
 import { validateAccessToken } from "../middlewares/auth.js";
 
 const upload = multer({ dest: "uploads/" });
