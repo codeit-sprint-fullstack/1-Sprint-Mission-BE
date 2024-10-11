@@ -7,7 +7,7 @@ import {
   ValidationError,
   UnauthorizedError,
 } from '../middlewares/errorMiddleware.js';
-import { User } from '../models/User.js';
+import { User } from '../models/userModel.js';
 
 export const signUp = async (userData) => {
   const { email, nickname, password } = userData;
