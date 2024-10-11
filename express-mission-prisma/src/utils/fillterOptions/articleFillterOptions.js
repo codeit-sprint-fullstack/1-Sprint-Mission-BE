@@ -1,4 +1,4 @@
-function createPageSizeFilterOptions(query) {
+function createPageSizeFillterOptions(query) {
   const { page, pageSize, orderBy, keyWord = "" } = query;
 
   const pageNum = page || 1;
@@ -51,4 +51,4 @@ function createKeywordFillterOtions(query) {
   return fillterOptions;
 }
 
-export { createPageSizeFilterOptions, createKeywordFillterOtions };
+export { createPageSizeFillterOptions, createKeywordFillterOtions };

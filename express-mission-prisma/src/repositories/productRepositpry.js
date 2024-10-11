@@ -12,7 +12,25 @@ async function getById(id) {
   });
 }
 
+async function getAllByFillter(fillter) {
+  const { orderBy, skip, take, where } = fillter;
+  return await prisma.product.findMany({
+    orderBy,
+    skip,
+    take,
+    where,
+  });
+}
+
+async function countByFillter(fillter) {
+  return await prisma.product.count({
+    where: fillter,
+  });
+}
+
 export default {
   create,
   getById,
+  getAllByFillter,
+  countByFillter,
 };

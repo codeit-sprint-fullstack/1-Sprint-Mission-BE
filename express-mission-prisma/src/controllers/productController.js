@@ -14,32 +14,43 @@ import prepareProductData from "../utils/prepareProductData.js";
 
 const productController = express.Router();
 
-productController.route("/").post(
-  verifyAccessToken,
-  imgUploadHandler,
-  validateData.product("post"),
-  attachUserId,
-  asyncHandler(async (req, res, next) => {
-    const { creatData, imagePath } = prepareProductData(req);
-    const product = await productService.create(creatData);
+productController
+  .route("/")
+  .post(
+    verifyAccessToken,
+    imgUploadHandler,
+    validateData.product("post"),
+    attachUserId,
+    asyncHandler(async (req, res, next) => {
+      const { creatData, imagePath } = prepareProductData(req);
+      const product = await productService.create(creatData);
 
-    const resBody = {
-      product: {
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        tags: product.tags,
-        userId: product.userId,
-        createdAt: product.createdAt,
-        updatedAt: product.updatedAt,
-      },
-      imagePath,
-    };
+      const resBody = {
+        product: {
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          tags: product.tags,
+          userId: product.userId,
+          createdAt: product.createdAt,
+          updatedAt: product.updatedAt,
+        },
+        imagePath,
+      };
 
-    res.status(201).send(resBody);
-  })
-);
+      res.status(201).send(resBody);
+    })
+  )
+  .get(
+    asyncHandler(async (req, res, next) => {
+      const products = await productService.getAllByFillter(req.query);
+      const count = await productService.countByFillter(req.query);
+      const [list, total] = await Promise.all([products, count]);
+
+      return res.send({ total, list });
+    })
+  );
 
 productController.route("/:id").get(
   setUserIdFromToken,

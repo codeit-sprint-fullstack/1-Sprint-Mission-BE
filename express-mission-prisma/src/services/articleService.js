@@ -1,21 +1,21 @@
 import articleRepository from "../repositories/articleRepository.js";
 import {
   createKeywordFillterOtions,
-  createPageSizeFilterOptions,
+  createPageSizeFillterOptions,
 } from "../utils/fillterOptions/articleFillterOptions.js";
 
 async function create(createData) {
   return await articleRepository.create(createData);
 }
 
-async function getAllByFilter(query) {
-  const filterByPageSize = createPageSizeFilterOptions(query);
-  return await articleRepository.getAllByFilter(filterByPageSize);
+async function getAllByFillter(query) {
+  const filterByPageSize = createPageSizeFillterOptions(query);
+  return await articleRepository.getAllByFillter(filterByPageSize);
 }
 
-async function countByFilter(query) {
+async function countByFillter(query) {
   const fillterByKeword = createKeywordFillterOtions(query);
-  return await articleRepository.countByFilter(fillterByKeword);
+  return await articleRepository.countByFillter(fillterByKeword);
 }
 
 async function getById(id) {
@@ -33,8 +33,8 @@ async function deleteById(id) {
 
 export default {
   create,
-  getAllByFilter,
-  countByFilter,
+  getAllByFillter,
+  countByFillter,
   getById,
   update,
   deleteById,
