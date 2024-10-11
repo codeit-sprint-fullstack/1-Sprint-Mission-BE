@@ -28,9 +28,18 @@ async function countByFillter(fillter) {
   });
 }
 
+async function update(updateData) {
+  const { where, data } = updateData;
+  return await prisma.product.update({
+    where,
+    data,
+  });
+}
+
 export default {
   create,
   getById,
   getAllByFillter,
   countByFillter,
+  update,
 };

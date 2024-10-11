@@ -60,9 +60,15 @@ async function countByFillter(query) {
   return await productRepositpry.countByFillter(whereOr);
 }
 
+async function update(id, updateData) {
+  const updateDataWithId = { where: { id }, data: updateData };
+  return await productRepositpry.update(updateDataWithId);
+}
+
 export default {
   create,
   getById,
   getAllByFillter,
   countByFillter,
+  update,
 };

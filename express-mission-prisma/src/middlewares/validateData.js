@@ -5,7 +5,7 @@ import {
   createProductComment,
   updateComment,
 } from "../structs/commentStruct.js";
-import { createProduct } from "../structs/productStruct.js";
+import { createProduct, updateProduct } from "../structs/productStruct.js";
 import { singInUser, singUpUser } from "../structs/userStruct.js";
 import { createArticleLike, createProductLike } from "../structs/likeStruct.js";
 
@@ -49,6 +49,9 @@ function product(method) {
     if (method === "post") {
       assert(req.body, createProduct);
       next();
+    } else if(method === 'patch') {
+      assert(req.body, updateProduct)
+      next()
     }
   };
 }

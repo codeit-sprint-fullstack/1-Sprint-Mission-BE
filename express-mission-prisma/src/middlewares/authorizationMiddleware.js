@@ -2,6 +2,7 @@ import { expressjwt } from "express-jwt";
 import jwt from "jsonwebtoken";
 import articleRepository from "../repositories/articleRepository.js";
 import commentRepository from "../repositories/commentRepository.js";
+import productRepositpry from "../repositories/productRepositpry.js";
 
 const verifyAccessToken = expressjwt({
   secret: process.env.JWT_SECRET,
@@ -10,7 +11,7 @@ const verifyAccessToken = expressjwt({
 
 const verifyRefreshToken = expressjwt({
   secret: process.env.JWT_SECRET,
-  algorithms: ['HS256'],
+  algorithms: ["HS256"],
   getToken: (req) => req.cookies.refreshToken,
 });
 
@@ -77,6 +78,23 @@ async function verifyCommentAuth(req, res, next) {
   }
 }
 
+async function verifyProductAuth(req, res, next) {
+  try {
+    const { id } = req.params;
+    const product = await productRepositpry.getById(id);
+
+    if (product.userId !== req.auth.userId) {
+      const error = new Error("Forbidden");
+      error.code = 403;
+      throw error;
+    }
+
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+}
+
 export {
   verifyAccessToken,
   verifyRefreshToken,
@@ -84,4 +102,5 @@ export {
   setUserIdFromToken,
   verifyArticleAuth,
   verifyCommentAuth,
+  verifyProductAuth,
 };

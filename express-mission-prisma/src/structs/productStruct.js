@@ -7,4 +7,6 @@ const createProduct = s.object({
   tags: s.array(s.size(s.string(), 1, Infinity)),
 });
 
-export { createProduct };
+const updateProduct = s.partial(createProduct);
+
+export { createProduct, updateProduct };
