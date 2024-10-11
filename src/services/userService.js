@@ -1,5 +1,7 @@
-import { prisma } from "../utils/prisma.js";
-import bcrypt from "bcrypt";
+// userService.js
+
+import { prisma } from '../utils/prisma.js';
+import bcrypt from 'bcrypt';
 
 export const getUserProfile = async (userId) => {
   return prisma.user.findUnique({
@@ -21,13 +23,13 @@ export const changeUserPassword = async (
   newPassword
 ) => {
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (!user) throw new Error("User not found");
+  if (!user) throw new Error('User not found');
 
   const isPasswordValid = await bcrypt.compare(
     currentPassword,
     user.encryptedPassword
   );
-  if (!isPasswordValid) throw new Error("Current password is incorrect");
+  if (!isPasswordValid) throw new Error('Current password is incorrect');
 
   const encryptedPassword = await bcrypt.hash(newPassword, 10);
   return prisma.user.update({

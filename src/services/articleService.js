@@ -1,4 +1,6 @@
-import articleModel from "../models/articleModel.js";
+// articleService.js
+
+import articleModel from '../models/articleModel.js';
 
 export const createArticle = async (data) => {
   return articleModel.create(data);

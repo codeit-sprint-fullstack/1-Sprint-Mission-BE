@@ -1,4 +1,6 @@
-import commentModel from "../models/commentModel.js";
+// commentService.js
+
+import commentModel from '../models/commentModel.js';
 
 export const createComment = async (data) => {
   return commentModel.create(data);
@@ -11,7 +13,7 @@ export const getComments = async (productId, page, limit) => {
       { productId: Number(productId) },
       skip,
       Number(limit),
-      { createdAt: "desc" },
+      { createdAt: 'desc' },
       { user: { select: { id: true, nickname: true } } }
     ),
     commentModel.count({ productId: Number(productId) }),

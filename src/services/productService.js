@@ -1,6 +1,7 @@
-// src/services/productService.js
-import productModel from "../models/productModel.js";
-import * as likeService from "./likeService.js";
+// productService.js
+
+import productModel from '../models/productModel.js';
+import * as likeService from './likeService.js';
 
 // 상품 생성
 export const createProduct = async (data) => {
@@ -10,7 +11,7 @@ export const createProduct = async (data) => {
 // 상품 목록 조회
 export const getProducts = async (page, limit, order) => {
   const skip = (page - 1) * limit;
-  const orderBy = order === "recent" ? { createdAt: "desc" } : { price: "asc" };
+  const orderBy = order === 'recent' ? { createdAt: 'desc' } : { price: 'asc' };
 
   const [products, totalCount] = await Promise.all([
     productModel.findMany(skip, Number(limit), orderBy),
@@ -33,10 +34,10 @@ export const getProductById = async (id, userId) => {
   });
 
   if (!product) {
-    throw new Error("Product not found");
+    throw new Error('Product not found');
   }
 
-  const isLiked = await likeService.checkIsLiked(userId, id, "product");
+  const isLiked = await likeService.checkIsLiked(userId, id, 'product');
 
   return {
     ...product,

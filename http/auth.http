@@ -15,6 +15,14 @@ POST http://one-sprint-mission-be-fv23.onrender.com/auth/signIn
 Content-Type: application/json
 
 {
-  "email": "testuser@example.com",
-  "password": "testpassword"
+  "email": "tyson0006@naver.com",
+  "password": "wns0423^^"
+}
+
+### 리프레시 토큰
+POST http://one-sprint-mission-be-fv23.onrender.com/auth/refreshToken
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjYzMzIwMzIwMzIwMzIwMzIwIiwiaWF0IjoxNjk3MzIwMzIwLCJleHAiOjE3Mjg4NTYzMjB9.567890abcdefghijklmnopqrstuvwxyz"
 }

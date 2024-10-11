@@ -1,3 +1,5 @@
+// authService.js
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../utils/prisma.js';
@@ -5,6 +7,7 @@ import {
   ValidationError,
   UnauthorizedError,
 } from '../middlewares/errorMiddleware.js';
+import { User } from '../models/User.js';
 
 export const signUp = async (userData) => {
   const { email, nickname, password } = userData;
@@ -50,9 +53,20 @@ export const signIn = async (email, password) => {
     throw new UnauthorizedError('이메일 또는 비밀번호가 올바르지 않습니다.');
   }
 
-  const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+  const accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
     expiresIn: '1h',
   });
+  const refreshToken = jwt.sign(
+    { id: user.id },
+    process.env.JWT_REFRESH_SECRET,
+    { expiresIn: '7d' }
+  );
 
-  return { accessToken };
+  // 리프레시 토큰을 데이터베이스에 저장
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { refreshToken },
+  });
+
+  return { accessToken, refreshToken };
 };

@@ -1,16 +1,18 @@
-import express from "express";
-import * as imageController from "../controllers/imageController.js";
-import authMiddleware from "../middlewares/authMiddleware.js";
-import multer from "multer";
+// imageRoutes.js
 
-const upload = multer({ dest: "uploads/" });
+import express from 'express';
+import * as imageController from '../controllers/imageController.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
+import multer from 'multer';
+
+const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 
 router.post(
-  "/upload",
+  '/upload',
   authMiddleware,
-  upload.single("image"),
+  upload.single('image'),
   imageController.uploadImage
 );
 

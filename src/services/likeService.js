@@ -1,6 +1,6 @@
-// 좋아요 기능 구현
-// src/services/likeService.js
-import { prisma } from "../utils/prisma.js";
+// likeService.js
+
+import { prisma } from '../utils/prisma.js';
 
 export const toggleLike = async (userId, itemId, itemType) => {
   return prisma.$transaction(async (prisma) => {
@@ -19,12 +19,12 @@ export const toggleLike = async (userId, itemId, itemType) => {
         where: { id: existingLike.id },
       });
 
-      if (itemType === "product") {
+      if (itemType === 'product') {
         await prisma.product.update({
           where: { id: itemId },
           data: { likeCount: { decrement: 1 } },
         });
-      } else if (itemType === "article") {
+      } else if (itemType === 'article') {
         await prisma.article.update({
           where: { id: itemId },
           data: { likeCount: { decrement: 1 } },
@@ -41,12 +41,12 @@ export const toggleLike = async (userId, itemId, itemType) => {
         },
       });
 
-      if (itemType === "product") {
+      if (itemType === 'product') {
         await prisma.product.update({
           where: { id: itemId },
           data: { likeCount: { increment: 1 } },
         });
-      } else if (itemType === "article") {
+      } else if (itemType === 'article') {
         await prisma.article.update({
           where: { id: itemId },
           data: { likeCount: { increment: 1 } },

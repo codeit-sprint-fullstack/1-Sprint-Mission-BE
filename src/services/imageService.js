@@ -1,4 +1,6 @@
-import { prisma } from "../utils/prisma.js";
+// imageService.js
+
+import { prisma } from '../utils/prisma.js';
 
 export const uploadImage = async (imageData) => {
   return { url: `https://example.com/images/${Date.now()}.jpg` };
