@@ -1,19 +1,19 @@
-function createTypeFillterOptions(findData, type) {
-  let fillterOptions;
+function createTypefilterOptions(findData, type) {
+  let filterOptions;
 
   if (type === "article") {
-    fillterOptions = {
+    filterOptions = {
       userId: findData.userId,
       articleId: findData.articleId,
     };
   } else if (type === "product") {
-    fillterOptions = {
+    filterOptions = {
       userId: findData.userId,
       productId: findData.productId,
     };
   }
 
-  return fillterOptions;
+  return filterOptions;
 }
 
-export default createTypeFillterOptions;
+export default createTypefilterOptions;

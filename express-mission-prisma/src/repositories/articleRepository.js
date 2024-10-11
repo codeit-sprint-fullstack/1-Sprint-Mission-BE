@@ -6,8 +6,8 @@ async function create(createData) {
   });
 }
 
-async function getAllByFillter(fillter) {
-  const { orderBy, skip, take, where } = fillter;
+async function getAllByfilter(filter) {
+  const { orderBy, skip, take, where } = filter;
   return await prisma.article.findMany({
     orderBy,
     skip,
@@ -16,9 +16,9 @@ async function getAllByFillter(fillter) {
   });
 }
 
-async function countByFillter(fillter) {
+async function countByfilter(filter) {
   return await prisma.article.count({
-    where: fillter,
+    where: filter,
   });
 }
 
@@ -44,8 +44,8 @@ async function deleteById(id) {
 
 export default {
   create,
-  getAllByFillter,
-  countByFillter,
+  getAllByfilter,
+  countByfilter,
   getById,
   update,
   deleteById,

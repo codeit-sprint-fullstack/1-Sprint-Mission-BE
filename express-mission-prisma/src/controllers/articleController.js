@@ -25,8 +25,8 @@ articleController
   )
   .get(
     asyncHandler(async (req, res, next) => {
-      const articles = await articleService.getAllByFillter(req.query);
-      const count = await articleService.countByFillter(req.query);
+      const articles = await articleService.getAllByfilter(req.query);
+      const count = await articleService.countByfilter(req.query);
       const [list, total] = await Promise.all([articles, count]);
 
       return res.send({ total, list });

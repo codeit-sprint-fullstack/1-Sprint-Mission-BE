@@ -25,24 +25,24 @@ function createCursorFilterOptions(id, query, type) {
     };
   }
 
-  const fillterOptions =
+  const filterOptions =
     cursor !== ""
       ? { ...findValueDefault, cursor: { id: cursor } }
       : { ...findValueDefault };
 
-  return fillterOptions;
+  return filterOptions;
 }
 
-function createTypeFillterOptions(id, type) {
-  let fillterOptions;
+function createTypefilterOptions(id, type) {
+  let filterOptions;
 
   if (type === "article") {
-    fillterOptions = { articleId: id };
+    filterOptions = { articleId: id };
   } else if (type === "product") {
-    fillterOptions = { productId: id };
+    filterOptions = { productId: id };
   }
 
-  return fillterOptions;
+  return filterOptions;
 }
 
-export { createCursorFilterOptions, createTypeFillterOptions };
+export { createCursorFilterOptions, createTypefilterOptions };

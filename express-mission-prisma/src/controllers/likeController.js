@@ -21,7 +21,7 @@ articleLikeController
     validateData.like("article"),
     attachUserId,
     asyncHandler(async (req, res, next) => {
-      const isDuplicate = await likeService.getByFillter(req.body, "article");
+      const isDuplicate = await likeService.getByfilter(req.body, "article");
       if (!isDuplicate) {
         const transactionTasks = await likeService.createArticleAndRelatedData(
           req.body
@@ -43,7 +43,7 @@ articleLikeController
       const { id } = req.params;
       req.body.articleId = id;
 
-      const isDuplicate = await likeService.getByFillter(req.body, "article");
+      const isDuplicate = await likeService.getByfilter(req.body, "article");
       if (isDuplicate) {
         req.body.likeId = isDuplicate.id;
         const transactionTasks = await likeService.deleteArticleAndRelatedData(
@@ -69,7 +69,7 @@ productLikeController
     validateData.like("product"),
     attachUserId,
     asyncHandler(async (req, res, next) => {
-      const isDuplicate = await likeService.getByFillter(req.body, "product");
+      const isDuplicate = await likeService.getByfilter(req.body, "product");
       if (!isDuplicate) {
         const transactionTasks = await likeService.createProductAndRelatedData(
           req.body
@@ -91,7 +91,7 @@ productLikeController
       const { id } = req.params;
       req.body.productId = id;
 
-      const isDuplicate = await likeService.getByFillter(req.body, "product");
+      const isDuplicate = await likeService.getByfilter(req.body, "product");
       if (isDuplicate) {
         req.body.likeId = isDuplicate.id;
         const transactionTasks = await likeService.deleteProductAndRelatedData(

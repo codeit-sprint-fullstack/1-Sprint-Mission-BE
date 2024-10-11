@@ -8,7 +8,7 @@ async function getById(id) {
   return await productRepositpry.getById(id);
 }
 
-async function getAllByFillter(query) {
+async function getAllByfilter(query) {
   const { page, pageSize, orderBy, keyWord = "" } = query;
 
   const pageNum = page || 1;
@@ -30,17 +30,17 @@ async function getAllByFillter(query) {
     ],
   };
 
-  const fillterOptions = {
+  const filterOptions = {
     orderBy: { createdAt: "desc" },
     skip: parseInt(offset),
     take: parseInt(pageSizeNum),
     where: whereOr,
   };
 
-  return await productRepositpry.getAllByFillter(fillterOptions);
+  return await productRepositpry.getAllByfilter(filterOptions);
 }
 
-async function countByFillter(query) {
+async function countByfilter(query) {
   const { keyWord = "" } = query;
   const whereOrBody = {
     contains: keyWord,
@@ -57,7 +57,7 @@ async function countByFillter(query) {
     ],
   };
 
-  return await productRepositpry.countByFillter(whereOr);
+  return await productRepositpry.countByfilter(whereOr);
 }
 
 async function update(id, updateData) {
@@ -72,8 +72,8 @@ async function deleteById(id) {
 export default {
   create,
   getById,
-  getAllByFillter,
-  countByFillter,
+  getAllByfilter,
+  countByfilter,
   update,
   deleteById,
 };

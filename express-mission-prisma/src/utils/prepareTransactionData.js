@@ -1,7 +1,7 @@
 function productTransactionData(reqBody, method) {
   const { productId, likeId, userId } = reqBody;
   const commonOptions = {
-    countFillter: { productId },
+    countfilter: { productId },
     userId,
     productId,
   };
@@ -22,7 +22,7 @@ function productTransactionData(reqBody, method) {
 function articleTransactionData(reqBody, method) {
   const { articleId, likeId, userId } = reqBody;
   const commonOptions = {
-    countFillter: { articleId },
+    countfilter: { articleId },
     userId,
     articleId,
   };

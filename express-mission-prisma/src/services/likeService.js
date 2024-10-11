@@ -1,13 +1,13 @@
 import likeRepository from "../repositories/likeRepository.js";
-import createTypeFillterOptions from "../utils/fillterOptions/likeFillterOptions.js";
+import createTypefilterOptions from "../utils/filterOptions/likeFilterOptions.js";
 import {
   articleTransactionData,
   productTransactionData,
 } from "../utils/prepareTransactionData.js";
 
-async function getByFillter(findData, type) {
-  const fillterOptions = createTypeFillterOptions(findData, type);
-  return await likeRepository.getByFillter(fillterOptions);
+async function getByfilter(findData, type) {
+  const filterOptions = createTypefilterOptions(findData, type);
+  return await likeRepository.getByfilter(filterOptions);
 }
 
 async function createArticleAndRelatedData(reqBody) {
@@ -31,7 +31,7 @@ async function deleteProductAndRelatedData(reqBody) {
 }
 
 export default {
-  getByFillter,
+  getByfilter,
   createArticleAndRelatedData,
   deleteArticleAndRelatedData,
   createProductAndRelatedData,

@@ -1,8 +1,8 @@
 import commentRepository from "../repositories/commentRepository.js";
 import {
   createCursorFilterOptions,
-  createTypeFillterOptions,
-} from "../utils/fillterOptions/commentFillterOptions.js";
+  createTypefilterOptions,
+} from "../utils/filterOptions/commentFilterOptions.js";
 
 async function create(createData) {
   return await commentRepository.create(createData);
@@ -14,8 +14,8 @@ async function getAllByFilter(id, query, type) {
 }
 
 async function countByFilter(id, type) {
-  const fillterByType = createTypeFillterOptions(id, type);
-  return await commentRepository.countByFilter(fillterByType);
+  const filterByType = createTypefilterOptions(id, type);
+  return await commentRepository.countByFilter(filterByType);
 }
 
 async function update(id, updateData) {

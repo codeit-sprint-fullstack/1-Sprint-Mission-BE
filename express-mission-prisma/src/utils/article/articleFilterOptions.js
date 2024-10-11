@@ -1,4 +1,4 @@
-function createPageSizeFillterOptions(query) {
+function createPageSizefilterOptions(query) {
   const { page, pageSize, orderBy, keyWord = "" } = query;
 
   const pageNum = page || 1;
@@ -20,35 +20,35 @@ function createPageSizeFillterOptions(query) {
     ],
   };
 
-  const fillterOptions = {
+  const filterOptions = {
     orderBy: { createdAt: "desc" },
     skip: parseInt(offset),
     take: parseInt(pageSizeNum),
     where: whereOr,
   };
 
-  return fillterOptions;
+  return filterOptions;
 }
 
-function createKeywordFillterOtions(query) {
+function createKeywordfilterOtions(query) {
   const { keyWord = "" } = query;
 
-  const fillterBody = {
+  const filterBody = {
     contains: keyWord,
     mode: "insensitive",
   };
-  const fillterOptions = {
+  const filterOptions = {
     OR: [
       {
-        title: fillterBody,
+        title: filterBody,
       },
       {
-        content: fillterBody,
+        content: filterBody,
       },
     ],
   };
 
-  return fillterOptions;
+  return filterOptions;
 }
 
-export { createPageSizeFillterOptions, createKeywordFillterOtions };
+export { createPageSizefilterOptions, createKeywordfilterOtions };

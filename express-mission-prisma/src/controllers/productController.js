@@ -45,8 +45,8 @@ productController
   )
   .get(
     asyncHandler(async (req, res, next) => {
-      const products = await productService.getAllByFillter(req.query);
-      const count = await productService.countByFillter(req.query);
+      const products = await productService.getAllByfilter(req.query);
+      const count = await productService.countByfilter(req.query);
       const [list, total] = await Promise.all([products, count]);
 
       return res.send({ total, list });
@@ -87,7 +87,7 @@ productController
 
       if (req.body.userId) {
         req.body.productId = id;
-        const like = await likeService.getByFillter(req.body, "product");
+        const like = await likeService.getByfilter(req.body, "product");
         let isLiked;
         if (like) {
           isLiked = true;

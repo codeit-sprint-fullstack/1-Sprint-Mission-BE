@@ -6,8 +6,8 @@ async function create(createData) {
   });
 }
 
-async function getAllByFilter(fillter) {
-  const { orderBy, take, where, cursor = "" } = fillter;
+async function getAllByFilter(filter) {
+  const { orderBy, take, where, cursor = "" } = filter;
   if (cursor === "") {
     return await prisma.comment.findMany({
       orderBy,
@@ -24,9 +24,9 @@ async function getAllByFilter(fillter) {
   }
 }
 
-async function countByFilter(fillter) {
+async function countByFilter(filter) {
   return await prisma.comment.count({
-    where: fillter,
+    where: filter,
   });
 }
 

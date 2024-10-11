@@ -1,8 +1,8 @@
 import likeService from "../../services/likeService.js";
 
-async function checkArticleLikeStatus(likeFillterData, articleId) {
-  likeFillterData.articleId = articleId;
-  const like = await likeService.getByFillter(likeFillterData, "article");
+async function checkArticleLikeStatus(likefilterData, articleId) {
+  likefilterData.articleId = articleId;
+  const like = await likeService.getByfilter(likefilterData, "article");
 
   let isLiked;
   if (like) {
