@@ -23,21 +23,22 @@ model User {
   articles          Article[]
   comment           Comment[]
   poducts           Product[]
+  like              Like[]
 }
 
 model Product {
-  id            Int       @id @default(autoincrement())
-  name          String
-  description   String
-  price         Int
-  tags          String[]
-  images        String[]
-  favoriteCount Int?      @default(0)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  ownerId       Int?
-  comment       Comment[]
-  owner         User?     @relation(fields: [ownerId], references: [id])
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  price       Int
+  tags        String[]
+  images      String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  ownerId     Int?
+  comment     Comment[]
+  owner       User?     @relation(fields: [ownerId], references: [id])
+  like        Like[]
 }
 
 model Article {
@@ -68,4 +69,15 @@ model Comment {
   @@index([userId])
   @@index([articleId])
   @@index([productId])
+}
+
+model Like {
+  id        Int @id @default(autoincrement())
+  userId    Int
+  productId Int
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId]) // userId와 productId의 조합은 고유해야 함
 }

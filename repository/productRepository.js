@@ -13,7 +13,7 @@ export const getProductRepository = async ({ id }) => {
       price: true,
       tags: true,
       createdAt: true,
-      favoriteCount: true,
+      like: true,
     },
   });
 };
@@ -56,7 +56,7 @@ export const getProductListRepository = async ({
       price: true,
       tags: true,
       createdAt: true,
-      favoriteCount: true,
+      like: true,
     },
   });
 };
