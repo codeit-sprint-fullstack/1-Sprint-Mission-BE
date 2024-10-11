@@ -18,10 +18,12 @@ authController.route("/singIn").post(
   asyncHandler(async (req, res, next) => {
     const singIn = await authService.singIn(req.body);
     const accessToken = await authService.createToken(singIn);
+    const refreshToken = await authService.createToken(singIn, "refresh");
     res.send({
       user: singIn,
       Token: {
         accessToken,
+        refreshToken,
       },
     });
   })

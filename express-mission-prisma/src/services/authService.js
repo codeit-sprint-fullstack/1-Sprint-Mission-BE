@@ -43,9 +43,9 @@ async function singIn(singInData) {
   return filterSensitiveUserData(user);
 }
 
-async function createToken(user) {
+async function createToken(user, type) {
   const payload = { userId: user.id };
-  const options = { expiresIn: "1h" };
+  const options = { expiresIn: type === "refresh" ? "2w" : "1h" };
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
