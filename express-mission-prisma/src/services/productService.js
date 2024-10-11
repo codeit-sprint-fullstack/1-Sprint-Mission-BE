@@ -65,10 +65,15 @@ async function update(id, updateData) {
   return await productRepositpry.update(updateDataWithId);
 }
 
+async function deleteById(id) {
+  return await productRepositpry.deleteById(id);
+}
+
 export default {
   create,
   getById,
   getAllByFillter,
   countByFillter,
   update,
+  deleteById,
 };

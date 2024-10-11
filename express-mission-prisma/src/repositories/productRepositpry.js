@@ -36,10 +36,17 @@ async function update(updateData) {
   });
 }
 
+async function deleteById(id) {
+  return await prisma.product.delete({
+    where: { id },
+  });
+}
+
 export default {
   create,
   getById,
   getAllByFillter,
   countByFillter,
   update,
+  deleteById,
 };

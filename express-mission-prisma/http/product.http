@@ -26,3 +26,7 @@ Content-Type: application/json
 {
     "description": "게시물 수정 테스트"
 }
+
+###
+DELETE http://localhost:3001/product/5b951caa-a747-4ab2-a274-f077708118b5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg2MzE0MjQsImV4cCI6MTcyODYzNTAyNH0.Kuk65CMh6dTzjku9BANhA1dNAE0kr64lSZZIbWp7z1c

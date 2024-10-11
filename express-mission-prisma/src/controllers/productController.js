@@ -113,6 +113,15 @@ productController
       const product = await productService.update(id, req.body);
       res.status(200).send(product);
     })
+  )
+  .delete(
+    verifyAccessToken,
+    verifyProductAuth,
+    asyncHandler(async (req, res, next) => {
+      const { id } = req.params;
+      await productService.deleteById(id);
+      res.sendStatus(204);
+    })
   );
 
 export default productController;
