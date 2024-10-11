@@ -49,8 +49,25 @@ async function createToken(user, type) {
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
+async function update(id, updateData) {
+  const updateDataWithId = { where: { id }, data: updateData };
+  return await authRepository.update(updateDataWithId);
+}
+
+async function refreshToken(userId, refreshToken) {
+  const user = await authRepository.getById(userId);
+  if (!user || user.refreshToken !== refreshToken) {
+    const error = new Error("Unauthorized");
+    error.code = 401;
+    throw error;
+  }
+  return await createToken(user);
+}
+
 export default {
   singUp,
   singIn,
   createToken,
+  update,
+  refreshToken,
 };

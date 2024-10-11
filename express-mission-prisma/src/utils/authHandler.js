@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 
 function filterSensitiveUserData(authResult) {
-  const { encryptedPassword, ...rest } = authResult;
+  const { encryptedPassword, refreshToken, ...rest } = authResult;
   return rest;
 }
 

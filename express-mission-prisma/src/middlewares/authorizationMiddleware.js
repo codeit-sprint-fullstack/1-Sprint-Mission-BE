@@ -8,6 +8,12 @@ const verifyAccessToken = expressjwt({
   algorithms: ["HS256"],
 });
 
+const verifyRefreshToken = expressjwt({
+  secret: process.env.JWT_SECRET,
+  algorithms: ['HS256'],
+  getToken: (req) => req.cookies.refreshToken,
+});
+
 function attachUserId(req, res, next) {
   if (req.auth) {
     req.body.userId = req.auth.userId;
@@ -73,6 +79,7 @@ async function verifyCommentAuth(req, res, next) {
 
 export {
   verifyAccessToken,
+  verifyRefreshToken,
   attachUserId,
   setUserIdFromToken,
   verifyArticleAuth,

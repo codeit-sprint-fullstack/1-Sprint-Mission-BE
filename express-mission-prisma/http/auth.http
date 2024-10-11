@@ -14,3 +14,7 @@ Content-Type: application/json
     "email": "stremor254@naver.com",
     "password": "12345678"
 }
+
+###
+POST http://localhost:3001/auth/token/refresh
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg2MDg4MTksImV4cCI6MTcyOTgxODQxOX0.diyykY9_5MzOyTsqnUiae3Jzsr7DcVDvMlZF2w4zgxI

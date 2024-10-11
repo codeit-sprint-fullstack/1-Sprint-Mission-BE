@@ -14,7 +14,23 @@ async function findByEmail(email) {
   });
 }
 
+async function update(updateData) {
+  const { where, data } = updateData;
+  return await prisma.user.update({
+    where,
+    data,
+  });
+}
+
+async function getById(id) {
+  return await prisma.user.findUnique({
+    where: { id },
+  });
+}
+
 export default {
   singUp,
   findByEmail,
+  update,
+  getById,
 };
