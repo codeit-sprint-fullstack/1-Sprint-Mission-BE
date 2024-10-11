@@ -1,9 +1,9 @@
 import likeRepository from "../repositories/likeRepository.js";
-import createTypefilterOptions from "../utils/filterOptions/likeFilterOptions.js";
+import createTypefilterOptions from "../utils/like/likeFilterOptions.js";
 import {
   articleTransactionData,
   productTransactionData,
-} from "../utils/prepareTransactionData.js";
+} from "../utils/like/prepareTransactionData.js";
 
 async function getByfilter(findData, type) {
   const filterOptions = createTypefilterOptions(findData, type);

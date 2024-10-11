@@ -9,7 +9,7 @@ import likeService from "../services/likeService.js";
 import {
   createArticleLikeResponse,
   createProductLikeResponse,
-} from "../utils/createLikeResponse.js";
+} from "../utils/like/createLikeResponse.js";
 
 const articleLikeController = express.Router();
 const productLikeController = express.Router();
