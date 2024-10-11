@@ -8,7 +8,7 @@ import {
   verifyAccessToken,
   verifyArticleAuth,
 } from "../middlewares/authorizationMiddleware.js";
-import checkArticleLikeStatus from "../utils/checkArticleLikeStatus.js";
+import checkArticleLikeStatus from "../utils/article/checkArticleLikeStatus.js";
 
 const articleController = express.Router();
 
