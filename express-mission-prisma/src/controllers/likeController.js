@@ -26,8 +26,8 @@ articleLikeController
         const transactionTasks = await likeService.createArticleAndRelatedData(
           req.body
         );
-
         const resData = createArticleLikeResponse(transactionTasks, "post");
+
         res.status(201).send(resData);
       } else if (isDuplicate) {
         const error = new Error("Duplicate entry: like already exists");
@@ -49,8 +49,8 @@ articleLikeController
         const transactionTasks = await likeService.deleteArticleAndRelatedData(
           req.body
         );
-
         const resData = createArticleLikeResponse(transactionTasks, "delete");
+
         res.status(200).send(resData);
       } else if (!isDuplicate) {
         const error = new Error(
@@ -74,8 +74,8 @@ productLikeController
         const transactionTasks = await likeService.createProductAndRelatedData(
           req.body
         );
-
         const resData = createProductLikeResponse(transactionTasks, "post");
+
         res.status(201).send(resData);
       } else if (isDuplicate) {
         const error = new Error("Duplicate entry: like already exists");
@@ -97,8 +97,8 @@ productLikeController
         const transactionTasks = await likeService.deleteProductAndRelatedData(
           req.body
         );
-
         const resData = createProductLikeResponse(transactionTasks, "delete");
+
         res.status(200).send(resData);
       } else if (!isDuplicate) {
         const error = new Error(

@@ -10,6 +10,7 @@ import {
 } from "../middlewares/authorizationMiddleware.js";
 import commentService from "../services/commentService.js";
 import likeService from "../services/likeService.js";
+import prepareProductData from "../utils/prepareProductData.js";
 
 const productController = express.Router();
 
@@ -19,21 +20,8 @@ productController.route("/").post(
   validateData.product("post"),
   attachUserId,
   asyncHandler(async (req, res, next) => {
-    let creatData = {};
-    let imagePath = {};
-    let product;
-
-    if (req.files && req.files.length > 0) {
-      creatData = { ...req.body, image: req.files };
-      product = await productService.create(creatData);
-
-      req.files.map((file) => {
-        imagePath[file.originalname] = file.path;
-      });
-    } else {
-      creatData = { ...req.body, image: [] };
-      product = await productService.create(creatData);
-    }
+    const { creatData, imagePath } = prepareProductData(req);
+    const product = await productService.create(creatData);
 
     const resBody = {
       product: {
