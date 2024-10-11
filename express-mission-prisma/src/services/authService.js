@@ -3,7 +3,7 @@ import {
   filterSensitiveUserData,
   hashPassword,
   verifyPassword,
-} from "../utils/authHandler.js";
+} from "../utils/auth/authHandler.js";
 import jwt from "jsonwebtoken";
 
 async function singUp(singUpData) {
