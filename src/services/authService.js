@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 async function verifyPassword(inputPassword, savedPassword) {
   const isValid = await bcrypt.compare(inputPassword, savedPassword);
   if (!isValid) {
-    const error = new Error('Unauthorized');
+    const error = new Error('비밀번호가 틀림.');
     error.code = 401;
     throw error;
   }

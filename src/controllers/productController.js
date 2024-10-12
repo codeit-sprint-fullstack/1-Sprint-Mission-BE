@@ -25,13 +25,16 @@ export const getProductById = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
-  const userId = req.user.id;
-  const { name, description, price } = req.body;
-  const tags = req.body['tag[]'];
+  const { name, description, price, tags } = req.body;
+  const files = req.files;
+
+  if (!files || files.length === 0) {
+    return res.status(400).json({ message: '이미지 파일이 안옴' });
+  }
 
   const imgUrls =
-    req.files && req.files.length > 0
-      ? req.files.map((file) => {
+    files && files.length > 0
+      ? files.map((file) => {
           return `${req.protocol}://${req.get('host')}/api/images/${
             file.filename
           }`;
@@ -54,7 +57,29 @@ export const createProduct = async (req, res) => {
 
 export const updateProductById = async (req, res) => {
   const { productId } = req.params;
-  const data = req.body;
+  const { name, description, price, tags, imageUrls } = req.body;
+  const files = req.files;
+
+  if (!files || files.length === 0) {
+    return res.status(400).json({ message: '이미지 파일이 안옴' });
+  }
+
+  const convertToUrl =
+    files && files.length > 0
+      ? files.map((file) => {
+          return `${req.protocol}://${req.get('host')}/api/images/${
+            file.filename
+          }`;
+        })
+      : [];
+
+  const data = {
+    name,
+    description,
+    price: price ? parseInt(price, 10) : 0,
+    tags,
+    images: !imageUrls ? [...convertToUrl] : [...convertToUrl, ...imageUrls],
+  };
 
   assert(data, PatchProduct);
 

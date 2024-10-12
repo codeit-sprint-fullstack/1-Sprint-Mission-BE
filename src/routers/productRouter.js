@@ -14,12 +14,13 @@ router.get('/', asyncHandler(controller.getProductList));
 router.get('/:productId', asyncHandler(controller.getProductById));
 router.post(
   '/',
-  uploadImg.array('images', 3),
+  uploadImg.array('imageFiles', 3),
   asyncHandler(controller.createProduct)
 );
 router.patch(
   '/:productId',
   productAuthorization,
+  uploadImg.array('imageFiles', 3),
   asyncHandler(controller.updateProductById)
 );
 router.delete(

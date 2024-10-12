@@ -37,15 +37,16 @@ export const createRefreshToken = async (req, res) => {
     return res.status(401).json({ message: 'No refresh token in cookie' });
   }
 
-  const user = req.user;
+  const userId = req.user.id;
   const verifiedUser = await authService.validateRefreshToken(
-    user.id,
+    userId,
     oldRefreshToken
   );
 
   const { accessToken, refreshToken } = await authService.updateTokens(
     verifiedUser
   );
+
   res.cookie('refreshToken', refreshToken, cookieOptions);
   return res.json({ accessToken });
 };
