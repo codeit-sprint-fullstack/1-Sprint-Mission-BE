@@ -1,7 +1,6 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
-import { CreateUser, PatchUser } from './struct.js';
 import {
   createUserController,
   loginUserController,
@@ -11,8 +10,6 @@ import {
   validateUserMiddleware,
   validateLoginMiddleware,
 } from '../middlewares/validateUserMiddleware.js';
-
-import assert from 'assert';
 import jwtMiddleware from '../middlewares/jwtMiddleware.js';
 
 const router = express.Router();
@@ -49,7 +46,6 @@ router
   )
   .patch(
     asyncHandler(async (req, res) => {
-      assert(req.body, PatchUser);
       const { id } = req.params;
       const user = await prisma.user.update({
         where: { id },
@@ -67,8 +63,6 @@ router
       res.sendStatus(204);
     })
   );
-
-
 
 // 리프레시 토큰을 사용한 엑세스토큰 재발급
 router.post(

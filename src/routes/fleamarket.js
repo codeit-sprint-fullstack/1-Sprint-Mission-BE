@@ -1,10 +1,9 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
-import validateProductFields from '../middlewares/validateProductFields.js';
+import validateProductMiddleware from '../middlewares/validateProductMiddleware.js';
 import jwtMiddleware from '../middlewares/jwtMiddleware.js';
-import { CreateArticle, PatchArticle } from './struct.js';
-import upload from '../middlewares/multer.middleware.js';
+import upload from '../middlewares/multerMiddleware.js';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -127,7 +126,7 @@ router
 router.post(
   '/post',
   upload.array('images', 3),
-  validateProductFields,
+  validateProductMiddleware,
   jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
     const { price, title, content, tags, userId } = req.body;
@@ -151,7 +150,7 @@ router.post(
 router.patch(
   '/:id/edit',
   upload.array('images', 3),
-  validateProductFields,
+  validateProductMiddleware,
   jwtMiddleware.verifyAccessToken,
   jwtMiddleware.verifyProductAuth,
   asyncHandler(async (req, res) => {
@@ -179,7 +178,7 @@ router.patch(
 router.patch(
   '/:id/edit',
   upload.array('images', 3),
-  validateProductFields,
+  validateProductMiddleware,
   jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
     const { price, title, content, tags } = req.body;

@@ -2,7 +2,6 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import jwtMiddleware from '../middlewares/jwtMiddleware.js';
-import { CreateArticle, PatchArticle } from './struct.js';
 
 const router = express.Router();
 const prisma = new PrismaClient();

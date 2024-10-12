@@ -1,9 +1,7 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
-import { CreateComment, PatchComment } from './struct.js';
 import jwtMiddleware from '../middlewares/jwtMiddleware.js';
-import assert from 'assert';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -78,7 +76,6 @@ router.post(
   jwtMiddleware.verifyAccessToken,
   asyncHandler(async (req, res) => {
     const { articleId, articleCategory } = req.params;
-    assert(req.body, CreateComment);
 
     let comments;
 
@@ -114,7 +111,6 @@ router.patch(
   jwtMiddleware.verifyAccessToken,
   jwtMiddleware.verifyCommentAuth,
   asyncHandler(async (req, res) => {
-    assert(req.body, PatchComment);
     const { id } = req.params;
 
     const comments = await prisma.comment.update({
