@@ -75,23 +75,14 @@ userRouter.patch(
   validateIdPassword,
   async (req, res, next) => {
     const { password } = req.body;
-    if (req.isCorrect) {
-      const newHashedPassword = await createHashedPassword(password);
-      const userInfo = {
-        userId: req.id,
-        newHashedPassword,
-      };
-      const result = await userRepository.updateUserPasswordByUserId(userInfo);
+    const newHashedPassword = await createHashedPassword(password);
+    const userInfo = {
+      userId: req.id,
+      newHashedPassword,
+    };
+    const result = await userRepository.updateUserPasswordByUserId(userInfo);
 
-      return res.status(200).send(result);
-    }
-
-    return next(
-      createCustomError({
-        status: 400,
-        message: "Incorrect password",
-      })
-    );
+    return res.status(200).send(result);
   }
 );
 
@@ -158,7 +149,7 @@ userRouter.get("/me/products", validateAccessToken, (req, res, next) => {
     where: {
       userId: req.id,
       OR: [
-        { studyName: { contains: keyWord } },
+        { name: { contains: keyWord } },
         { description: { contains: keyWord } },
       ],
     },
@@ -244,7 +235,7 @@ userRouter.get(
       where: {
         userId: req.id,
         OR: [
-          { studyName: { contains: keyWord } },
+          { name: { contains: keyWord } },
           { description: { contains: keyWord } },
         ],
       },

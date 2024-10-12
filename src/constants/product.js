@@ -21,3 +21,5 @@ export const productSchema = {
   MIN_COUNT_TAG,
   MAX_COUNT_TAG,
 };
+
+export const DEFAULT_PRODUCT_PAGE_SIZE = 10;

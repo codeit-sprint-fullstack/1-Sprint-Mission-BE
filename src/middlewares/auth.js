@@ -1,10 +1,7 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
 
 import { createCustomError } from "../utils/error.js";
 import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../config.js";
-import { userSelect } from "../responses/user-res.js";
 import authRepository from "../repositories/authRepository.js";
 import { validatePassword } from "../utils/authUtil.js";
 
@@ -31,7 +28,7 @@ export function validateAccessToken(req, res, next) {
 }
 
 /** validate refreshToken
- * POST /users/refresh-token 과정에 사용
+ * POST /auth/refresh-token 과정에 사용
  */
 export function validateRefreshToken(req, res, next) {
   const { refreshToken } = req.body;
@@ -81,49 +78,34 @@ export function includeToken(req, res, next) {
   });
 }
 
-/** POST /users/sign-in 과정에 사용 */
-export function validateEmailPassword(req, res, next) {
-  const prisma = new PrismaClient();
+/** POST /auth/sign-in 과정에 사용 */
+export async function validateEmailPassword(req, res, next) {
   const { email, password } = req.body;
 
-  prisma.user
-    .findUnique({
-      where: { email },
-      select: {
-        ...userSelect,
-        encryptedPassword: true,
-      },
-    })
-    .then((data) => {
-      if (!data) {
-        // 잘못된 email
-        return next(
-          createCustomError({
-            status: 400,
-            message: "잘못된 email or password 입니다",
-          })
-        );
-      }
+  try {
+    const userData = await authRepository.getUserDataByEmail(email);
+    const validateData = {
+      password: password,
+      encryptedPassword: userData.encryptedPassword,
+    };
+    const isCorrect = await validatePassword(validateData);
 
-      return bcrypt
-        .compare(password, data.encryptedPassword)
-        .then((isCorrect) => {
-          if (!isCorrect) {
-            // 잘못된 password
-            return next(
-              createCustomError({
-                status: 400,
-                message: "잘못된 email or password 입니다",
-              })
-            );
-          }
+    if (!isCorrect) {
+      return next(
+        createCustomError({
+          status: 400,
+          message: "Incorrect password",
+        })
+      );
+    }
 
-          const { encryptedPassword, ...user } = data;
-          req.user = user;
+    const { encryptedPassword, ...user } = userData;
+    req.user = user;
 
-          return next();
-        });
-    });
+    return next();
+  } catch (err) {
+    return next(err);
+  }
 }
 
 /** PATCH users/password 과정에서 사용 */
@@ -137,9 +119,16 @@ export async function validateIdPassword(req, res, next) {
       encryptedPassword: userData.encryptedPassword,
     };
     const isCorrect = await validatePassword(validateData);
-    req.isCorrect = isCorrect;
-    next();
+    if (!isCorrect) {
+      return next(
+        createCustomError({
+          status: 400,
+          message: "Incorrect password",
+        })
+      );
+    }
+    return next();
   } catch (err) {
-    next(err);
+    return next(err);
   }
 }
