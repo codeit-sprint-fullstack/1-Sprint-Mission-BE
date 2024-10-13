@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const findUserEmailRepository = async (email) => {
+export const findUserEmailRepository = async ({ email }) => {
   return await prisma.user.findUnique({ where: { email } });
 };
 

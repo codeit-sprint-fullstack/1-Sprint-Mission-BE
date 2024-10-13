@@ -1,10 +1,10 @@
 import { loginService, signupService } from '../service/authService.js';
 
 export const signupController = async (req, res) => {
-  const { email, encryptedPassword, nickname } = req.body;
+  const { email, password, nickname } = req.body;
 
   try {
-    const newUser = await signupService({ email, encryptedPassword, nickname });
+    const newUser = await signupService({ email, password, nickname });
     return res.status(201).json({
       message: '회원가입 성공',
       user: newUser,
@@ -15,10 +15,10 @@ export const signupController = async (req, res) => {
 };
 
 export const loginController = async (req, res) => {
-  const { email, encryptedPassword } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const token = await loginService({ email, encryptedPassword });
+    const token = await loginService({ email, password });
     return res.status(200).json({
       message: '로그인 성공',
       token,
