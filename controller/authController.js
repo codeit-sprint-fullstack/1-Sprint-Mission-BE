@@ -1,4 +1,4 @@
-import { loginService, signupService } from '../service/authService';
+import { loginService, signupService } from '../service/authService.js';
 
 export const signupController = async (req, res) => {
   const { email, encryptedPassword, nickname } = req.body;

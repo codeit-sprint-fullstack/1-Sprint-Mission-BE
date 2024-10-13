@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import {
   createUserRepository,
   findUserEmailRepository,
-} from '../repository/authRepository';
+} from '../repository/authRepository.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
