@@ -6,6 +6,7 @@ Content-Type: application/json
     "nickname": "송영섭",
     "password": "12345678"
 }
+
 ###
 POST http://localhost:3001/auth/singIn
 Content-Type: application/json

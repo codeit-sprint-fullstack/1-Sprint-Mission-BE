@@ -1,12 +1,12 @@
 import express from "express";
-import asyncHandler from "../utils/asyncHandler.js";
-import commentService from "../services/commentService.js";
-import validateData from "../middlewares/validateData.js";
 import {
   attachUserId,
   verifyAccessToken,
   verifyCommentAuth,
 } from "../middlewares/authorizationMiddleware.js";
+import validateData from "../middlewares/validateData.js";
+import commentService from "../services/commentService.js";
+import asyncHandler from "../utils/asyncHandler.js";
 import createCursorResponse from "../utils/createCursorResponse.js";
 
 const commentController = express.Router(); // 수정 및 삭제를 위한 router
@@ -15,15 +15,6 @@ const productCommentController = express.Router(); // 상품 댓글 router
 
 articleCommentController
   .route("/:id/comment")
-  .post(
-    verifyAccessToken,
-    validateData.comment("post", "article"),
-    attachUserId,
-    asyncHandler(async (req, res, next) => {
-      const comment = await commentService.create(req.body);
-      res.status(201).send(comment);
-    })
-  )
   .get(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
@@ -40,19 +31,19 @@ articleCommentController
       const resBody = createCursorResponse(list, total, currentPageSize);
       res.send(resBody);
     })
-  );
-
-productCommentController
-  .route("/:id/comment")
+  )
   .post(
     verifyAccessToken,
-    validateData.comment("post", "product"),
+    validateData.comment("post", "article"),
     attachUserId,
     asyncHandler(async (req, res, next) => {
       const comment = await commentService.create(req.body);
       res.status(201).send(comment);
     })
-  )
+  );
+
+productCommentController
+  .route("/:id/comment")
   .get(
     asyncHandler(async (req, res) => {
       const { id } = req.params;
@@ -68,6 +59,15 @@ productCommentController
       const currentPageSize = parseInt(pageSize) || 2;
       const resBody = createCursorResponse(list, total, currentPageSize);
       res.send(resBody);
+    })
+  )
+  .post(
+    verifyAccessToken,
+    validateData.comment("post", "product"),
+    attachUserId,
+    asyncHandler(async (req, res, next) => {
+      const comment = await commentService.create(req.body);
+      res.status(201).send(comment);
     })
   );
 

@@ -1,8 +1,8 @@
 import express from "express";
-import authService from "../services/authService.js";
-import asyncHandler from "../utils/asyncHandler.js";
 import validateData from "../middlewares/validateData.js";
 import { verifyRefreshToken } from "../middlewares/authorizationMiddleware.js";
+import authService from "../services/authService.js";
+import asyncHandler from "../utils/asyncHandler.js";
 
 const authController = express.Router();
 

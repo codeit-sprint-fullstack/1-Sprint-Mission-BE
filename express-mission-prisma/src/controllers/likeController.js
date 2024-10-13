@@ -1,11 +1,11 @@
 import express from "express";
-import asyncHandler from "../utils/asyncHandler.js";
 import {
   attachUserId,
   verifyAccessToken,
 } from "../middlewares/authorizationMiddleware.js";
 import validateData from "../middlewares/validateData.js";
 import likeService from "../services/likeService.js";
+import asyncHandler from "../utils/asyncHandler.js";
 import {
   createArticleLikeResponse,
   createProductLikeResponse,

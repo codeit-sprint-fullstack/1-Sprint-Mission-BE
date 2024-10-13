@@ -14,4 +14,4 @@ function createPostResponse(product, imagePath) {
   };
 }
 
-export {createPostResponse}
+export default createPostResponse;

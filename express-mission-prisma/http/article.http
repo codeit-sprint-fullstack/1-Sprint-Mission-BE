@@ -1,16 +1,14 @@
 GET  http://localhost:3001/article
-###
 
+###
 GET  http://localhost:3001/article?keyWord=post&page=&pageSize=
 
 ###
-
 GET http://localhost:3001/article/03e2f269-55e5-491b-aace-e2315568ec26
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1MzgxMjEsImV4cCI6MTcyODU0MTcyMX0.8ZsOgPc1kCXyOqiRpq_iskYqSqsNrZp_jDit3CKMShE
 Content-Type: application/json
 
 ###
-
 POST http://localhost:3001/article
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1NTExNDQsImV4cCI6MTcyODU1NDc0NH0.zY-C-damafqSa00VkYW24ul5fcfYZCTZ2nn7x79Rj7Q
 Content-Type: application/json
@@ -20,9 +18,7 @@ Content-Type: application/json
     "content": "xotmxm 3"
 }
 
-
 ###
-
 PATCH http://localhost:3001/article/1792c900-891b-47b8-aaae-9f184d904841
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3MjgyODk0OTksImV4cCI6MTcyODI5MzA5OX0.OHeymlkZUYKNVTEUITb0xv24sqZ011ewjXzox2gpfx4
 Content-Type: application/json
@@ -31,8 +27,6 @@ Content-Type: application/json
     "title": "게시물 수정 테스트"
 }
 
-
 ###
-
 DELETE http://localhost:3001/article/1792c900-891b-47b8-aaae-9f184d904841
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjM4MmU0ZC0wNDRkLTRmMzAtYmJiYy0xODk2NDg2ZjFlYjYiLCJpYXQiOjE3MjgyODY5ODksImV4cCI6MTcyODI5MDU4OX0.OxNxs4OBYzu37P7gpi0DCNokRDVzSC44M68MgGTlurM

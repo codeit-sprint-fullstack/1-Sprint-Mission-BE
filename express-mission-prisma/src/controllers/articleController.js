@@ -1,28 +1,19 @@
 import express from "express";
-import articleService from "../services/articleService.js";
-import asyncHandler from "../utils/asyncHandler.js";
-import validateData from "../middlewares/validateData.js";
 import {
   attachUserId,
   setUserIdFromToken,
   verifyAccessToken,
   verifyArticleAuth,
 } from "../middlewares/authorizationMiddleware.js";
+import validateData from "../middlewares/validateData.js";
+import articleService from "../services/articleService.js";
+import asyncHandler from "../utils/asyncHandler.js";
 import checkArticleLikeStatus from "../utils/article/checkArticleLikeStatus.js";
 
 const articleController = express.Router();
 
 articleController
   .route("/")
-  .post(
-    verifyAccessToken,
-    validateData.article("post"),
-    attachUserId,
-    asyncHandler(async (req, res, next) => {
-      const article = await articleService.create(req.body);
-      res.status(201).send(article);
-    })
-  )
   .get(
     asyncHandler(async (req, res, next) => {
       const articles = await articleService.getAllByfilter(req.query);
@@ -30,6 +21,15 @@ articleController
       const [list, total] = await Promise.all([articles, count]);
 
       return res.send({ total, list });
+    })
+  )
+  .post(
+    verifyAccessToken,
+    validateData.article("post"),
+    attachUserId,
+    asyncHandler(async (req, res, next) => {
+      const article = await articleService.create(req.body);
+      res.status(201).send(article);
     })
   );
 

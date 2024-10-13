@@ -3,14 +3,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2N
 Content-Type: application/json
 
 ###
-POST http://localhost:3001/product/5b951caa-a747-4ab2-a274-f077708118b5/favorite
+DELETE  http://localhost:3001/article/609db078-11bc-4bbc-880d-074c1a73ae00/like
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1NTExNDQsImV4cCI6MTcyODU1NDc0NH0.zY-C-damafqSa00VkYW24ul5fcfYZCTZ2nn7x79Rj7Q
 Content-Type: application/json
 
 ###
-DELETE  http://localhost:3001/article/609db078-11bc-4bbc-880d-074c1a73ae00/like
+POST http://localhost:3001/product/5b951caa-a747-4ab2-a274-f077708118b5/favorite
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YmU2Nzk0Ni03ZGMwLTQ4YjEtOTM2OC0xNWFjNzc2M2RhMTAiLCJpYXQiOjE3Mjg1NTExNDQsImV4cCI6MTcyODU1NDc0NH0.zY-C-damafqSa00VkYW24ul5fcfYZCTZ2nn7x79Rj7Q
 Content-Type: application/json
+
 
 ###
 DELETE  http://localhost:3001/product/5b951caa-a747-4ab2-a274-f077708118b5/favorite

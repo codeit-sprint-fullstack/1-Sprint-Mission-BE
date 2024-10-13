@@ -1,18 +1,17 @@
 import express from "express";
-import imgUploadHandler from "../middlewares/imgUploadHandler.js";
-import validateData from "../middlewares/validateData.js";
-import productService from "../services/productService.js";
-import asyncHandler from "../utils/asyncHandler.js";
 import {
   attachUserId,
   setUserIdFromToken,
   verifyAccessToken,
   verifyProductAuth,
 } from "../middlewares/authorizationMiddleware.js";
+import imgUploadHandler from "../middlewares/imgUploadHandler.js";
+import validateData from "../middlewares/validateData.js";
+import productService from "../services/productService.js";
 import commentService from "../services/commentService.js";
-import likeService from "../services/likeService.js";
+import asyncHandler from "../utils/asyncHandler.js";
 import prepareProductData from "../utils/product/prepareProductData.js";
-import { createPostResponse } from "../utils/product/createProductResponse.js";
+import createPostResponse from "../utils/product/createProductResponse.js";
 import createCursorResponse from "../utils/createCursorResponse.js";
 import checkProductLikeStatus from "../utils/product/checkProductLikeStatus.js";
 
@@ -20,6 +19,15 @@ const productController = express.Router();
 
 productController
   .route("/")
+  .get(
+    asyncHandler(async (req, res, next) => {
+      const products = await productService.getAllByfilter(req.query);
+      const count = await productService.countByfilter(req.query);
+      const [list, total] = await Promise.all([products, count]);
+
+      return res.send({ total, list });
+    })
+  )
   .post(
     verifyAccessToken,
     imgUploadHandler,
@@ -31,15 +39,6 @@ productController
 
       const resBody = createPostResponse(product, imagePath);
       res.status(201).send(resBody);
-    })
-  )
-  .get(
-    asyncHandler(async (req, res, next) => {
-      const products = await productService.getAllByfilter(req.query);
-      const count = await productService.countByfilter(req.query);
-      const [list, total] = await Promise.all([products, count]);
-
-      return res.send({ total, list });
     })
   );
 
@@ -68,7 +67,7 @@ productController
       };
 
       if (req.body.userId) {
-        const isLiked = checkProductLikeStatus(req.body, id)
+        const isLiked = checkProductLikeStatus(req.body, id);
         const resBodyWithLike = {
           isLiked,
           ...resBody,
