@@ -23,7 +23,6 @@ app.use('/articles/:articleId/comments', articleCommentRoutes);
 app.use('/products', productRoutes);
 app.use('/products/:productId/comments', productCommentRoutes);
 app.use('/upload', uploadRoutes);
-app.use('/users');
 app.use('/auth', authRoutes);
 
 app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
