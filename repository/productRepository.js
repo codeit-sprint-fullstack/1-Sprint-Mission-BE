@@ -32,8 +32,8 @@ export const getProductListRepository = async ({
     case 'recent':
       orderBy = { createdAt: 'asc' };
       break;
-    case 'favorite':
-      orderBy = { favoriteCount: 'desc' };
+    case 'like':
+      orderBy = { like: { _count: 'desc' } };
       break;
     default:
       orderBy = { createdAt: 'asc' };
@@ -94,5 +94,33 @@ export const patchProductRepository = async ({ id }) => {
 export const deleteProductRepository = async ({ id }) => {
   return prisma.product.delete({
     where: { id },
+  });
+};
+
+export async function findProductLikeRepository(userId, productId) {
+  return prisma.like.findUnique({
+    where: {
+      userId_productId: {
+        userId,
+        productId,
+      },
+    },
+  });
+}
+
+export const postProductLikeRepository = async ({ userId, productId }) => {
+  return prisma.like.create({
+    data: {
+      userId,
+      productId,
+    },
+  });
+};
+
+export const deleteProductLikeRepository = async ({ likeId }) => {
+  return prisma.like.delete({
+    where: {
+      id: likeId,
+    },
   });
 };

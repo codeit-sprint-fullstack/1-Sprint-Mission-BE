@@ -5,7 +5,13 @@ import {
   patchProductRepository,
   deleteProductRepository,
   getProductTotalCountRepository,
+  findProductLikeRepository,
+  postProductLikeRepository,
+  deleteProductLikeRepository,
 } from '../repository/productRepository.js';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const getProductService = async ({ id }) => {
   return await getProductRepository({ id });
@@ -46,4 +52,30 @@ export const patchProductService = async ({ id, body }) => {
 
 export const deleteProductService = async ({ id }) => {
   return await deleteProductRepository({ id });
+};
+
+export const postProductLikeService = async ({ userId, productId }) => {
+  return await prisma.$transaction(async (prisma) => {
+    const isLike = await likeRepository.findProductLikeRepository({
+      userId,
+      productId,
+    });
+    if (isLike) {
+      throw new Error('이미 좋아요가 눌려 있습니다.');
+    }
+    return await postProductLikeRepository({ userId, productId });
+  });
+};
+
+export const deleteProductLikeService = async ({ userId, productId }) => {
+  return await prisma.$transaction(async (prisma) => {
+    const isLike = await likeRepository.findProductLikeRepository({
+      userId,
+      productId,
+    });
+    if (!isLike) {
+      throw new Error('좋아요가 눌려 있지 않습니다.');
+    }
+    return await deleteProductLikeRepository({ userId, productId });
+  });
 };
