@@ -54,9 +54,9 @@ export const postFleaMarket = async (req, res, next) => {
     const { userId } = req.auth;
 
     const data = await fleaMarketService.postFleaMarket(
-      price,
       title,
       content,
+      price,
       tags,
       userId,
       req
@@ -74,14 +74,12 @@ export const editFleaMarket = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { price, title, content, tags } = req.body;
-    const { userId } = req.auth;
 
     const data = await fleaMarketService.editFleaMarket(
-      price,
       title,
       content,
+      price,
       tags,
-      userId,
       id,
       req
     );

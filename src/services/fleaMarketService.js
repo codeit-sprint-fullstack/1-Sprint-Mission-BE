@@ -104,38 +104,46 @@ export const deleteFleaMarket = async (id) => {
 };
 
 // Flea Market 게시물 생성
-export const postFleaMarket = async (price, title, content, tags, req) => {
+export const postFleaMarket = async (
+  title,
+  content,
+  price,
+  tags,
+  userId,
+  req
+) => {
   const imagePaths = req.files ? req.files.map((file) => file.path) : [];
   const tagsArray = tags ? tags.split(',') : [];
 
   const article = await prisma.fleaMarket.create({
     data: {
-      title,
-      content,
+      title: title,
+      content: content,
       price: Number(price),
       tags: tagsArray,
       images: imagePaths,
+      userId: userId,
     },
   });
 
-  return article; // 게시물 반환
+  return article;
 };
 
 // Flea Market 게시물 수정
-export const editFleaMarket = async (price, title, content, tags, id, req) => {
+export const editFleaMarket = async (title, content, price, tags, id, req) => {
   const imagePaths = req.files ? req.files.map((file) => file.path) : []; // 이미지 경로 처리
   const tagsArray = tags ? tags.split(',') : []; // 태그 배열로 변환
 
   const article = await prisma.fleaMarket.update({
     where: { id: Number(id) },
     data: {
-      title,
-      content,
+      title: title,
+      content: content,
       price: Number(price),
       tags: tagsArray,
       images: imagePaths,
     },
   });
 
-  return article; // 수정된 게시물 반환
+  return article;
 };

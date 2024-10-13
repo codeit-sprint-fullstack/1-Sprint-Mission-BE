@@ -18,24 +18,54 @@ const verifyRefreshToken = expressjwt({
 });
 
 //본인의 게시물만 수정 및 삭제 할 수 있게 하기
-const verifyProductAuth = async (req, res, next) => {
-  const { id: productId } = req.params;
+const verifyFleaMarketAuth = async (req, res, next) => {
+  const { id: fleaMarketId } = req.params;
 
   try {
-    const product = await prisma.fleaMarket.findUnique({
+    const fleaMarketArticle = await prisma.fleaMarket.findUnique({
       where: {
-        id: Number(productId),
+        id: Number(fleaMarketId),
       },
     });
 
-    if (!product) {
+    if (!fleaMarketArticle) {
       const error = new Error('중고게시글이 없습니다.');
       error.code = 404;
       error.status = 404; // HTTP 상태 코드
       throw error;
     }
 
-    if (product.userId !== req.auth.userId) {
+    if (fleaMarketArticle.userId !== req.auth.userId) {
+      const error = new Error('권한이 없습니다.');
+      error.code = 403;
+      error.status = 403; // HTTP 상태 코드
+      throw error;
+    }
+
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const verifyFreeBoardAuth = async (req, res, next) => {
+  const { id: freeBoardId } = req.params;
+
+  try {
+    const freeBoardArticle = await prisma.freeBoard.findUnique({
+      where: {
+        id: Number(freeBoardId),
+      },
+    });
+
+    if (!freeBoardArticle) {
+      const error = new Error('자유게시판에 글이 없습니다.');
+      error.code = 404;
+      error.status = 404; // HTTP 상태 코드
+      throw error;
+    }
+
+    if (freeBoardArticle.userId !== req.auth.userId) {
       const error = new Error('권한이 없습니다.');
       error.code = 403;
       error.status = 403; // HTTP 상태 코드
@@ -81,6 +111,7 @@ const verifyCommentAuth = async (req, res, next) => {
 export default {
   verifyAccessToken,
   verifyRefreshToken,
-  verifyProductAuth,
+  verifyFleaMarketAuth,
   verifyCommentAuth,
+  verifyFreeBoardAuth,
 };

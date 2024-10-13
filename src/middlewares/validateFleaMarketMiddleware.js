@@ -1,4 +1,4 @@
-const validateProductMiddleware = (req, res, next) => {
+const validateFleaMarketMiddleware = (req, res, next) => {
   const { title, content, price } = req.body;
 
   if (!title || title.trim() === '') {
@@ -16,4 +16,4 @@ const validateProductMiddleware = (req, res, next) => {
   next();
 };
 
-export default validateProductMiddleware;
+export default validateFleaMarketMiddleware;

@@ -14,28 +14,28 @@ router.get(
   fleaMarketController.getFleaMarketDetail
 );
 
-router.delete(
-  '/:id',
-  jwtMiddleware.verifyAccessToken,
-  jwtMiddleware.verifyProductAuth,
-  fleaMarketController.deleteFleaMarket
-);
-
 router.post(
   '/post',
   upload.array('images', 3),
-  validateFleaMarketMiddleware,
   jwtMiddleware.verifyAccessToken,
+  validateFleaMarketMiddleware,
   fleaMarketController.postFleaMarket
 );
 
 router.patch(
   '/:id',
   upload.array('images', 3),
-  validateFleaMarketMiddleware,
   jwtMiddleware.verifyAccessToken,
-  jwtMiddleware.verifyProductAuth,
+  jwtMiddleware.verifyFleaMarketAuth,
+  validateFleaMarketMiddleware,
   fleaMarketController.editFleaMarket
+);
+
+router.delete(
+  '/:id',
+  jwtMiddleware.verifyAccessToken,
+  jwtMiddleware.verifyFleaMarketAuth,
+  fleaMarketController.deleteFleaMarket
 );
 
 export default router;
