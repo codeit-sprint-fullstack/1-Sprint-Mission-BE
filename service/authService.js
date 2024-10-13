@@ -5,7 +5,8 @@ import {
   findUserEmailRepository,
 } from '../repository/authRepository.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET || 'mini1018';
+const REFRESH_SECRET = process.env.REFRESH_SECRET || 'mini1018';
 
 export const signupService = async ({ email, password, nickname }) => {
   const existingUser = await findUserEmailRepository({ email });
@@ -37,6 +38,11 @@ export const loginService = async ({ email, password }) => {
     throw new Error('Invalid email or password');
   }
 
-  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
-  return token;
+  const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+    expiresIn: '1h',
+  });
+  const refreshToken = jwt.sign({ userId: user.id }, REFRESH_SECRET, {
+    expiresIn: '7d',
+  });
+  return { accessToken, refreshToken, user };
 };
