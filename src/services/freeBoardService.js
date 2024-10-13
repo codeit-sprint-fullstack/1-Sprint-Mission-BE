@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Flea Market 게시물 목록 가져오기
 export const getFreeBoard = async (page, limit, keyword, sort, userId) => {
   const offset = (page - 1) * limit;
 
@@ -71,7 +70,6 @@ export const getFreeBoard = async (page, limit, keyword, sort, userId) => {
   };
 };
 
-// Flea Market 게시물 상세 가져오기
 export const getFreeBoardDetail = async (id, userId) => {
   const article = await prisma.freeBoard.findUnique({
     where: {
@@ -102,7 +100,6 @@ export const getFreeBoardDetail = async (id, userId) => {
   return article;
 };
 
-// Flea Market 게시물 생성
 export const postFreeBoard = async (title, content, tags, userId) => {
   const article = await prisma.freeBoard.create({
     data: {
@@ -113,20 +110,18 @@ export const postFreeBoard = async (title, content, tags, userId) => {
     },
   });
 
-  return article; // 게시물 반환
+  return article;
 };
 
-// Flea Market 게시물 수정
 export const editFreeBoard = async (title, content, id, req) => {
   const article = await prisma.freeBoard.update({
     where: { id: Number(id) },
     data: { title, content },
   });
 
-  return article; // 수정된 게시물 반환
+  return article;
 };
 
-// Flea Market 게시물 삭제
 export const deleteFreeBoard = async (id) => {
   await prisma.freeBoard.delete({
     where: {

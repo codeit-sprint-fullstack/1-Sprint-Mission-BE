@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Flea Market 게시물 목록 가져오기
 export const getFleaMarket = async (page, limit, keyword, sort, userId) => {
   const offset = (page - 1) * limit;
 
@@ -57,7 +56,7 @@ export const getFleaMarket = async (page, limit, keyword, sort, userId) => {
       : false;
     return {
       ...article,
-      isLiked, // isLiked 필드 추가
+      isLiked,
     };
   });
 
@@ -81,7 +80,6 @@ export const getFleaMarket = async (page, limit, keyword, sort, userId) => {
   };
 };
 
-// Flea Market 게시물 상세 가져오기
 export const getFleaMarketDetail = async (id, userId) => {
   const article = await prisma.fleaMarket.findUnique({
     where: {
@@ -116,7 +114,6 @@ export const getFleaMarketDetail = async (id, userId) => {
   return { article, isLiked };
 };
 
-// Flea Market 게시물 삭제
 export const deleteFleaMarket = async (id) => {
   await prisma.fleaMarket.delete({
     where: {
@@ -125,7 +122,6 @@ export const deleteFleaMarket = async (id) => {
   });
 };
 
-// Flea Market 게시물 생성
 export const postFleaMarket = async (
   title,
   content,
@@ -151,10 +147,9 @@ export const postFleaMarket = async (
   return article;
 };
 
-// Flea Market 게시물 수정
 export const editFleaMarket = async (title, content, price, tags, id, req) => {
-  const imagePaths = req.files ? req.files.map((file) => file.path) : []; // 이미지 경로 처리
-  const tagsArray = tags ? tags.split(',') : []; // 태그 배열로 변환
+  const imagePaths = req.files ? req.files.map((file) => file.path) : [];
+  const tagsArray = tags ? tags.split(',') : [];
 
   const article = await prisma.fleaMarket.update({
     where: { id: Number(id) },

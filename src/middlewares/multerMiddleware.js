@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
   },
 });
 
-// multer 미들웨어 설정
+
 const upload = multer({
   storage: storage,
   limits: { fileSize: 1000000 },

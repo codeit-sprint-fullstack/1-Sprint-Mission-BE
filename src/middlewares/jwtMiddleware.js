@@ -3,21 +3,21 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-//로그인 한 유저만 좋아요, 게시물 등록, 조회 가능하게끔
+
 const verifyAccessToken = expressjwt({
   secret: process.env.JWT_SECRET,
   algorithms: ['HS256'],
   userProperty: 'auth',
 });
 
-//리프레시 토큰으로 엑세스토큰 발급
+
 const verifyRefreshToken = expressjwt({
   secret: process.env.JWT_SECRET,
   algorithms: ['HS256'],
   getToken: (req) => req.cookies.refreshToken,
 });
 
-//본인의 게시물만 수정 및 삭제 할 수 있게 하기
+
 const verifyFleaMarketAuth = async (req, res, next) => {
   const { id: fleaMarketId } = req.params;
 
@@ -31,14 +31,14 @@ const verifyFleaMarketAuth = async (req, res, next) => {
     if (!fleaMarketArticle) {
       const error = new Error('중고게시글이 없습니다.');
       error.code = 404;
-      error.status = 404; // HTTP 상태 코드
+      error.status = 404;
       throw error;
     }
 
     if (fleaMarketArticle.userId !== req.auth.userId) {
       const error = new Error('권한이 없습니다.');
       error.code = 403;
-      error.status = 403; // HTTP 상태 코드
+      error.status = 403; 
       throw error;
     }
 
@@ -61,14 +61,14 @@ const verifyFreeBoardAuth = async (req, res, next) => {
     if (!freeBoardArticle) {
       const error = new Error('자유게시판에 글이 없습니다.');
       error.code = 404;
-      error.status = 404; // HTTP 상태 코드
+      error.status = 404; 
       throw error;
     }
 
     if (freeBoardArticle.userId !== req.auth.userId) {
       const error = new Error('권한이 없습니다.');
       error.code = 403;
-      error.status = 403; // HTTP 상태 코드
+      error.status = 403; 
       throw error;
     }
 
@@ -91,14 +91,14 @@ const verifyCommentAuth = async (req, res, next) => {
     if (!comment) {
       const error = new Error('댓글이 없습니다.');
       error.code = 404;
-      error.status = 404; // HTTP 상태 코드
+      error.status = 404;
       throw error;
     }
 
     if (comment.userId !== req.auth.userId) {
       const error = new Error('권한이 없습니다.');
       error.code = 403;
-      error.status = 403; // HTTP 상태 코드
+      error.status = 403;
       throw error;
     }
 

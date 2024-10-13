@@ -54,7 +54,7 @@ export const createUser = async (user) => {
     error.status = 422;
     throw error;
   }
-  const hashedPassword = await hashingPassword(user.encryptedPassword); // 해싱 과정 추가
+  const hashedPassword = await hashingPassword(user.encryptedPassword); 
 
   const createdUser = await prisma.user.create({
     data: {
