@@ -12,7 +12,7 @@ export const signupService = async ({
   nickname,
   image,
 }) => {
-  const existingUser = await findUserEmail(email);
+  const existingUser = await createUserRepository(email);
   if (existingUser) {
     throw new Error('User already exists');
   }
