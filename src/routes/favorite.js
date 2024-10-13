@@ -5,13 +5,13 @@ import * as favoriteController from '../controllers/favoriteController.js';
 const router = express.Router();
 
 router.post(
-  '/:id',
+  '/:articleCategory/:articleId',
   jwtMiddleware.verifyAccessToken,
   favoriteController.postFavorite
 );
 
 router.delete(
-  '/:id',
+  '/:articleCategory/:articleId',
   jwtMiddleware.verifyAccessToken,
   favoriteController.deleteFavorite
 );

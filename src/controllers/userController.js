@@ -80,7 +80,7 @@ export const updateRefreshToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.cookies;
     const { userId } = req.auth;
-    const { accessToken, newRefreshToken } = await userService.refreshToken(
+    const { newAccessToken, newRefreshToken } = await userService.refreshToken(
       userId,
       refreshToken
     );
@@ -92,7 +92,7 @@ export const updateRefreshToken = async (req, res, next) => {
       secure: true,
     });
 
-    return res.json({ accessToken });
+    res.status(201).json({ newAccessToken });
   } catch (error) {
     return next(error);
   }

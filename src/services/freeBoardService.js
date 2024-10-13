@@ -29,9 +29,22 @@ export const getFreeBoard = async (page, limit, keyword, sort, userId) => {
         : {}),
     },
     include: {
-      user: true,
-      comment: true,
-      favorite: true,
+      user: {
+        select: {
+          nickname: true,
+          image: true,
+        },
+      },
+      comment: {
+        select: {
+          id: true,
+        },
+      },
+      favorite: {
+        select: {
+          userId: true,
+        },
+      },
     },
     orderBy,
     skip: offset,
@@ -65,8 +78,17 @@ export const getFreeBoardDetail = async (id, userId) => {
       id: Number(id),
     },
     include: {
-      user: true,
-      favorite: true,
+      user: {
+        select: {
+          nickname: true,
+          image: true,
+        },
+      },
+      favorite: {
+        select: {
+          userId: true,
+        },
+      },
     },
   });
 

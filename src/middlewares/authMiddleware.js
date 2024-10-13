@@ -6,6 +6,13 @@ const prisma = new PrismaClient();
 const AuthMiddleware = (req, res, next) => {
   const { authorization } = req.headers;
 
+  if (!authorization) {
+    return res.status(400).json({
+      success: false,
+      message: '인증 헤더가 없습니다.',
+    });
+  }
+
   const [tokenType, accessToken] = authorization.split(' ');
 
   if (tokenType !== 'Bearer') {
@@ -16,19 +23,18 @@ const AuthMiddleware = (req, res, next) => {
   }
 
   if (!accessToken) {
-    return res.status(400).json({
-      success: false,
-      message: 'AccessToken이 없습니다.',
-    });
+    const error = new Error('권한이 없습니다.');
+    error.code = 400;
+    error.status = 400;
+    return next(error); 
   }
-
-  // if (!token) {
-  //   return res.status(401).json({ message: 'Access token is required.' });
-  // }
 
   jwt.verify(accessToken, process.env.JWT_SECRET, async (err, decoded) => {
     if (err) {
-      return res.status(401).json({ message: 'Invalid token.' });
+      const error = new Error('다시 로그인해 주세요.');
+      error.code = 401; 
+      error.status = 401;
+      return next(error); 
     }
 
     try {
@@ -37,16 +43,19 @@ const AuthMiddleware = (req, res, next) => {
       });
 
       if (!user) {
-        return res.status(404).json({ message: 'User not found.' });
+        const error = new Error('회원 정보가 없습니다.');
+        error.code = 404;
+        error.status = 404;
+        return next(error); 
       }
 
-      console.log(user);
-
-      
       req.user = user;
       next();
-    } catch (error) {
-      return res.status(500).json({ message: 'Internal server error.' });
+    } catch (err) {
+      const error = new Error('서버 오류입니다.');
+      error.code = 500;
+      error.status = 500;
+      return next(error);
     }
   });
 };

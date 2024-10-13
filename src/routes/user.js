@@ -10,10 +10,6 @@ const prisma = new PrismaClient();
 
 router.use(cookieParser());
 
-// 사용자 ID로 조회, 수정 및 삭제 라우트
-router.route('/:id');
-
-// 사용자 조회
 router.get('/', userController.getUsers);
 
 router.get('/:id', userController.getUserDetail);

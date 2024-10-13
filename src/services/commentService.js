@@ -8,42 +8,31 @@ export const getComments = async (
   articleId,
   articleCategory
 ) => {
+  const commentData = getCommentData(articleCategory, articleId);
   const numericLimit = limit ? Number(limit) : 5;
   const cursorValue = cursor ? Number(cursor) : null;
 
-  let comments;
-
-  if (articleCategory === 'freeboard') {
-    comments = await prisma.comment.findMany({
-      take: numericLimit,
-      ...(cursorValue && { cursor: { id: cursorValue } }),
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      where: {
-        freeBoardId: Number(articleId),
+  const comments = await prisma.comment.findMany({
+    take: numericLimit,
+    ...(cursorValue && { cursor: { id: cursorValue } }),
+    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+    where: {
+      ...commentData,
+    },
+    include: {
+      user: {
+        select: {
+          nickname: true,
+          image: true,
+        },
       },
-      include: {
-        user: true,
-      },
-    });
-  } else if (articleCategory === 'fleamarket') {
-    comments = await prisma.comment.findMany({
-      take: numericLimit,
-      ...(cursorValue && { cursor: { id: cursorValue } }),
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      where: {
-        fleaMarketId: Number(articleId),
-      },
-      include: {
-        user: true,
-      },
-    });
-  }
+    },
+  });
 
   const totalCount = await prisma.comment.count({
-    where:
-      articleCategory === 'freeboard'
-        ? { freeBoardId: Number(articleId) }
-        : { fleaMarketId: Number(articleId) },
+    where: {
+      ...commentData,
+    },
   });
 
   return { totalCount, comments };
@@ -55,31 +44,23 @@ export const postComment = async (
   content,
   userId
 ) => {
-  let comments;
+  const commentData = getCommentData(articleCategory, articleId);
 
-  if (articleCategory === 'freeboard') {
-    comments = await prisma.comment.create({
-      data: {
-        content: content,
-        userId: userId,
-        freeBoardId: Number(articleId),
+  const comments = await prisma.comment.create({
+    data: {
+      content: content,
+      userId: userId,
+      ...commentData,
+    },
+    include: {
+      user: {
+        select: {
+          nickname: true,
+          image: true,
+        },
       },
-      include: {
-        user: true,
-      },
-    });
-  } else if (articleCategory === 'fleamarket') {
-    comments = await prisma.comment.create({
-      data: {
-        content: content,
-        userId: userId,
-        fleaMarketId: Number(articleId),
-      },
-      include: {
-        user: true,
-      },
-    });
-  }
+    },
+  });
 
   return comments;
 };
@@ -93,7 +74,12 @@ export const editComment = async (id, content) => {
       content: content,
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          nickname: true,
+          image: true,
+        },
+      },
     },
   });
 
@@ -106,4 +92,12 @@ export const deleteComment = async (id) => {
       id: Number(id),
     },
   });
+};
+
+const getCommentData = (articleCategory, articleId) => {
+  if (articleCategory === 'fleamarket') {
+    return { fleaMarketId: Number(articleId) };
+  } else {
+    return { freeBoardId: Number(articleId) };
+  }
 };
