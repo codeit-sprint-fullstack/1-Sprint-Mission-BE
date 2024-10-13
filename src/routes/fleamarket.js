@@ -1,6 +1,6 @@
 import express from 'express';
 import * as fleaMarketController from '../controllers/fleaMarketController.js';
-import validateFleaMarketMiddleware from '../middlewares/validateFleaMarketMiddleware.js';
+import validateFleaMarketMiddleware from '../middlewares/validate/validateFleaMarketMiddleware.js';
 import jwtMiddleware from '../middlewares/jwtMiddleware.js';
 import upload from '../middlewares/multerMiddleware.js';
 

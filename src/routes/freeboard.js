@@ -1,6 +1,6 @@
 import express from 'express';
 import * as freeBoardController from '../controllers/freeBoardController.js';
-import validateFreeBoardMiddleware from '../middlewares/validateFreeBoardMiddleware.js';
+import validateFreeBoardMiddleware from '../middlewares/validate/validateFreeBoardMiddleware.js';
 import jwtMiddleware from '../middlewares/jwtMiddleware.js';
 
 const router = express.Router();
