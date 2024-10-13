@@ -31,12 +31,14 @@ const verifyProductAuth = async (req, res, next) => {
     if (!product) {
       const error = new Error('중고게시글이 없습니다.');
       error.code = 404;
+      error.status = 404; // HTTP 상태 코드
       throw error;
     }
 
     if (product.userId !== req.auth.userId) {
-      const error = new Error('Unauthorized');
+      const error = new Error('권한이 없습니다.');
       error.code = 403;
+      error.status = 403; // HTTP 상태 코드
       throw error;
     }
 
@@ -57,14 +59,16 @@ const verifyCommentAuth = async (req, res, next) => {
     });
 
     if (!comment) {
-      const error = new Error('작성한 댓글이 없습니다');
+      const error = new Error('댓글이 없습니다.');
       error.code = 404;
+      error.status = 404; // HTTP 상태 코드
       throw error;
     }
 
     if (comment.userId !== req.auth.userId) {
-      const error = new Error('Unauthorized');
+      const error = new Error('권한이 없습니다.');
       error.code = 403;
+      error.status = 403; // HTTP 상태 코드
       throw error;
     }
 

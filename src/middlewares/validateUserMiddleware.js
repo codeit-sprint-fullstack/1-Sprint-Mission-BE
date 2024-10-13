@@ -1,4 +1,4 @@
-export const validateUserMiddleware = (req, res, next) => {
+export const validateUser = (req, res, next) => {
   const { email, encryptedPassword, nickname } = req.body;
 
   if (!email || email.trim() === '') {
@@ -16,7 +16,7 @@ export const validateUserMiddleware = (req, res, next) => {
   next();
 };
 
-export const validateLoginMiddleware = (req, res, next) => {
+export const validateLogin = (req, res, next) => {
   const { email, encryptedPassword } = req.body;
 
   if (!email || email.trim() === '') {

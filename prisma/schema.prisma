@@ -20,6 +20,8 @@ model User {
   image             String[]
   encryptedPassword String?
   refreshToken      String?
+  provider          String       @default("local")
+  providerId        String?      @unique
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
   Comment           Comment[]

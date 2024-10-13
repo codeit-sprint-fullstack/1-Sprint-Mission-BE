@@ -9,6 +9,7 @@ import freeboardRoute from './src/routes/freeboard.js';
 import fleamarketRoute from './src/routes/fleamarket.js';
 import commentRoute from './src/routes/comment.js';
 import favoriteRoute from './src/routes/favorite.js';
+import errorHandler from './src/middlewares/errorHandler.js';
 
 const app = express();
 app.use(cors());
@@ -27,12 +28,8 @@ app.use('/auth', authRoute);
 
 app.use('/uploads', express.static('uploads'));
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  const statusCode = err.status || 500;
-  res.status(statusCode).json({
-    message: err.message || '서버 오류',
-  });
-});
+app.use(errorHandler);
 
-app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
+});
