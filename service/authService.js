@@ -6,12 +6,7 @@ import {
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
-export const signupService = async ({
-  email,
-  encryptedPassword,
-  nickname,
-  image,
-}) => {
+export const signupService = async ({ email, encryptedPassword, nickname }) => {
   const existingUser = await createUserRepository(email);
   if (existingUser) {
     throw new Error('User already exists');
@@ -21,7 +16,6 @@ export const signupService = async ({
     email,
     encryptedPassword,
     nickname,
-    image,
   });
 };
 
