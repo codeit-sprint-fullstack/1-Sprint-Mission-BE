@@ -40,8 +40,6 @@ export const postFreeBoard = async (req, res, next) => {
     const { title, content, tags } = req.body;
     const { userId } = req.auth;
 
-
-
     const data = await freeBoardService.postFreeBoard(
       title,
       content,

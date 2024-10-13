@@ -36,18 +36,6 @@ export const getFleaMarketDetail = async (req, res, next) => {
   }
 };
 
-export const deleteFleaMarket = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-
-    await fleaMarketService.deleteFleaMarket(id);
-
-    res.sendStatus(204);
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const postFleaMarket = async (req, res, next) => {
   try {
     const { price, title, content, tags } = req.body;
@@ -87,6 +75,18 @@ export const editFleaMarket = async (req, res, next) => {
     res.status(201).json({
       data,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteFleaMarket = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    await fleaMarketService.deleteFleaMarket(id);
+
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }
