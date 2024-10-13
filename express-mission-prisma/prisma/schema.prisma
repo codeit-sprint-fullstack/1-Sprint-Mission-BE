@@ -13,59 +13,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Article {
+  id        String    @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  Comment   Comment[]
+  Like      Like[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+  article   Article? @relation(fields: [articleId], references: [id])
+  articleId String?
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String
+  price       Int
+  tags        String[]
+  image       String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  Comment     Comment[]
+  Like        Like[]
+}
+
 model User {
-  id           String        @id @default(uuid())
-  name         String        @unique
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  FreeCommends FreeCommend[]
-  UsedCommends UsedCommend[]
-  NoticeBoards NoticeBoard[]
-  UsedMarkets  UsedMarket[]
+  id                String    @id @default(uuid())
+  email             String    @unique
+  nickname          String
+  image             String?
+  encryptedPassword String
+  refreshToken      String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  Article           Article[]
+  Comment           Comment[]
+  Product           Product[]
+  Like              Like[]
 }
 
-model NoticeBoard {
-  id           String        @id @default(uuid())
-  title        String
-  content      String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
-  FreeCommends FreeCommend[]
-}
-
-model FreeCommend {
-  id            String      @id @default(uuid())
-  content       String
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId        String
-  noticeBoard   NoticeBoard @relation(fields: [noticeBoardId], references: [id], onDelete: Cascade)
-  noticeBoardId String
-}
-
-model UsedMarket {
-  id           String        @id @default(uuid())
-  name         String        @unique
-  description  String
-  price        Int
-  tags         String[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
-  UsedCommends UsedCommend[]
-}
-
-model UsedCommend {
-  id           String      @id @default(uuid())
-  content      String
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
-  usedMarket   UsedMarket @relation(fields: [usedMarketId], references: [id], onDelete: Cascade)
-  usedMarketId String
+model Like {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  article   Article? @relation(fields: [articleId], references: [id])
+  articleId String?
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
