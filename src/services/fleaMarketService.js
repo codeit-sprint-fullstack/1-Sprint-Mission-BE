@@ -85,7 +85,7 @@ export const getFleaMarketDetail = async (id, userId) => {
     : false;
 
   if (!article) {
-    const error = new Error('등록된 게시물이 없습니다');
+    const error = new Error('게시물이 존재하지 않습니다');
     error.code = 404;
     error.status = 404;
     throw error;
@@ -104,16 +104,9 @@ export const deleteFleaMarket = async (id) => {
 };
 
 // Flea Market 게시물 생성
-export const postFleaMarket = async (
-  price,
-  title,
-  content,
-  tags,
-  userId,
-  req // req를 추가하여 파일 처리
-) => {
-  const imagePaths = req.files ? req.files.map((file) => file.path) : []; // 이미지 경로 처리
-  const tagsArray = tags ? tags.split(',') : []; // 태그 배열로 변환
+export const postFleaMarket = async (price, title, content, tags, req) => {
+  const imagePaths = req.files ? req.files.map((file) => file.path) : [];
+  const tagsArray = tags ? tags.split(',') : [];
 
   const article = await prisma.fleaMarket.create({
     data: {
@@ -122,7 +115,6 @@ export const postFleaMarket = async (
       price: Number(price),
       tags: tagsArray,
       images: imagePaths,
-      userId,
     },
   });
 
@@ -130,15 +122,7 @@ export const postFleaMarket = async (
 };
 
 // Flea Market 게시물 수정
-export const editFleaMarket = async (
-  price,
-  title,
-  content,
-  tags,
-  userId,
-  id,
-  req // req를 추가하여 파일 처리
-) => {
+export const editFleaMarket = async (price, title, content, tags, id, req) => {
   const imagePaths = req.files ? req.files.map((file) => file.path) : []; // 이미지 경로 처리
   const tagsArray = tags ? tags.split(',') : []; // 태그 배열로 변환
 
