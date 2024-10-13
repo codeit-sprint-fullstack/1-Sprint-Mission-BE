@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { createCustomError } from "../utils/error.js";
 import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../config.js";
 import authRepository from "../repositories/authRepository.js";
-import { validatePassword } from "../utils/authUtil.js";
+import { comparePassword } from "../utils/authUtil.js";
 
 /** validate authorizaton(accessToken) */
 export function validateAccessToken(req, res, next) {
@@ -88,7 +88,7 @@ export async function validateEmailPassword(req, res, next) {
       password: password,
       encryptedPassword: userData.encryptedPassword,
     };
-    const isCorrect = await validatePassword(validateData);
+    const isCorrect = await comparePassword(validateData);
 
     if (!isCorrect) {
       return next(
@@ -118,7 +118,7 @@ export async function validateIdPassword(req, res, next) {
       password: currentPassword,
       encryptedPassword: userData.encryptedPassword,
     };
-    const isCorrect = await validatePassword(validateData);
+    const isCorrect = await comparePassword(validateData);
     if (!isCorrect) {
       return next(
         createCustomError({

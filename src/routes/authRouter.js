@@ -6,7 +6,7 @@ import {
 } from "../controllers/authController.js";
 import {
   validateUserInput,
-  validatteEmailPasswordInput,
+  validateEmailPasswordInput,
 } from "../middlewares/validateInput.js";
 import { validateEmailPassword } from "../middlewares/auth.js";
 
@@ -15,7 +15,7 @@ const authRouter = express.Router();
 authRouter.post("/sign-up", validateUserInput, signUpController);
 authRouter.post(
   "/sign-in",
-  validatteEmailPasswordInput,
+  validateEmailPasswordInput,
   validateEmailPassword,
   signInController
 );

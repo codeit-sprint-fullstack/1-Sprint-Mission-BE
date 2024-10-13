@@ -9,6 +9,6 @@ export async function createHashedPassword(password) {
   return hasedPassword;
 }
 
-export async function validatePassword({ passwordInput, encryptedPassword }) {
+export async function comparePassword({ passwordInput, encryptedPassword }) {
   return await bcrypt.compare(passwordInput, encryptedPassword);
 }

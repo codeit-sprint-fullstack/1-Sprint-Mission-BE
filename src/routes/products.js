@@ -100,7 +100,7 @@ productRouter.get("/:id", validateAccessToken, (req, res, next) => {
   const { id } = req.params;
 
   prisma.product
-    .findUnique({ where: { id }, select: productDetailSelect })
+    .findUnique({ where: { id }, select: productDetailSelect(req.id) })
     .then((data) => res.status(200).send(productDetailForm(data)))
     .catch((err) => next(err));
 });

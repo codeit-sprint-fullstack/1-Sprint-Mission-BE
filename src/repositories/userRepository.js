@@ -43,7 +43,7 @@ async function getMyProductsByQuery({ userId, query }) {
 async function getMyProductsByKeywordTotalCount({ userId, keyword }) {
   const filter = getProductSearchFilter(keyword);
 
-  return await prisma.product.findMany.count({
+  return await prisma.product.count({
     where: {
       userId: userId,
       ...filter,
@@ -72,7 +72,7 @@ async function getMyFavoriteProductsByQuery({ userId, query }) {
 async function getMyfavoriteProductsByKeywordTotalCount({ userId, keyword }) {
   const filter = getProductSearchFilter(keyword);
 
-  return await prisma.favoriteProduct.findMany.count({
+  return await prisma.favoriteProduct.count({
     where: {
       userId: userId,
       ...filter,
@@ -87,4 +87,5 @@ export default {
   getMyProductsByQuery,
   getMyFavoriteProductsByQuery,
   getMyProductsByKeywordTotalCount,
+  getMyfavoriteProductsByKeywordTotalCount,
 };

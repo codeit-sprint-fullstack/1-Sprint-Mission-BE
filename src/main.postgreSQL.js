@@ -14,6 +14,7 @@ import userRouter from "./routes/users.js";
 import productRouter from "./routes/products.js";
 import imageRouter from "./routes/image.js";
 import productCommentRouter from "./routes/product-comment.js";
+import postRouter from "./routes/postRouter.js";
 
 import {
   logErrors,
@@ -33,6 +34,7 @@ app.use("/products", productRouter);
 app.use("/uploads", express.static("uploads"));
 app.use("/images", imageRouter);
 app.use("/product", productCommentRouter);
+app.use("/post", postRouter);
 
 app.use(logErrors);
 app.use(clientErrorHandler);

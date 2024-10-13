@@ -9,3 +9,5 @@ export const postSchema = {
   MIN_LENGTH_CONTENT,
   MAX_LENGTH_CONTENT,
 };
+
+export const DEFAULT_POST_PAGE_SIZE = 10;

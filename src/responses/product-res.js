@@ -27,29 +27,7 @@ export const productSelect = {
 };
 
 export const productFavoriteSelect = (myUserId) => ({
-  id: true,
-  name: true,
-  description: true,
-  price: true,
-  favoriteCount: true,
-  createdAt: true,
-  ProductImage: {
-    select: {
-      image: true,
-    },
-  },
-  ProductTag: {
-    select: {
-      tag: true,
-    },
-  },
-  user: {
-    select: {
-      id: true,
-      nickname: true,
-      image: true,
-    },
-  },
+  ...productSelect,
   FavoriteProduct: {
     where: {
       userId: myUserId,
@@ -60,30 +38,8 @@ export const productFavoriteSelect = (myUserId) => ({
   },
 });
 
-export const productDetailSelect = {
-  id: true,
-  name: true,
-  description: true,
-  price: true,
-  favoriteCount: true,
-  createdAt: true,
-  ProductImage: {
-    select: {
-      image: true,
-    },
-  },
-  ProductTag: {
-    select: {
-      tag: true,
-    },
-  },
-  user: {
-    select: {
-      id: true,
-      nickname: true,
-      image: true,
-    },
-  },
+export const productDetailSelect = (myUserId) => ({
+  ...productFavoriteSelect,
   ProductComment: {
     orderBy: { createdAt: "asc" },
     skip: 0,
@@ -101,4 +57,4 @@ export const productDetailSelect = {
       },
     },
   },
-};
+});
