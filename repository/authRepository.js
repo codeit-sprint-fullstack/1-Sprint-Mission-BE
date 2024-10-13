@@ -12,9 +12,11 @@ export const createUserRepository = async ({
   nickname,
 }) => {
   return await prisma.user.create({
-    email,
-    encryptedPassword,
-    nickname,
+    data: {
+      email,
+      encryptedPassword,
+      nickname,
+    },
   });
 };
 
