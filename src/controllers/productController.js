@@ -25,40 +25,15 @@ export const getProductById = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
-  const { name, description, price, tags } = req.body;
+  const userId = req.user.id;
+  const { name, description, price } = req.body;
   const files = req.files;
 
-  if (!files || files.length === 0) {
-    return res.status(400).json({ message: '이미지 파일이 안옴' });
+  let tags = req.body.tags;
+
+  if (!Array.isArray(tags)) {
+    tags = tags ? [tags] : [];
   }
-
-  const imgUrls =
-    files && files.length > 0
-      ? files.map((file) => {
-          return `${req.protocol}://${req.get('host')}/api/images/${
-            file.filename
-          }`;
-        })
-      : [];
-
-  const data = {
-    name,
-    description,
-    price: parseInt(price, 10),
-    tags,
-    images: imgUrls,
-  };
-
-  assert(data, CreateProduct);
-
-  const newProduct = await productService.createProduct(userId, data);
-  res.status(201).json(newProduct);
-};
-
-export const updateProductById = async (req, res) => {
-  const { productId } = req.params;
-  const { name, description, price, tags, imageUrls } = req.body;
-  const files = req.files;
 
   if (!files || files.length === 0) {
     return res.status(400).json({ message: '이미지 파일이 안옴' });
@@ -78,8 +53,57 @@ export const updateProductById = async (req, res) => {
     description,
     price: price ? parseInt(price, 10) : 0,
     tags,
-    images: !imageUrls ? [...convertToUrl] : [...convertToUrl, ...imageUrls],
+    images: [...convertToUrl],
   };
+
+  assert(data, CreateProduct);
+
+  const newProduct = await productService.createProduct(userId, data);
+  res.status(201).json(newProduct);
+};
+
+export const updateProductById = async (req, res) => {
+  const { productId } = req.params;
+  const { name, description, price } = req.body;
+  const files = req.files;
+  let tags = req.body.tags;
+  let imageUrls = req.body.imageUrls;
+
+  if (!Array.isArray(tags)) {
+    tags = tags ? [tags] : [];
+  }
+
+  if (!Array.isArray(imageUrls)) {
+    imageUrls = imageUrls ? [imageUrls] : [];
+  }
+
+  if (!files && files.length === 0 && imageUrls.length === 0) {
+    return res
+      .status(400)
+      .json({ message: '이미지 파일이나 원래 저장된 url 아무것도 안옴' });
+  }
+
+  const convertToUrl =
+    files && files.length > 0
+      ? files.map((file) => {
+          return `${req.protocol}://${req.get('host')}/api/images/${
+            file.filename
+          }`;
+        })
+      : [];
+
+  const data = {
+    name,
+    description,
+    price: price ? parseInt(price, 10) : 0,
+    tags,
+    images:
+      imageUrls.length === 0
+        ? [...convertToUrl]
+        : [...convertToUrl, ...imageUrls],
+  };
+
+  console.log(data);
 
   assert(data, PatchProduct);
 

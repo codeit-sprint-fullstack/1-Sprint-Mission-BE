@@ -14,7 +14,7 @@ router.get('/', asyncHandler(controller.getProductList));
 router.get('/:productId', asyncHandler(controller.getProductById));
 router.post(
   '/',
-  uploadImg.array('imageFiles', 3),
+  uploadImg.array('images', 3),
   asyncHandler(controller.createProduct)
 );
 router.patch(
