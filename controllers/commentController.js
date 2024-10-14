@@ -24,12 +24,9 @@ exports.createProductComment = async (req, res, next) => {
 
     res.status(201).json(comment);
   } catch (error) {
-    // 에러 발생 시 오류 로그 추가
-    console.error("댓글 등록 중 오류:", error);
-    next(error); // 에러 전달
+    next(error);
   }
 };
-
 
 // 게시글에 댓글 추가
 exports.createArticleComment = async (req, res, next) => {
@@ -46,7 +43,7 @@ exports.createArticleComment = async (req, res, next) => {
     });
     res.status(201).json(comment);
   } catch (error) {
-    next(error); // 에러 전달
+    next(error);
   }
 };
 
@@ -54,10 +51,10 @@ exports.createArticleComment = async (req, res, next) => {
 exports.getProductComments = async (req, res, next) => {
   const { productId } = req.params;
 
-  console.log("불러올 상품 ID:", productId); // 추가된 로그
+  console.log("불러올 상품 ID:", productId);
 
   if (!productId) {
-    console.error("상품 ID가 제공되지 않았습니다.");  // 추가된 로그
+    console.error("상품 ID가 제공되지 않았습니다.");
     return res.status(400).json({ error: "상품 ID가 제공되지 않았습니다." });
   }
 
@@ -67,7 +64,7 @@ exports.getProductComments = async (req, res, next) => {
       include: { user: true }, // 댓글 작성자 정보 포함
     });
 
-    console.log("불러온 댓글 목록:", comments); // 추가된 로그
+    console.log("불러온 댓글 목록:", comments);
 
     if (comments.length === 0) {
       return res.status(404).json({ message: "댓글이 없습니다." });
@@ -75,12 +72,10 @@ exports.getProductComments = async (req, res, next) => {
 
     res.status(200).json(comments);
   } catch (error) {
-    console.error("댓글 목록 불러오기 중 오류:", error);  // 추가된 로그
-    next(error); // 에러 전달
+    console.error("댓글 목록 불러오기 중 오류:", error);
+    next(error);
   }
 };
-
-
 
 // 게시글 댓글 목록 조회
 exports.getArticleComments = async (req, res, next) => {
@@ -93,7 +88,7 @@ exports.getArticleComments = async (req, res, next) => {
     });
     res.status(200).json(comments);
   } catch (error) {
-    next(error); // 에러 전달
+    next(error);
   }
 };
 
@@ -103,13 +98,26 @@ exports.updateProductComment = async (req, res, next) => {
   const { content } = req.body;
 
   try {
-    const comment = await prisma.comment.update({
+    const comment = await prisma.comment.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ error: "해당 댓글을 찾을 수 없습니다." });
+    }
+
+    if (comment.userId !== req.user.id) {
+      return res.status(403).json({ error: "본인이 작성한 댓글만 수정할 수 있습니다." });
+    }
+
+    const updatedComment = await prisma.comment.update({
       where: { id: parseInt(id) },
       data: { content },
     });
-    res.status(200).json(comment);
+
+    res.status(200).json(updatedComment);
   } catch (error) {
-    next(error); // 에러 전달
+    next(error);
   }
 };
 
@@ -119,13 +127,26 @@ exports.updateArticleComment = async (req, res, next) => {
   const { content } = req.body;
 
   try {
-    const comment = await prisma.comment.update({
+    const comment = await prisma.comment.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ error: "해당 댓글을 찾을 수 없습니다." });
+    }
+
+    if (comment.userId !== req.user.id) {
+      return res.status(403).json({ error: "본인이 작성한 댓글만 수정할 수 있습니다." });
+    }
+
+    const updatedComment = await prisma.comment.update({
       where: { id: parseInt(id) },
       data: { content },
     });
-    res.status(200).json(comment);
+
+    res.status(200).json(updatedComment);
   } catch (error) {
-    next(error); // 에러 전달
+    next(error);
   }
 };
 
@@ -134,12 +155,25 @@ exports.deleteProductComment = async (req, res, next) => {
   const { id } = req.params;
 
   try {
+    const comment = await prisma.comment.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ error: "해당 댓글을 찾을 수 없습니다." });
+    }
+
+    if (comment.userId !== req.user.id) {
+      return res.status(403).json({ error: "본인이 작성한 댓글만 삭제할 수 있습니다." });
+    }
+
     await prisma.comment.delete({
       where: { id: parseInt(id) },
     });
+
     res.status(200).json({ message: "댓글이 성공적으로 삭제되었습니다." });
   } catch (error) {
-    next(error); // 에러 전달
+    next(error);
   }
 };
 
@@ -148,12 +182,25 @@ exports.deleteArticleComment = async (req, res, next) => {
   const { id } = req.params;
 
   try {
+    const comment = await prisma.comment.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ error: "해당 댓글을 찾을 수 없습니다." });
+    }
+
+    if (comment.userId !== req.user.id) {
+      return res.status(403).json({ error: "본인이 작성한 댓글만 삭제할 수 있습니다." });
+    }
+
     await prisma.comment.delete({
       where: { id: parseInt(id) },
     });
+
     res.status(200).json({ message: "댓글이 성공적으로 삭제되었습니다." });
   } catch (error) {
-    next(error); // 에러 전달
+    next(error);
   }
 };
 
