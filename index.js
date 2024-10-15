@@ -1,50 +1,38 @@
 import express from "express";
+import path from "path";
 import dotenv from "dotenv";
-import { PrismaClient } from "@prisma/client";
-import articleRoutes from "./routes/articles.js";
-import commentRoutes from "./routes/articleComments.js";
-import productRoutes from "./routes/products.js";
-import productCommentRoutes from "./routes/productComments.js";
 import cors from "cors";
+import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import articleRoutes from "./routes/articleRoutes.js";
+import commentRoutes from "./routes/commentRoutes.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import { fileURLToPath } from "url";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger_output.json" assert { type: "json" };
 
 dotenv.config();
 
 const app = express();
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL,
-    },
-  },
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors());
 app.use(express.json());
 
-// 기본 라우트: 서버 상태 확인용
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
-
-// Prisma Client를 통해 데이터베이스 연결 확인
-app.get("/check-db", async (req, res) => {
-  try {
-    await prisma.$connect();
-    res.status(200).json({ message: "Database connected successfully" });
-  } catch (error) {
-    console.error("Database connection failed:", error);
-    res.status(500).json({ message: "Database connection failed", error });
-  } finally {
-    await prisma.$disconnect();
-  }
-});
-
-app.use("/articles", articleRoutes);
-app.use("/articlecomments", commentRoutes);
-app.use("/productcomments", productCommentRoutes);
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 app.use("/products", productRoutes);
+app.use("/articles", articleRoutes);
+app.use("/", commentRoutes);
 
-// 서버 실행
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
