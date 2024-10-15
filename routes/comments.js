@@ -1,90 +1,113 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
-import { asyncHandle } from "../errorUtils.js";
+import { asyncHandle } from "../utils/errorUtils.js";
 import { assert } from "superstruct";
 import { createComment, updateComment } from "../structs/commentStruct.js";
-const app = express.Router();
-const prisma = new PrismaClient();
+import authUser from "../middlewares/authUser.js";
+import commentService from "../service/commentService.js";
+import passport from "../config/passportConfig.js";
 
-const getComments = async (cursor, limit, id) => {
-  const data = await prisma.comment.findMany({
-    where: { articleId: id },
-    take: limit + 1, //추가적인 댓글이 있는지 확인
-    skip: cursor ? 1 : 0, //커서 자신을 스킵하기 위함
-    cursor: cursor ? { id: cursor } : undefined,
-    orderBy: {
-      createAt: "asc",
-    },
-  });
-  return data;
-};
+const router = express.Router();
 
-app.get(
-  "/:id",
-  asyncHandle(async (req, res) => {
-    const { limit = 5, cursor = "" } = req.query;
-    const { id } = req.params;
-
-    const comments = await getComments(cursor, limit, id);
-
-    if (comments) {
-      const nextComments = comments.length > limit;
-      const nextCursor = nextComments ? comments[limit - 1].id : null;
-
-      const returnData = {
-        comments: comments.slice(0, limit),
-        Cursor: nextCursor,
-      };
-      res.send(returnData);
-    } else {
-      res.status(404).send({ message: "댓글을 찾을수 없습니다." });
+router.get(
+  "/:id/article",
+  asyncHandle(async (req, res, next) => {
+    try {
+      const comments = await commentService.getArticleComments(req);
+      res.status(200).send(comments);
+    } catch (error) {
+      next(error);
     }
   })
 );
 
-app.post(
-  "/",
-  asyncHandle(async (req, res) => {
+router.get(
+  "/:id/product",
+  asyncHandle(async (req, res, next) => {
+    try {
+      const comments = await commentService.getProductComments(req);
+      res.status(200).send(comments);
+    } catch (error) {
+      next(error);
+    }
+  })
+);
+
+router.post(
+  "/:id/article",
+  passport.authenticate("access-token", { session: false }),
+  asyncHandle(async (req, res, next) => {
     assert(req.body, createComment);
-    const data = await prisma.comment.create({
-      data: req.body,
-      include: {
-        user: true,
-      },
-    });
-    res.send(data);
-  })
-);
-
-app.patch(
-  "/:id",
-  asyncHandle(async (req, res) => {
-    const { id } = req.params;
-    assert(req.body, updateComment);
-    const data = await prisma.comment.update({
-      where: { id },
-      data: req.body,
-      include: {
-        user: true,
-      },
-    });
-    res.send(data);
-  })
-);
-
-app.delete(
-  "/:id",
-  asyncHandle(async (req, res) => {
-    const { id } = req.params;
-    const data = await prisma.comment.delete({
-      where: { id },
-    });
-    if (data) {
-      res.sendStatus(204);
-    } else {
-      res.status(404).send({ message: "댓글을 찾을수 없습니다." });
+    try {
+      const { id: userId } = req.user;
+      const { id: articleId } = req.params;
+      const data = await commentService.createComment({
+        ...req.body,
+        articleId,
+        userId,
+      });
+      return res.status(201).send(data);
+    } catch (error) {
+      next(error);
     }
   })
 );
 
-export default app;
+router.post(
+  "/:id/product",
+  passport.authenticate("access-token", { session: false }),
+  asyncHandle(async (req, res, next) => {
+    assert(req.body, createComment);
+    try {
+      const { id: userId } = req.user;
+      const { id: productId } = req.params;
+      const data = await commentService.createComment({
+        ...req.body,
+        productId,
+        userId,
+      });
+      console.log(data);
+      return res.status(201).send(data);
+    } catch (error) {
+      next(error);
+    }
+  })
+);
+
+router.patch(
+  "/:id",
+  passport.authenticate("access-token", { session: false }),
+  authUser.verifyCommentAuth, //작성자만 수정/삭제가 가능하다.
+  asyncHandle(async (req, res, next) => {
+    assert(req.body, updateComment);
+    try {
+      const { id: commentId } = req.params;
+      const { id: userId } = req.user;
+      const data = await commentService.updateComment({
+        ...req.body,
+        commentId,
+        userId,
+      });
+
+      return res.status(200).send(data);
+    } catch (error) {
+      next(error);
+    }
+  })
+);
+
+router.delete(
+  "/:id",
+  passport.authenticate("access-token", { session: false }),
+  authUser.verifyCommentAuth, //작성자만 수정/삭제가 가능하다.
+  asyncHandle(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await commentService.deleteComment(id);
+      return res.status(204).send({ message: "success" });
+    } catch (error) {
+      next(error);
+    }
+  })
+);
+
+export default router;

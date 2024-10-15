@@ -1,120 +1,135 @@
-import mongoose from "mongoose";
 import express from "express";
-import Product from "../models/product.js";
-import { asyncHandle } from "../errorUtils.js";
+import { asyncHandle } from "../utils/errorUtils.js";
+import productService from "../service/productService.js";
+import { assert } from "superstruct";
+import multer from "multer";
+import passport from "../config/passportConfig.js";
+import { configDotenv } from "dotenv";
+import { PUBLIC_IMAGES_URL } from "../env.js";
 
-const app = express.Router();
+const router = express.Router();
+const upload = multer({ dest: "upload/" });
 
-app.get(
-  "/products",
-  asyncHandle(async (req, res) => {
-    const {
-      order,
-      pageSize = 10,
-      page = 1,
-      keyword = "",
-      minPrice = 0,
-      maxPrice = Infinity,
-      date = "",
-    } = req.query;
-
-    const offset = (page - 1) * pageSize; //page가 3이면 3-1 = 2 * count 만큼 스킵
-    const regex = new RegExp(keyword, "i"); // 대소문자 구분 안 함
-    const dateQuery = {};
-    if (date) {
-      const startDate = new Date(date);
-      dateQuery.createAt = { $gt: startDate.getTime() };
-    }
-    const orderOption = { createAt: order === "recent" ? "asc" : "desc" };
-
-    //1차 시도 하지만 await를 2번하여 느리다.
-    // const products = await Product.find({
-    //   $or: [{ name: regex }, { description: regex }],
-    //   price: { $gt: Number(minPrice), $lt: Number(maxPrice) },
-    //   ...dateQuery,
-    // })
-    //   .sort(orderOption)
-    //   .skip(offset)
-    //   .limit(pageSize);
-    // const totalCount = await Product.countDocuments();
-
-    //promise.all를 사용해서 동시에 기다려보자...
-    const [products, totalCount] = await Promise.all([
-      Product.find({
-        $or: [{ name: regex }, { description: regex }],
-        price: { $gt: Number(minPrice), $lt: Number(maxPrice) },
-        ...dateQuery,
-      })
-        .sort(orderOption)
-        .skip(offset)
-        .limit(pageSize),
-      Product.countDocuments({
-        $or: [{ name: regex }, { description: regex }],
-      }),
-    ]);
-
-    if (products) {
+router.get(
+  "/",
+  asyncHandle(async (req, res, next) => {
+    try {
+      const { totalCount, products, hasMore } =
+        await productService.getProducts(req.query);
       const responseData = {
         list: products,
         totalCount: totalCount,
+        hasMore,
       };
-      res.send(responseData);
-    } else {
-      res.status(404).send({ message: "등록된 상품이 없습니다." });
+      return res.send(responseData);
+    } catch (error) {
+      return next(error);
     }
   })
 );
 
-app.get(
-  "/products/:id",
-  asyncHandle(async (req, res) => {
-    const id = req.params.id;
-    const product = await Product.findById(id);
-    if (product) {
-      res.send(product);
-    } else {
-      res.status(404).send({ message: "등록된 상품이 없습니다." });
-    }
-  })
-);
-
-app.post(
-  "/products",
-  asyncHandle(async (req, res) => {
-    const product = await Product.create(req.body);
-    res.status(201).send(product);
-  })
-);
-
-app.patch(
-  "/products/:id",
-  asyncHandle(async (req, res) => {
-    const id = req.params.id;
-    const object = req.body;
-    const product = await Product.findById(id);
-    if (product) {
-      Object.keys(object).forEach((key) => {
-        product[key] = object[key];
+router.get(
+  "/:id",
+  passport.authenticate("access-token", { session: false }), //인가된 사용자만 상세페이지를 볼수 있다.
+  asyncHandle(async (req, res, next) => {
+    try {
+      const { id: productId } = req.params;
+      const { id: userId } = req.user;
+      //헤당 상품의 좋아요를 확인하기 위해 사용자정보를 함께 보낸다
+      const { product, existingLike } = await productService.getProduct({
+        productId,
+        userId,
       });
-      await product.save();
+      if (existingLike) {
+        //현재 사용자의 좋아요의 상태를 확인하고 리스폰스에 반영
+        return res.status(200).send({ ...product, isFavorite: true });
+      } else {
+        return res.status(200).send({ ...product, isFavorite: false });
+      }
+    } catch (error) {
+      next(error);
+    }
+  })
+);
+
+router.post(
+  "/",
+  passport.authenticate("access-token", { session: false }), //인가된 사용자만 작성가능
+  upload.array("images", 3),
+  async (req, res, next) => {
+    try {
+      const images = req.files.map((file) => PUBLIC_IMAGES_URL + file.filename);
+      const tags = req.body.tags.split(",");
+      const { id: userId } = req.user;
+      const data = await productService.createProduct({
+        ...req.body,
+        tags,
+        price: parseInt(req.body.price),
+        images,
+        ownerId: userId,
+      });
+      return res.status(201).send(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.patch(
+  "/:id",
+  asyncHandle(async (req, res, next) => {
+    assert(req.body, updateArticle);
+    try {
+      const { id } = req.params;
+      const product = await productService.updateProduct(id, req.body);
       res.send(product);
-    } else {
-      res.status(404).send({ message: "등록된 상품이 없습니다." });
+    } catch (error) {
+      next(error);
     }
   })
 );
 
-app.delete(
-  "/products/:id",
-  asyncHandle(async (req, res) => {
-    const id = req.params.id;
-    const product = await Product.findByIdAndDelete(id);
-    if (product) {
-      res.status(204).send({ message: "상품을 삭제했습니다" });
-    } else {
-      res.status(404).send({ message: "등록된 상품이 없습니다." });
+router.post(
+  "/:id/favorite",
+  passport.authenticate("access-token", { session: false }), //인가된 사용자만 작성가능
+  asyncHandle(async (req, res, next) => {
+    try {
+      const { id: productId } = req.params;
+      const { id: userId } = req.user;
+      const product = await productService.likeProduct({ productId, userId });
+      return res.status(200).send({ ...product, isFavorite: true });
+    } catch (error) {
+      next(error);
     }
   })
 );
 
-export default app;
+router.delete(
+  "/:id/favorite",
+  passport.authenticate("access-token", { session: false }),
+  asyncHandle(async (req, res, next) => {
+    try {
+      const { id: productId } = req.params;
+      const { id: userId } = req.user;
+      const product = await productService.unlikeProduct({ productId, userId });
+      return res.status(200).send({ ...product, isFavorite: false });
+    } catch (error) {
+      next(error);
+    }
+  })
+);
+
+router.delete(
+  "/:id",
+  asyncHandle(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await productService.deleteProduct(id, req.body);
+      res.sendStatus(204);
+    } catch (error) {
+      next(error);
+    }
+  })
+);
+
+export default router;

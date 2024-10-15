@@ -14,40 +14,47 @@ datasource db {
 }
 
 model User {
-  id       String    @unique @default(uuid())
-  name     String
-  email    String    @unique
-  createAt DateTime  @default(now())
-  updateAt DateTime  @updatedAt
-  article  Article[]
-  comment  Comment[]
-  Product  Product[]
+  id               String    @id @unique @default(uuid())
+  nickname         String
+  email            String    @unique
+  password         String
+  refreshToken     String?
+  createAt         DateTime  @default(now())
+  updateAt         DateTime  @updatedAt
+  comment          Comment[]
+  product          Product[]
+  favoriteproduct  Product[] @relation("UserFavorites")
+  article          Article[]
+  favoriteArticles Article[] @relation("Favorites")
 }
 
 model Article {
-  id       String    @unique @default(uuid())
-  title    String
-  content  String
-  createAt DateTime  @default(now())
-  updateAt DateTime  @updatedAt
-  favorite Int       @default(0)
-  comment  Comment[]
-  user     User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId   String?
+  id            String    @id @unique @default(uuid())
+  title         String
+  content       String
+  createAt      DateTime  @default(now())
+  updateAt      DateTime  @updatedAt
+  favoriteCount Int       @default(0)
+  comment       Comment[]
+  favorited     User[]    @relation("Favorites")
+  owner         User?     @relation(fields: [ownerId], references: [id])
+  ownerId       String?
 }
 
 model Product {
-  id          String    @unique @default(uuid())
-  name        String
-  description String
-  price       Int
-  tag         String
-  createAt    DateTime  @default(now())
-  updateAt    DateTime  @updatedAt
-  favorite    Int       @default(0)
-  comment     Comment[]
-  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId      String?
+  id            String    @id @unique @default(uuid())
+  name          String
+  description   String
+  price         Int
+  tags          String[]
+  images        String[]
+  createAt      DateTime  @default(now())
+  updateAt      DateTime  @updatedAt
+  favoriteCount Int       @default(0)
+  comment       Comment[]
+  favorited     User[]    @relation("UserFavorites")
+  owner         User?     @relation(fields: [ownerId], references: [id])
+  ownerId       String?
 }
 
 model Comment {
