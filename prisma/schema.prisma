@@ -7,49 +7,76 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Article {
-  id        String    @id @default(uuid())
-  title     String
-  content   String
-  viewCount Int       @default(0) // 조회수 필드를 추가하여 유니크한 기능 제공
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  comments  Comment[] @relation("ArticleComments")
+// 사용자 모델 스키마
+model User {
+  id                Int            @id @default(autoincrement())
+  email             String         @unique
+  nickname          String         @unique
+  image             String?        // 이미지 URL
+  encryptedPassword String
+  googleId          String?        @unique // Google ID 추가
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  comments          Comment[]
+  refreshTokens     RefreshToken[]
 }
 
 model Comment {
-  id        String   @id @default(uuid())
+  id          Int       @id @default(autoincrement())
+  content     String
+  articleId   Int?      // 자유게시판 게시글 외래키
+  marketPostId Int?      // 중고마켓 게시글 외래키
+  boardType   boardType @default(board)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      Int       // 사용자 ID 필드를 필수로 변경
+  article     Article?   @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
+  marketPost  MarketPost? @relation("MarketComments", fields: [marketPostId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id]) // 사용자와의 관계 추가
+  
+  @@unique([id, boardType])
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+// 자유게시판 게시글 모델 스키마
+model Article {
+  id        Int      @id @default(autoincrement())
+  title     String   
   content   String
-  status    CommentStatus @default(active) // 댓글의 상태(활성, 비활성)를 나타내는 필드를 추가
+  likeCount Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  articleId String
+  author    String   
+  imageUrl  String?
+  comments  Comment[] @relation("ArticleComments") // 댓글과의 관계 설정
 }
 
-model Product {
-  id          String           @id @default(uuid())
-  name        String
-  description String
-  price       Int
-  tags        String[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  comments    ProductComment[] @relation("ProductComments")
+// 중고마켓 게시글 모델 스키마
+model MarketPost {
+  id              Int      @id @default(autoincrement())
+  name            String   // 상품명
+  description     String   // 상품 설명
+  price           Int      // 가격
+  tags            String[] // 태그 배열
+  images          String[] // 이미지 URL 배열
+  ownerId         Int      // 소유자 ID
+  favoriteCount   Int      @default(0) // 찜 개수
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  ownerNickname   String   // 소유자 닉네임
+  isFavorite      Boolean   @default(false) // 찜 여부
+  comments        Comment[] @relation("MarketComments") // 댓글과의 관계 추가
 }
 
-model ProductComment {
-  id        String   @id @default(uuid())
-  content   String
-  status    CommentStatus @default(active) // 댓글의 상태(활성, 비활성)를 나타내는 필드를 추가
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
-}
-
-enum CommentStatus {
-  active
-  deleted
-  flagged // 댓글이 신고되었을 때 상태를 관리하기 위한 열거형
+enum boardType {
+  board
+  market
+  article
 }
