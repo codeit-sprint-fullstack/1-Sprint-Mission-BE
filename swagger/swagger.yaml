@@ -1,0 +1,222 @@
+openapi: 3.0.0
+info:
+  title: 바오마켓 API
+  description: 바오마켓의 상품, 게시글, 댓글, 좋아요 관련 API입니다.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5001/api
+
+paths:
+  /products:
+    get:
+      summary: 상품 목록 조회
+      description: 상품 목록을 조회합니다.
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: 페이지 번호
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 10
+          description: 페이지 당 상품 수
+        - name: orderBy
+          in: query
+          schema:
+            type: string
+            enum: [recent, favorite]
+            default: recent
+          description: 정렬 기준
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          description: 검색할 키워드
+      responses:
+        '200':
+          description: 성공적으로 상품 목록을 조회함
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /products/{id}:
+    get:
+      summary: 특정 상품 조회
+      description: 상품 ID에 해당하는 상품을 조회합니다.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 조회할 상품의 ID
+      responses:
+        '200':
+          description: 성공적으로 상품을 조회함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductWithDetails'
+        '404':
+          description: 상품을 찾을 수 없음
+
+  /articles:
+    get:
+      summary: 게시글 목록 조회
+      description: 게시글 목록을 조회합니다.
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: 페이지 번호
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 10
+          description: 페이지 당 게시글 수
+        - name: orderBy
+          in: query
+          schema:
+            type: string
+            enum: [recent, like]
+            default: recent
+          description: 정렬 기준
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          description: 검색할 키워드
+      responses:
+        '200':
+          description: 성공적으로 게시글 목록을 조회함
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+
+  /articles/{id}:
+    get:
+      summary: 특정 게시글 조회
+      description: 게시글 ID에 해당하는 게시글을 조회합니다.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 조회할 게시글의 ID
+      responses:
+        '200':
+          description: 성공적으로 게시글을 조회함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleWithDetails'
+        '404':
+          description: 게시글을 찾을 수 없음
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+
+    ProductWithDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        likes:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: integer
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    ArticleWithDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        likes:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: integer
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+        userId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
