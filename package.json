@@ -1,26 +1,17 @@
 {
-  "name": "1-sprint-mission-be",
-  "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "nodemon main.js",
-    "seed": "node prisma/seed.js",
-    "server": "npx nodemon src/index.js"
-  },
   "dependencies": {
-    "@prisma/client": "^5.18.0",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.18.2",
-    "express-validator": "^6.15.0",
-    "github": "^14.0.0",
-    "mongodb": "^6.8.0",
-    "mongoose": "^7.4.0",
-    "nodemon": "^3.1.4",
-    "prisma": "^5.18.0"
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
+    "morgan": "^1.10.0",
+    "pg": "^8.13.0",
+    "sequelize": "^6.37.4",
+    "uuid": "^10.0.0"
   },
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "scripts": {
+    "start": "node src/app.js"
+  }
 }
