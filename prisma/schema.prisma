@@ -1,0 +1,44 @@
+// schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Article {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comments  Comment[] @relation("ArticleComments")
+}
+
+model MarketItem {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  comments    Comment[] @relation("MarketItemComments")
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  articleId  Int?
+  marketItemId Int?
+
+  article    Article? @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
+  marketItem MarketItem? @relation("MarketItemComments", fields: [marketItemId], references: [id], onDelete: Cascade)
+
+  @@index([articleId, marketItemId])
+}
