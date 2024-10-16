@@ -1,44 +1,71 @@
-
-
-### fetch all products
+### GET /products
 GET http://localhost:3000/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
 
-
-### fetch products with orderBy
-GET http://localhost:3000/api/products?orderBy=recent
-
-### fetch products with orderBy
-GET http://localhost:3000/api/products?orderBy=favorite
-
-
-### fetch all products with keyword
-GET http://localhost:3000/api/products?keyword=녹차
-
-### fetch all products with page and pageSize
-GET http://localhost:3000/api/products?page=2&pageSize=4
-
-### fetch product by id
-GET http://localhost:3000/api/products/10e59bae-854d-4856-bed9-405a67363f63
-
-### create new product
+### POST /products
 POST http://localhost:3000/api/products
+Content-Type: multipart/form-data; boundary=Boundary01234567890123456789
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
+
+--Boundary01234567890123456789
+Content-Disposition: form-data; name="name"
+Content-Type: text/plain
+
+새로운 상품 이름입니다.
+--Boundary01234567890123456789
+Content-Disposition: form-data; name="description"
+Content-Type: text/plain
+
+새로운 상품 내용입니다.
+--Boundary01234567890123456789
+Content-Disposition: form-data; name="price"
+Content-Type: text/plain
+
+1234
+--Boundary01234567890123456789
+Content-Disposition: form-data; name="tags[]"
+Content-Type: text/plain
+
+태그1
+--Boundary01234567890123456789
+Content-Disposition: form-data; name="tags[]"
+Content-Type: text/plain
+
+태그2
+--Boundary01234567890123456789--
+
+
+
+
+
+
+### GET /products/{productId}
+GET http://localhost:3000/api/products/be03a085-f824-4925-b49f-49174dbe3b6b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
+
+
+### PATCH /products/{productId}
+PATCH http://localhost:3000/api/products/be03a085-f824-4925-b49f-49174dbe3b6b
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
+
 
 {
-  "name": "미키 마우스 머그컵",
-  "price": 5000,
-  "description": "디즈니 랜드에서 구매한 한정 미키 마우스 머그컵"
-}
+      "name": "수정된 상품 이름입니다.",
+      "description": "수정된 상품 내용입니다.",
+      "price": 10000,
+      "tags":["수정", "했다"]
+} 
 
-### update product by id
-PATCH http://localhost:3000/api/products/6527b991-16c4-476c-812d-319e62af2cea
-Content-Type: application/json
 
-{
-  "name": "원목 책상",
-  "price" :10000,
-  "description": "아카시아 나무 너비 1미터 원목책상"
-}
+### DELETE /products/{productId}
+DELETE http://localhost:3000/api/products/be03a085-f824-4925-b49f-49174dbe3b6b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
 
-### delete product by id
-DELETE http://localhost:3000/api/products/6527b991-16c4-476c-812d-319e62af2cea
+### POST /products/{productId}/favorite
+POST http://localhost:3000/api/products/be03a085-f824-4925-b49f-49174dbe3b6b/favorite
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
+
+### DELETE /products/{productId}/favorite
+DELETE http://localhost:3000/api/products/be03a085-f824-4925-b49f-49174dbe3b6b/favorite
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c

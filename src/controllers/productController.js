@@ -1,91 +1,132 @@
-import { PrismaClient } from "@prisma/client";
-import { assert } from "superstruct";
+import * as productService from '../services/productService.js';
+import { CreateProduct, PatchProduct, assert } from '../validations/structs.js';
 
-import { CreateProduct, PatchProduct } from "../validation/structs.js";
-
-const prisma = new PrismaClient();
-
-//get products list
-// query parameter: orderBy, page, pageSize, keyword
-export const getProducts = async (req, res) => {
+export const getProductList = async (req, res) => {
   const { orderBy } = req.query;
   const page = parseInt(req.query.page) * 1 || 1;
   const pageSize = parseInt(req.query.pageSize) * 1 || 10;
-  const keyword = req.query.keyword || "";
+  const keyword = req.query.keyword || '';
 
-  const offset = (page - 1) * pageSize;
+  const products = await productService.getProducts({
+    orderBy,
+    page,
+    pageSize,
+    keyword,
+  });
 
-  let sortOption;
-  if (orderBy === "recent") {
-    sortOption = { createdAt: "desc" };
-  } else if (orderBy === "favorite") {
-    sortOption = { favoriteCount: "desc" };
-  } else {
-    sortOption = { createdAt: "asc" };
+  res.json(products);
+};
+
+export const getProductById = async (req, res) => {
+  const { productId } = req.params;
+  const userId = req.user.id;
+  const product = await productService.getProduct(productId, userId);
+  res.json(product);
+};
+
+export const createProduct = async (req, res) => {
+  const userId = req.user.id;
+  const { name, description, price } = req.body;
+  const files = req.files;
+
+  let tags = req.body.tags;
+
+  if (!Array.isArray(tags)) {
+    tags = tags ? [tags] : [];
   }
 
-  const searchQuery = {
-    OR: [
-      { name: { contains: keyword } },
-      { description: { contains: keyword } },
-    ],
+  if (!files || files.length === 0) {
+    return res.status(400).json({ message: '이미지 파일이 안옴' });
+  }
+
+  const convertToUrl =
+    files && files.length > 0
+      ? files.map((file) => {
+          return `${req.protocol}://${req.get('host')}/api/images/${
+            file.filename
+          }`;
+        })
+      : [];
+
+  const data = {
+    name,
+    description,
+    price: price ? parseInt(price, 10) : 0,
+    tags,
+    images: [...convertToUrl],
   };
 
-  const products = await prisma.product.findMany({
-    where: searchQuery,
-    orderBy: sortOption,
-    skip: offset,
-    take: pageSize,
-  });
+  assert(data, CreateProduct);
 
-  const totalCount = await prisma.product.count({ where: searchQuery });
-
-  res.send({ totalCount, list: products });
+  const newProduct = await productService.createProduct(userId, data);
+  res.status(201).json(newProduct);
 };
 
-//get product by id
-export const getProductById = async (req, res) => {
-  const { id } = req.params;
-
-  const product = await prisma.product.findUniqueOrThrow({
-    where: { id },
-    select: {
-      id: true,
-      name: true,
-      description: true,
-      price: true,
-      tags: true,
-      createdAt: true,
-    },
-  });
-
-  res.send(product);
-};
-
-// create new product
-export const createProduct = async (req, res) => {
-  assert(req.body, CreateProduct);
-  const newProduct = await prisma.product.create({
-    data: req.body,
-  });
-  res.status(201).send(newProduct);
-};
-
-// patch existed product with id
 export const updateProductById = async (req, res) => {
-  assert(req.body, PatchProduct);
-  const { id } = req.params;
-  const product = await prisma.product.update({
-    where: { id },
-    data: req.body,
-  });
-  res.send(product);
+  const { productId } = req.params;
+  const { name, description, price } = req.body;
+  const files = req.files;
+  let tags = req.body.tags;
+  let imageUrls = req.body.imageUrls;
+
+  if (!Array.isArray(tags)) {
+    tags = tags ? [tags] : [];
+  }
+
+  if (!Array.isArray(imageUrls)) {
+    imageUrls = imageUrls ? [imageUrls] : [];
+  }
+
+  if (!files && files.length === 0 && imageUrls.length === 0) {
+    return res
+      .status(400)
+      .json({ message: '이미지 파일이나 원래 저장된 url 아무것도 안옴' });
+  }
+
+  const convertToUrl =
+    files && files.length > 0
+      ? files.map((file) => {
+          return `${req.protocol}://${req.get('host')}/api/images/${
+            file.filename
+          }`;
+        })
+      : [];
+
+  const data = {
+    name,
+    description,
+    price: price ? parseInt(price, 10) : 0,
+    tags,
+    images:
+      imageUrls.length === 0
+        ? [...convertToUrl]
+        : [...convertToUrl, ...imageUrls],
+  };
+
+  console.log(data);
+
+  assert(data, PatchProduct);
+
+  const product = await productService.updateProduct(productId, data);
+  return res.json(product);
 };
 
-// delete a product by id
 export const deleteProductById = async (req, res) => {
-  const { id } = req.params;
-  await prisma.product.delete({ where: { id } });
+  const { productId } = req.params;
+  await productService.deleteProduct(productId);
+  return res.status(204).json({ message: '게시글이 삭제되었습니다' });
+};
 
-  res.status(200).send({ message: "Product has deleted successfully" });
+export const createFavoriteOnProduct = async (req, res) => {
+  const { productId } = req.params;
+  const userId = req.user.id;
+  const product = await productService.createFavorite(productId, userId);
+  return res.json(product);
+};
+
+export const deleteFavoriteOnProduct = async (req, res) => {
+  const { productId } = req.params;
+  const userId = req.user.id;
+  const product = await productService.deleteFavorite(productId, userId);
+  return res.json(product);
 };

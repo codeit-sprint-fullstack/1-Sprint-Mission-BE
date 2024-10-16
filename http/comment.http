@@ -1,66 +1,44 @@
-
-### get comments list of article
-
-GET http://localhost:3000/api/articles/03cb17ca-01d2-4b2d-ac70-51b3eb5b072b/comments
-
-
-### get comments list of article pagination
-
-GET http://localhost:3000/api/articles/03cb17ca-01d2-4b2d-ac70-51b3eb5b072b/comments?lastId=f0e3c2b5-8497-4f88-8d98-c2d87b294a2c
-
-### get comments list of product
-
-GET http://localhost:3000/api/products/a57d8a16-eb82-413b-8726-59b24b80e7e4/comments
-
-### get comments list of product pagination
-
-GET http://localhost:3000/api/products/81ddeb00-a28c-4bac-bfed-b15f46d39896/comments?lastId=76bee06c-f5c8-4c6b-8e1b-2b298f622458
-
-### create comment on article
-POST http://localhost:3000/api/articles/03cb17ca-01d2-4b2d-ac70-51b3eb5b072b/comments
+### POST /products/{productId}/comments
+POST http://localhost:3000/api/products/49b482a2-ff08-4938-9279-1a776fcde4c0/comments
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDAzOTMsImV4cCI6MTcyODQ0Mzk5M30.MWsS8_IMYmDzFoJIKguqi8UIgYIH6gVNIaHEmWys2YI
 
 {
-  "content": "미키 마우스 머그컵"
-}
+      "content": "상품댓글 입니다."
+     
+} 
 
-### create comment on product
-POST http://localhost:3000/api/products/81ddeb00-a28c-4bac-bfed-b15f46d39896/comments
+
+### GET /products/{productId}/comments
+GET http://localhost:3000/api/products/49b482a2-ff08-4938-9279-1a776fcde4c0/comments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDAzOTMsImV4cCI6MTcyODQ0Mzk5M30.MWsS8_IMYmDzFoJIKguqi8UIgYIH6gVNIaHEmWys2YI
+
+### POST /articles/{articleId}/comments
+POST http://localhost:3000/api/articles/dec1b09b-9c8c-42a0-ae24-bee6f3b0369e/comments
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDAzOTMsImV4cCI6MTcyODQ0Mzk5M30.MWsS8_IMYmDzFoJIKguqi8UIgYIH6gVNIaHEmWys2YI
 
 {
-  "content": "미키 마우스 머그컵"
-}
+      "content": "게시글 댓글 입니다."
+     
+} 
 
-### update comment
-PATCH http://localhost:3000/api/comments/b9b74c3d-05e4-4e4b-8a0e-84d25f10dfe9
+### GET /articles/{articleId}/comments
+GET http://localhost:3000/api/articles/cb21c3b0-faf8-4744-93fe-6f688c1dad0d/comments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDAzOTMsImV4cCI6MTcyODQ0Mzk5M30.MWsS8_IMYmDzFoJIKguqi8UIgYIH6gVNIaHEmWys2YI
+
+
+### PATCH /comments/{commentId}
+PATCH http://localhost:3000/api/comments/153bdf1e-d7ab-4cac-b941-e1bb93470a51
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MWRjODhlOS04MWJiLTQ4MmItYjVmNi0zNzhhM2UwZDJkY2YiLCJpYXQiOjE3Mjg0NDM3MTcsImV4cCI6MTcyODQ0NzMxN30.k_n_C_RZtIqan_H_J_k46nb888xDVnE6JQy1iFJJiik
 
 {
-  "content": "수정된 댓글"
-}
+      "content": "수정된 댓글 입니다."
+     
+} 
 
 
-### delete comment
-
-DELETE http://localhost:3000/api/comments/b9b74c3d-05e4-4e4b-8a0e-84d25f10dfe9
-
-
-### create comment on article
-POST http://localhost:3000/api/articles/03cb17ca-01d2-4b2d-ac70-51b3eb5b072b/comments
-Content-Type: application/json
-
-{
-  "content": "미키 마우스 머그컵"
-}
-
-### update comment by comment id
-PATCH http://localhost:3000/api/comments/eb8d9178-20f6-460a-bd01-a2e39de1867f
-Content-Type: application/json
-
-{
-  "content": "수정된 게시판 댓글"
-}
-
-### delete comment by comment id
-DELETE http://localhost:3000/api/comments/eb8d9178-20f6-460a-bd01-a2e39de1867f
+### DELETE /comments/{commentId}
+DELETE http://localhost:3000/api/comments/ce64403d-a029-4211-a07c-2cdb2ad47500
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDAzOTMsImV4cCI6MTcyODQ0Mzk5M30.MWsS8_IMYmDzFoJIKguqi8UIgYIH6gVNIaHEmWys2YI
