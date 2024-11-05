@@ -3,8 +3,7 @@ const prisma = new PrismaClient();
 
 // 게시글 생성
 exports.createArticle = async (req, res, next) => {
-  const { title, content, tags } = req.body;
-  const imagePaths = req.files.map(file => `/uploads/${file.filename}`);
+  const { title, content, tags, images } = req.body;
 
   try {
     const article = await prisma.article.create({
@@ -12,7 +11,7 @@ exports.createArticle = async (req, res, next) => {
         title,
         content,
         tags,
-        image: imagePaths,
+        image: images || [], // req.body.images 사용
         userId: req.user.id,
       },
     });
@@ -57,21 +56,21 @@ exports.getArticles = async (req, res, next) => {
 
 // 특정 게시글 조회
 exports.getArticleById = async (req, res, next) => {
-  const { id } = req.params;
+  const { articleId } = req.params;
 
   try {
     const article = await prisma.article.findUnique({
-      where: { id: parseInt(id) },
+      where: { id: parseInt(articleId) },
       include: {
         likes: true,
         comments: true,
       },
     });
-    if (!article)
+    if (!article) {
       return res.status(404).json({ error: "해당 게시글을 찾을 수 없습니다." });
+    }
 
     const isLiked = article.likes.some(like => like.userId === req.user.id);
-
     res.status(200).json({ ...article, isLiked });
   } catch (error) {
     next(error); // 에러 전달
@@ -80,14 +79,13 @@ exports.getArticleById = async (req, res, next) => {
 
 // 게시글 수정
 exports.updateArticle = async (req, res, next) => {
-  const { id } = req.params;
-  const { title, content, tags } = req.body;
-  const imagePaths = req.files.map(file => `/uploads/${file.filename}`);
+  const { articleId } = req.params;
+  const { title, content, tags, images } = req.body;
 
   try {
     const article = await prisma.article.update({
-      where: { id: parseInt(id) },
-      data: { title, content, tags, image: imagePaths },
+      where: { id: parseInt(articleId) },
+      data: { title, content, tags, image: images || [] },
     });
     res.status(200).json(article);
   } catch (error) {
@@ -97,15 +95,14 @@ exports.updateArticle = async (req, res, next) => {
 
 // 게시글 삭제
 exports.deleteArticle = async (req, res, next) => {
-  const { id } = req.params;
+  const { articleId } = req.params;
 
   try {
     await prisma.article.delete({
-      where: { id: parseInt(id) },
+      where: { id: parseInt(articleId) },
     });
     res.status(200).json({ message: "게시글이 성공적으로 삭제되었습니다." });
   } catch (error) {
     next(error); // 에러 전달
   }
 };
-
