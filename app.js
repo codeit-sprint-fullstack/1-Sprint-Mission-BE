@@ -23,12 +23,15 @@ if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
 }
 
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true, // 쿠키와 인증 헤더 허용
-  })
-);
+// 환경에 따른 CORS 설정
+const corsOptions = {
+  origin: process.env.NODE_ENV === "production"
+    ? process.env.CORS_ORIGIN
+    : process.env.CORS_ORIGIN_DEV,
+  credentials: true, // 쿠키와 인증 헤더 허용
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
@@ -56,4 +59,3 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 module.exports = app;
-
