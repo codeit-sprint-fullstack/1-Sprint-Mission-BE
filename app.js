@@ -25,7 +25,7 @@ if (!fs.existsSync(uploadPath)) {
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: [process.env.CORS_ORIGIN, 'http://localhost:3000'],
     credentials: true, // 쿠키와 인증 헤더 허용
   })
 );
