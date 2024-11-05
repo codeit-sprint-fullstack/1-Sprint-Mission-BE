@@ -1,4 +1,4 @@
-import prisma from "../models/index.js";
+import prisma from "../models/index";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 

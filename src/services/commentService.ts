@@ -1,4 +1,4 @@
-import prisma from "../models/index.js";
+import prisma from "../models/index";
 import { Prisma } from "@prisma/client";
 
 const parseId = (id: string): number => parseInt(id, 10);

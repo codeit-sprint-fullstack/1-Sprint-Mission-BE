@@ -1,4 +1,4 @@
-import * as commentService from "../services/commentService.js";
+import * as commentService from "../services/commentService";
 import { Request, Response, NextFunction } from "express";
 
 interface Comment {

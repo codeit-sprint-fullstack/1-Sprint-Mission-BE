@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import prisma from "../models/index.js";
+import prisma from "../models/index";
 import { Response, Request, NextFunction } from "express";
 
 interface DecodedToken {

@@ -1,4 +1,4 @@
-import prisma from "../models/index.js";
+import prisma from "../models/index";
 import { User } from "@prisma/client";
 
 export const getUserById = async (id: number): Promise<User | null> => {

@@ -1,4 +1,4 @@
-import * as articleService from "../services/articleService.js";
+import * as articleService from "../services/articleService";
 import { Request, Response, NextFunction } from "express";
 
 const formatArticleResponse = (article: any) => ({

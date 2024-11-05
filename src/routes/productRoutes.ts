@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
-import * as productController from "../controllers/productController.js";
-import { verifyToken } from "../middlewares/verifyToken.js";
-import { validateProductFields } from "../middlewares/validateProductFields.js";
-import { imageUpload } from "../middlewares/imageUpload.js";
+import * as productController from "../controllers/productController";
+import { verifyToken } from "../middlewares/verifyToken";
+import { validateProductFields } from "../middlewares/validateProductFields";
+import { imageUpload } from "../middlewares/imageUpload";
 
 const router = express.Router();
 

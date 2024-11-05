@@ -1,4 +1,4 @@
-import * as authService from "../services/authService.js";
+import * as authService from "../services/authService";
 import { Request, Response, NextFunction } from "express";
 
 interface User {

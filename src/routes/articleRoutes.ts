@@ -1,4 +1,4 @@
-import { validateArticle } from "../middlewares/validateArticle.js";
+import { validateArticle } from "../middlewares/validateArticle";
 import express, { Request, Response, NextFunction } from "express";
 import * as articleController from "../controllers/articleController";
 import { verifyToken } from "../middlewares/verifyToken";

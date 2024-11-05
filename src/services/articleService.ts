@@ -1,4 +1,4 @@
-import prisma from "../models/index.js";
+import prisma from "../models/index";
 import { Prisma } from "@prisma/client";
 
 interface Article {

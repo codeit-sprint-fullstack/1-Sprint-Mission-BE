@@ -1,12 +1,12 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
-import articleRoutes from "./routes/articleRoutes.js";
-import commentRoutes from "./routes/commentRoutes.js";
-import { errorHandler } from "./middlewares/errorHandler.js";
+import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
+import productRoutes from "./routes/productRoutes";
+import articleRoutes from "./routes/articleRoutes";
+import commentRoutes from "./routes/commentRoutes";
+import { errorHandler } from "./middlewares/errorHandler";
 
 dotenv.config();
 
