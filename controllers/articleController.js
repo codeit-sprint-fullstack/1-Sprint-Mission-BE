@@ -34,18 +34,21 @@ exports.getArticles = async (req, res, next) => {
 
   try {
     const articles = await prisma.article.findMany({
-      where: {
-        OR: [
-          { title: { contains: keyword, mode: 'insensitive' } },
-          { content: { contains: keyword, mode: 'insensitive' } },
-        ],
-      },
+      where: keyword
+        ? {
+            OR: [
+              { title: { contains: keyword, mode: 'insensitive' } },
+              { content: { contains: keyword, mode: 'insensitive' } },
+            ],
+          }
+        : {}, // keyword가 빈 문자열일 경우 조건을 무시
       skip: (page - 1) * pageSize,
       take: parseInt(pageSize, 10),
       orderBy: sortBy,
       include: {
         likes: true,
         comments: true,
+        user: true,
       },
     });
     res.status(200).json(articles);
@@ -53,6 +56,7 @@ exports.getArticles = async (req, res, next) => {
     next(error); // 에러 전달
   }
 };
+
 
 // 특정 게시글 조회
 exports.getArticleById = async (req, res, next) => {
@@ -64,6 +68,7 @@ exports.getArticleById = async (req, res, next) => {
       include: {
         likes: true,
         comments: true,
+        user: true,
       },
     });
     if (!article) {
