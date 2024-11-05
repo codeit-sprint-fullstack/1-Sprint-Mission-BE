@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true, // 문제 해결을 위해 활성화
+    "allowSyntheticDefaultImports": true, // 문제 해결을 위해 활성화
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true, // JSON 파일 import 허용
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

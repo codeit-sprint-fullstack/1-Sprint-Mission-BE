@@ -1,0 +1,46 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const commentController = __importStar(require("../controllers/commentController.js"));
+const verifyToken_js_1 = require("../middlewares/verifyToken.js");
+const router = express_1.default.Router();
+router
+    .route("/products/:productId/comments")
+    .post(verifyToken_js_1.verifyToken, commentController.createProductComment)
+    .get(commentController.getProductComments);
+router
+    .route("/articles/:articleId/comments")
+    .post(verifyToken_js_1.verifyToken, commentController.createArticleComment)
+    .get(commentController.getArticleComments);
+router
+    .route("/comments/:commentId")
+    .all(verifyToken_js_1.verifyToken)
+    .patch(commentController.updateComment)
+    .delete(commentController.deleteComment);
+exports.default = router;
