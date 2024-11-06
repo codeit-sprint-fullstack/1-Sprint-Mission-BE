@@ -7,22 +7,11 @@ type ArticleSelectType = Prisma.ArticleSelect;
 type ArticlePayload<T extends ArticleSelectType | undefined> =
   Prisma.ArticleGetPayload<{ select: T }>;
 
-type ArticleWhereInput = {
-  title?: {
-    contains?: string; // 포함 여부
-    equals?: string; // 정확한 일치 여부
-  };
-  content?: {
-    contains?: string;
-    equals?: string;
-  };
-};
-
 interface PaginationParams {
   orderBy?: CreatedAtOrder;
   skip?: number;
   take?: number;
-  where?: ArticleWhereInput;
+  where?: Prisma.ArticleWhereInput;
 }
 
 // createData
@@ -120,7 +109,7 @@ async function findUniqueOrThrowtData<T extends ArticleSelectType | undefined>({
 }
 
 // countData
-async function countData(where: ArticleWhereInput): Promise<number> {
+async function countData(where: Prisma.ArticleWhereInput): Promise<number> {
   return await prisma.article.count({ where });
 }
 
