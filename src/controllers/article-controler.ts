@@ -9,7 +9,7 @@ async function getArticleList(
 ) {
   try {
     const articleList = await articleService.getArticleList(req.query);
-    return res.send(articleList);
+    res.send(articleList);
   } catch (err) {
     return next(err);
   }

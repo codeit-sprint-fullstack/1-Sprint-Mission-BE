@@ -4,7 +4,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import articleRpository  from "./repositories/article-repository";
-// import articleController from "./src/controllers/articleController.js";
+import articleRouter from "./routers/article-router";
 // import authController from "./src/controllers/authController.js";
 // import {
 //   articleCommentController,
@@ -45,7 +45,7 @@ app.use("/images", express.static("uploads"));
 //   res.send(q);
 // });
 
-// app.use("/article", articleController);
+app.use('/article', articleRouter)
 // app.use("/auth", authController);
 // app.use("/comment", commentController);
 // app.use("/article", articleCommentController);
