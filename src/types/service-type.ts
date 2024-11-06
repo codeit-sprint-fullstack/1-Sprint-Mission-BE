@@ -4,3 +4,7 @@ export interface PagenationQuery {
   orderBy?: string;
   keyWord?: string;
 }
+
+export interface UserId {
+  userId: string;
+};

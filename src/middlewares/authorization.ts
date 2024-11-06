@@ -7,10 +7,10 @@ import { NextFunction, Request, Response } from "express";
 import { CustomError } from "./error-handler";
 
 type Decoded = {
-  userId: string
-  ist: number
-  exp: number
-}
+  userId: string;
+  ist: number;
+  exp: number;
+};
 
 const verifyAccessToken = expressjwt({
   secret: process.env.JWT_SECRET,
@@ -35,7 +35,7 @@ function setUserIdFromToken(req: Request, res: Response, next: NextFunction) {
 
   if (token) {
     try {
-      const decoded = jwt.decode(token) as Decoded | null
+      const decoded = jwt.decode(token) as Decoded | null;
       if (decoded) {
         req.body.userId = decoded.userId;
         return next();

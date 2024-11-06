@@ -1,6 +1,6 @@
 import { Article } from "@prisma/client";
 import articleRepository from "../repositories/article-repository";
-import { PagenationQuery } from "../types/service-type";
+import { PagenationQuery, UserId } from "../types/service-type";
 import {
   articleKeywordfilterOtions,
   createPagefilterOptions,
@@ -21,10 +21,11 @@ async function getArticleList(query: PagenationQuery) {
   return { total, list };
 }
 
-async function createArticle(data: CreateArticle) {
-    
+async function createArticle(data: UserId & CreateArticle) {
+  return await articleRepository.createData({ data });
 }
 
 export default {
   getArticleList,
+  createArticle,
 };

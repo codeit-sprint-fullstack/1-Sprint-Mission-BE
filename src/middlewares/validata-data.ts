@@ -21,7 +21,12 @@ import {
   updateProduct,
 } from "../struct/product-struct";
 import { SingIn, singInUser, SingUp, singUpUser } from "../struct/user-struct";
-import { createArticleLike, CreateArticleLike, createProductLike, CreateProductLike } from "../struct/like-struct";
+import {
+  createArticleLike,
+  CreateArticleLike,
+  createProductLike,
+  CreateProductLike,
+} from "../struct/like-struct";
 
 type Method = "post" | "patch";
 type EntityType = "article" | "product";
