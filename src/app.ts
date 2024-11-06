@@ -3,6 +3,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import articleRpository  from "./repositories/article-repository";
 // import articleController from "./src/controllers/articleController.js";
 // import authController from "./src/controllers/authController.js";
 // import {
@@ -23,6 +24,26 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use("/images", express.static("uploads"));
+// app.post("/", async (req, res, next) => {
+//   const data = {
+//     title: "s",
+//     content: "s",
+//     userId: "68b138d3-5731-4df4-9ca3-d88206bc800b",
+//   };
+
+//   const select = {
+//     id: true,
+//     user: {
+//         select: {
+//             nickname: true,
+//             id: true
+//         }
+//     }
+//   };
+
+//   const q = await articleRpository.findFirstData({ where });
+//   res.send(q);
+// });
 
 // app.use("/article", articleController);
 // app.use("/auth", authController);

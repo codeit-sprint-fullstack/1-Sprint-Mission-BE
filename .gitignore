@@ -5,3 +5,4 @@ express-mission-prisma/.env
 
 node_modules/
 .env
+/src/test.ts
