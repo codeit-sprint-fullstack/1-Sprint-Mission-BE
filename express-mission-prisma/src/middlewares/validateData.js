@@ -49,9 +49,9 @@ function product(method) {
     if (method === "post") {
       assert(req.body, createProduct);
       next();
-    } else if(method === 'patch') {
-      assert(req.body, updateProduct)
-      next()
+    } else if (method === "patch") {
+      assert(req.body, updateProduct);
+      next();
     }
   };
 }
