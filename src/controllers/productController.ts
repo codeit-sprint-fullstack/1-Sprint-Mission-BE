@@ -97,13 +97,19 @@ export const getProductsById = async (
 export const updateProduct = async (
   req: Request & {
     files?: Express.Multer.File[];
+    user?: { id: number; nickname: string };
   },
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { files } = req;
+    const { files, user } = req;
     const { productId } = req.params;
+    if (!user?.id) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const userId: number = user.id;
+    const nickname: string = user.nickname;
     const newImagePaths = files
       ? files.map((file) => (file as any).location)
       : [];
@@ -118,7 +124,12 @@ export const updateProduct = async (
     }
 
     const images = [...existingImages, ...newImagePaths];
-    const { name, price, description, tags } = req.body;
+    const { name, price, description, tags } = req.body as {
+      name: string;
+      price: string;
+      description: string;
+      tags: string[];
+    };
 
     const updatedProduct = await productService.updateProduct(
       parseInt(productId),
@@ -126,7 +137,9 @@ export const updateProduct = async (
       name,
       parseInt(price),
       description,
-      tags
+      tags,
+      userId,
+      nickname
     );
 
     res.status(200).json(updatedProduct);

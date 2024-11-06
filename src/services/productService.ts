@@ -103,7 +103,9 @@ export const updateProduct = async (
   name: string,
   price: number,
   description: string,
-  tags: string[]
+  tags: string[],
+  userId: number,
+  userNickname: string
 ): Promise<Product> => {
   const updatedProduct = await prisma.product.update({
     where: { id: parseId(productId) },
@@ -113,6 +115,8 @@ export const updateProduct = async (
       price,
       description,
       tags,
+      ownerId: userId,
+      ownerNickname: userNickname,
     },
   });
 
