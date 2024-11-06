@@ -1,5 +1,5 @@
 import { CreatedAtOrder } from "../types/repository-type";
-import { PaginationQuery } from "../types/service-type";
+import { PagenationQuery } from "../types/service-type";
 
 type KeyWordFilter = {
   contains: string;
@@ -13,7 +13,7 @@ interface PageFilterOption {
 }
 
 function articleKeywordfilterOtions(
-  query: PaginationQuery
+  query: PagenationQuery
 ) {
   const { keyWord = "" } = query;
 
@@ -28,7 +28,7 @@ function articleKeywordfilterOtions(
   return filterOptions;
 }
 
-function productKeywordfilterOtions(query: PaginationQuery) {
+function productKeywordfilterOtions(query: PagenationQuery) {
   const { keyWord = "" } = query;
 
   const filterBody: KeyWordFilter = {
@@ -43,7 +43,7 @@ function productKeywordfilterOtions(query: PaginationQuery) {
   return filterOptions;
 }
 
-function createPagefilterOptions(query: PaginationQuery) {
+function createPagefilterOptions(query: PagenationQuery) {
   const { page, pageSize, orderBy } = query;
 
   const pageNum: number = page || 1;

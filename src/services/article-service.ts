@@ -1,12 +1,12 @@
 import { Article, Prisma } from "@prisma/client";
 import articleRepository from "../repositories/article-repository";
-import { PaginationQuery } from "../types/service-type";
+import { PagenationQuery } from "../types/service-type";
 import {
   articleKeywordfilterOtions,
   createPagefilterOptions,
 } from "../utills/query-option";
 
-async function getArticleList(query: PaginationQuery) {
+async function getArticleList(query: PagenationQuery) {
   const KeyWordFilter = articleKeywordfilterOtions(query);
   const pageFilterOption = createPagefilterOptions(query);
   const paginationParams = {
@@ -19,3 +19,7 @@ async function getArticleList(query: PaginationQuery) {
   const total: number = await articleRepository.countData(KeyWordFilter);
   return { total, list };
 }
+
+export default {
+  getArticleList,
+};
