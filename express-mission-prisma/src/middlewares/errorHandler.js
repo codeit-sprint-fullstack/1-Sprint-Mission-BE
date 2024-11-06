@@ -21,7 +21,7 @@ function errorHandler(error, req, res, next) {
   } else if (error.code === "P2002") {
     status = 409;
   } else {
-    status = error.code ?? 500;
+    status = error.status ?? 500;
   }
 
   return res.status(status).json({

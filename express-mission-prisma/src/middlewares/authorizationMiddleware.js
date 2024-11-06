@@ -28,6 +28,7 @@ function setUserIdFromToken(req, res, next) {
   if (token) {
     try {
       const decoded = jwt.decode(token);
+      
       if (decoded) {
         req.body.userId = decoded.userId;
         return next();
