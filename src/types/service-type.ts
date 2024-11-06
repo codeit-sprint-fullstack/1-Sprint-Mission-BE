@@ -3,4 +3,4 @@ export interface PagenationQuery {
   pageSize?: number;
   orderBy?: string;
   keyWord?: string;
-};
+}
