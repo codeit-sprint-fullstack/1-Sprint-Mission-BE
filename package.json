@@ -1,6 +1,15 @@
 {
   "dependencies": {
     "@prisma/client": "^5.20.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/is-uuid": "^1.0.2",
+    "@types/multer": "^1.4.12",
+    "@types/passport": "^1.0.17",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/superstruct": "^0.8.2",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -10,23 +19,23 @@
     "is-email": "^1.0.2",
     "is-uuid": "^1.0.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.5.1",
     "multer": "^1.4.5-lts.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "prisma": "^5.4.2",
     "superstruct": "^1.0.3",
-    "swagger-autogen": "^2.23.7"
+    "swagger-autogen": "^2.23.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
-  "type": "module",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon --watch src src/app.ts",
     "start": "node app.js",
     "seed": "node data/seed.js",
     "swagger": "node swagger.js"

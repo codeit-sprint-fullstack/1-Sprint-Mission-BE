@@ -1,0 +1,122 @@
+import { setOrderByQuery } from "../utils/orderByQuery";
+import articleModel from "../repositorys/articleRepository";
+import { whereConditions } from "../utils/interfaces/whereConditions";
+import { Request } from "express";
+import { CustomError } from "../utils/interfaces/customError";
+import { Article } from "@prisma/client";
+
+interface MyQueryParams {
+  orderBy: string;
+  keyword: string;
+  cursor: string;
+  limit: number;
+}
+
+const getArticles = async (req: Request) => {
+  const query = req.query as unknown as MyQueryParams;
+  const {
+    orderBy = "recent",
+    keyword = "",
+    cursor = "",
+    limit = 5,
+  }: MyQueryParams = query;
+  // const offset = parseInt(req.query.offset) - 1 || 0;
+  const parseLimit = limit;
+  const orderbyQuery = setOrderByQuery(orderBy);
+  const whereConditions: whereConditions = {};
+  if (keyword) {
+    whereConditions.OR = [
+      { title: { contains: keyword, mode: "insensitive" } },
+      { content: { contains: keyword, mode: "insensitive" } },
+    ];
+  }
+
+  const articles = await articleModel.getArticles(
+    cursor,
+    limit,
+    whereConditions,
+    orderbyQuery
+  );
+
+  if (!articles) {
+    const error: CustomError = new Error("Not Found");
+    error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
+    throw error;
+  }
+  //추가적인 데이터가 있는지 확인
+  const nextArticles = articles.length > parseLimit;
+  //추가 데이터가 있다면 커서값을 주고 데이터에서 리미트에 맞춰 돌려준다
+  const nextCursor = nextArticles ? articles[parseLimit - 1].id : "";
+
+  return {
+    list: articles.slice(0, parseLimit),
+    nextCursor,
+  };
+};
+
+const getArticle = async (userId: string, articleId: string) => {
+  const article = await articleModel.findById(articleId);
+  if (!article) {
+    const error: CustomError = new Error("Not Found");
+    error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
+    throw error;
+  }
+  //현재 사용자의 좋아요 상태를 확인 후 반환 -> 좋아요 상태가 아니면 null
+  const existingLike = await articleModel.existingLike(userId, articleId);
+  return { article, existingLike };
+};
+
+const updateArticle = async (articleId: string, data: Article) => {
+  const article = await articleModel.updateArticle(articleId, data);
+  if (!article) {
+    const error: CustomError = new Error("Not Found");
+    error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
+    throw error;
+  }
+  return article;
+};
+
+const likeArticle = async (articleId: string, userId: string) => {
+  const article = await articleModel.likeArticle(articleId, userId);
+  return article;
+};
+
+const unlikeArticle = async (articleId: string, userId: string) => {
+  const article = await articleModel.unlikeArticle(articleId, userId);
+  return article;
+};
+
+const createArticle = async (data: Article) => {
+  const article = await articleModel.createArticle(data);
+  if (!article) {
+    const error: CustomError = new Error("Not Found");
+    error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
+    throw error;
+  }
+  return article;
+};
+
+const deleteArticle = async (articleId: string) => {
+  const article = await articleModel.deleteArticle(articleId);
+  if (!article) {
+    const error: CustomError = new Error("Not Found");
+    error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
+    throw error;
+  }
+  return article;
+};
+
+export default {
+  getArticles,
+  getArticle,
+  updateArticle,
+  likeArticle,
+  unlikeArticle,
+  createArticle,
+  deleteArticle,
+};
