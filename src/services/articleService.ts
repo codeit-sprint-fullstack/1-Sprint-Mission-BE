@@ -6,23 +6,18 @@ import { CustomError } from "../utils/interfaces/customError";
 import { Article } from "@prisma/client";
 import { ArticleData } from "../utils/interfaces/articles/articleData";
 
-interface MyQueryParams {
+interface QueryString {
   orderBy: string;
   keyword: string;
   cursor: string;
-  limit: number;
+  limit: string;
 }
 
 const getArticles = async (req: Request) => {
-  const query = req.query as unknown as MyQueryParams;
-  const {
-    orderBy = "recent",
-    keyword = "",
-    cursor = "",
-    limit = 5,
-  }: MyQueryParams = query;
+  const query = req.query as unknown as QueryString;
+  const { orderBy = "recent", keyword = "", cursor = "", limit = "5" } = query;
   // const offset = parseInt(req.query.offset) - 1 || 0;
-  const parseLimit = limit;
+  const parseLimit = parseInt(limit);
   const orderbyQuery = setOrderByQuery(orderBy);
   const whereConditions: whereConditions = {};
   if (keyword) {
@@ -34,7 +29,7 @@ const getArticles = async (req: Request) => {
 
   const articles = await articleRepository.getArticles(
     cursor,
-    limit,
+    parseLimit,
     whereConditions,
     orderbyQuery
   );

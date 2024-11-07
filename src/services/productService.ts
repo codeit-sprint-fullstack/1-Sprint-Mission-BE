@@ -8,8 +8,8 @@ import { ProductData } from "../utils/interfaces/products/productData";
 
 interface MyQueryParams {
   orderBy: string;
-  page: number;
-  pageSize: number;
+  page: string;
+  pageSize: string;
   keyword: string;
 }
 
@@ -17,11 +17,13 @@ const getProducts = async (req: Request) => {
   const query = req.query as unknown as MyQueryParams;
   const {
     orderBy = "recent", // 기본값
-    page = 1,
-    pageSize = 10,
+    page = "1",
+    pageSize = "10",
     keyword = "",
   }: MyQueryParams = query;
-  const offset = (page - 1) * pageSize; //page가 3이면 3-1 = 2 * count 만큼 스킵
+  const parsePage = parseInt(page);
+  const parsePageSize = parseInt(pageSize);
+  const offset = (parsePage - 1) * parsePageSize; //page가 3이면 3-1 = 2 * count 만큼 스킵
   const orderOption = setOrderByQuery(orderBy);
   const whereConditions: whereConditions = {};
   if (keyword) {
@@ -32,9 +34,14 @@ const getProducts = async (req: Request) => {
   }
   const [totalCount, products] = await Promise.all([
     productRepository.getTotalCount(whereConditions),
-    productRepository.getList(pageSize, offset, orderOption, whereConditions),
+    productRepository.getList(
+      parsePageSize,
+      offset,
+      orderOption,
+      whereConditions
+    ),
   ]);
-  const hasMore = totalCount - page * pageSize > 0;
+  const hasMore = totalCount - parsePage * parsePageSize > 0;
   return { totalCount, products, hasMore };
 };
 

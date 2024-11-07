@@ -3,15 +3,20 @@ import { Request } from "express";
 import { CustomError } from "../utils/interfaces/customError";
 import { CommentData } from "../utils/interfaces/comments/commentData";
 
+interface QueryString {
+  limit: string;
+  cursor: string;
+}
+
 const getArticleComments = async (req: Request) => {
-  const { limit = 5, cursor = "" } = req.query;
+  const { limit = "5", cursor = "" } = req.query as unknown as QueryString;
   const { id } = req.params;
 
-  const parseLimit = parseInt(limit as string);
+  const parseLimit = parseInt(limit);
 
   const comments = await commentRepository.getArticleComments(
-    cursor as string,
-    parseInt(limit as string),
+    cursor,
+    parseLimit,
     id
   );
 
@@ -33,10 +38,10 @@ const getArticleComments = async (req: Request) => {
 };
 
 const getProductComments = async (req: Request) => {
-  const { limit = 5, cursor = "" } = req.query;
+  const { limit = "5", cursor = "" } = req.query as unknown as QueryString;
   const { id } = req.params;
 
-  const parseLimit = parseInt(limit as string);
+  const parseLimit = parseInt(limit);
 
   const comments = await commentRepository.getProductComments(
     cursor as string,
