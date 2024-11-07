@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { CustomError } from "../middlewares/error-handler";
 import userRepository from "../repositories/user-repository";
 import { SignIn, SignUp } from "../struct/user-struct";
@@ -6,7 +7,7 @@ import {
   hashPassword,
   verifyPassword,
 } from "../utills/auth-handler";
-import { createToken } from "../utills/jwt-utill";
+import { createToken, verifyRefreshToken } from "../utills/jwt-utill";
 import { signInMapper } from "./mappers/auth-mpper";
 
 interface SignUpData {
@@ -65,7 +66,22 @@ async function signIn(data: SignIn) {
   return { response, refreshToken };
 }
 
+// 토큰 재발행
+async function reissueToken(req: Request) {
+  if (req.auth) {
+    const { refreshToken } = req.cookies;
+    const { userId } = req.auth;
+
+    return await verifyRefreshToken(userId, refreshToken);
+  } else {
+    const error: CustomError = new Error("Unauthorized");
+    error.status = 401;
+    throw error;
+  }
+}
+
 export default {
   signUp,
   signIn,
+  reissueToken,
 };

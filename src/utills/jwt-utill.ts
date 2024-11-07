@@ -9,7 +9,7 @@ export async function createToken(user: User, type?: string) {
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
-export async function refreshToken(userId: string, refreshToken: string) {
+export async function verifyRefreshToken(userId: string, refreshToken: string) {
   const user = await userRepository.findUniqueOrThrowtData({
     where: { id: userId },
   });

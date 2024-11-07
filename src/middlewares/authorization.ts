@@ -21,7 +21,7 @@ const verifyAccessToken = expressjwt({
 const verifyRefreshToken = expressjwt({
   secret: process.env.JWT_SECRET,
   algorithms: ["HS256"],
-  getToken: (req) => req.cookies.refreshToken,
+  getToken: (req) => req.cookies?.refreshToken,
 }) as unknown as RequestHandler;
 
 function attachUserId(req: Request, res: Response, next: NextFunction) {
