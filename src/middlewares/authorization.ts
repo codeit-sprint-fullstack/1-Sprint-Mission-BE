@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 // import articleRepository from "../repositories/articleRepository.js";
 // import commentRepository from "../repositories/commentRepository.js";
 // import productRepositpry from "../repositories/productRepositpry.js";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import { CustomError } from "./error-handler";
 
 type Decoded = {
@@ -15,13 +15,13 @@ type Decoded = {
 const verifyAccessToken = expressjwt({
   secret: process.env.JWT_SECRET,
   algorithms: ["HS256"],
-});
+}) as unknown as RequestHandler;
 
 const verifyRefreshToken = expressjwt({
   secret: process.env.JWT_SECRET,
   algorithms: ["HS256"],
   getToken: (req) => req.cookies.refreshToken,
-});
+}) as unknown as RequestHandler;
 
 function attachUserId(req: Request, res: Response, next: NextFunction) {
   if (req.auth) {
