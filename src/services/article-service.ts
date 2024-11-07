@@ -6,6 +6,7 @@ import {
   createPagefilterOptions,
 } from "../utills/query-option";
 import { CreateArticle } from "../struct/article-struct";
+import likeRepository from "../repositories/like-repository";
 
 async function getArticleList(query: PagenationQuery) {
   const KeyWordFilter = articleKeywordfilterOtions(query);
@@ -25,7 +26,33 @@ async function createArticle(data: UserId & CreateArticle) {
   return await articleRepository.createData({ data });
 }
 
+async function getArticleDetail({
+  articleId,
+  userId,
+}: {
+  articleId: string;
+  userId?: string;
+}) {
+  const article = await articleRepository.findUniqueOrThrowtData({
+    where: { id: articleId },
+  });
+  if (userId !== undefined) {
+    const like = await likeRepository.findFirstData({
+      where: { articleId, userId },
+    });
+
+    let isLike: boolean = false;
+    if (like) {
+      isLike = true;
+    }
+
+    return { ...article, isLike };
+  }
+  return article;
+}
+
 export default {
   getArticleList,
   createArticle,
+  getArticleDetail,
 };

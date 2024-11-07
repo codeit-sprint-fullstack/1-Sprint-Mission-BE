@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 
 type ArticleSelectType = Prisma.ArticleSelect;
 
+// ~~~GetPayload<>: select 또는 include 옵션의 구조에 따라 반환 타입을 동적으로 생성
 type ArticlePayload<T extends ArticleSelectType | undefined> =
   Prisma.ArticleGetPayload<{ select: T }>;
 
@@ -25,7 +26,6 @@ function createData<T extends ArticleSelectType>({
   select: T;
 }): Promise<ArticlePayload<T>>;
 // Promise<>: 비동기 함수가 반환하는 값을 명시적으로 지정할 때 사용,
-// ~~~GetPayload<>: select 또는 include 옵션의 구조에 따라 반환 타입을 동적으로 생성
 
 // 함수 오버로드의 시크니쳐
 function createData({
