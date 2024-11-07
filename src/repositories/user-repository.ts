@@ -61,7 +61,35 @@ async function createUser<T extends UserSelectType | undefined>({
   return await prisma.user.create({ data, select });
 }
 
+// findUniqueOrThrowtData
+function findUniqueOrThrowtData<T extends UserSelectType>({
+  where,
+  select,
+}: {
+  where: Prisma.UserWhereUniqueInput;
+  select: T;
+}): Promise<UserPayLoad<T>>;
+function findUniqueOrThrowtData({
+  where,
+}: {
+  where: Prisma.UserWhereUniqueInput;
+}): Promise<UserPayLoad<undefined>>;
+
+async function findUniqueOrThrowtData<T extends UserSelectType | undefined>({
+  where,
+  select,
+}: {
+  where: Prisma.UserWhereUniqueInput;
+  select?: T;
+}) {
+  if (select === undefined) {
+    return await prisma.user.findUniqueOrThrow({ where });
+  }
+  return await prisma.user.findUniqueOrThrow({ where, select });
+}
+
 export default {
   findFirstData,
   createUser,
+  findUniqueOrThrowtData,
 };
