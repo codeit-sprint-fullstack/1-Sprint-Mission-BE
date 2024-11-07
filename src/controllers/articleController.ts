@@ -54,7 +54,7 @@ router.post(
     try {
       const { id: userId } = req.user as { id: string };
       const data = await articleService.createArticle({
-        ...(req.body as Article),
+        ...req.body,
         ownerId: userId,
       });
       res.status(201).send(data);
@@ -71,7 +71,7 @@ router.patch(
   asyncHandle(async (req: Request, res: Response, next: NextFunction) => {
     assert(req.body, updateArticle);
     try {
-      const { id: articleId } = req.params;
+      const { id: articleId } = req.params as { id: string };
       const data = await articleService.updateArticle(
         articleId,
         req.body as ArticleData
