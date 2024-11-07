@@ -64,7 +64,7 @@ router.post(
         cookiesConfig.accessTokenOption
       );
 
-      res.status(204).send();
+      res.status(200).send();
     } catch (error) {
       next(error);
     }
@@ -112,7 +112,10 @@ router.get(
         const accessToken = userService.createToken(existedUser);
         const newRefreshToken = userService.createToken(existedUser, "refresh");
         //DB의 갱신된 리프레쉬 토큰 저장
-        await userService.updateRefreshToken(userId, newRefreshToken);
+        const nextUser = await userService.updateRefreshToken(
+          userId,
+          newRefreshToken
+        );
 
         res.cookie(
           "access-token",
@@ -124,7 +127,7 @@ router.get(
           newRefreshToken,
           cookiesConfig.accessTokenOption
         );
-        res.status(204).send();
+        res.status(200).send({ message: "토큰갱신" });
       }
     } catch (error) {
       next(error);
