@@ -56,9 +56,15 @@ async function updateArticle(articleId: string, data: UpdateArticle) {
   });
 }
 
+// article 삭제
+async function deleteArticle(articleId: string) {
+  return await articleRepository.deleteData({ id: articleId });
+}
+
 export default {
   getArticleList,
   createArticle,
   getArticleDetail,
   updateArticle,
+  deleteArticle,
 };
