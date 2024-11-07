@@ -9,3 +9,5 @@ authRouter
   .post("/signUp", validateData.signUp(), authController.signUp)
   .post("/signIn", validateData.signIn(), authController.signIn)
   .post("/token/refresh", verifyRefreshToken, authController.reissueToken);
+
+export default authRouter;

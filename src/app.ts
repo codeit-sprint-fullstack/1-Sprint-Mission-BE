@@ -3,9 +3,9 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import articleRpository  from "./repositories/article-repository";
+// import articleRpository from "./repositories/article-repository";
 import articleRouter from "./routers/article-router";
-// import authController from "./src/controllers/authController.js";
+import authRouter from "./routers/auth-router";
 // import {
 //   articleCommentController,
 //   commentController,
@@ -45,8 +45,8 @@ app.use("/images", express.static("uploads"));
 //   res.send(q);
 // });
 
-app.use('/article', articleRouter)
-// app.use("/auth", authController);
+app.use("/article", articleRouter);
+app.use("/auth", authRouter);
 // app.use("/comment", commentController);
 // app.use("/article", articleCommentController);
 // app.use("/product", productCommentController);
