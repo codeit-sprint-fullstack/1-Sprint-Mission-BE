@@ -3,13 +3,13 @@ import jwt from "jsonwebtoken";
 import userRepository from "../repositories/user-repository";
 import { CustomError } from "../middlewares/error-handler";
 
-async function createToken(user: User, type?: string) {
+export async function createToken(user: User, type?: string) {
   const payload = { userId: user.id };
   const options = { expiresIn: type === "refresh" ? "2w" : "1h" };
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
-async function refreshToken(userId: string, refreshToken: string) {
+export async function refreshToken(userId: string, refreshToken: string) {
   const user = await userRepository.findUniqueOrThrowtData({
     where: { id: userId },
   });
@@ -22,7 +22,3 @@ async function refreshToken(userId: string, refreshToken: string) {
   return await createToken(user);
 }
 
-export default {
-  createToken,
-  refreshToken,
-};

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { SignUp } from "../struct/user-struct";
+import { SignIn, SignUp } from "../struct/user-struct";
 import authService from "../services/auth-service";
 
 // 회원가입
@@ -16,6 +16,23 @@ async function signUp(
   }
 }
 
+// 로그인
+async function signIn(
+  req: Request<{}, {}, SignIn>,
+  res: Response,
+  next: NextFunction
+) {
+  const { response, refreshToken } = await authService.signIn(req.body);
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  });
+  res.send(response);
+}
+
 export default {
   signUp,
+  signIn,
 };

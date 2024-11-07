@@ -6,6 +6,8 @@ import {
   hashPassword,
   verifyPassword,
 } from "../utills/auth-handler";
+import { createToken } from "../utills/jwt-utill";
+import { signInMapper } from "./mappers/auth-mpper";
 
 interface SignUpData {
   email: string;
@@ -33,12 +35,12 @@ async function signUp(data: SignUp) {
     encryptedPassword,
   };
 
-  const user = await userRepository.createUser({ data: userData });
+  const user = await userRepository.createData({ data: userData });
   return filterSensitiveUserData(user);
 }
 
 // 로그인
-async function signIN(data: SignIn) {
+async function signIn(data: SignIn) {
   const { email, password } = data;
 
   const user = await userRepository.findFirstData({ where: { email } });
@@ -50,9 +52,20 @@ async function signIN(data: SignIn) {
   }
 
   await verifyPassword(password, user.encryptedPassword);
-  
+  const accessToken = await createToken(user);
+  const refreshToken = await createToken(user, "refresh");
+
+  await userRepository.updateData({
+    where: { id: user.id },
+    data: { refreshToken },
+  });
+
+  const response = signInMapper({ user, accessToken, refreshToken });
+
+  return { response, refreshToken };
 }
 
 export default {
   signUp,
+  signIn,
 };

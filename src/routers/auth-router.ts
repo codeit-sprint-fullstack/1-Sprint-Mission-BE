@@ -6,4 +6,4 @@ const authRouter = express.Router();
 
 authRouter
   .post("/signUp", validateData.signUp(), authController.signUp)
-  .post("/signIn", validateData.signIn());
+  .post("/signIn", validateData.signIn(), authController.signIn);
