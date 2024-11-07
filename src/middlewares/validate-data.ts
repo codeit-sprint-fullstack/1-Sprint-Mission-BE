@@ -20,7 +20,7 @@ import {
   UpdateProduct,
   updateProduct,
 } from "../struct/product-struct";
-import { SingIn, singInUser, SingUp, singUpUser } from "../struct/user-struct";
+import { SignIn, signInUser, SignUp, signUpUser } from "../struct/user-struct";
 import {
   createArticleLike,
   CreateArticleLike,
@@ -98,16 +98,16 @@ function product(method: Method) {
   };
 }
 
-function singUp() {
-  return (req: Request<{}, {}, SingUp>, res: Response, next: NextFunction) => {
-    assert(req.body, singUpUser);
+function signUp() {
+  return (req: Request<{}, {}, SignUp>, res: Response, next: NextFunction) => {
+    assert(req.body, signUpUser);
     next();
   };
 }
 
-function singIn() {
-  return (req: Request<{}, {}, SingIn>, res: Response, next: NextFunction) => {
-    assert(req.body, singInUser);
+function signIn() {
+  return (req: Request<{}, {}, SignIn>, res: Response, next: NextFunction) => {
+    assert(req.body, signInUser);
     next();
   };
 }
@@ -137,7 +137,7 @@ export default {
   article,
   comment,
   product,
-  singUp,
-  singIn,
+  signUp,
+  signIn,
   like,
 };

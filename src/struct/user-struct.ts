@@ -10,16 +10,16 @@ const authUserBody = {
   password: s.size(s.string(), 8, 16),
 };
 
-const singUpUser = s.object({
+const signUpUser = s.object({
   ...authUserBody,
   nickname: s.size(s.string(), 1, Infinity),
 });
 
-const singInUser = s.object({
+const signInUser = s.object({
   ...authUserBody,
 });
 
-type SingUp = s.Infer<typeof singUpUser>;
-type SingIn = s.Infer<typeof singInUser>;
+type SignUp = s.Infer<typeof signUpUser>;
+type SignIn = s.Infer<typeof signInUser>;
 
-export { singUpUser, singInUser, SingUp, SingIn };
+export { signUpUser, signInUser, SignUp, SignIn };

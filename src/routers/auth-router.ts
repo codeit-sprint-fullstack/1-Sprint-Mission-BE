@@ -4,4 +4,6 @@ import authController from "../controllers/auth-controller";
 
 const authRouter = express.Router();
 
-authRouter.post("/singUp", validateData.singUp(), authController.singUp);
+authRouter
+  .post("/signUp", validateData.signUp(), authController.signUp)
+  .post("/signIn", validateData.signIn());
