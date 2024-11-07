@@ -30,8 +30,8 @@ const getList = async (
   });
 };
 
-const getById = async (id: string) => {
-  return await prismaClient.product.findUnique({
+const getById = async (id: string): Promise<Product | null> => {
+  return prismaClient.product.findUnique({
     where: {
       id,
     },
@@ -45,8 +45,8 @@ const getById = async (id: string) => {
   });
 };
 
-const create = async (data: ProductData) => {
-  return await prismaClient.product.create({
+const create = async (data: ProductData): Promise<Product> => {
+  return prismaClient.product.create({
     data,
     include: {
       owner: {
@@ -58,8 +58,8 @@ const create = async (data: ProductData) => {
   });
 };
 
-const update = async (id: string, data: ProductData) => {
-  return await prismaClient.product.update({
+const update = async (id: string, data: ProductData): Promise<Product> => {
+  return prismaClient.product.update({
     where: {
       id,
     },
@@ -74,7 +74,10 @@ const update = async (id: string, data: ProductData) => {
   });
 };
 
-const existingLike = async (productId: string, userId: string) => {
+const existingLike = async (
+  productId: string,
+  userId: string
+): Promise<Product | null> => {
   return prismaClient.product.findUnique({
     where: {
       id: productId,
@@ -87,7 +90,10 @@ const existingLike = async (productId: string, userId: string) => {
   });
 };
 
-const likeProduct = async (productId: string, userId: string) => {
+const likeProduct = async (
+  productId: string,
+  userId: string
+): Promise<Product> => {
   return prismaClient.product.update({
     where: {
       id: productId,
@@ -108,7 +114,10 @@ const likeProduct = async (productId: string, userId: string) => {
   });
 };
 
-const unlikeProduct = async (productId: string, userId: string) => {
+const unlikeProduct = async (
+  productId: string,
+  userId: string
+): Promise<Product> => {
   return prismaClient.product.update({
     where: {
       id: productId,
@@ -130,7 +139,7 @@ const unlikeProduct = async (productId: string, userId: string) => {
 };
 
 const deleteItem = async (id: string) => {
-  return await prismaClient.product.delete({
+  return prismaClient.product.delete({
     where: {
       id,
     },

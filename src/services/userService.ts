@@ -55,7 +55,6 @@ const getUserById = async (userId: string) => {
 
 const refreshToken = async (userId: string, refreshToken: string) => {
   const existedUser = await userModel.findById(userId);
-
   if (!existedUser || existedUser.refreshToken !== refreshToken) {
     //DB의 정보가 없거나 쿠키로 받은 토큰과 DB의 저당된 토큰을 비교한다.
     const error: CustomError = new Error("토큰이 유효하지 않습니다.");

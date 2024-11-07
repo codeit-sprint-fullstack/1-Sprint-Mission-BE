@@ -73,8 +73,8 @@ const updateArticle = async (
 };
 
 const existingLike = async (
-  articleId: string,
-  userId: string
+  userId: string,
+  articleId: string
 ): Promise<Article | null> => {
   return prismaClient.article.findUnique({
     where: {
@@ -89,8 +89,8 @@ const existingLike = async (
 };
 
 const likeArticle = async (
-  articleId: string,
-  userId: string
+  userId: string,
+  articleId: string
 ): Promise<Article> => {
   return prismaClient.article.update({
     where: {
@@ -113,8 +113,8 @@ const likeArticle = async (
 };
 
 const unlikeArticle = async (
-  articleId: string,
-  userId: string
+  userId: string,
+  articleId: string
 ): Promise<Article> => {
   return prismaClient.article.update({
     where: {

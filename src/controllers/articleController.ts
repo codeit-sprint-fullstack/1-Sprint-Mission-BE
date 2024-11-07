@@ -90,7 +90,7 @@ router.post(
     try {
       const { id: articleId } = req.params;
       const { id: userId } = req.user as { id: string };
-      const article = await articleService.likeArticle(articleId, userId);
+      const article = await articleService.likeArticle(userId, articleId);
       res.status(200).send({ ...article, isFavorite: true });
     } catch (error) {
       next(error);
@@ -106,7 +106,7 @@ router.delete(
     try {
       const { id: articleId } = req.params;
       const { id: userId } = req.user as { id: string };
-      const article = await articleService.unlikeArticle(articleId, userId);
+      const article = await articleService.unlikeArticle(userId, articleId);
       res.status(200).send({ ...article, isFavorite: false });
     } catch (error) {
       next(error);

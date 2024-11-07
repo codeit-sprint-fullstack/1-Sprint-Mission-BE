@@ -1,5 +1,5 @@
 import { setOrderByQuery } from "../utils/orderByQuery";
-import articleModel from "../repositorys/articleRepository";
+import articleRepository from "../repositorys/articleRepository";
 import { whereConditions } from "../utils/interfaces/whereConditions";
 import { Request } from "express";
 import { CustomError } from "../utils/interfaces/customError";
@@ -32,7 +32,7 @@ const getArticles = async (req: Request) => {
     ];
   }
 
-  const articles = await articleModel.getArticles(
+  const articles = await articleRepository.getArticles(
     cursor,
     limit,
     whereConditions,
@@ -57,7 +57,7 @@ const getArticles = async (req: Request) => {
 };
 
 const getArticle = async (userId: string, articleId: string) => {
-  const article = await articleModel.findById(articleId);
+  const article = await articleRepository.findById(articleId);
   if (!article) {
     const error: CustomError = new Error("Not Found");
     error.status = 404;
@@ -65,12 +65,12 @@ const getArticle = async (userId: string, articleId: string) => {
     throw error;
   }
   //현재 사용자의 좋아요 상태를 확인 후 반환 -> 좋아요 상태가 아니면 null
-  const existingLike = await articleModel.existingLike(userId, articleId);
+  const existingLike = await articleRepository.existingLike(userId, articleId);
   return { article, existingLike };
 };
 
 const createArticle = async (data: ArticleData) => {
-  const article = await articleModel.createArticle(data);
+  const article = await articleRepository.createArticle(data);
   if (!article) {
     const error: CustomError = new Error("Not Found");
     error.status = 404;
@@ -81,7 +81,7 @@ const createArticle = async (data: ArticleData) => {
 };
 
 const updateArticle = async (articleId: string, data: ArticleData) => {
-  const article = await articleModel.updateArticle(articleId, data);
+  const article = await articleRepository.updateArticle(articleId, data);
   if (!article) {
     const error: CustomError = new Error("Not Found");
     error.status = 404;
@@ -91,18 +91,18 @@ const updateArticle = async (articleId: string, data: ArticleData) => {
   return article;
 };
 
-const likeArticle = async (articleId: string, userId: string) => {
-  const article = await articleModel.likeArticle(articleId, userId);
+const likeArticle = async (userId: string, articleId: string) => {
+  const article = await articleRepository.likeArticle(userId, articleId);
   return article;
 };
 
-const unlikeArticle = async (articleId: string, userId: string) => {
-  const article = await articleModel.unlikeArticle(articleId, userId);
+const unlikeArticle = async (userId: string, articleId: string) => {
+  const article = await articleRepository.unlikeArticle(userId, articleId);
   return article;
 };
 
 const deleteArticle = async (articleId: string) => {
-  const article = await articleModel.deleteArticle(articleId);
+  const article = await articleRepository.deleteArticle(articleId);
   if (!article) {
     const error: CustomError = new Error("Not Found");
     error.status = 404;

@@ -96,7 +96,7 @@ router.get(
       if (cookieString) {
         const cookie = cookieString
           .split("; ")
-          .find((cookie) => cookie.startsWith("access-token=")) as string;
+          .find((cookie) => cookie.startsWith("refresh-token=")) as string;
         if (cookie) {
           refreshToken = cookie.split("=")[1];
         }

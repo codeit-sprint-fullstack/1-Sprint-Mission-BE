@@ -19,7 +19,7 @@ router.get(
         await productService.getProducts(req);
       const responseData = {
         list: products,
-        totalCount: totalCount,
+        totalCount,
         hasMore,
       };
       res.send(responseData);
@@ -38,8 +38,8 @@ router.get(
       const { id: userId } = req.user as { id: string };
       //헤당 상품의 좋아요를 확인하기 위해 사용자정보를 함께 보낸다
       const { product, existingLike } = await productService.getProduct(
-        productId,
-        userId
+        userId,
+        productId
       );
       if (existingLike) {
         //현재 사용자의 좋아요의 상태를 확인하고 리스폰스에 반영
@@ -100,9 +100,9 @@ router.post(
   passport.authenticate("access-token", { session: false }), //인가된 사용자만 작성가능
   asyncHandle(async (req, res, next) => {
     try {
-      const { id: productId } = req.params;
       const { id: userId } = req.user as { id: string };
-      const product = await productService.likeProduct(productId, userId);
+      const { id: productId } = req.params;
+      const product = await productService.likeProduct(userId, productId);
       res.status(200).send({ ...product, isFavorite: true });
     } catch (error) {
       next(error);
@@ -115,9 +115,9 @@ router.delete(
   passport.authenticate("access-token", { session: false }),
   asyncHandle(async (req, res, next) => {
     try {
-      const { id: productId } = req.params;
       const { id: userId } = req.user as { id: string };
-      const product = await productService.unlikeProduct(productId, userId);
+      const { id: productId } = req.params;
+      const product = await productService.unlikeProduct(userId, productId);
       res.status(200).send({ ...product, isFavorite: false });
     } catch (error) {
       next(error);
@@ -129,8 +129,8 @@ router.delete(
   "/:id",
   asyncHandle(async (req, res, next) => {
     try {
-      const { id } = req.params;
-      await productService.deleteProduct(id);
+      const { id: ProductId } = req.params;
+      await productService.deleteProduct(ProductId);
       res.sendStatus(204);
     } catch (error) {
       next(error);
