@@ -1,6 +1,10 @@
 import express from "express";
 import articleControler from "../controllers/article-controler";
-import { attachUserId, verifyAccessToken } from "../middlewares/authorization";
+import {
+  attachUserId,
+  setUserIdFromToken,
+  verifyAccessToken,
+} from "../middlewares/authorization";
 import validateData from "../middlewares/validate-data";
 
 const articleRouter = express.Router();
@@ -14,5 +18,9 @@ articleRouter
     attachUserId,
     articleControler.createArticle
   );
+
+articleRouter
+  .route("/:id")
+  .get(setUserIdFromToken, articleControler.getArticleDetail);
 
 export default articleRouter;

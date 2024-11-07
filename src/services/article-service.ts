@@ -8,6 +8,7 @@ import {
 import { CreateArticle } from "../struct/article-struct";
 import likeRepository from "../repositories/like-repository";
 
+// article 목록 조회
 async function getArticleList(query: PagenationQuery) {
   const KeyWordFilter = articleKeywordfilterOtions(query);
   const pageFilterOption = createPagefilterOptions(query);
@@ -22,10 +23,12 @@ async function getArticleList(query: PagenationQuery) {
   return { total, list };
 }
 
+// article 생성
 async function createArticle(data: UserId & CreateArticle) {
   return await articleRepository.createData({ data });
 }
 
+// article 상세 조회
 async function getArticleDetail({
   articleId,
   userId,
@@ -36,7 +39,7 @@ async function getArticleDetail({
   const article = await articleRepository.findUniqueOrThrowtData({
     where: { id: articleId },
   });
-  if (userId !== undefined) {
+  if (userId) {
     const like = await likeRepository.findFirstData({
       where: { articleId, userId },
     });

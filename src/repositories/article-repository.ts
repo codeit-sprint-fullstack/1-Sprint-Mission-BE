@@ -89,12 +89,12 @@ function findUniqueOrThrowtData<T extends ArticleSelectType>({
   where: Prisma.ArticleWhereUniqueInput;
   select: T;
 }): Promise<ArticlePayload<T>>;
-
 function findUniqueOrThrowtData({
   where,
 }: {
   where: Prisma.ArticleWhereUniqueInput;
 }): Promise<ArticlePayload<undefined>>;
+
 async function findUniqueOrThrowtData<T extends ArticleSelectType | undefined>({
   where,
   select,
