@@ -28,6 +28,7 @@ articleRouter
     verifyArticleAuth,
     validateData.article("patch"),
     articleControler.updateArticle
-  );
+  )
+  .delete(verifyAccessToken, verifyArticleAuth, articleControler.deleteArticle);
 
 export default articleRouter;

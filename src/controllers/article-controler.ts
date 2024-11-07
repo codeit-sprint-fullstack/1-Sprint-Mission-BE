@@ -64,9 +64,26 @@ async function updateArticle(
   }
 }
 
+// article 삭제
+async function deleteArticle(
+  req: Request<{ id: string }, {}, {}>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: articleId } = req.params;
+    await articleService.deleteArticle(articleId);
+
+    res.sendStatus(204);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export default {
   getArticleList,
   createArticle,
   getArticleDetail,
   updateArticle,
+  deleteArticle,
 };
