@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 // import articleRpository from "./repositories/article-repository";
 import articleRouter from "./routers/article-router";
 import authRouter from "./routers/auth-router";
+import productRouter from "./routers/product-router";
 // import {
 //   articleCommentController,
 //   commentController,
@@ -47,12 +48,12 @@ app.use("/images", express.static("uploads"));
 
 app.use("/article", articleRouter);
 app.use("/auth", authRouter);
+app.use("/product", productRouter);
 // app.use("/comment", commentController);
 // app.use("/article", articleCommentController);
 // app.use("/product", productCommentController);
 // app.use("/article", articleLikeController);
 // app.use("/product", productLikeController);
-// app.use("/product", productController);
 
 // app.use(errorHandler);
 

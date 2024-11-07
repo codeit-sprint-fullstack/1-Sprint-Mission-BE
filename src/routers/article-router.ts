@@ -1,5 +1,5 @@
 import express from "express";
-import articleControler from "../controllers/article-controler";
+import articleControler from "../controllers/article-controller";
 import {
   attachUserId,
   setUserIdFromToken,

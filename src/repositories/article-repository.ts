@@ -1,5 +1,5 @@
 import prisma from "../config/prisma";
-import { CreatedAtOrder } from "../types/repository-type";
+import { PagenationParams } from "../types/repository-type";
 import { Prisma } from "@prisma/client";
 
 type ArticleSelectType = Prisma.ArticleSelect;
@@ -8,10 +8,7 @@ type ArticleSelectType = Prisma.ArticleSelect;
 type ArticlePayload<T extends ArticleSelectType | undefined> =
   Prisma.ArticleGetPayload<{ select: T }>;
 
-interface PaginationParams {
-  orderBy?: CreatedAtOrder;
-  skip?: number;
-  take?: number;
+interface ArticlePagenationParams extends PagenationParams{
   where?: Prisma.ArticleWhereInput;
 }
 
@@ -118,13 +115,13 @@ function findManyByPaginationData<T extends ArticleSelectType>({
   paginationParams,
   select,
 }: {
-  paginationParams: PaginationParams;
+  paginationParams: ArticlePagenationParams;
   select: T;
 }): Promise<ArticlePayload<T>[]>;
 function findManyByPaginationData({
   paginationParams,
 }: {
-  paginationParams: PaginationParams;
+  paginationParams: ArticlePagenationParams;
 }): Promise<ArticlePayload<undefined>[]>;
 
 async function findManyByPaginationData<
@@ -133,7 +130,7 @@ async function findManyByPaginationData<
   paginationParams,
   select,
 }: {
-  paginationParams: PaginationParams;
+  paginationParams: ArticlePagenationParams;
   select?: T;
 }) {
   const { orderBy, skip, take, where } = paginationParams;
