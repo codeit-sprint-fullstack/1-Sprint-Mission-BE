@@ -16,7 +16,6 @@ interface QueryString {
 const getArticles = async (req: Request) => {
   const query = req.query as unknown as QueryString;
   const { orderBy = "recent", keyword = "", cursor = "", limit = "5" } = query;
-  // const offset = parseInt(req.query.offset) - 1 || 0;
   const parseLimit = parseInt(limit);
   const orderbyQuery = setOrderByQuery(orderBy);
   const whereConditions: whereConditions = {};

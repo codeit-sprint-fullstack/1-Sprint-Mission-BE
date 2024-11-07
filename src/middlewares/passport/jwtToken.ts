@@ -31,13 +31,11 @@ const accessExtractor = (req: Request) => {
     error.status = 401;
     error.data = {
       message: "유효하지 않은 액세스 토큰입니다.",
-      // requestURL: req.originalUrl,
       "access-token": accessToken,
     };
     throw error;
   }
 
-  // console.log("엑세스" + token);
   return accessToken;
 };
 
@@ -57,12 +55,10 @@ const refreshExtractor = (req: Request) => {
     error.status = 403;
     error.data = {
       message: "유효하지 않은 리플레쉬 토큰입니다.",
-      // requestURL: req.originalUrl,
       "refresh-token": refreshToken,
     };
     throw error;
   }
-  // console.log("리프레쉬" + token);
   return refreshToken;
 };
 

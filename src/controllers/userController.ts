@@ -111,7 +111,7 @@ router.get(
       if (existedUser) {
         const accessToken = userService.createToken(existedUser);
         const newRefreshToken = userService.createToken(existedUser, "refresh");
-        //Db의 갱신된 리프레쉬 토큰 저장
+        //DB의 갱신된 리프레쉬 토큰 저장
         await userService.updateRefreshToken(userId, newRefreshToken);
 
         res.cookie(

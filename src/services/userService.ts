@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
 import { CustomError } from "../utils/interfaces/customError";
-import passport from "passport";
 
 interface UserData {
   email: string;
