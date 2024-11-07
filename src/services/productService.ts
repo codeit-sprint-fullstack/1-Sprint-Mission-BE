@@ -4,6 +4,7 @@ import { setOrderByQuery } from "../utils/orderByQuery";
 import { CustomError } from "../utils/interfaces/customError";
 import { Product } from "@prisma/client";
 import { whereConditions } from "../utils/interfaces/whereConditions";
+import { ProductData } from "../utils/interfaces/products/productData";
 
 interface MyQueryParams {
   orderBy: string;
@@ -50,7 +51,7 @@ const getProduct = async (userId: string, productId: string) => {
   return { product, existingLike };
 };
 
-const createProduct = async (data: Product) => {
+const createProduct = async (data: ProductData) => {
   const product = await productRepository.create(data);
   if (!product) {
     const error: CustomError = new Error("Not Found");
@@ -61,7 +62,7 @@ const createProduct = async (data: Product) => {
   return product;
 };
 
-const updateProduct = async (id: string, data: Product) => {
+const updateProduct = async (id: string, data: ProductData) => {
   const product = await productRepository.update(id, data);
   if (!product) {
     const error: CustomError = new Error("Not Found");

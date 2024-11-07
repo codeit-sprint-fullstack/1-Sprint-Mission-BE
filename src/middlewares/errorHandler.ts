@@ -1,6 +1,12 @@
 import { ErrorRequestHandler } from "express";
+import { CustomError } from "../utils/interfaces/customError";
 
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (
+  err: CustomError,
+  req,
+  res,
+  next
+) => {
   const status = err.status ?? 500;
   console.error(err);
   res.status(status).json({

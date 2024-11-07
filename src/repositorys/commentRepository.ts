@@ -1,5 +1,6 @@
 import prismaClient from "../utils/prismaClient";
 import { Comment } from "@prisma/client";
+import { CommentData } from "../utils/interfaces/comments/commentData";
 
 const getArticleComments = async (
   cursor: string,
@@ -55,7 +56,7 @@ const getById = async (id: string): Promise<Comment | null> => {
   });
 };
 
-const createComment = async (data: Comment) => {
+const createComment = async (data: CommentData) => {
   return prismaClient.comment.create({
     data,
     include: {
@@ -68,7 +69,7 @@ const createComment = async (data: Comment) => {
   });
 };
 
-const updateComment = async (id: string, data: Comment) => {
+const updateComment = async (id: string, data: CommentData) => {
   return prismaClient.comment.update({
     where: {
       id,

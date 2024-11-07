@@ -4,6 +4,7 @@ import { whereConditions } from "../utils/interfaces/whereConditions";
 import { Request } from "express";
 import { CustomError } from "../utils/interfaces/customError";
 import { Article } from "@prisma/client";
+import { ArticleData } from "../utils/interfaces/articles/articleData";
 
 interface MyQueryParams {
   orderBy: string;
@@ -68,7 +69,18 @@ const getArticle = async (userId: string, articleId: string) => {
   return { article, existingLike };
 };
 
-const updateArticle = async (articleId: string, data: Article) => {
+const createArticle = async (data: ArticleData) => {
+  const article = await articleModel.createArticle(data);
+  if (!article) {
+    const error: CustomError = new Error("Not Found");
+    error.status = 404;
+    error.message = "게시글을 찾지 못했습니다.";
+    throw error;
+  }
+  return article;
+};
+
+const updateArticle = async (articleId: string, data: ArticleData) => {
   const article = await articleModel.updateArticle(articleId, data);
   if (!article) {
     const error: CustomError = new Error("Not Found");
@@ -86,17 +98,6 @@ const likeArticle = async (articleId: string, userId: string) => {
 
 const unlikeArticle = async (articleId: string, userId: string) => {
   const article = await articleModel.unlikeArticle(articleId, userId);
-  return article;
-};
-
-const createArticle = async (data: Article) => {
-  const article = await articleModel.createArticle(data);
-  if (!article) {
-    const error: CustomError = new Error("Not Found");
-    error.status = 404;
-    error.message = "게시글을 찾지 못했습니다.";
-    throw error;
-  }
   return article;
 };
 

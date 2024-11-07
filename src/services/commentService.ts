@@ -1,7 +1,7 @@
 import commentRepository from "../repositorys/commentRepository";
 import { Request } from "express";
 import { CustomError } from "../utils/interfaces/customError";
-import { Comment } from "@prisma/client";
+import { CommentData } from "../utils/interfaces/comments/commentData";
 
 const getArticleComments = async (req: Request) => {
   const { limit = 5, cursor = "" } = req.query;
@@ -61,7 +61,7 @@ const getProductComments = async (req: Request) => {
   }
 };
 
-const createComment = async (data: Comment) => {
+const createComment = async (data: CommentData) => {
   const comment = await commentRepository.createComment(data);
   if (!comment) {
     const error: CustomError = new Error("Not found");
@@ -72,7 +72,7 @@ const createComment = async (data: Comment) => {
   return comment;
 };
 
-const updateComment = async (id: string, data: Comment) => {
+const updateComment = async (id: string, data: CommentData) => {
   const comment = await commentRepository.updateComment(id, data);
   if (!comment) {
     const error: CustomError = new Error("Not found");

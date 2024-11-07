@@ -1,3 +1,4 @@
+import { ArticleData } from "../utils/interfaces/articles/articleData";
 import { whereConditions } from "../utils/interfaces/whereConditions";
 import prismaClient from "../utils/prismaClient";
 import { Article } from "@prisma/client";
@@ -39,9 +40,22 @@ const findById = async (id: string): Promise<Article | null> => {
   });
 };
 
+const createArticle = async (data: ArticleData): Promise<Article> => {
+  return await prismaClient.article.create({
+    data,
+    include: {
+      owner: {
+        select: {
+          nickname: true,
+        },
+      },
+    },
+  });
+};
+
 const updateArticle = async (
   articleId: string,
-  data: Article
+  data: ArticleData
 ): Promise<Article> => {
   return prismaClient.article.update({
     where: {
@@ -112,19 +126,6 @@ const unlikeArticle = async (
       },
       favoriteCount: { decrement: 1 },
     },
-    include: {
-      owner: {
-        select: {
-          nickname: true,
-        },
-      },
-    },
-  });
-};
-
-const createArticle = async (data: Article): Promise<Article> => {
-  return await prismaClient.article.create({
-    data,
     include: {
       owner: {
         select: {

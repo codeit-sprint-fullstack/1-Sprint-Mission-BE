@@ -1,15 +1,7 @@
+import { ProductData } from "../utils/interfaces/products/productData";
 import { whereConditions } from "../utils/interfaces/whereConditions";
 import prismaClient from "../utils/prismaClient";
 import { Product } from "@prisma/client";
-
-// function whereConditions(keyword: string) {
-//   return keyword
-//     ? (whereConditions.OR = [
-//         { name: { contains: keyword, mode: "insensitive" } },
-//         { description: { contains: keyword, mode: "insensitive" } },
-//       ])
-//     : {};
-// }
 
 const getTotalCount = async (where: whereConditions) => {
   return await prismaClient.product.count({
@@ -53,7 +45,7 @@ const getById = async (id: string) => {
   });
 };
 
-const create = async (data: Product) => {
+const create = async (data: ProductData) => {
   return await prismaClient.product.create({
     data,
     include: {
@@ -66,7 +58,7 @@ const create = async (data: Product) => {
   });
 };
 
-const update = async (id: string, data: Product) => {
+const update = async (id: string, data: ProductData) => {
   return await prismaClient.product.update({
     where: {
       id,

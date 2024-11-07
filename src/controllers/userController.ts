@@ -10,8 +10,7 @@ const router = express.Router();
 
 router.get(
   "/me",
-  //passport 사용 토큰이 유효하다면 리퀘스트의 user로 담긴다
-  passport.authenticate("access-token", { session: false }),
+  passport.authenticate("access-token", { session: false }), //passport 사용 토큰이 유효하다면 리퀘스트의 user로 담긴다
   asyncHandle(async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id: userId } = req.user as { id: string };
@@ -25,7 +24,7 @@ router.get(
 
 router.post(
   "/signup",
-  authUser.verifyUserSignup, //유효성 및 사용중인 이메알 검사
+  authUser.verifyUserSignup, //유효성 검사
   asyncHandle(async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await userService.createUser(req.body);

@@ -2,11 +2,11 @@ import express, { NextFunction, Request, Response } from "express";
 import { asyncHandle } from "../utils/errorUtils";
 import productService from "../services/productService";
 import { assert } from "superstruct";
-import { createProduct, updateProduct } from "../structs/productStruct";
+import { updateProduct } from "../structs/productStruct";
 import multer from "multer";
 import passport from "../config/passportConfig";
 import { PUBLIC_IMAGES_URL } from "../env";
-import { Product } from "@prisma/client";
+import { ProductData } from "../utils/interfaces/products/productData";
 
 const router = express.Router();
 const upload = multer({ dest: "upload/" });
@@ -86,7 +86,7 @@ router.patch(
       const { id } = req.params;
       const product = await productService.updateProduct(
         id,
-        req.body as Product
+        req.body as ProductData
       );
       res.send(product);
     } catch (error) {

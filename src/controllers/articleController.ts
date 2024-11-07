@@ -6,6 +6,7 @@ import passport from "../config/passportConfig";
 import authUser from "../middlewares/authUser";
 import express, { Request, Response, NextFunction } from "express";
 import { Article } from "@prisma/client";
+import { ArticleData } from "../utils/interfaces/articles/articleData";
 
 const router = express.Router();
 
@@ -73,7 +74,7 @@ router.patch(
       const { id: articleId } = req.params;
       const data = await articleService.updateArticle(
         articleId,
-        req.body as Article
+        req.body as ArticleData
       );
       res.status(200).send(data);
     } catch (error) {

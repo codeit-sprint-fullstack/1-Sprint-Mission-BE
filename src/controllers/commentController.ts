@@ -6,6 +6,7 @@ import commentService from "../services/commentService";
 import passport from "../config/passportConfig";
 import express, { Request, Response, NextFunction } from "express";
 import { Comment } from "@prisma/client";
+import { CommentData } from "../utils/interfaces/comments/commentData";
 
 const router = express.Router();
 
@@ -42,7 +43,7 @@ router.post(
       const { id: userId } = req.user as { id: string };
       const { id: articleId } = req.params;
       const data = await commentService.createComment({
-        ...(req.body as Comment),
+        ...(req.body as CommentData),
         articleId,
         userId,
       });
@@ -62,7 +63,7 @@ router.post(
       const { id: userId } = req.user as { id: string };
       const { id: productId } = req.params;
       const data = await commentService.createComment({
-        ...(req.body as Comment),
+        ...(req.body as CommentData),
         productId,
         userId,
       });
@@ -82,7 +83,10 @@ router.patch(
     assert(req.body, updateComment);
     try {
       const { id } = req.params;
-      const data = await commentService.updateComment(id, req.body as Comment);
+      const data = await commentService.updateComment(
+        id,
+        req.body as CommentData
+      );
 
       res.status(200).send(data);
     } catch (error) {
