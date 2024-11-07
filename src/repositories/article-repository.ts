@@ -8,7 +8,7 @@ type ArticleSelectType = Prisma.ArticleSelect;
 type ArticlePayload<T extends ArticleSelectType | undefined> =
   Prisma.ArticleGetPayload<{ select: T }>;
 
-interface ArticlePagenationParams extends PagenationParams{
+interface ArticlePagenationParams extends PagenationParams {
   where?: Prisma.ArticleWhereInput;
 }
 

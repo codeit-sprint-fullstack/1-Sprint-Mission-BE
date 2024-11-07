@@ -46,7 +46,35 @@ async function countData(where: Prisma.ProductWhereInput): Promise<number> {
   return await prisma.product.count({ where });
 }
 
+// createData
+function createData<T extends ProductSelectType>({
+  data,
+  select,
+}: {
+  data: Prisma.ProductUncheckedCreateInput;
+  select: T;
+}): Promise<ProductPayLoad<T>>;
+function createData({
+  data,
+}: {
+  data: Prisma.ProductUncheckedCreateInput;
+}): Promise<ProductPayLoad<undefined>>;
+
+async function createData<T extends ProductSelectType | undefined>({
+  data,
+  select,
+}: {
+  data: Prisma.ProductUncheckedCreateInput;
+  select?: T;
+}) {
+  if (select === undefined) {
+    return await prisma.product.create({ data });
+  }
+  return await prisma.product.create({ data, select });
+}
+
 export default {
   findManyByPaginationData,
   countData,
+  createData
 };

@@ -5,5 +5,6 @@ declare namespace Express {
       iat: number;
       exp: number;
     };
+    files?: Express.Multer.File[];
   }
 }
