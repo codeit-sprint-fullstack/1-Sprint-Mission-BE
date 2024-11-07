@@ -40,10 +40,7 @@ async function getArticleDetail(
   try {
     const { id: articleId } = req.params;
     const { userId } = req.body;
-    const article = await articleService.getArticleDetail({
-      articleId,
-      userId,
-    });
+    const article = await articleService.getArticleDetail(articleId, userId);
 
     res.send(article);
   } catch (err) {
@@ -54,5 +51,5 @@ async function getArticleDetail(
 export default {
   getArticleList,
   createArticle,
-  getArticleDetail
+  getArticleDetail,
 };

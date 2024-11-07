@@ -5,7 +5,7 @@ import {
   articleKeywordfilterOtions,
   createPagefilterOptions,
 } from "../utills/query-option";
-import { CreateArticle } from "../struct/article-struct";
+import { CreateArticle, UpdateArticle } from "../struct/article-struct";
 import likeRepository from "../repositories/like-repository";
 
 // article 목록 조회
@@ -16,10 +16,10 @@ async function getArticleList(query: PagenationQuery) {
     where: KeyWordFilter,
     ...pageFilterOption,
   };
-  const list: Article[] = await articleRepository.findManyByPaginationData({
+  const list = await articleRepository.findManyByPaginationData({
     paginationParams,
   });
-  const total: number = await articleRepository.countData(KeyWordFilter);
+  const total = await articleRepository.countData(KeyWordFilter);
   return { total, list };
 }
 
@@ -29,13 +29,7 @@ async function createArticle(data: UserId & CreateArticle) {
 }
 
 // article 상세 조회
-async function getArticleDetail({
-  articleId,
-  userId,
-}: {
-  articleId: string;
-  userId?: string;
-}) {
+async function getArticleDetail(articleId: string, userId: string | undefined) {
   const article = await articleRepository.findUniqueOrThrowtData({
     where: { id: articleId },
   });
@@ -54,8 +48,17 @@ async function getArticleDetail({
   return article;
 }
 
+// article 수정
+async function updateArticle(articleId: string, data: UpdateArticle) {
+  return await articleRepository.updateData({
+    where: { id: articleId },
+    data,
+  });
+}
+
 export default {
   getArticleList,
   createArticle,
   getArticleDetail,
+  updateArticle,
 };
