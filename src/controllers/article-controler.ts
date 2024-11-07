@@ -1,7 +1,7 @@
 import articleService from "../services/article-service";
 import { Request, Response, NextFunction } from "express";
 import { PagenationQuery, UserId } from "../types/service-type";
-import { CreateArticle } from "../struct/article-struct";
+import { CreateArticle, UpdateArticle } from "../struct/article-struct";
 
 // article 목록 조회
 async function getArticleList(
@@ -48,8 +48,25 @@ async function getArticleDetail(
   }
 }
 
+// article 수정
+async function updateArticle(
+  req: Request<{ id: string }, {}, UpdateArticle>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: articleId } = req.params;
+    const article = await articleService.updateArticle(articleId, req.body);
+
+    res.send(article);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export default {
   getArticleList,
   createArticle,
   getArticleDetail,
+  updateArticle,
 };

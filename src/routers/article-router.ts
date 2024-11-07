@@ -4,6 +4,7 @@ import {
   attachUserId,
   setUserIdFromToken,
   verifyAccessToken,
+  verifyArticleAuth,
 } from "../middlewares/authorization";
 import validateData from "../middlewares/validate-data";
 
@@ -21,6 +22,12 @@ articleRouter
 
 articleRouter
   .route("/:id")
-  .get(setUserIdFromToken, articleControler.getArticleDetail);
+  .get(setUserIdFromToken, articleControler.getArticleDetail)
+  .patch(
+    verifyAccessToken,
+    verifyArticleAuth,
+    validateData.article("patch"),
+    articleControler.updateArticle
+  );
 
 export default articleRouter;

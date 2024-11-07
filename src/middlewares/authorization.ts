@@ -1,10 +1,11 @@
 import { expressjwt } from "express-jwt";
 import jwt from "jsonwebtoken";
-// import articleRepository from "../repositories/articleRepository.js";
 // import commentRepository from "../repositories/commentRepository.js";
 // import productRepositpry from "../repositories/productRepositpry.js";
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { CustomError } from "./error-handler";
+import articleRepository from "../repositories/article-repository";
+import { UpdateArticle } from "../struct/article-struct";
 
 type Decoded = {
   userId: string;
@@ -52,22 +53,28 @@ function setUserIdFromToken(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
-// async function verifyArticleAuth(req, res, next) {
-//   try {
-//     const { id } = req.params;
-//     const article = await articleRepository.getById(id);
+async function verifyArticleAuth(
+  req: Request<{ id: string }, {}, UpdateArticle>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: articleId } = req.params;
+    const article = await articleRepository.findUniqueOrThrowtData({
+      where: { id: articleId },
+    });
 
-//     if (article.userId !== req.auth.userId) {
-//       const error = new Error("Forbidden");
-//       error.code = 403;
-//       throw error;
-//     }
+    if (article.userId !== req.auth?.userId) {
+      const error: CustomError = new Error("Forbidden");
+      error.status = 403;
+      return next(error);
+    }
 
-//     return next();
-//   } catch (error) {
-//     return next(error);
-//   }
-// }
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+}
 
 // async function verifyCommentAuth(req, res, next) {
 //   try {
@@ -108,7 +115,7 @@ export {
   verifyRefreshToken,
   attachUserId,
   setUserIdFromToken,
-  //   verifyArticleAuth,
+  verifyArticleAuth,
   //   verifyCommentAuth,
   //   verifyProductAuth,
 };
