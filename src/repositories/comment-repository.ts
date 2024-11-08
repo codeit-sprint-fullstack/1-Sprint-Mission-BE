@@ -11,6 +11,7 @@ interface PagenationParams extends CommentPagenationParams {
   where?: Prisma.CommentWhereInput;
 }
 
+// findManyByCursorPagenationData
 function findManyByCursorPagenationData<T extends CommentSelectType>({
   pagenationParams,
   select,
@@ -46,11 +47,40 @@ async function findManyByCursorPagenationData<
   });
 }
 
+// countData
 async function countData(where: Prisma.CommentWhereInput): Promise<number> {
   return await prisma.comment.count({ where });
+}
+
+// createData
+function createData<T extends CommentSelectType>({
+  data,
+  select,
+}: {
+  data: Prisma.CommentUncheckedCreateInput;
+  select: T;
+}): Promise<CommentPayLoad<T>>;
+function createData({
+  data,
+}: {
+  data: Prisma.CommentUncheckedCreateInput;
+}): Promise<CommentPayLoad<undefined>>;
+
+async function createData<T extends CommentSelectType | undefined>({
+  data,
+  select,
+}: {
+  data: Prisma.CommentUncheckedCreateInput;
+  select?: T;
+}) {
+  if (select === undefined) {
+    return await prisma.comment.create({ data });
+  }
+  return await prisma.comment.create({ data, select });
 }
 
 export default {
   findManyByCursorPagenationData,
   countData,
+  createData,
 };

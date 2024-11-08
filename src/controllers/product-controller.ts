@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { CursorQuery, PagenationQuery } from "../types/service-type";
+import { CursorQuery, PagenationQuery, UserId } from "../types/service-type";
 import productService from "../services/product-service";
 import { CreateProduct, UpdateProduct } from "../struct/product-struct";
 
@@ -23,7 +23,7 @@ async function getProductList(
 
 // product 생성
 async function createProduct(
-  req: Request<{}, {}, CreateProductWithUser>,
+  req: Request<{}, {}, UserId & CreateProductWithUser>,
   res: Response,
   next: NextFunction
 ) {

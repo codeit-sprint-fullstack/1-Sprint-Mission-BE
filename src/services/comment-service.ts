@@ -3,6 +3,7 @@ import { CursorQuery } from "../types/service-type";
 import commentRepository from "../repositories/comment-repository";
 import { createCursorFilterOptions } from "../utills/query-option";
 import { commentPagenationMapper } from "./mappers/comment-mapper";
+import { Prisma } from "@prisma/client";
 
 // article 댓글 목록 조회
 async function getCommentListByArticle(
@@ -26,6 +27,12 @@ async function getCommentListByArticle(
   return commentPagenationMapper(list, total, currentPageSize);
 }
 
+// article 댓글 생성
+async function createArticleComment(data: Prisma.CommentUncheckedCreateInput) {
+  return await commentRepository.createData({ data });
+}
+
 export default {
   getCommentListByArticle,
+  createArticleComment,
 };

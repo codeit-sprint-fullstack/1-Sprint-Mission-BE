@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { CursorQuery } from "../types/service-type";
+import { CursorQuery, UserId } from "../types/service-type";
 import commentService from "../services/comment-service";
+import { CreateArticleComment } from "../struct/comment-struct";
 
 // article 댓글 목록 조회
 async function getCommentListByArticle(
@@ -16,6 +17,17 @@ async function getCommentListByArticle(
   }
 }
 
+// article 댓글 생성
+async function createArticleComment(
+  req: Request<{ id: string }, {}, UserId & CreateArticleComment>,
+  res: Response,
+  next: NextFunction
+) {
+  const comment = await commentService.createArticleComment(req.body);
+  res.status(201).send(comment);
+}
+
 export default {
   getCommentListByArticle,
+  createArticleComment,
 };

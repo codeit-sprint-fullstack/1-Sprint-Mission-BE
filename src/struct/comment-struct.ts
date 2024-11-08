@@ -1,7 +1,7 @@
 import * as s from "superstruct";
 import isUuid from "is-uuid";
 
-const Uuid = s.define("Uuid", (value: unknown): boolean => {
+const Uuid = s.define<string>("Uuid", (value): boolean => {
   if (typeof value === "string") {
     return isUuid.v4(value);
   }
