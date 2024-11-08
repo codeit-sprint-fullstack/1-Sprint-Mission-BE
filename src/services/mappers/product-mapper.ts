@@ -1,5 +1,6 @@
 import { Comment, Product } from "@prisma/client";
 import { ImagePath } from "../product-service";
+import { commentPagenationMapper } from "./comment-mapper";
 
 export function createProductMapper(product: Product, imagePath: ImagePath) {
   return {
@@ -24,19 +25,7 @@ export function productDetailMapper(
   pageSize: number,
   isLike: boolean | undefined
 ) {
-  const lastComment: Comment | undefined = comment[pageSize];
-  const NextCusor = lastComment ? lastComment.id : "null";
-  if (NextCusor !== "null") {
-    comment.pop();
-  }
-
-  const commentResponse = {
-    cursorInfo: {
-      total,
-      NextCusor,
-    },
-    comment,
-  };
+  const commentResponse = commentPagenationMapper(comment, total, pageSize);
 
   if (isLike === undefined) {
     return {
