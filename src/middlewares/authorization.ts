@@ -8,6 +8,8 @@ import articleRepository from "../repositories/article-repository";
 import { UpdateArticle } from "../struct/article-struct";
 import { UpdateProduct } from "../struct/product-struct";
 import productRepository from "../repositories/product-repository";
+import { UpdateComment } from "../struct/comment-struct";
+import commentRepository from "../repositories/comment-repository";
 
 type Decoded = {
   userId: string;
@@ -79,22 +81,28 @@ async function verifyArticleAuth(
   }
 }
 
-// async function verifyCommentAuth(req, res, next) {
-//   try {
-//     const { id } = req.params;
-//     const comment = await commentRepository.getById(id);
+async function verifyCommentAuth(
+  req: Request<{ id: string }, {}, UpdateComment>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: commentId } = req.params;
+    const comment = await commentRepository.findUniqueOrThrowtData({
+      where: { id: commentId },
+    });
 
-//     if (comment.userId !== req.auth.userId) {
-//       const error = new Error("Forbidden");
-//       error.code = 403;
-//       throw error;
-//     }
+    if (comment.userId !== req.auth?.userId) {
+      const error: CustomError = new Error("Forbidden");
+      error.status = 403;
+      return next(error);
+    }
 
-//     return next();
-//   } catch (error) {
-//     return next(error);
-//   }
-// }
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+}
 
 async function verifyProductAuth(
   req: Request<{ id: string }, {}, UpdateProduct>,
@@ -125,6 +133,6 @@ export {
   attachUserId,
   setUserIdFromToken,
   verifyArticleAuth,
-  //   verifyCommentAuth,
+    verifyCommentAuth,
   verifyProductAuth,
 };

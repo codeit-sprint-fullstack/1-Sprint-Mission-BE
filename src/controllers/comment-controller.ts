@@ -4,6 +4,7 @@ import commentService from "../services/comment-service";
 import {
   CreateArticleComment,
   CreateProductComment,
+  UpdateComment,
 } from "../struct/comment-struct";
 
 type CreateCommentData =
@@ -52,8 +53,24 @@ async function getCommentListByProduct(
   }
 }
 
+//댓글 수정
+async function updateComment(
+  req: Request<{ id: string }, {}, UpdateComment>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: commentId } = req.params;
+    const comment = await commentService.updateComment(commentId, req.body);
+    res.send(comment);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export default {
   getCommentListByArticle,
   createComment,
   getCommentListByProduct,
+  updateComment,
 };

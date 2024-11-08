@@ -1,6 +1,10 @@
 import express from "express";
 import commentController from "../controllers/comment-controller";
-import { attachUserId, verifyAccessToken } from "../middlewares/authorization";
+import {
+  attachUserId,
+  verifyAccessToken,
+  verifyCommentAuth,
+} from "../middlewares/authorization";
 import validateData from "../middlewares/validate-data";
 
 const commentRouter = express.Router(); // 수정 및 삭제를 위한 router
@@ -26,5 +30,9 @@ productCommentRouter
     attachUserId,
     commentController.createComment
   );
+
+commentRouter
+  .route("/:id")
+  .patch(verifyAccessToken, verifyCommentAuth, commentController.updateComment);
 
 export { articleCommentRouter, productCommentRouter };

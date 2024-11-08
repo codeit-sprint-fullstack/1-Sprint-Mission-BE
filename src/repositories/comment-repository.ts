@@ -79,8 +79,70 @@ async function createData<T extends CommentSelectType | undefined>({
   return await prisma.comment.create({ data, select });
 }
 
+// findUniqueOrThrowtData
+function findUniqueOrThrowtData<T extends CommentSelectType>({
+  where,
+  select,
+}: {
+  where: Prisma.CommentWhereUniqueInput;
+  select: T;
+}): Promise<CommentPayLoad<T>>;
+function findUniqueOrThrowtData({
+  where,
+}: {
+  where: Prisma.CommentWhereUniqueInput;
+}): Promise<CommentPayLoad<undefined>>;
+
+async function findUniqueOrThrowtData<T extends CommentSelectType | undefined>({
+  where,
+  select,
+}: {
+  where: Prisma.CommentWhereUniqueInput;
+  select?: T;
+}) {
+  if (select === undefined) {
+    return await prisma.comment.findUniqueOrThrow({ where });
+  }
+  return await prisma.comment.findUniqueOrThrow({ where, select });
+}
+
+// updateData
+function updateData<T extends CommentSelectType>({
+  where,
+  data,
+  select,
+}: {
+  where: Prisma.CommentWhereUniqueInput;
+  data: Prisma.CommentUpdateInput;
+  select: T;
+}): Promise<CommentPayLoad<T>>;
+function updateData({
+  where,
+  data,
+}: {
+  where: Prisma.CommentWhereUniqueInput;
+  data: Prisma.CommentUpdateInput;
+}): Promise<CommentPayLoad<undefined>>;
+
+async function updateData<T extends CommentSelectType | undefined>({
+  where,
+  data,
+  select,
+}: {
+  where: Prisma.CommentWhereUniqueInput;
+  data: Prisma.CommentUpdateInput;
+  select?: T;
+}) {
+  if (select === undefined) {
+    return await prisma.comment.update({ where, data });
+  }
+  return await prisma.comment.update({ where, data, select });
+}
+
 export default {
   findManyByCursorPagenationData,
   countData,
   createData,
+  findUniqueOrThrowtData,
+  updateData,
 };

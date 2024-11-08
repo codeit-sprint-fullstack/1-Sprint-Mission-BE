@@ -4,6 +4,7 @@ import commentRepository from "../repositories/comment-repository";
 import { createCursorFilterOptions } from "../utills/query-option";
 import { commentPagenationMapper } from "./mappers/comment-mapper";
 import { Prisma } from "@prisma/client";
+import { UpdateComment } from "../struct/comment-struct";
 
 // article 댓글 목록 조회
 async function getCommentListByArticle(
@@ -54,8 +55,14 @@ async function getCommentListByProduct(
   return commentPagenationMapper(list, total, currentPageSize);
 }
 
+// 댓글 수정
+async function updateComment(commentId: string, data: UpdateComment) {
+  return await commentRepository.updateData({ where: { id: commentId }, data });
+}
+
 export default {
   getCommentListByArticle,
   createComment,
   getCommentListByProduct,
+  updateComment,
 };
