@@ -104,9 +104,15 @@ async function updateProduct(productId: string, data: UpdateProduct) {
   return await productRepository.updateData({ where: { id: productId }, data });
 }
 
+// product 삭제
+async function deleteProduct(productId: string) {
+  return await productRepository.deleteData({ id: productId });
+}
+
 export default {
   getProductList,
   createProduct,
   getProductDetail,
   updateProduct,
+  deleteProduct,
 };

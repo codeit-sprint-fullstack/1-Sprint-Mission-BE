@@ -133,10 +133,16 @@ async function updateData<T extends ProductSelectType | undefined>({
   return await prisma.product.update({ where, data, select });
 }
 
+// deleteData
+async function deleteData(where: { id: string }): Promise<void> {
+  await prisma.product.delete({ where });
+}
+
 export default {
   findManyByPagenationData,
   countData,
   createData,
   findUniqueOrThrowtData,
   updateData,
+  deleteData,
 };

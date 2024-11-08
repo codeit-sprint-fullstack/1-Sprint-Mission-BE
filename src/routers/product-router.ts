@@ -30,6 +30,11 @@ productRouter
     verifyProductAuth,
     validateData.product("patch"),
     productController.updateProduct
+  )
+  .delete(
+    verifyAccessToken,
+    verifyProductAuth,
+    productController.deleteProduct
   );
 
 export default productRouter;

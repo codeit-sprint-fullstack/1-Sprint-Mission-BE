@@ -58,6 +58,22 @@ async function updateProduct(
   try {
     const { id: productId } = req.params;
     const product = await productService.updateProduct(productId, req.body);
+    res.send(product);
+  } catch (err) {
+    return next(err);
+  }
+}
+
+// product 삭제
+async function deleteProduct(
+  req: Request<{ id: string }, {}, {}>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: productId } = req.params;
+    await productService.deleteProduct(productId);
+    res.sendStatus(204);
   } catch (err) {
     return next(err);
   }
@@ -68,4 +84,5 @@ export default {
   createProduct,
   getProductDetail,
   updateProduct,
+  deleteProduct,
 };
