@@ -23,8 +23,12 @@ async function createArticleComment(
   res: Response,
   next: NextFunction
 ) {
-  const comment = await commentService.createArticleComment(req.body);
-  res.status(201).send(comment);
+  try {
+    const comment = await commentService.createArticleComment(req.body);
+    res.status(201).send(comment);
+  } catch (err) {
+    return next(err);
+  }
 }
 
 export default {
