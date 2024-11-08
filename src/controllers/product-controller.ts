@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CursorQuery, PagenationQuery } from "../types/service-type";
 import productService from "../services/product-service";
-import { CreateProduct } from "../struct/product-struct";
+import { CreateProduct, UpdateProduct } from "../struct/product-struct";
 
 export type CreateProductWithUser = CreateProduct & {
   userId: string;
@@ -49,8 +49,23 @@ async function getProductDetail(
   }
 }
 
+// product 수정
+async function updateProduct(
+  req: Request<{ id: string }, {}, UpdateProduct>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: productId } = req.params;
+    const product = await productService.updateProduct(productId, req.body);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export default {
   getProductList,
   createProduct,
   getProductDetail,
+  updateProduct,
 };

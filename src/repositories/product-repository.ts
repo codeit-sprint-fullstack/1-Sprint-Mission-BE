@@ -100,9 +100,43 @@ async function findUniqueOrThrowtData<T extends ProductSelectType | undefined>({
   return await prisma.product.findUniqueOrThrow({ where, select });
 }
 
+// updateData
+function updateData<T extends ProductSelectType>({
+  where,
+  data,
+  select,
+}: {
+  where: Prisma.ProductWhereUniqueInput;
+  data: Prisma.ProductUpdateInput;
+  select: T;
+}): Promise<ProductPayLoad<T>>;
+function updateData({
+  where,
+  data,
+}: {
+  where: Prisma.ProductWhereUniqueInput;
+  data: Prisma.ProductUpdateInput;
+}): Promise<ProductPayLoad<undefined>>;
+
+async function updateData<T extends ProductSelectType | undefined>({
+  where,
+  data,
+  select,
+}: {
+  where: Prisma.ProductWhereUniqueInput;
+  data: Prisma.ProductUpdateInput;
+  select?: T;
+}) {
+  if (select === undefined) {
+    return await prisma.product.update({ where, data });
+  }
+  return await prisma.product.update({ where, data, select });
+}
+
 export default {
   findManyByPagenationData,
   countData,
   createData,
   findUniqueOrThrowtData,
+  updateData,
 };

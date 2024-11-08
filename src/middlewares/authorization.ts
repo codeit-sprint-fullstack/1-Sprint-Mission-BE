@@ -6,6 +6,8 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import { CustomError } from "./error-handler";
 import articleRepository from "../repositories/article-repository";
 import { UpdateArticle } from "../struct/article-struct";
+import { UpdateProduct } from "../struct/product-struct";
+import productRepository from "../repositories/product-repository";
 
 type Decoded = {
   userId: string;
@@ -46,7 +48,7 @@ function setUserIdFromToken(req: Request, res: Response, next: NextFunction) {
         return next(error);
       }
     }
-    
+
     req.body.userId = null;
     next();
   } catch (err) {
@@ -94,22 +96,28 @@ async function verifyArticleAuth(
 //   }
 // }
 
-// async function verifyProductAuth(req, res, next) {
-//   try {
-//     const { id } = req.params;
-//     const product = await productRepositpry.getById(id);
+async function verifyProductAuth(
+  req: Request<{ id: string }, {}, UpdateProduct>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: productId } = req.params;
+    const product = await productRepository.findUniqueOrThrowtData({
+      where: { id: productId },
+    });
 
-//     if (product.userId !== req.auth.userId) {
-//       const error = new Error("Forbidden");
-//       error.code = 403;
-//       throw error;
-//     }
+    if (product.userId !== req.auth?.userId) {
+      const error: CustomError = new Error("Forbidden");
+      error.status = 403;
+      return next(error);
+    }
 
-//     return next();
-//   } catch (error) {
-//     return next(error);
-//   }
-// }
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+}
 
 export {
   verifyAccessToken,
@@ -118,5 +126,5 @@ export {
   setUserIdFromToken,
   verifyArticleAuth,
   //   verifyCommentAuth,
-  //   verifyProductAuth,
+  verifyProductAuth,
 };

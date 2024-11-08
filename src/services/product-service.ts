@@ -13,6 +13,7 @@ import {
 import { CreateProductWithUser } from "../controllers/product-controller";
 import commentRepository from "../repositories/comment-repository";
 import likeRepository from "../repositories/like-repository";
+import { UpdateProduct } from "../struct/product-struct";
 
 type CreateProducrData = CreateProductWithUser & {
   image: string[];
@@ -98,8 +99,14 @@ async function getProductDetail(
   );
 }
 
+// product 수정
+async function updateProduct(productId: string, data: UpdateProduct) {
+  return await productRepository.updateData({ where: { id: productId }, data });
+}
+
 export default {
   getProductList,
   createProduct,
   getProductDetail,
+  updateProduct,
 };

@@ -4,6 +4,7 @@ import {
   attachUserId,
   setUserIdFromToken,
   verifyAccessToken,
+  verifyProductAuth,
 } from "../middlewares/authorization";
 import imgUploadHandler from "../middlewares/img-upload-handler";
 import validateData from "../middlewares/validate-data";
@@ -23,6 +24,12 @@ productRouter
 
 productRouter
   .route("/:id")
-  .get(setUserIdFromToken, productController.getProductDetail);
+  .get(setUserIdFromToken, productController.getProductDetail)
+  .patch(
+    verifyAccessToken,
+    verifyProductAuth,
+    validateData.product("patch"),
+    productController.updateProduct
+  );
 
 export default productRouter;
