@@ -7,10 +7,9 @@ import cookieParser from "cookie-parser";
 import articleRouter from "./routers/article-router";
 import authRouter from "./routers/auth-router";
 import productRouter from "./routers/product-router";
-import { articleCommentRouter } from "./routers/comment-router";
+import { articleCommentRouter, productCommentRouter } from "./routers/comment-router";
 // import {
 //   commentController,
-//   productCommentController,
 // } from "./src/controllers/commentController.js";
 // import {
 //   articleLikeController,
@@ -50,8 +49,8 @@ app.use("/article", articleRouter);
 app.use("/auth", authRouter);
 app.use("/product", productRouter);
 app.use("/article", articleCommentRouter);
+app.use('/product', productCommentRouter)
 // app.use("/comment", commentController);
-// app.use("/product", productCommentController);
 // app.use("/article", articleLikeController);
 // app.use("/product", productLikeController);
 

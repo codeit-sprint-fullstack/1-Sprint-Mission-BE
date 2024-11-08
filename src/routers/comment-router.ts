@@ -17,4 +17,8 @@ articleCommentRouter
     commentController.createArticleComment
   );
 
-export { articleCommentRouter };
+productCommentRouter
+  .route("/:id/comment")
+  .get(commentController.getCommentListByProduct);
+
+export { articleCommentRouter, productCommentRouter };

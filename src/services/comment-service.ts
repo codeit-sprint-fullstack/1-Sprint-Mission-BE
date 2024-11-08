@@ -32,7 +32,30 @@ async function createArticleComment(data: Prisma.CommentUncheckedCreateInput) {
   return await commentRepository.createData({ data });
 }
 
+// product 댓글 목록 조회
+async function getCommentListByProduct(
+  req: Request<{ id: string }, {}, {}, CursorQuery>
+) {
+  const { id: productId } = req.params;
+  const { pageSize = "" } = req.query;
+
+  const pagenationOption = createCursorFilterOptions(
+    productId,
+    req.query,
+    "product"
+  );
+  const list = await commentRepository.findManyByCursorPagenationData({
+    pagenationParams: pagenationOption,
+  });
+  const total = await commentRepository.countData({ productId });
+
+  const currentPageSize = parseInt(pageSize) || 5;
+
+  return commentPagenationMapper(list, total, currentPageSize);
+}
+
 export default {
   getCommentListByArticle,
   createArticleComment,
+  getCommentListByProduct,
 };

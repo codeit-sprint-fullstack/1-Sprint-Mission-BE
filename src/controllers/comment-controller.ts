@@ -31,7 +31,22 @@ async function createArticleComment(
   }
 }
 
+// product 댓글 목록 조회
+async function getCommentListByProduct(
+  req: Request<{ id: string }, {}, {}, CursorQuery>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const list = commentService.getCommentListByProduct(req);
+    res.send(list);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export default {
   getCommentListByArticle,
   createArticleComment,
+  getCommentListByProduct,
 };
