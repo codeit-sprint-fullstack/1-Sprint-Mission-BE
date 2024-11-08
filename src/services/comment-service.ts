@@ -60,9 +60,15 @@ async function updateComment(commentId: string, data: UpdateComment) {
   return await commentRepository.updateData({ where: { id: commentId }, data });
 }
 
+// 댓글 삭제
+async function deleteComment(commentId: string) {
+  return await commentRepository.deleteData({ id: commentId });
+}
+
 export default {
   getCommentListByArticle,
   createComment,
   getCommentListByProduct,
   updateComment,
+  deleteComment,
 };

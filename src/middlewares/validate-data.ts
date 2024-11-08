@@ -51,7 +51,7 @@ function article(method: Method) {
   };
 }
 
-function comment(method: Method, type: EntityType) {
+function comment(method: Method, type?: EntityType) {
   return (
     req: Request<
       { id: string },

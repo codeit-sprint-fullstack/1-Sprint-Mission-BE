@@ -33,6 +33,16 @@ productCommentRouter
 
 commentRouter
   .route("/:id")
-  .patch(verifyAccessToken, verifyCommentAuth, commentController.updateComment);
+  .patch(
+    verifyAccessToken,
+    verifyCommentAuth,
+    validateData.comment("patch"),
+    commentController.updateComment
+  )
+  .delete(
+    verifyAccessToken,
+    verifyCommentAuth,
+    commentController.deleteComment
+  );
 
 export { articleCommentRouter, productCommentRouter };

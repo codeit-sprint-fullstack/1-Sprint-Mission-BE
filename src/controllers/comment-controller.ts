@@ -68,9 +68,25 @@ async function updateComment(
   }
 }
 
+// 댓글 삭제
+async function deleteComment(
+  req: Request<{ id: string }, {}, {}>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: commentId } = req.params;
+    await commentService.deleteComment(commentId);
+    res.sendStatus(204);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export default {
   getCommentListByArticle,
   createComment,
   getCommentListByProduct,
   updateComment,
+  deleteComment,
 };

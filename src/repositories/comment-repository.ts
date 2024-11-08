@@ -139,10 +139,16 @@ async function updateData<T extends CommentSelectType | undefined>({
   return await prisma.comment.update({ where, data, select });
 }
 
+// deleteData
+async function deleteData(where: { id: string }): Promise<void> {
+  await prisma.comment.delete({ where });
+}
+
 export default {
   findManyByCursorPagenationData,
   countData,
   createData,
   findUniqueOrThrowtData,
   updateData,
+  deleteData,
 };
