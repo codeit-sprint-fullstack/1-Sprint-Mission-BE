@@ -14,11 +14,17 @@ articleCommentRouter
     verifyAccessToken,
     validateData.comment("post", "article"),
     attachUserId,
-    commentController.createArticleComment
+    commentController.createComment
   );
 
 productCommentRouter
   .route("/:id/comment")
-  .get(commentController.getCommentListByProduct);
+  .get(commentController.getCommentListByProduct)
+  .post(
+    verifyAccessToken,
+    validateData.comment("post", "product"),
+    attachUserId,
+    commentController.createComment
+  );
 
 export { articleCommentRouter, productCommentRouter };

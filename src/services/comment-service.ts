@@ -27,8 +27,8 @@ async function getCommentListByArticle(
   return commentPagenationMapper(list, total, currentPageSize);
 }
 
-// article 댓글 생성
-async function createArticleComment(data: Prisma.CommentUncheckedCreateInput) {
+// 댓글 생성
+async function createComment(data: Prisma.CommentUncheckedCreateInput) {
   return await commentRepository.createData({ data });
 }
 
@@ -49,13 +49,13 @@ async function getCommentListByProduct(
   });
   const total = await commentRepository.countData({ productId });
 
-  const currentPageSize = parseInt(pageSize) || 5;
+  const currentPageSize = parseInt(pageSize) || 2;
 
   return commentPagenationMapper(list, total, currentPageSize);
 }
 
 export default {
   getCommentListByArticle,
-  createArticleComment,
+  createComment,
   getCommentListByProduct,
 };
