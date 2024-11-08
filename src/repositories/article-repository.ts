@@ -1,5 +1,5 @@
 import prisma from "../config/prisma";
-import { PagenationParams } from "../types/repository-type";
+import { PagenationParamsByPage } from "../types/repository-type";
 import { Prisma } from "@prisma/client";
 
 type ArticleSelectType = Prisma.ArticleSelect;
@@ -8,7 +8,7 @@ type ArticleSelectType = Prisma.ArticleSelect;
 type ArticlePayload<T extends ArticleSelectType | undefined> =
   Prisma.ArticleGetPayload<{ select: T }>;
 
-interface ArticlePagenationParams extends PagenationParams {
+interface ArticlePagenationParams extends PagenationParamsByPage {
   where?: Prisma.ArticleWhereInput;
 }
 

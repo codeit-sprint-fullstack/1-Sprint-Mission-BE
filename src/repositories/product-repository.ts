@@ -1,40 +1,40 @@
 import { Prisma } from "@prisma/client";
 import prisma from "../config/prisma";
-import { PagenationParams } from "../types/repository-type";
+import { PagenationParamsByPage } from "../types/repository-type";
 
 type ProductSelectType = Prisma.ProductSelect;
 
 type ProductPayLoad<T extends ProductSelectType | undefined> =
   Prisma.ProductGetPayload<{ select: T }>;
 
-interface ProductPagenationParams extends PagenationParams {
+interface PagenationParams extends PagenationParamsByPage {
   where?: Prisma.ProductWhereInput;
 }
 
-// findManyByPaginationData
-function findManyByPaginationData<T extends ProductSelectType>({
-  paginationParams,
+// findManyByPagenationData
+function findManyByPagenationData<T extends ProductSelectType>({
+  pagenationParams,
   select,
 }: {
-  paginationParams: ProductPagenationParams;
+  pagenationParams: PagenationParams;
   select: T;
 }): Promise<ProductPayLoad<T>[]>;
-function findManyByPaginationData({
-  paginationParams,
+function findManyByPagenationData({
+  pagenationParams,
 }: {
-  paginationParams: ProductPagenationParams;
+  pagenationParams: PagenationParams;
 }): Promise<ProductPayLoad<undefined>[]>;
 
-async function findManyByPaginationData<
+async function findManyByPagenationData<
   T extends ProductSelectType | undefined
 >({
-  paginationParams,
+  pagenationParams,
   select,
 }: {
-  paginationParams: ProductPagenationParams;
+  pagenationParams: PagenationParams;
   select?: T;
 }) {
-  const { orderBy, skip, take, where } = paginationParams;
+  const { orderBy, skip, take, where } = pagenationParams;
   if (select === undefined) {
     return await prisma.product.findMany({ orderBy, skip, take, where });
   }
@@ -73,8 +73,36 @@ async function createData<T extends ProductSelectType | undefined>({
   return await prisma.product.create({ data, select });
 }
 
+// findUniqueOrThrowtData
+function findUniqueOrThrowtData<T extends ProductSelectType>({
+  where,
+  select,
+}: {
+  where: Prisma.ProductWhereUniqueInput;
+  select: T;
+}): Promise<ProductPayLoad<T>>;
+function findUniqueOrThrowtData({
+  where,
+}: {
+  where: Prisma.ProductWhereUniqueInput;
+}): Promise<ProductPayLoad<undefined>>;
+
+async function findUniqueOrThrowtData<T extends ProductSelectType | undefined>({
+  where,
+  select,
+}: {
+  where: Prisma.ProductWhereUniqueInput;
+  select?: T;
+}) {
+  if (select === undefined) {
+    return await prisma.product.findUniqueOrThrow({ where });
+  }
+  return await prisma.product.findUniqueOrThrow({ where, select });
+}
+
 export default {
-  findManyByPaginationData,
+  findManyByPagenationData,
   countData,
-  createData
+  createData,
+  findUniqueOrThrowtData,
 };

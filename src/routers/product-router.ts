@@ -1,6 +1,10 @@
 import express from "express";
 import productController from "../controllers/product-controller";
-import { attachUserId, verifyAccessToken } from "../middlewares/authorization";
+import {
+  attachUserId,
+  setUserIdFromToken,
+  verifyAccessToken,
+} from "../middlewares/authorization";
 import imgUploadHandler from "../middlewares/img-upload-handler";
 import validateData from "../middlewares/validate-data";
 
@@ -16,5 +20,9 @@ productRouter
     attachUserId,
     productController.createProduct
   );
+
+productRouter
+  .route("/:id")
+  .get(setUserIdFromToken, productController.getProductDetail);
 
 export default productRouter;

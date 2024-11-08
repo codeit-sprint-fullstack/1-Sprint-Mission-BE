@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 type Sort = "asc" | "desc";
 
 export interface CreatedAtOrder {
@@ -6,6 +8,12 @@ export interface CreatedAtOrder {
 
 export interface PagenationParams {
   orderBy?: CreatedAtOrder;
-  skip?: number;
   take?: number;
+}
+export interface PagenationParamsByPage extends PagenationParams {
+  skip?: number;
+}
+
+export interface CommentPagenationParams extends PagenationParams {
+  cursor?: Prisma.CommentWhereUniqueInput;
 }

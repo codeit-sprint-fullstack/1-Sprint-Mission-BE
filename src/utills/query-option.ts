@@ -1,5 +1,5 @@
 import { CreatedAtOrder } from "../types/repository-type";
-import { PagenationQuery } from "../types/service-type";
+import { CursorQuery, PagenationQuery } from "../types/service-type";
 
 type KeyWordFilter = {
   contains: string;
@@ -12,9 +12,15 @@ interface PageFilterOption {
   take: number;
 }
 
-function articleKeywordfilterOtions(
-  query: PagenationQuery
-) {
+type CursorType = "product" | "article";
+
+interface CursorDefaultOption {
+  orderBy: CreatedAtOrder;
+  take: number;
+  where: { productId: string } | { articleId: string } | undefined;
+}
+
+function articleKeywordfilterOtions(query: PagenationQuery) {
   const { keyWord = "" } = query;
 
   const filterBody: KeyWordFilter = {
@@ -44,10 +50,10 @@ function productKeywordfilterOtions(query: PagenationQuery) {
 }
 
 function createPagefilterOptions(query: PagenationQuery) {
-  const { page, pageSize, orderBy } = query;
+  const { page = "", pageSize = "", orderBy } = query;
 
-  const pageNum: number = page || 1;
-  const pageSizeNum: number = pageSize || 10;
+  const pageNum: number = parseInt(page) || 1;
+  const pageSizeNum: number = parseInt(pageSize) || 10;
   const order: string = orderBy || "recent";
   const offset: number = (pageNum - 1) * pageSizeNum;
 
@@ -60,8 +66,52 @@ function createPagefilterOptions(query: PagenationQuery) {
   return filterOptions;
 }
 
+function createCursorFilterOptions(
+  id: string,
+  query: CursorQuery,
+  type: CursorType
+) {
+  const { cursor = "", pageSize = "", orderBy } = query;
+  const order = orderBy || "recent";
+  let findValueDefault: CursorDefaultOption = {
+    orderBy: { createdAt: "desc" },
+    take: 0,
+    where: undefined,
+  };
+
+  if (type === "article") {
+    let pageSizeNum: number = parseInt(pageSize) || 5;
+    if (pageSizeNum) {
+      pageSizeNum++;
+    }
+    findValueDefault = {
+      orderBy: { createdAt: "desc" },
+      take: pageSizeNum,
+      where: { articleId: id },
+    };
+  } else if (type === "product") {
+    let pageSizeNum: number = parseInt(pageSize) || 2;
+    if (pageSizeNum) {
+      pageSizeNum++;
+    }
+    findValueDefault = {
+      orderBy: { createdAt: "desc" },
+      take: pageSizeNum,
+      where: { productId: id },
+    };
+  }
+
+  const filterOptions =
+    cursor !== ""
+      ? { ...findValueDefault, cursor: { id: cursor } }
+      : { ...findValueDefault };
+
+  return filterOptions;
+}
+
 export {
   createPagefilterOptions,
   articleKeywordfilterOtions,
   productKeywordfilterOtions,
+  createCursorFilterOptions,
 };

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { PagenationQuery } from "../types/service-type";
+import { CursorQuery, PagenationQuery } from "../types/service-type";
 import productService from "../services/product-service";
 import { CreateProduct } from "../struct/product-struct";
 
@@ -21,6 +21,7 @@ async function getProductList(
   }
 }
 
+// product 생성
 async function createProduct(
   req: Request<{}, {}, CreateProductWithUser>,
   res: Response,
@@ -34,7 +35,22 @@ async function createProduct(
   }
 }
 
+// product 상세 조회
+async function getProductDetail(
+  req: Request<{ id: string }, {}, { userId: string | null }, CursorQuery>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const product = await productService.getProductDetail(req);
+    res.send(product);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export default {
   getProductList,
   createProduct,
+  getProductDetail,
 };

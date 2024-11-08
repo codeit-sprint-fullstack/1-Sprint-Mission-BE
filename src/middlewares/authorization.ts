@@ -32,10 +32,10 @@ function attachUserId(req: Request, res: Response, next: NextFunction) {
 }
 
 function setUserIdFromToken(req: Request, res: Response, next: NextFunction) {
-  const token = req.headers["authorization"]?.split(" ")[1];
+  try {
+    const token = req.headers["authorization"]?.split(" ")[1];
 
-  if (token) {
-    try {
+    if (token) {
       const decoded = jwt.decode(token) as Decoded | null;
       if (decoded) {
         req.body.userId = decoded.userId;
@@ -45,12 +45,13 @@ function setUserIdFromToken(req: Request, res: Response, next: NextFunction) {
         error.status = 401;
         return next(error);
       }
-    } catch (error) {
-      return next(error);
     }
+    
+    req.body.userId = null;
+    next();
+  } catch (err) {
+    return next(err);
   }
-  req.body.userId = null;
-  next();
 }
 
 async function verifyArticleAuth(

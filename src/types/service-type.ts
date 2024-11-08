@@ -1,10 +1,16 @@
 export interface PagenationQuery {
-  page?: number;
-  pageSize?: number;
+  page?: string;
+  pageSize?: string;
   orderBy?: string;
   keyWord?: string;
 }
 
 export interface UserId {
   userId: string;
-};
+}
+
+export interface CursorQuery {
+  cursor?: string;
+  pageSize?: string;
+  orderBy?: string;
+}

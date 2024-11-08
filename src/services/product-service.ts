@@ -1,12 +1,18 @@
 import productRepository from "../repositories/product-repository";
-import { PagenationQuery } from "../types/service-type";
+import { CursorQuery, PagenationQuery } from "../types/service-type";
 import {
+  createCursorFilterOptions,
   createPagefilterOptions,
   productKeywordfilterOtions,
 } from "../utills/query-option";
 import { Request } from "express";
-import { createProductMapper } from "./mappers/product-mapper";
+import {
+  createProductMapper,
+  productDetailMapper,
+} from "./mappers/product-mapper";
 import { CreateProductWithUser } from "../controllers/product-controller";
+import commentRepository from "../repositories/comment-repository";
+import likeRepository from "../repositories/like-repository";
 
 type CreateProducrData = CreateProductWithUser & {
   image: string[];
@@ -20,17 +26,18 @@ export type ImagePath = {
 async function getProductList(query: PagenationQuery) {
   const KeyWordFilter = productKeywordfilterOtions(query);
   const pageFilterOption = createPagefilterOptions(query);
-  const paginationParams = {
+  const pagenationParams = {
     where: KeyWordFilter,
     ...pageFilterOption,
   };
-  const list = await productRepository.findManyByPaginationData({
-    paginationParams,
+  const list = await productRepository.findManyByPagenationData({
+    pagenationParams,
   });
   const total = await productRepository.countData(KeyWordFilter);
   return { total, list };
 }
 
+// product 생성
 async function createProduct(req: Request<{}, {}, CreateProductWithUser>) {
   let createData: CreateProducrData;
   let imagePath: ImagePath = {};
@@ -51,7 +58,48 @@ async function createProduct(req: Request<{}, {}, CreateProductWithUser>) {
   return createProductMapper(product, imagePath);
 }
 
+// product 상세 조회
+async function getProductDetail(
+  req: Request<{ id: string }, {}, { userId: string | null }, CursorQuery>
+) {
+  const { id: productId } = req.params;
+  const { pageSize = "" } = req.query;
+  const { userId } = req.body;
+  const product = await productRepository.findUniqueOrThrowtData({
+    where: { id: productId },
+  });
+  const commmentOption = createCursorFilterOptions(
+    productId,
+    req.query,
+    "product"
+  );
+  const comment = await commentRepository.findManyByCursorPagenationData({
+    pagenationParams: commmentOption,
+  });
+  const commentTotal = await commentRepository.countData({ productId });
+  const currentPageSize = parseInt(pageSize) || 2;
+
+  let isLike: undefined | boolean;
+
+  if (userId) {
+    const like = await likeRepository.findFirstData({
+      where: { userId, productId },
+    });
+
+    isLike = like ? true : false;
+  }
+
+  return productDetailMapper(
+    product,
+    comment,
+    commentTotal,
+    currentPageSize,
+    isLike
+  );
+}
+
 export default {
   getProductList,
   createProduct,
+  getProductDetail,
 };
