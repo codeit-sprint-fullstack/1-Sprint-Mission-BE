@@ -45,4 +45,4 @@ commentRouter
     commentController.deleteComment
   );
 
-export { articleCommentRouter, productCommentRouter };
+export { articleCommentRouter, productCommentRouter, commentRouter };
