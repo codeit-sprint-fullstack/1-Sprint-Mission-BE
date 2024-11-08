@@ -10,6 +10,7 @@ import { JWT_SECRET } from "../../env";
 
 interface JwtPayload {
   userId: string; // JWT 페이로드에 포함된 userId
+  email: string;
 }
 
 const accessExtractor = (req: Request) => {

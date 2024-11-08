@@ -112,10 +112,7 @@ router.get(
         const accessToken = userService.createToken(existedUser);
         const newRefreshToken = userService.createToken(existedUser, "refresh");
         //DB의 갱신된 리프레쉬 토큰 저장
-        const nextUser = await userService.updateRefreshToken(
-          userId,
-          newRefreshToken
-        );
+        await userService.updateRefreshToken(userId, newRefreshToken);
 
         res.cookie(
           "access-token",
