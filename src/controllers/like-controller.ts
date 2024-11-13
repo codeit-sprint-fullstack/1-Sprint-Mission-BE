@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateArticleLike } from "../struct/like-struct";
+import { CreateArticleLike, CreateProductLike } from "../struct/like-struct";
 import likeService from "../services/like-service";
 import { UserId } from "../types/service-type";
 
+// article 좋아요
 async function createArticleLike(
   req: Request<{}, {}, UserId & CreateArticleLike>,
   res: Response,
@@ -16,6 +17,7 @@ async function createArticleLike(
   }
 }
 
+// article 좋아요 취소
 async function deleteArticleLike(
   req: Request<{ id: string }, {}, { userId: string }>,
   res: Response,
@@ -32,7 +34,22 @@ async function deleteArticleLike(
   }
 }
 
+// product 좋아요
+async function createProductLike(
+  req: Request<{}, {}, UserId & CreateProductLike>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const like = await likeService.createProductLike(req.body);
+    res.status(201).send(like);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export default {
   createArticleLike,
   deleteArticleLike,
+  createProductLike
 };

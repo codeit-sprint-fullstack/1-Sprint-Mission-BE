@@ -15,3 +15,12 @@ articleLikeRouter
     likeController.createArticleLike
   )
   .delete(verifyAccessToken, attachUserId, likeController.deleteArticleLike);
+
+productLikeRouter
+  .route("/:id/favorite")
+  .post(
+    verifyAccessToken,
+    validateData.like("product"),
+    attachUserId,
+    likeController.createProductLike
+  );
