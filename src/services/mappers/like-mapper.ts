@@ -7,10 +7,7 @@ interface ArticleResponseData {
   article: Article;
 }
 
-export function articleLikeMapper(
-  method: string,
-  aticleResponsData: ArticleResponseData
-) {
+export function articleLikeMapper(aticleResponsData: ArticleResponseData) {
   const { like, likeTotal, user, article } = aticleResponsData;
   const resData = {
     updatedAt: like.updatedAt,
@@ -25,12 +22,5 @@ export function articleLikeMapper(
     id: article.id,
   };
 
-  let responseWithLikeStatus;
-  if (method === "post") {
-    responseWithLikeStatus = { ...resData, isLike: true };
-  } else if (method === "delete") {
-    responseWithLikeStatus = { ...resData, isLike: false };
-  }
-
-  return responseWithLikeStatus;
+  return { ...resData, isLike: true };
 }

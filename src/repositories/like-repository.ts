@@ -72,8 +72,14 @@ async function countData(where: Prisma.LikeWhereInput): Promise<number> {
   return await prisma.like.count({ where });
 }
 
+// deleteData
+async function deleteData(where: { id: string }): Promise<void> {
+  await prisma.like.delete({ where });
+}
+
 export default {
   findFirstData,
   createData,
   countData,
+  deleteData,
 };

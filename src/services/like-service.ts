@@ -23,7 +23,7 @@ async function createArticleLike(data: UserId & CreateArticleLike) {
       where: { id: articleId },
     });
 
-    return articleLikeMapper("post", {
+    return articleLikeMapper({
       like,
       likeTotal,
       user,
@@ -35,6 +35,29 @@ async function createArticleLike(data: UserId & CreateArticleLike) {
   throw error;
 }
 
+async function deleteArticleLike(articleId: string, userId: string) {
+  const isDuplicate = await likeRepository.findFirstData({
+    where: { articleId, userId },
+  });
+
+  if (isDuplicate) {
+    await likeRepository.deleteData({ id: isDuplicate.id });
+    const likeTotal = await likeRepository.countData({ articleId });
+
+    return {
+      likeCount: likeTotal,
+      isLike: false,
+    };
+  }
+
+  const error: CustomError = new Error(
+    "No like found for the specified userId and articleId."
+  );
+  error.status = 404;
+  throw error;
+}
+
 export default {
   createArticleLike,
+  deleteArticleLike,
 };

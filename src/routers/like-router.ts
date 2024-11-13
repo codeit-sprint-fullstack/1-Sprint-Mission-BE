@@ -13,4 +13,5 @@ articleLikeRouter
     validateData.like("article"),
     attachUserId,
     likeController.createArticleLike
-  );
+  )
+  .delete(verifyAccessToken, attachUserId, likeController.deleteArticleLike);

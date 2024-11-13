@@ -16,6 +16,23 @@ async function createArticleLike(
   }
 }
 
+async function deleteArticleLike(
+  req: Request<{ id: string }, {}, { userId: string }>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: articleId } = req.params;
+    const { userId } = req.body;
+    const like = await likeService.deleteArticleLike(articleId, userId);
+
+    res.send(like);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export default {
   createArticleLike,
+  deleteArticleLike,
 };
