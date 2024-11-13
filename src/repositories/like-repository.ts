@@ -37,6 +37,43 @@ async function findFirstData<T extends LikeSelectType | undefined>({
   });
 }
 
+// createData
+function createData<T extends LikeSelectType>({
+  data,
+  select,
+}: {
+  data: Prisma.LikeUncheckedCreateInput;
+  select: T;
+}): Promise<LikePayLoad<T>>;
+function createData({
+  data,
+}: {
+  data: Prisma.LikeUncheckedCreateInput;
+}): Promise<LikePayLoad<undefined>>;
+
+async function createData<T extends LikeSelectType | undefined>({
+  data,
+  select,
+}: {
+  data: Prisma.LikeUncheckedCreateInput;
+  select?: T;
+}) {
+  if (select === undefined) {
+    return await prisma.like.create({ data });
+  }
+  return await prisma.like.create({
+    data,
+    select,
+  });
+}
+
+// countData
+async function countData(where: Prisma.LikeWhereInput): Promise<number> {
+  return await prisma.like.count({ where });
+}
+
 export default {
   findFirstData,
+  createData,
+  countData,
 };
