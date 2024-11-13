@@ -23,4 +23,5 @@ productLikeRouter
     validateData.like("product"),
     attachUserId,
     likeController.createProductLike
-  );
+  )
+  .delete(verifyAccessToken, attachUserId, likeController.deleteProductLike);

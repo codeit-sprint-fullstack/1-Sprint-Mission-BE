@@ -93,8 +93,32 @@ async function createProductLike(data: UserId & CreateProductLike) {
   throw error;
 }
 
+// product 좋아요 취소
+async function deleteProductLike(productId: string, userId: string) {
+  const isDuplicate = await likeRepository.findFirstData({
+    where: { productId, userId },
+  });
+
+  if (isDuplicate) {
+    await likeRepository.deleteData({ id: isDuplicate.id });
+    const likeTotal = await likeRepository.countData({ productId });
+
+    return {
+      likeCount: likeTotal,
+      isLike: false,
+    };
+  }
+
+  const error: CustomError = new Error(
+    "No like found for the specified userId and articleId."
+  );
+  error.status = 404;
+  throw error;
+}
+
 export default {
   createArticleLike,
   deleteArticleLike,
   createProductLike,
+  deleteProductLike,
 };

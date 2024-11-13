@@ -48,8 +48,26 @@ async function createProductLike(
   }
 }
 
+// product 좋아요 취소
+async function deleteProductLike(
+  req: Request<{ id: string }, {}, { userId: string }>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: productId } = req.params;
+    const { userId } = req.body;
+    const like = await likeService.deleteArticleLike(productId, userId);
+
+    res.send(like);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 export default {
   createArticleLike,
   deleteArticleLike,
-  createProductLike
+  createProductLike,
+  deleteProductLike,
 };
