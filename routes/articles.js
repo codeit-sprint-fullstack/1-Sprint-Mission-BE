@@ -19,6 +19,19 @@ router.get(
         title: true,
         content: true,
         createdAt: true,
+        count: true,
+        comment: {
+          select: {
+            content: true,
+            createdAt: true,
+            user: {
+              select: {
+                name: true,
+                image: true,
+              },
+            },
+          },
+        },
       },
     });
     res.send(article);
@@ -36,6 +49,11 @@ router.get(
         orderBy = { createdAt: 'asc' };
         break;
       case 'recent':
+        orderBy = { createdAt: 'desc' };
+        break;
+      case 'favorite':
+        orderBy = { count: 'desc' };
+        break;
       default:
         orderBy = { createdAt: 'desc' };
     }
@@ -53,7 +71,15 @@ router.get(
         id: true,
         title: true,
         content: true,
+        count: true,
+        image: true,
         createdAt: true,
+        user: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
       },
     });
     res.send(article);
