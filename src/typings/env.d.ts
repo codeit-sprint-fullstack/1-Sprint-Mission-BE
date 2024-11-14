@@ -5,5 +5,9 @@ declare namespace NodeJS {
     POSTGRES_DATABASE_URL: string;
     PUBLIC_IMAGES_URL: string;
     PORT: string;
+    AWS_ACCESS_KEY_ID: string;
+    AWS_REGION: string;
+    AWS_SECRET_ACCESS_KEY: string;
+    AWS_BUCKET_NAME: string;
   }
 }

@@ -8,9 +8,16 @@ import passport from "../config/passportConfig";
 import { PUBLIC_IMAGES_URL } from "../env";
 import { ProductData } from "../utils/interfaces/products/productData";
 import { imageUpload, uploadToS3 } from "../middlewares/multer/imageUpload";
+import { AWS_BUCKET_NAME, AWS_REGION } from "../env";
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const router = express.Router();
 const upload = multer({ dest: "upload/" });
+
+const s3 = new S3Client({
+  region: AWS_REGION!, // S3 버킷이 위치한 리전
+});
 
 router.get(
   "/",
@@ -18,8 +25,37 @@ router.get(
     try {
       const { totalCount, products, hasMore } =
         await productService.getProducts(req);
+      const productsWithSignedUrls = await Promise.all(
+        products.map(async (product) => {
+          // product의 images 배열에서 서명된 URL 생성
+          const signedUrls = await Promise.all(
+            product.images.map(async (imageUrl) => {
+              // DB에서 URL이 https://로 시작하면, 경로만 추출하여 S3 객체 키를 사용
+              const imageKey = imageUrl.replace(
+                "https://panda-market-0001.s3.ap-northeast-2.amazonaws.com/",
+                ""
+              );
+
+              const command = new GetObjectCommand({
+                Bucket: "panda-market-0001", // 버킷 이름
+                Key: imageKey, // S3 객체 키 (경로만)
+              });
+
+              // 서명된 URL 생성
+              const url = await getSignedUrl(s3, command, {
+                expiresIn: 1000 * 60 * 5, // URL의 유효 기간 5분
+              });
+
+              return url;
+            })
+          );
+
+          // 각 product 객체에 서명된 URLs 추가
+          return { ...product, images: signedUrls };
+        })
+      );
       const responseData = {
-        list: products,
+        list: productsWithSignedUrls,
         totalCount,
         hasMore,
       };
@@ -42,11 +78,34 @@ router.get(
         userId,
         productId
       );
+      const signedUrls = await Promise.all(
+        product.images.map(async (imageUrl) => {
+          const imageKey = imageUrl.replace(
+            "https://panda-market-0001.s3.ap-northeast-2.amazonaws.com/",
+            ""
+          );
+          const command = new GetObjectCommand({
+            Bucket: AWS_BUCKET_NAME, // 버킷 이름
+            Key: imageKey, // S3 객체 키
+          });
+          // 서명된 URL 생성
+          const url = await getSignedUrl(s3, command, {
+            expiresIn: 3600, // URL의 유효 기간 (초 단위, 예: 1시간 = 3600초)
+          });
+
+          return url;
+        })
+      );
+
       if (existingLike) {
         //현재 사용자의 좋아요의 상태를 확인하고 리스폰스에 반영
-        res.status(200).send({ ...product, isFavorite: true });
+        res
+          .status(200)
+          .send({ ...product, images: signedUrls, isFavorite: true });
       } else {
-        res.status(200).send({ ...product, isFavorite: false });
+        res
+          .status(200)
+          .send({ ...product, images: signedUrls, isFavorite: false });
       }
     } catch (error) {
       next(error);
@@ -64,7 +123,7 @@ router.post(
       const images = (req.files as Express.Multer.File[])?.map(
         (file) => file.filename
       );
-      const tags = req.body.tags.split(",");
+      const tags = req.body.tags;
       const { id: userId } = req.user as { id: string };
       const data = await productService.createProduct({
         ...req.body,

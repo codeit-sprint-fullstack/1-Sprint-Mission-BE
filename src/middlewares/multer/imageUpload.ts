@@ -78,7 +78,7 @@ const uploadToS3 = async (
         );
 
         // 업로드된 파일 URL을 설정
-        file.filename = `https://${AWS_BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/${key}`;
+        file.filename = `https://${AWS_BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/images/${key}`;
       }
     );
 
@@ -90,4 +90,4 @@ const uploadToS3 = async (
   }
 };
 
-export { imageUpload, uploadToS3 };
+export { imageUpload, uploadToS3, s3 };
