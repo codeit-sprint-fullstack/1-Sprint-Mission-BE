@@ -110,5 +110,6 @@
   "include": [
     "src/**/*.ts", // 또는 "*.ts"로 설정
     "src/typings/**/*.d.ts" // typings 폴더를 포함
-  ]
+  ],
+  "exclude": ["node_modules"]
 }

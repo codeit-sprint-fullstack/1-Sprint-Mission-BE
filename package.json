@@ -41,7 +41,8 @@
     "dev": "nodemon --watch src src/app.ts",
     "start": "node app.js",
     "seed": "node data/seed.js",
-    "swagger": "node swagger.js"
+    "swagger": "node swagger.js",
+    "build": "tsc"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
