@@ -5,7 +5,6 @@ import authUser from "../middlewares/authUser";
 import commentService from "../services/commentService";
 import passport from "../config/passportConfig";
 import express, { Request, Response, NextFunction } from "express";
-import { Comment } from "@prisma/client";
 import { CommentData } from "../utils/interfaces/comments/commentData";
 
 const router = express.Router();

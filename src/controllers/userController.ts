@@ -54,7 +54,7 @@ router.post(
       const accessToken = userService.createToken(user);
       const refreshToken = userService.createToken(user, "refresh-token");
 
-      //Db의 갱신된 리프레쉬 토큰 저장
+      //DB의 갱신된 리프레쉬 토큰 저장
       await userService.updateRefreshToken(user.id, refreshToken);
 
       res.cookie("access-token", accessToken, cookiesConfig.accessTokenOption);

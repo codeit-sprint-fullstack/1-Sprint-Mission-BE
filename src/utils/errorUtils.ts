@@ -1,9 +1,13 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { Request, Response, RequestHandler, NextFunction } from "express";
 
-export const asyncHandle =
-  (
-    handle: (req: Request, res: Response, next: NextFunction) => Promise<void>
-  ): RequestHandler =>
-  (req, res, next) => {
-    handle(req, res, next).catch(next); // 비동기 함수의 오류를 next로 전달
+export const asyncHandle = (
+  handle: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => Promise<Response | void>
+) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    handle(req, res, next).catch(next); // 비동기 함수에서 발생한 오류를 처리
   };
+};

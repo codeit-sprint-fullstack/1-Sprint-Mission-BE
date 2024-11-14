@@ -10,6 +10,7 @@
     "@types/passport": "^1.0.17",
     "@types/passport-jwt": "^4.0.1",
     "@types/superstruct": "^0.8.2",
+    "aws-sdk": "^2.1692.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -20,19 +21,21 @@
     "is-uuid": "^1.0.2",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
+    "multer-s3": "^3.0.1",
+    "sharp": "^0.33.5",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "prisma": "^5.4.2",
     "superstruct": "^1.0.3",
-    "swagger-autogen": "^2.23.7",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "swagger-autogen": "^2.23.7"
   },
   "devDependencies": {
     "nodemon": "^3.1.4",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   },
   "scripts": {
     "dev": "nodemon --watch src src/app.ts",

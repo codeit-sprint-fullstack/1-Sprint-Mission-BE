@@ -7,6 +7,7 @@ import multer from "multer";
 import passport from "../config/passportConfig";
 import { PUBLIC_IMAGES_URL } from "../env";
 import { ProductData } from "../utils/interfaces/products/productData";
+import { imageUpload, uploadToS3 } from "../middlewares/multer/imageUpload";
 
 const router = express.Router();
 const upload = multer({ dest: "upload/" });
@@ -56,11 +57,12 @@ router.get(
 router.post(
   "/",
   passport.authenticate("access-token", { session: false }), //인가된 사용자만 작성가능
-  upload.array("images", 3),
+  imageUpload.array("images", 3),
+  uploadToS3, // 압축 후 S3 업로드
   asyncHandle(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const images = (req.files as Express.Multer.File[]).map(
-        (file) => PUBLIC_IMAGES_URL + file.filename
+      const images = (req.files as Express.Multer.File[])?.map(
+        (file) => file.filename
       );
       const tags = req.body.tags.split(",");
       const { id: userId } = req.user as { id: string };
