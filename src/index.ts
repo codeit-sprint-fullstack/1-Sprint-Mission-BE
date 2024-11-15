@@ -14,6 +14,7 @@ const app: Application = express();
 
 const allowedOrigins: string[] = [
   "https://next-ju-12.d1yscjh5yqgpx3.amplifyapp.com",
+  "http://localhost:3000",
 ];
 
 const corsOptions: CorsOptions = {
