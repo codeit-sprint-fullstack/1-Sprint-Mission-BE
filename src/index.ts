@@ -1,18 +1,35 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
-import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import productRoutes from "./routes/productRoutes";
 import articleRoutes from "./routes/articleRoutes";
 import commentRoutes from "./routes/commentRoutes";
 import { errorHandler } from "./middlewares/errorHandler";
+import cors, { CorsOptions } from "cors";
 
 dotenv.config();
 
 const app: Application = express();
 
-app.use(cors());
+const allowedOrigins: string[] = [
+  "https://next-ju-12.d1yscjh5yqgpx3.amplifyapp.com",
+];
+
+const corsOptions: CorsOptions = {
+  credentials: true,
+  origin: function (
+    origin: string | undefined,
+    callback: (err: Error | null, origin?: string) => void
+  ) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, origin); // 허용
+    } else {
+      callback(new Error("Not allowed by CORS")); // 허용하지 않음
+    }
+  },
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/auth", authRoutes);
