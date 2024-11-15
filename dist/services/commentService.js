@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteComment = exports.updateComment = exports.getArticleComments = exports.getProductComments = exports.createArticleComment = exports.createProductComment = void 0;
-const index_js_1 = __importDefault(require("../models/index.js"));
+const index_1 = __importDefault(require("../models/index"));
 const parseId = (id) => parseInt(id, 10);
 const getCursorOptions = (cursor) => {
     const parsedCursor = parseInt(cursor, 10);
@@ -33,7 +33,7 @@ const createComment = (content, userId, entityId, entityType) => __awaiter(void 
         writer: { connect: { id: userId } },
         [entityType]: { connect: { id: entityId } },
     };
-    const newComment = yield index_js_1.default.comment.create({
+    const newComment = yield index_1.default.comment.create({
         data,
         include: { writer: true },
     });
@@ -41,7 +41,7 @@ const createComment = (content, userId, entityId, entityType) => __awaiter(void 
 });
 const getComments = (limit, cursor, entityId, entityType) => __awaiter(void 0, void 0, void 0, function* () {
     const queryOptions = getCommentOptions(limit, cursor, entityId, entityType);
-    const list = yield index_js_1.default.comment.findMany(queryOptions);
+    const list = yield index_1.default.comment.findMany(queryOptions);
     const nextCursor = list.length === limit ? list[list.length - 1].id : null;
     return { list, nextCursor };
 });
@@ -62,7 +62,7 @@ const getArticleComments = (limit, cursor, articleId) => __awaiter(void 0, void 
 });
 exports.getArticleComments = getArticleComments;
 const updateComment = (commentId, content) => __awaiter(void 0, void 0, void 0, function* () {
-    return index_js_1.default.comment.update({
+    return index_1.default.comment.update({
         where: { id: parseId(commentId) },
         data: { content },
         include: { writer: true },
@@ -70,6 +70,6 @@ const updateComment = (commentId, content) => __awaiter(void 0, void 0, void 0, 
 });
 exports.updateComment = updateComment;
 const deleteComment = (commentId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield index_js_1.default.comment.delete({ where: { id: parseId(commentId) } });
+    yield index_1.default.comment.delete({ where: { id: parseId(commentId) } });
 });
 exports.deleteComment = deleteComment;

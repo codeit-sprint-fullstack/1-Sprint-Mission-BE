@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteLike = exports.addLike = exports.deleteArticle = exports.updateArticle = exports.getArticleById = exports.createArticle = exports.getArticles = void 0;
-const index_js_1 = __importDefault(require("../models/index.js"));
+const index_1 = __importDefault(require("../models/index"));
 const includeRelations = (userId) => ({
     writer: true,
     favorites: {
@@ -39,8 +39,8 @@ const generateOrderCondition = (orderBy) => {
 };
 const getArticles = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, pageSize = 10, keyword = "", orderBy = "recent") {
     const offset = (page - 1) * pageSize;
-    const [list, totalCount] = yield index_js_1.default.$transaction([
-        index_js_1.default.article.findMany({
+    const [list, totalCount] = yield index_1.default.$transaction([
+        index_1.default.article.findMany({
             where: generateWhereCondition(keyword),
             skip: offset,
             take: pageSize,
@@ -50,7 +50,7 @@ const getArticles = (...args_1) => __awaiter(void 0, [...args_1], void 0, functi
                 favorites: true, // Include all favorite fields
             },
         }),
-        index_js_1.default.article.count({
+        index_1.default.article.count({
             where: generateWhereCondition(keyword),
         }),
     ]);
@@ -63,7 +63,7 @@ const getArticles = (...args_1) => __awaiter(void 0, [...args_1], void 0, functi
 });
 exports.getArticles = getArticles;
 const createArticle = (images, content, title, userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const newArticle = yield index_js_1.default.article.create({
+    const newArticle = yield index_1.default.article.create({
         data: { images, content, title, userId },
         include: includeRelations(userId),
     });
@@ -76,7 +76,7 @@ const createArticle = (images, content, title, userId) => __awaiter(void 0, void
 });
 exports.createArticle = createArticle;
 const getArticleById = (articleId, userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const article = yield index_js_1.default.article.findUnique({
+    const article = yield index_1.default.article.findUnique({
         where: { id: articleId },
         include: includeRelations(userId),
     });
@@ -91,7 +91,7 @@ const getArticleById = (articleId, userId) => __awaiter(void 0, void 0, void 0, 
 });
 exports.getArticleById = getArticleById;
 const updateArticle = (articleId, userId, images, title, content) => __awaiter(void 0, void 0, void 0, function* () {
-    const updatedArticle = yield index_js_1.default.article.update({
+    const updatedArticle = yield index_1.default.article.update({
         where: { id: articleId },
         data: { images, title, content },
         include: includeRelations(userId),
@@ -104,19 +104,19 @@ const updateArticle = (articleId, userId, images, title, content) => __awaiter(v
 });
 exports.updateArticle = updateArticle;
 const deleteArticle = (articleId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield index_js_1.default.article.delete({
+    yield index_1.default.article.delete({
         where: { id: articleId },
     });
 });
 exports.deleteArticle = deleteArticle;
 const addLike = (articleId, userId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield index_js_1.default.favorite.create({
+    yield index_1.default.favorite.create({
         data: {
             articleId: articleId,
             userId: userId,
         },
     });
-    return index_js_1.default.article.update({
+    return index_1.default.article.update({
         where: { id: articleId },
         data: {
             likeCount: { increment: 1 },
@@ -126,13 +126,13 @@ const addLike = (articleId, userId) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.addLike = addLike;
 const deleteLike = (articleId, userId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield index_js_1.default.favorite.deleteMany({
+    yield index_1.default.favorite.deleteMany({
         where: {
             articleId: articleId,
             userId: userId,
         },
     });
-    return index_js_1.default.article.update({
+    return index_1.default.article.update({
         where: { id: articleId },
         data: {
             likeCount: { decrement: 1 },

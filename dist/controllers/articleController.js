@@ -33,7 +33,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteLike = exports.addLike = exports.deleteArticle = exports.updateArticle = exports.getArticleById = exports.getArticles = exports.createArticle = void 0;
-const articleService = __importStar(require("../services/articleService.js"));
+const articleService = __importStar(require("../services/articleService"));
 const formatArticleResponse = (article) => ({
     id: article.id,
     title: article.title,

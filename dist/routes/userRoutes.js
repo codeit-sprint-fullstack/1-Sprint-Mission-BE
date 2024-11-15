@@ -27,10 +27,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const userController = __importStar(require("../controllers/userController.js"));
-const verifyToken_js_1 = require("../middlewares/verifyToken.js");
+const userController = __importStar(require("../controllers/userController"));
+const verifyToken_1 = require("../middlewares/verifyToken");
 const router = express_1.default.Router();
-router.get("/me", verifyToken_js_1.verifyToken, (req, res, next) => {
+router.get("/me", verifyToken_1.verifyToken, (req, res, next) => {
     const extendedReq = req;
     userController.getUserById(extendedReq, res, next);
 });

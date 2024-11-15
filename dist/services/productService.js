@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteFavorite = exports.addFavorite = exports.deleteProduct = exports.updateProduct = exports.getProductById = exports.getProducts = exports.createProduct = void 0;
-const index_js_1 = __importDefault(require("../models/index.js"));
+const index_1 = __importDefault(require("../models/index"));
 const parseId = (id) => parseInt(id.toString(), 10);
 // 상품 생성
 const createProduct = (images, name, price, description, tags, userId, userNickname) => __awaiter(void 0, void 0, void 0, function* () {
-    const newProduct = yield index_js_1.default.product.create({
+    const newProduct = yield index_1.default.product.create({
         data: {
             images,
             name,
@@ -45,21 +45,21 @@ const getProducts = (...args_1) => __awaiter(void 0, [...args_1], void 0, functi
     const orderCondition = orderBy === "favorite"
         ? [{ favoriteCount: "desc" }, { createdAt: "desc" }]
         : [{ createdAt: "desc" }];
-    const [list, totalCount] = yield index_js_1.default.$transaction([
-        index_js_1.default.product.findMany({
+    const [list, totalCount] = yield index_1.default.$transaction([
+        index_1.default.product.findMany({
             where: whereCondition,
             skip: offset,
             take: pageSize,
             orderBy: orderCondition,
         }),
-        index_js_1.default.product.count({ where: whereCondition }),
+        index_1.default.product.count({ where: whereCondition }),
     ]);
     return { list, totalCount, page, pageSize };
 });
 exports.getProducts = getProducts;
 // 특정 상품 조회
 const getProductById = (productId, userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const product = yield index_js_1.default.product.findUnique({
+    const product = yield index_1.default.product.findUnique({
         where: { id: parseId(productId) },
         include: {
             favorites: {
@@ -76,8 +76,8 @@ const getProductById = (productId, userId) => __awaiter(void 0, void 0, void 0, 
 });
 exports.getProductById = getProductById;
 // 상품 업데이트
-const updateProduct = (productId, images, name, price, description, tags) => __awaiter(void 0, void 0, void 0, function* () {
-    const updatedProduct = yield index_js_1.default.product.update({
+const updateProduct = (productId, images, name, price, description, tags, userId, userNickname) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatedProduct = yield index_1.default.product.update({
         where: { id: parseId(productId) },
         data: {
             images,
@@ -85,17 +85,19 @@ const updateProduct = (productId, images, name, price, description, tags) => __a
             price,
             description,
             tags,
+            ownerId: userId,
+            ownerNickname: userNickname,
         },
     });
     return updatedProduct;
 });
 exports.updateProduct = updateProduct;
 const deleteProduct = (productId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield index_js_1.default.product.delete({ where: { id: parseId(productId) } });
+    yield index_1.default.product.delete({ where: { id: parseId(productId) } });
 });
 exports.deleteProduct = deleteProduct;
 const updateFavorite = (productId_1, ...args_1) => __awaiter(void 0, [productId_1, ...args_1], void 0, function* (productId, increment = true, userId) {
-    const existingFavorite = yield index_js_1.default.favorite.findFirst({
+    const existingFavorite = yield index_1.default.favorite.findFirst({
         where: { productId: parseId(productId), userId: parseId(userId) },
     });
     if (increment && existingFavorite) {
@@ -105,16 +107,16 @@ const updateFavorite = (productId_1, ...args_1) => __awaiter(void 0, [productId_
         throw new Error("좋아요를 누르지 않았습니다.");
     }
     const favoriteAction = increment ? { increment: 1 } : { decrement: 1 };
-    const [updatedProduct, favoriteActionResult] = yield index_js_1.default.$transaction([
-        index_js_1.default.product.update({
+    const [updatedProduct, favoriteActionResult] = yield index_1.default.$transaction([
+        index_1.default.product.update({
             where: { id: parseId(productId) },
             data: { favoriteCount: favoriteAction },
         }),
         increment
-            ? index_js_1.default.favorite.create({
+            ? index_1.default.favorite.create({
                 data: { productId: parseId(productId), userId: parseId(userId) },
             })
-            : index_js_1.default.favorite.delete({
+            : index_1.default.favorite.delete({
                 where: { id: existingFavorite.id },
             }),
     ]);

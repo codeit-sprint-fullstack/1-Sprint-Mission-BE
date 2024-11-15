@@ -33,7 +33,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteComment = exports.updateComment = exports.getArticleComments = exports.getProductComments = exports.createArticleComment = exports.createProductComment = void 0;
-const commentService = __importStar(require("../services/commentService.js"));
+const commentService = __importStar(require("../services/commentService"));
 const createCommentResponse = (comment, type) => ({
     id: comment.id,
     content: comment.content,

@@ -27,20 +27,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const commentController = __importStar(require("../controllers/commentController.js"));
-const verifyToken_js_1 = require("../middlewares/verifyToken.js");
+const commentController = __importStar(require("../controllers/commentController"));
+const verifyToken_1 = require("../middlewares/verifyToken");
 const router = express_1.default.Router();
 router
     .route("/products/:productId/comments")
-    .post(verifyToken_js_1.verifyToken, commentController.createProductComment)
+    .post(verifyToken_1.verifyToken, commentController.createProductComment)
     .get(commentController.getProductComments);
 router
     .route("/articles/:articleId/comments")
-    .post(verifyToken_js_1.verifyToken, commentController.createArticleComment)
+    .post(verifyToken_1.verifyToken, commentController.createArticleComment)
     .get(commentController.getArticleComments);
 router
     .route("/comments/:commentId")
-    .all(verifyToken_js_1.verifyToken)
+    .all(verifyToken_1.verifyToken)
     .patch(commentController.updateComment)
     .delete(commentController.deleteComment);
 exports.default = router;

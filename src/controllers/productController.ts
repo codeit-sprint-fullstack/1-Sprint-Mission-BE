@@ -26,15 +26,15 @@ export const createProduct = async (
     };
     const { id: userId, nickname: userNickname } = user;
 
-    const newProduct = await productService.createProduct(
+    const newProduct = await productService.createProduct({
       images,
       name,
-      parseInt(price),
+      price: parseInt(price),
       description,
       tags,
       userId,
-      userNickname
-    );
+      userNickname,
+    });
 
     res.status(201).json({
       message: "Product created successfully",
@@ -87,7 +87,7 @@ export const getProductsById = async (
       return res.status(401).json({ message: "Unauthorized" });
     }
     const productId = parseInt(req.params.productId);
-    const product = await productService.getProductById(productId, userId);
+    const product = await productService.getProductById({ productId, userId });
     res.status(200).json(product);
   } catch (err) {
     next(Error);
@@ -109,7 +109,7 @@ export const updateProduct = async (
       return res.status(401).json({ message: "Unauthorized" });
     }
     const userId: number = user.id;
-    const nickname: string = user.nickname;
+    const userNickname: string = user.nickname;
     const newImagePaths = files
       ? files.map((file) => (file as any).location)
       : [];
@@ -131,16 +131,16 @@ export const updateProduct = async (
       tags: string[];
     };
 
-    const updatedProduct = await productService.updateProduct(
-      parseInt(productId),
+    const updatedProduct = await productService.updateProduct({
+      productId: parseInt(productId),
       images,
       name,
-      parseInt(price),
+      price: parseInt(price),
       description,
       tags,
       userId,
-      nickname
-    );
+      userNickname,
+    });
 
     res.status(200).json(updatedProduct);
   } catch (error) {
@@ -175,7 +175,7 @@ export const addFavorite = async (
       return res.status(401).json({ message: "Unauthorized" });
     }
     const productId = parseInt(req.params.productId);
-    const product = productService.addFavorite(productId, userId);
+    const product = productService.addFavorite({ productId, userId });
     res.status(200).json(product);
   } catch (err) {
     next(Error);
@@ -193,7 +193,7 @@ export const deleteFavorite = async (
       return res.status(401).json({ message: "Unauthorized" });
     }
     const productId = parseInt(req.params.productId);
-    const product = productService.deleteFavorite(productId, userId);
+    const product = productService.deleteFavorite({ productId, userId });
     res.status(200).json(product);
   } catch (err) {
     next(Error);

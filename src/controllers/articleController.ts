@@ -89,10 +89,10 @@ export const getArticleById = async (
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const article = await articleService.getArticleById(
-      parseInt(articleId),
-      userId
-    );
+    const article = await articleService.getArticleById({
+      articleId: parseInt(articleId),
+      userId,
+    });
 
     if (!article) {
       return res.status(404).json({ message: "Article not found" });
@@ -175,10 +175,10 @@ export const addLike = async (
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const updatedArticle = await articleService.addLike(
-      parseInt(articleId),
-      userId
-    );
+    const updatedArticle = await articleService.addLike({
+      articleId: parseInt(articleId),
+      userId,
+    });
     const response = formatArticleResponse(updatedArticle);
     sendResponse(res, response);
   } catch (error) {
@@ -198,10 +198,10 @@ export const deleteLike = async (
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const updatedArticle = await articleService.deleteLike(
-      parseInt(articleId),
-      userId
-    );
+    const updatedArticle = await articleService.deleteLike({
+      articleId: parseInt(articleId),
+      userId,
+    });
     const response = formatArticleResponse(updatedArticle);
     sendResponse(res, response);
   } catch (error) {

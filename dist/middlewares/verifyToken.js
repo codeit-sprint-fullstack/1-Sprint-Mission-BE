@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const index_js_1 = __importDefault(require("../models/index.js"));
+const index_1 = __importDefault(require("../models/index"));
 const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const authHeader = req.headers.authorization;
@@ -24,7 +24,7 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         }
         const token = authHeader.split(" ")[1];
         const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        const user = yield index_js_1.default.user.findUnique({
+        const user = yield index_1.default.user.findUnique({
             where: { id: decoded.id },
         });
         if (!user) {

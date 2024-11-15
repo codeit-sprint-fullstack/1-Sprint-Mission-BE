@@ -26,6 +26,11 @@ interface Favorite {
   userId: number;
   articleId: number;
 }
+
+interface User_Article {
+  articleId: number;
+  userId: number;
+}
 const includeRelations = (userId: number) => ({
   writer: true,
   favorites: {
@@ -117,10 +122,10 @@ export const createArticle = async (
   } as Article;
 };
 
-export const getArticleById = async (
-  articleId: number,
-  userId: number
-): Promise<Article> => {
+export const getArticleById = async ({
+  articleId,
+  userId,
+}: User_Article): Promise<Article> => {
   const article = await prisma.article.findUnique({
     where: { id: articleId },
     include: includeRelations(userId),
@@ -170,10 +175,10 @@ export const deleteArticle = async (articleId: number): Promise<void> => {
   });
 };
 
-export const addLike = async (
-  articleId: number,
-  userId: number
-): Promise<Article> => {
+export const addLike = async ({
+  articleId,
+  userId,
+}: User_Article): Promise<Article> => {
   await prisma.favorite.create({
     data: {
       articleId: articleId,
@@ -190,10 +195,10 @@ export const addLike = async (
   }) as Promise<Article>;
 };
 
-export const deleteLike = async (
-  articleId: number,
-  userId: number
-): Promise<Article> => {
+export const deleteLike = async ({
+  articleId,
+  userId,
+}: User_Article): Promise<Article> => {
   await prisma.favorite.deleteMany({
     where: {
       articleId: articleId,

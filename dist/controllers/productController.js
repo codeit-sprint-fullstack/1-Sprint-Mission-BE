@@ -33,7 +33,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteFavorite = exports.addFavorite = exports.deleteProduct = exports.updateProduct = exports.getProductsById = exports.getProducts = exports.createProduct = void 0;
-const productService = __importStar(require("../services/productService.js"));
+const productService = __importStar(require("../services/productService"));
 const createProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { files, user } = req;
@@ -84,8 +84,13 @@ const getProductsById = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
 exports.getProductsById = getProductsById;
 const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { files } = req;
+        const { files, user } = req;
         const { productId } = req.params;
+        if (!(user === null || user === void 0 ? void 0 : user.id)) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+        const userId = user.id;
+        const nickname = user.nickname;
         const newImagePaths = files
             ? files.map((file) => file.location)
             : [];
@@ -100,7 +105,7 @@ const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         }
         const images = [...existingImages, ...newImagePaths];
         const { name, price, description, tags } = req.body;
-        const updatedProduct = yield productService.updateProduct(parseInt(productId), images, name, parseInt(price), description, tags);
+        const updatedProduct = yield productService.updateProduct(parseInt(productId), images, name, parseInt(price), description, tags, userId, nickname);
         res.status(200).json(updatedProduct);
     }
     catch (error) {

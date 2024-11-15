@@ -27,7 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const authController = __importStar(require("../controllers/authController.js"));
+const authController = __importStar(require("../controllers/authController"));
 const router = express_1.default.Router();
 authController.refreshToken;
 router.post("/signup", authController.signUp);

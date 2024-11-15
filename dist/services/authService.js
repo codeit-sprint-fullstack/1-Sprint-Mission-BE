@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.refreshToken = exports.getUserByEmail = exports.createUser = void 0;
-const index_js_1 = __importDefault(require("../models/index.js"));
+const index_1 = __importDefault(require("../models/index"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const createUser = (nickname, email, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const existingUser = yield index_js_1.default.user.findFirst({
+    const existingUser = yield index_1.default.user.findFirst({
         where: {
             OR: [{ email }, { nickname }],
         },
@@ -26,7 +26,7 @@ const createUser = (nickname, email, password) => __awaiter(void 0, void 0, void
         throw new Error("이메일 또는 닉네임이 이미 사용중입니다.");
     }
     const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
-    const newUser = yield index_js_1.default.user.create({
+    const newUser = yield index_1.default.user.create({
         data: { nickname, email, encryptedPassword: hashedPassword },
     });
     const tokens = yield generateAndSaveTokens(newUser);
@@ -34,7 +34,7 @@ const createUser = (nickname, email, password) => __awaiter(void 0, void 0, void
 });
 exports.createUser = createUser;
 const getUserByEmail = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield index_js_1.default.user.findUnique({
+    const user = yield index_1.default.user.findUnique({
         where: { email },
     });
     if (!user || !(yield bcryptjs_1.default.compare(password, user.encryptedPassword))) {
@@ -47,7 +47,7 @@ exports.getUserByEmail = getUserByEmail;
 const generateAndSaveTokens = (user) => __awaiter(void 0, void 0, void 0, function* () {
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
-    const tokens = yield index_js_1.default.auth.create({
+    const tokens = yield index_1.default.auth.create({
         data: {
             user: { connect: { id: user.id } },
             accessToken,
@@ -65,13 +65,13 @@ const refreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, functio
         // 1. Refresh token 검증
         const decoded = jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
         // 2. Refresh token의 존재 여부 확인
-        const tokenRecord = yield index_js_1.default.auth.findUnique({
+        const tokenRecord = yield index_1.default.auth.findUnique({
             where: { refreshToken },
         });
         if (!tokenRecord)
             throw new Error("Invalid refresh token");
         // 3. 사용자 정보 가져오기
-        const user = yield index_js_1.default.user.findUnique({
+        const user = yield index_1.default.user.findUnique({
             where: { id: tokenRecord.userId }, // `userId`는 `auth` 테이블에서 사용자를 식별하는 외래 키라고 가정
         });
         if (!user)
@@ -79,7 +79,7 @@ const refreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, functio
         // 4. 새로운 Access Token 생성
         const newAccessToken = generateAccessToken(user);
         // 5. 인증 정보 업데이트
-        yield index_js_1.default.auth.update({
+        yield index_1.default.auth.update({
             where: { refreshToken },
             data: {
                 accessToken: newAccessToken,

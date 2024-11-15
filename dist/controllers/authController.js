@@ -33,7 +33,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.refreshToken = exports.signIn = exports.signUp = void 0;
-const authService = __importStar(require("../services/authService.js"));
+const authService = __importStar(require("../services/authService"));
 const sendAuthResponse = (res, status, message, user, tokens) => {
     if (!user || !tokens) {
         return res.status(400).json({ message: "User or tokens are required" });

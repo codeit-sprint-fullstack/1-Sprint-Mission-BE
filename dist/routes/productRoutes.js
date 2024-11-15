@@ -27,33 +27,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const productController = __importStar(require("../controllers/productController.js"));
-const verifyToken_js_1 = require("../middlewares/verifyToken.js");
-const validateProductFields_js_1 = require("../middlewares/validateProductFields.js");
-const imageUpload_js_1 = require("../middlewares/imageUpload.js");
+const productController = __importStar(require("../controllers/productController"));
+const verifyToken_1 = require("../middlewares/verifyToken");
+const validateProductFields_1 = require("../middlewares/validateProductFields");
+const imageUpload_1 = require("../middlewares/imageUpload");
 const router = express_1.default.Router();
 router
     .route("/")
-    .post(verifyToken_js_1.verifyToken, imageUpload_js_1.imageUpload.array("images", 3), validateProductFields_js_1.validateProductFields, (req, res, next) => {
+    .post(verifyToken_1.verifyToken, imageUpload_1.imageUpload.array("images", 3), validateProductFields_1.validateProductFields, (req, res, next) => {
     const extendedReq = req;
     productController.createProduct(extendedReq, res, next);
 })
     .get(productController.getProducts);
 router
     .route("/:productId")
-    .all(verifyToken_js_1.verifyToken)
+    .all(verifyToken_1.verifyToken)
     .get((req, res, next) => {
     const extendedReq = req;
     productController.getProductsById(extendedReq, res, next);
 })
-    .patch(imageUpload_js_1.imageUpload.array("images", 3), validateProductFields_js_1.validateProductFields, (req, res, next) => {
+    .patch(imageUpload_1.imageUpload.array("images", 3), validateProductFields_1.validateProductFields, (req, res, next) => {
     const extendedReq = req;
     productController.updateProduct(extendedReq, res, next);
 })
     .delete(productController.deleteProduct);
 router
     .route("/:productId/favorite")
-    .all(verifyToken_js_1.verifyToken)
+    .all(verifyToken_1.verifyToken)
     .post((req, res, next) => {
     const extendedReq = req;
     productController.addFavorite(extendedReq, res, next);

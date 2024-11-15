@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const validateArticle_js_1 = require("../middlewares/validateArticle.js");
+const validateArticle_1 = require("../middlewares/validateArticle");
 const express_1 = __importDefault(require("express"));
 const articleController = __importStar(require("../controllers/articleController"));
 const verifyToken_1 = require("../middlewares/verifyToken");
@@ -34,7 +34,7 @@ const imageUpload_1 = require("../middlewares/imageUpload");
 const router = express_1.default.Router();
 router
     .route("/")
-    .post(verifyToken_1.verifyToken, imageUpload_1.imageUpload.array("images", 3), validateArticle_js_1.validateArticle, (req, res, next) => {
+    .post(verifyToken_1.verifyToken, imageUpload_1.imageUpload.array("images", 3), validateArticle_1.validateArticle, (req, res, next) => {
     // 타입을 확장하여 사용합니다.
     const extendedReq = req;
     articleController.createArticle(extendedReq, res, next);
