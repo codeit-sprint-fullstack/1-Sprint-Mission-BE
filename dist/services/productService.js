@@ -16,7 +16,7 @@ exports.deleteFavorite = exports.addFavorite = exports.deleteProduct = exports.u
 const index_1 = __importDefault(require("../models/index"));
 const parseId = (id) => parseInt(id.toString(), 10);
 // 상품 생성
-const createProduct = (images, name, price, description, tags, userId, userNickname) => __awaiter(void 0, void 0, void 0, function* () {
+const createProduct = (_a) => __awaiter(void 0, [_a], void 0, function* ({ images, name, price, description, tags, userId, userNickname, }) {
     const newProduct = yield index_1.default.product.create({
         data: {
             images,
@@ -58,7 +58,7 @@ const getProducts = (...args_1) => __awaiter(void 0, [...args_1], void 0, functi
 });
 exports.getProducts = getProducts;
 // 특정 상품 조회
-const getProductById = (productId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+const getProductById = (_a) => __awaiter(void 0, [_a], void 0, function* ({ productId, userId, }) {
     const product = yield index_1.default.product.findUnique({
         where: { id: parseId(productId) },
         include: {
@@ -76,7 +76,7 @@ const getProductById = (productId, userId) => __awaiter(void 0, void 0, void 0, 
 });
 exports.getProductById = getProductById;
 // 상품 업데이트
-const updateProduct = (productId, images, name, price, description, tags, userId, userNickname) => __awaiter(void 0, void 0, void 0, function* () {
+const updateProduct = (_a) => __awaiter(void 0, [_a], void 0, function* ({ productId, images, name, price, description, tags, userId, userNickname, }) {
     const updatedProduct = yield index_1.default.product.update({
         where: { id: parseId(productId) },
         data: {
@@ -122,11 +122,11 @@ const updateFavorite = (productId_1, ...args_1) => __awaiter(void 0, [productId_
     ]);
     return { updatedProduct, favoriteActionResult };
 });
-const addFavorite = (productId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+const addFavorite = (_a) => __awaiter(void 0, [_a], void 0, function* ({ productId, userId, }) {
     return updateFavorite(productId, true, userId);
 });
 exports.addFavorite = addFavorite;
-const deleteFavorite = (productId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteFavorite = (_a) => __awaiter(void 0, [_a], void 0, function* ({ productId, userId, }) {
     return updateFavorite(productId, false, userId);
 });
 exports.deleteFavorite = deleteFavorite;

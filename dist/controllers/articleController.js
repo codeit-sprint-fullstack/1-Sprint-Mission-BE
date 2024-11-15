@@ -86,7 +86,10 @@ const getArticleById = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
-        const article = yield articleService.getArticleById(parseInt(articleId), userId);
+        const article = yield articleService.getArticleById({
+            articleId: parseInt(articleId),
+            userId,
+        });
         if (!article) {
             return res.status(404).json({ message: "Article not found" });
         }
@@ -148,7 +151,10 @@ const addLike = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
-        const updatedArticle = yield articleService.addLike(parseInt(articleId), userId);
+        const updatedArticle = yield articleService.addLike({
+            articleId: parseInt(articleId),
+            userId,
+        });
         const response = formatArticleResponse(updatedArticle);
         sendResponse(res, response);
     }
@@ -165,7 +171,10 @@ const deleteLike = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
-        const updatedArticle = yield articleService.deleteLike(parseInt(articleId), userId);
+        const updatedArticle = yield articleService.deleteLike({
+            articleId: parseInt(articleId),
+            userId,
+        });
         const response = formatArticleResponse(updatedArticle);
         sendResponse(res, response);
     }

@@ -44,7 +44,15 @@ const createProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         const images = files ? files.map((file) => file.location) : [];
         const { name, price, description, tags } = req.body;
         const { id: userId, nickname: userNickname } = user;
-        const newProduct = yield productService.createProduct(images, name, parseInt(price), description, tags, userId, userNickname);
+        const newProduct = yield productService.createProduct({
+            images,
+            name,
+            price: parseInt(price),
+            description,
+            tags,
+            userId,
+            userNickname,
+        });
         res.status(201).json({
             message: "Product created successfully",
             product: newProduct,
@@ -74,7 +82,7 @@ const getProductsById = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
             return res.status(401).json({ message: "Unauthorized" });
         }
         const productId = parseInt(req.params.productId);
-        const product = yield productService.getProductById(productId, userId);
+        const product = yield productService.getProductById({ productId, userId });
         res.status(200).json(product);
     }
     catch (err) {
@@ -90,7 +98,7 @@ const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
             return res.status(401).json({ message: "Unauthorized" });
         }
         const userId = user.id;
-        const nickname = user.nickname;
+        const userNickname = user.nickname;
         const newImagePaths = files
             ? files.map((file) => file.location)
             : [];
@@ -105,7 +113,16 @@ const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         }
         const images = [...existingImages, ...newImagePaths];
         const { name, price, description, tags } = req.body;
-        const updatedProduct = yield productService.updateProduct(parseInt(productId), images, name, parseInt(price), description, tags, userId, nickname);
+        const updatedProduct = yield productService.updateProduct({
+            productId: parseInt(productId),
+            images,
+            name,
+            price: parseInt(price),
+            description,
+            tags,
+            userId,
+            userNickname,
+        });
         res.status(200).json(updatedProduct);
     }
     catch (error) {
@@ -133,7 +150,7 @@ const addFavorite = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             return res.status(401).json({ message: "Unauthorized" });
         }
         const productId = parseInt(req.params.productId);
-        const product = productService.addFavorite(productId, userId);
+        const product = productService.addFavorite({ productId, userId });
         res.status(200).json(product);
     }
     catch (err) {
@@ -149,7 +166,7 @@ const deleteFavorite = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             return res.status(401).json({ message: "Unauthorized" });
         }
         const productId = parseInt(req.params.productId);
-        const product = productService.deleteFavorite(productId, userId);
+        const product = productService.deleteFavorite({ productId, userId });
         res.status(200).json(product);
     }
     catch (err) {

@@ -75,7 +75,7 @@ const createArticle = (images, content, title, userId) => __awaiter(void 0, void
         })) });
 });
 exports.createArticle = createArticle;
-const getArticleById = (articleId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+const getArticleById = (_a) => __awaiter(void 0, [_a], void 0, function* ({ articleId, userId, }) {
     const article = yield index_1.default.article.findUnique({
         where: { id: articleId },
         include: includeRelations(userId),
@@ -109,7 +109,7 @@ const deleteArticle = (articleId) => __awaiter(void 0, void 0, void 0, function*
     });
 });
 exports.deleteArticle = deleteArticle;
-const addLike = (articleId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+const addLike = (_a) => __awaiter(void 0, [_a], void 0, function* ({ articleId, userId, }) {
     yield index_1.default.favorite.create({
         data: {
             articleId: articleId,
@@ -125,7 +125,7 @@ const addLike = (articleId, userId) => __awaiter(void 0, void 0, void 0, functio
     });
 });
 exports.addLike = addLike;
-const deleteLike = (articleId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteLike = (_a) => __awaiter(void 0, [_a], void 0, function* ({ articleId, userId, }) {
     yield index_1.default.favorite.deleteMany({
         where: {
             articleId: articleId,
