@@ -51,9 +51,9 @@ export const getProductTotalCountController: RequestHandler = asyncHandler(
   }
 );
 
-export const patchProductController: RequestHandler = asyncHandler(
-  async (req, res) => {
-    const { id } = req.params as unknown as ProductIdParam;
+export const patchProductController = asyncHandler(
+  async (req: Request<ProductIdParam>, res: Response) => {
+    const id = parseInt(req.params.id, 10);
     const product = await patchProductService({ id, body: req.body });
     res.send(product);
   }
@@ -74,9 +74,9 @@ export const postProductController: RequestHandler = asyncHandler(
   }
 );
 
-export const deleteProductController: RequestHandler = asyncHandler(
-  async (req, res) => {
-    const { id } = req.params as unknown as ProductIdParam;
+export const deleteProductController = asyncHandler(
+  async (req: Request<ProductIdParam>, res: Response) => {
+    const id = parseInt(req.params.id, 10);
     await deleteProductService({ id });
     res.send(204);
   }
