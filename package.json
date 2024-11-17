@@ -2,7 +2,7 @@
   "name": "1-sprint-mission-be",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/app.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -21,12 +21,20 @@
     "superstruct": "^1.0.3"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/multer": "^1.4.12",
+    "bcrypt-ts": "^5.0.2",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   },
-  "type": "module",
   "scripts": {
-    "dev": "nodemon app.js",
-    "start": "prisma migrate deploy && node app.js"
+    "nodemon": "nodemon app.js",
+    "dev": "ts-node src/app.ts",
+    "build": "tsc",
+    "start": "prisma migrate deploy && node dist/app.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
