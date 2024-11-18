@@ -12,25 +12,26 @@ dotenv.config();
 
 const app: Application = express();
 
-const allowedOrigins: string[] = [
-  "https://next-ju-12.d1yscjh5yqgpx3.amplifyapp.com",
-  "http://localhost:3000",
-];
+// const allowedOrigins: string[] = [
+//   "https://next-ju-12.d1yscjh5yqgpx3.amplifyapp.com",
+//   "http://localhost:3000",
+// ];
 
-const corsOptions: CorsOptions = {
-  credentials: true,
-  origin: function (
-    origin: string | undefined,
-    callback: (err: Error | null, origin?: string) => void
-  ) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, origin); // 허용
-    } else {
-      callback(new Error("Not allowed by CORS")); // 허용하지 않음
-    }
-  },
-};
-app.use(cors(corsOptions));
+// const corsOptions: CorsOptions = {
+//   credentials: true,
+//   origin: function (
+//     origin: string | undefined,
+//     callback: (err: Error | null, origin?: string) => void
+//   ) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, origin); // 허용
+//     } else {
+//       callback(new Error("Not allowed by CORS")); // 허용하지 않음
+//     }
+//   },
+// };
+// app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 app.use("/auth", authRoutes);
