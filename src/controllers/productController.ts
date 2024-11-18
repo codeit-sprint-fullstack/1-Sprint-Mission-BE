@@ -76,10 +76,10 @@ export const getProductById = async (req: Request, res: Response, next: NextFunc
   const { productId } = req.params;
 
   try {
-    const product: ProductWithLikesAndComments | null = await prisma.product.findUnique({
+    const product = await prisma.product.findUnique({
       where: { id: Number(productId) },
       include: {
-        likes: true,
+        likes: { where: { userId: req.user?.id } }, // 좋아요를 필터링
         comments: true,
       },
     });
@@ -88,12 +88,13 @@ export const getProductById = async (req: Request, res: Response, next: NextFunc
       return;
     }
 
-    const isFavorite = product.likes.some((like) => like.userId === req.user?.id);
+    const isFavorite = product.likes.length > 0; // 필터링 결과로 좋아요 여부 확인
     res.status(200).json({ ...product, isFavorite });
   } catch (error) {
     next(error);
   }
 };
+
 
 // 상품 수정
 export const updateProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
