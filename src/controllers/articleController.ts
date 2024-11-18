@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { PrismaClient, Article } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../utils/prismaClient";
+import { Article } from "@prisma/client";
 
 // 게시글 생성
 export const createArticle = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -83,7 +82,6 @@ export const getArticleById = async (req: Request, res: Response, next: NextFunc
     next(error);
   }
 };
-
 
 // 게시글 수정
 export const updateArticle = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

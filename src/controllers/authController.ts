@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { PrismaClient, User } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../utils/prismaClient";
+import { User } from "@prisma/client";
 
 interface SignUpRequest extends Request {
   body: {
@@ -62,3 +61,4 @@ export const signIn = async (req: SignInRequest, res: Response, next: NextFuncti
     next(error);
   }
 };
+

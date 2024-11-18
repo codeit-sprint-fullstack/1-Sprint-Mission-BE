@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { PrismaClient, Comment } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../utils/prismaClient";
+import { Comment } from "@prisma/client";
 
 // 상품에 댓글 추가
 export const createProductComment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

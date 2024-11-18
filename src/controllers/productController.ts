@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { PrismaClient, Prisma, Product } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../utils/prismaClient";
+import { Prisma, Product } from "@prisma/client";
 
 type ProductWithLikesAndComments = Prisma.ProductGetPayload<{
   include: { likes: true; comments: true };
@@ -126,3 +125,4 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
     next(error);
   }
 };
+

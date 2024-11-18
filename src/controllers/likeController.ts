@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../utils/prismaClient";
 
 // 상품 좋아요 추가
 export const likeProduct = async (req: Request, res: Response, next: NextFunction) => {

@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { PrismaClient, User, Product } from "@prisma/client"; // Product를 import
+import prisma from "../utils/prismaClient";
+import { User, Product } from "@prisma/client";
 import bcrypt from "bcryptjs";
-
-const prisma = new PrismaClient();
 
 // 현재 유저 정보 조회
 export const getCurrentUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
