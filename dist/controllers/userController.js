@@ -4,13 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserFavorites = exports.getUserProducts = exports.updatePassword = exports.updateUser = exports.getCurrentUser = void 0;
-const client_1 = require("@prisma/client"); // Product를 import
+const prismaClient_1 = __importDefault(require("../utils/prismaClient"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const prisma = new client_1.PrismaClient();
 // 현재 유저 정보 조회
 const getCurrentUser = async (req, res, next) => {
     try {
-        const user = await prisma.user.findUnique({
+        const user = await prismaClient_1.default.user.findUnique({
             where: { id: req.user?.id },
             select: {
                 id: true,
@@ -37,7 +36,7 @@ exports.getCurrentUser = getCurrentUser;
 const updateUser = async (req, res, next) => {
     const { image } = req.body;
     try {
-        const user = await prisma.user.update({
+        const user = await prismaClient_1.default.user.update({
             where: { id: req.user?.id },
             data: { image },
             select: {
@@ -61,7 +60,7 @@ exports.updateUser = updateUser;
 const updatePassword = async (req, res, next) => {
     const { currentPassword, password, passwordConfirmation } = req.body;
     try {
-        const user = await prisma.user.findUnique({ where: { id: req.user?.id } });
+        const user = await prismaClient_1.default.user.findUnique({ where: { id: req.user?.id } });
         if (!user || !(await bcryptjs_1.default.compare(currentPassword, user.password))) {
             res.status(400).json({ error: "현재 비밀번호가 올바르지 않습니다." });
             return;
@@ -71,7 +70,7 @@ const updatePassword = async (req, res, next) => {
             return;
         }
         const hashedPassword = await bcryptjs_1.default.hash(password, 10);
-        const updatedUser = await prisma.user.update({
+        const updatedUser = await prismaClient_1.default.user.update({
             where: { id: req.user?.id },
             data: { password: hashedPassword },
             select: {
@@ -95,7 +94,7 @@ exports.updatePassword = updatePassword;
 const getUserProducts = async (req, res, next) => {
     const { page = 1, pageSize = 10, keyword = '' } = req.query;
     try {
-        const products = await prisma.product.findMany({
+        const products = await prismaClient_1.default.product.findMany({
             where: {
                 userId: req.user?.id,
                 OR: [
@@ -109,7 +108,7 @@ const getUserProducts = async (req, res, next) => {
                 likes: true,
             },
         });
-        const totalCount = await prisma.product.count({
+        const totalCount = await prismaClient_1.default.product.count({
             where: {
                 userId: req.user?.id,
                 OR: [
@@ -129,7 +128,7 @@ exports.getUserProducts = getUserProducts;
 const getUserFavorites = async (req, res, next) => {
     const { page = 1, pageSize = 10, keyword = '' } = req.query;
     try {
-        const products = await prisma.product.findMany({
+        const products = await prismaClient_1.default.product.findMany({
             where: {
                 likes: {
                     some: {
@@ -147,7 +146,7 @@ const getUserFavorites = async (req, res, next) => {
                 likes: true,
             },
         });
-        const totalCount = await prisma.product.count({
+        const totalCount = await prismaClient_1.default.product.count({
             where: {
                 likes: {
                     some: {

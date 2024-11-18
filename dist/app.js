@@ -16,9 +16,8 @@ const likeRoutes_1 = __importDefault(require("./routes/likeRoutes"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const imageRoutes_1 = __importDefault(require("./routes/imageRoutes"));
-dotenv_1.default.config(); // .env 파일 로드
+dotenv_1.default.config();
 const app = (0, express_1.default)();
-// 서버 시작 시 업로드 디렉토리가 없으면 생성
 const uploadPath = path_1.default.join(__dirname, "../uploads");
 if (!fs_1.default.existsSync(uploadPath)) {
     fs_1.default.mkdirSync(uploadPath, { recursive: true });

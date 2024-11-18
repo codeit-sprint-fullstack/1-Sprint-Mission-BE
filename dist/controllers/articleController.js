@@ -1,13 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteArticle = exports.updateArticle = exports.getArticleById = exports.getArticles = exports.createArticle = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prismaClient_1 = __importDefault(require("../utils/prismaClient"));
 // 게시글 생성
 const createArticle = async (req, res, next) => {
     const { title, content, tags, images } = req.body;
     try {
-        const article = await prisma.article.create({
+        const article = await prismaClient_1.default.article.create({
             data: {
                 title,
                 content,
@@ -34,7 +36,7 @@ const getArticles = async (req, res, next) => {
         sortBy = { likes: { _count: "desc" } };
     }
     try {
-        const articles = await prisma.article.findMany({
+        const articles = await prismaClient_1.default.article.findMany({
             where: keyword
                 ? {
                     OR: [
@@ -63,7 +65,7 @@ exports.getArticles = getArticles;
 const getArticleById = async (req, res, next) => {
     const { articleId } = req.params;
     try {
-        const article = await prisma.article.findUnique({
+        const article = await prismaClient_1.default.article.findUnique({
             where: { id: Number(articleId) },
             include: {
                 likes: true,
@@ -88,7 +90,7 @@ const updateArticle = async (req, res, next) => {
     const { articleId } = req.params;
     const { title, content, tags, images } = req.body;
     try {
-        const article = await prisma.article.update({
+        const article = await prismaClient_1.default.article.update({
             where: { id: Number(articleId) },
             data: { title, content, tags, image: images || [] },
         });
@@ -103,7 +105,7 @@ exports.updateArticle = updateArticle;
 const deleteArticle = async (req, res, next) => {
     const { articleId } = req.params;
     try {
-        await prisma.article.delete({
+        await prismaClient_1.default.article.delete({
             where: { id: Number(articleId) },
         });
         res.status(200).json({ message: "게시글이 성공적으로 삭제되었습니다." });

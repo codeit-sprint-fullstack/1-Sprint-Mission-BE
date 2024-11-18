@@ -1,14 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProduct = exports.updateProduct = exports.getProductById = exports.getProducts = exports.createProduct = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prismaClient_1 = __importDefault(require("../utils/prismaClient"));
 // 상품 등록
 const createProduct = async (req, res, next) => {
     const { name, description, price, tags } = req.body;
     const images = req.body.images || [];
     try {
-        const product = await prisma.product.create({
+        const product = await prismaClient_1.default.product.create({
             data: {
                 name,
                 description,
@@ -36,7 +38,7 @@ const getProducts = async (req, res, next) => {
         sortBy = { likes: { _count: "desc" } };
     }
     try {
-        const products = await prisma.product.findMany({
+        const products = await prismaClient_1.default.product.findMany({
             where: {
                 OR: [
                     { name: { contains: keyword, mode: "insensitive" } },
@@ -51,7 +53,7 @@ const getProducts = async (req, res, next) => {
                 comments: true,
             },
         });
-        const totalCount = await prisma.product.count({
+        const totalCount = await prismaClient_1.default.product.count({
             where: {
                 OR: [
                     { name: { contains: keyword, mode: "insensitive" } },
@@ -70,10 +72,10 @@ exports.getProducts = getProducts;
 const getProductById = async (req, res, next) => {
     const { productId } = req.params;
     try {
-        const product = await prisma.product.findUnique({
+        const product = await prismaClient_1.default.product.findUnique({
             where: { id: Number(productId) },
             include: {
-                likes: true,
+                likes: { where: { userId: req.user?.id } }, // 좋아요를 필터링
                 comments: true,
             },
         });
@@ -81,7 +83,7 @@ const getProductById = async (req, res, next) => {
             res.status(404).json({ error: "해당 상품을 찾을 수 없습니다." });
             return;
         }
-        const isFavorite = product.likes.some((like) => like.userId === req.user?.id);
+        const isFavorite = product.likes.length > 0; // 필터링 결과로 좋아요 여부 확인
         res.status(200).json({ ...product, isFavorite });
     }
     catch (error) {
@@ -95,7 +97,7 @@ const updateProduct = async (req, res, next) => {
     const { name, description, price, tags } = req.body;
     const images = req.body.images || [];
     try {
-        const product = await prisma.product.update({
+        const product = await prismaClient_1.default.product.update({
             where: { id: Number(productId) },
             data: { name, description, price: Number(price), tags, image: images },
         });
@@ -110,7 +112,7 @@ exports.updateProduct = updateProduct;
 const deleteProduct = async (req, res, next) => {
     const { productId } = req.params;
     try {
-        await prisma.product.delete({
+        await prismaClient_1.default.product.delete({
             where: { id: Number(productId) },
         });
         res.status(200).json({ id: productId });

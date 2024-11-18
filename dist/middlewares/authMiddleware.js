@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
     }
     try {
         const verified = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
-        req.user = { id: verified.userId }; // 전역 타입에 저장된 user 정보 사용
+        req.user = { id: verified.userId }; // 전역 타입에 저장된 user 정보 가져와서 사용중
         next();
     }
     catch (error) {

@@ -6,14 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.signIn = exports.signUp = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prismaClient_1 = __importDefault(require("../utils/prismaClient"));
 // 회원가입
 const signUp = async (req, res, next) => {
     const { email, password, nickname } = req.body;
     try {
         const hashedPassword = await bcryptjs_1.default.hash(password, 10);
-        const user = await prisma.user.create({
+        const user = await prismaClient_1.default.user.create({
             data: {
                 email,
                 nickname,
@@ -34,7 +33,7 @@ exports.signUp = signUp;
 const signIn = async (req, res, next) => {
     const { email, password } = req.body;
     try {
-        const user = await prisma.user.findUnique({ where: { email } });
+        const user = await prismaClient_1.default.user.findUnique({ where: { email } });
         if (!user || !(await bcryptjs_1.default.compare(password, user.password))) {
             res.status(401).json({ message: "Invalid credentials" });
             return;

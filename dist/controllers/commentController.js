@@ -1,14 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteArticleComment = exports.deleteProductComment = exports.updateArticleComment = exports.updateProductComment = exports.getArticleComments = exports.getProductComments = exports.createArticleComment = exports.createProductComment = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prismaClient_1 = __importDefault(require("../utils/prismaClient"));
 // 상품에 댓글 추가
 const createProductComment = async (req, res, next) => {
     const { content } = req.body;
     const { productId } = req.params;
     try {
-        const comment = await prisma.comment.create({
+        const comment = await prismaClient_1.default.comment.create({
             data: {
                 content,
                 productId: Number(productId),
@@ -27,7 +29,7 @@ const createArticleComment = async (req, res, next) => {
     const { content } = req.body;
     const { articleId } = req.params;
     try {
-        const comment = await prisma.comment.create({
+        const comment = await prismaClient_1.default.comment.create({
             data: {
                 content,
                 articleId: Number(articleId),
@@ -45,7 +47,7 @@ exports.createArticleComment = createArticleComment;
 const getProductComments = async (req, res, next) => {
     const { productId } = req.params;
     try {
-        const comments = await prisma.comment.findMany({
+        const comments = await prismaClient_1.default.comment.findMany({
             where: { productId: Number(productId) },
             include: { user: true },
         });
@@ -60,7 +62,7 @@ exports.getProductComments = getProductComments;
 const getArticleComments = async (req, res, next) => {
     const { articleId } = req.params;
     try {
-        const comments = await prisma.comment.findMany({
+        const comments = await prismaClient_1.default.comment.findMany({
             where: { articleId: Number(articleId) },
             include: { user: true },
         });
@@ -76,7 +78,7 @@ const updateProductComment = async (req, res, next) => {
     const { id } = req.params;
     const { content } = req.body;
     try {
-        const comment = await prisma.comment.findUnique({
+        const comment = await prismaClient_1.default.comment.findUnique({
             where: { id: Number(id) },
         });
         if (!comment) {
@@ -87,7 +89,7 @@ const updateProductComment = async (req, res, next) => {
             res.status(403).json({ error: "본인이 작성한 댓글만 수정할 수 있습니다." });
             return;
         }
-        const updatedComment = await prisma.comment.update({
+        const updatedComment = await prismaClient_1.default.comment.update({
             where: { id: Number(id) },
             data: { content },
         });
@@ -103,7 +105,7 @@ const updateArticleComment = async (req, res, next) => {
     const { id } = req.params;
     const { content } = req.body;
     try {
-        const comment = await prisma.comment.findUnique({
+        const comment = await prismaClient_1.default.comment.findUnique({
             where: { id: Number(id) },
         });
         if (!comment) {
@@ -114,7 +116,7 @@ const updateArticleComment = async (req, res, next) => {
             res.status(403).json({ error: "본인이 작성한 댓글만 수정할 수 있습니다." });
             return;
         }
-        const updatedComment = await prisma.comment.update({
+        const updatedComment = await prismaClient_1.default.comment.update({
             where: { id: Number(id) },
             data: { content },
         });
@@ -129,7 +131,7 @@ exports.updateArticleComment = updateArticleComment;
 const deleteProductComment = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const comment = await prisma.comment.findUnique({
+        const comment = await prismaClient_1.default.comment.findUnique({
             where: { id: Number(id) },
         });
         if (!comment) {
@@ -140,7 +142,7 @@ const deleteProductComment = async (req, res, next) => {
             res.status(403).json({ error: "본인이 작성한 댓글만 삭제할 수 있습니다." });
             return;
         }
-        await prisma.comment.delete({
+        await prismaClient_1.default.comment.delete({
             where: { id: Number(id) },
         });
         res.status(200).json({ message: "댓글이 성공적으로 삭제되었습니다." });
@@ -154,7 +156,7 @@ exports.deleteProductComment = deleteProductComment;
 const deleteArticleComment = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const comment = await prisma.comment.findUnique({
+        const comment = await prismaClient_1.default.comment.findUnique({
             where: { id: Number(id) },
         });
         if (!comment) {
@@ -165,7 +167,7 @@ const deleteArticleComment = async (req, res, next) => {
             res.status(403).json({ error: "본인이 작성한 댓글만 삭제할 수 있습니다." });
             return;
         }
-        await prisma.comment.delete({
+        await prismaClient_1.default.comment.delete({
             where: { id: Number(id) },
         });
         res.status(200).json({ message: "댓글이 성공적으로 삭제되었습니다." });
