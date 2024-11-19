@@ -12,6 +12,7 @@ interface Article {
   writer: User;
   favorites: Favorite[];
   isLiked?: boolean;
+  likeCount?: number;
 }
 
 interface User {
