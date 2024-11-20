@@ -145,6 +145,36 @@ describe("Auth Service", () => {
       expect(result.user).toEqual(mockUser);
     });
 
+    it("should throw an error if no refresh token is provided", async () => {
+      await expect(authService.refreshToken("")).rejects.toThrow(
+        "Refresh token not provided"
+      );
+    });
+
+    it("should throw an error if refresh token is not found in database", async () => {
+      (jwt.verify as jest.Mock).mockReturnValue({ id: 1 });
+      (prisma.auth.findUnique as jest.Mock).mockResolvedValue(null);
+
+      await expect(
+        authService.refreshToken("validRefreshToken")
+      ).rejects.toThrow("Invalid or expired refresh token");
+    });
+
+    it("should throw an error if user associated with the refresh token is not found", async () => {
+      const mockAuth = {
+        refreshToken: "validRefreshToken",
+        userId: 1,
+      };
+
+      (jwt.verify as jest.Mock).mockReturnValue({ id: 1 });
+      (prisma.auth.findUnique as jest.Mock).mockResolvedValue(mockAuth);
+      (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
+
+      await expect(
+        authService.refreshToken("validRefreshToken")
+      ).rejects.toThrow("Invalid or expired refresh token");
+    });
+
     it("should throw an error if the refresh token is invalid", async () => {
       (jwt.verify as jest.Mock).mockImplementation(() => {
         throw new Error("Invalid refresh token");
