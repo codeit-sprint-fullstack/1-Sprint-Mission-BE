@@ -1,5 +1,6 @@
 import * as commentService from "../services/commentService";
 import prisma from "../models/index";
+import { parseId, getCursorOptions } from "../services/commentService";
 
 jest.mock("../models/index", () => ({
   comment: {
@@ -13,6 +14,80 @@ jest.mock("../models/index", () => ({
 describe("Comment Service", () => {
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  describe("parseId", () => {
+    it("should parse a valid string ID correctly", () => {
+      const result = parseId("123");
+      expect(result).toBe(123);
+    });
+
+    it("should throw an error for an invalid string ID", () => {
+      expect(() => parseId("invalid")).toThrow("Invalid ID format");
+    });
+  });
+
+  describe("getCursorOptions", () => {
+    it("should return an empty object for an empty cursor", () => {
+      const result = getCursorOptions("");
+      expect(result).toEqual({});
+    });
+
+    it("should return an empty object for a null cursor", () => {
+      const result = getCursorOptions(null);
+      expect(result).toEqual({});
+    });
+
+    it("should return an empty object for an undefined cursor", () => {
+      const result = getCursorOptions(undefined);
+      expect(result).toEqual({});
+    });
+
+    it("should return cursor options for a valid cursor", () => {
+      const result = getCursorOptions("123");
+      expect(result).toEqual({
+        cursor: { id: 123 },
+        skip: 1,
+      });
+    });
+
+    it("should return an empty object for an invalid cursor", () => {
+      const result = getCursorOptions("invalid");
+      expect(result).toEqual({});
+    });
+  });
+
+  describe("getCommentOptions", () => {
+    it("should return the correct query options", () => {
+      const result = commentService.getCommentOptions(
+        10,
+        "1",
+        123,
+        "productId"
+      );
+      expect(result).toEqual({
+        take: 10,
+        orderBy: { createdAt: "desc" },
+        include: { writer: true },
+        where: {
+          productId: 123,
+        },
+        cursor: { id: 1 },
+        skip: 1,
+      });
+    });
+
+    it("should handle the case with no cursor", () => {
+      const result = commentService.getCommentOptions(10, "", 123, "productId");
+      expect(result).toEqual({
+        take: 10,
+        orderBy: { createdAt: "desc" },
+        include: { writer: true },
+        where: {
+          productId: 123,
+        },
+      });
+    });
   });
 
   describe("createProductComment", () => {
@@ -92,6 +167,31 @@ describe("Comment Service", () => {
         orderBy: { createdAt: "desc" },
         include: { writer: true },
         where: { productId: 1 },
+      });
+      expect(result.list).toEqual(mockComments);
+      expect(result.nextCursor).toBeNull();
+    });
+
+    it("should retrieve comments with a valid cursor", async () => {
+      const mockComments = [
+        {
+          id: 1,
+          content: "Great product!",
+          writer: { id: 1, nickname: "User1" },
+        },
+      ];
+
+      (prisma.comment.findMany as jest.Mock).mockResolvedValue(mockComments);
+
+      const result = await commentService.getProductComments(10, "1", "1");
+
+      expect(prisma.comment.findMany).toHaveBeenCalledWith({
+        take: 10,
+        orderBy: { createdAt: "desc" },
+        include: { writer: true },
+        where: { productId: 1 },
+        cursor: { id: 1 },
+        skip: 1,
       });
       expect(result.list).toEqual(mockComments);
       expect(result.nextCursor).toBeNull();

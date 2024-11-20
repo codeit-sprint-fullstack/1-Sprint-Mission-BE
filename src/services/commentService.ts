@@ -1,10 +1,16 @@
 import prisma from "../models/index";
 import { Prisma } from "@prisma/client";
 
-const parseId = (id: string): number => parseInt(id, 10);
+export const parseId = (id: string): number => {
+  const parsed = parseInt(id, 10);
+  if (isNaN(parsed)) {
+    throw new Error("Invalid ID format");
+  }
+  return parsed;
+};
 
-const getCursorOptions = (cursor: string | "") => {
-  const parsedCursor = parseInt(cursor, 10);
+export const getCursorOptions = (cursor: string | null | undefined) => {
+  const parsedCursor = parseInt(cursor as string, 10);
   if (!cursor || isNaN(parsedCursor)) return {};
   return {
     cursor: { id: parsedCursor },
@@ -12,7 +18,7 @@ const getCursorOptions = (cursor: string | "") => {
   };
 };
 
-const getCommentOptions = (
+export const getCommentOptions = (
   limit: number,
   cursor: string | "",
   entityId: number,
