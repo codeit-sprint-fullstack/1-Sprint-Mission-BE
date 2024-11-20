@@ -7,11 +7,11 @@ interface User_Product {
 }
 
 interface ProductParams {
-  images: string[];
-  name: string;
+  images: string[] | undefined;
+  name: string | undefined;
   price: number;
-  description: string;
-  tags: string[];
+  description: string | undefined;
+  tags: string[] | undefined;
   userId: number;
   userNickname: string;
 }
@@ -34,11 +34,11 @@ export const createProduct = async ({
 }: ProductParams): Promise<Product> => {
   const newProduct = await prisma.product.create({
     data: {
-      images,
-      name,
+      images: images ?? [],
+      name: name ?? "",
       price,
-      description,
-      tags,
+      description: description ?? "",
+      tags: tags ?? [],
       ownerId: userId,
       ownerNickname: userNickname,
     },
@@ -129,11 +129,11 @@ export const updateProduct = async ({
   const updatedProduct = await prisma.product.update({
     where: { id: parseId(productId) },
     data: {
-      images,
-      name,
+      images: images || [],
+      name: name || "",
       price,
-      description,
-      tags,
+      description: description || "",
+      tags: tags || [],
       ownerId: userId,
       ownerNickname: userNickname,
     },
