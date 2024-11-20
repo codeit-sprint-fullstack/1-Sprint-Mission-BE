@@ -91,7 +91,7 @@ export const getArticles = async (
 
   const listWithLikeStatus = list.map((article) => ({
     ...article,
-    favorites: article.favorites.map((fav) => ({
+    favorites: (article.favorites || []).map((fav) => ({
       id: fav.id,
       userId: fav.userId,
       articleId: fav.articleId,
