@@ -7,4 +7,4 @@ const createArticleLike = s.object({ articleId: Uuid });
 
 const createProductLike = s.object({ productId: Uuid });
 
-export {createArticleLike, createProductLike}
+export { createArticleLike, createProductLike };

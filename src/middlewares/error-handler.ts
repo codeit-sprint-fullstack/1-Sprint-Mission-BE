@@ -1,8 +1,21 @@
 import { Prisma } from "@prisma/client";
+import { NextFunction, Request, Response } from "express";
 import multer from "multer";
 
-function errorHandler(error, req, res, next) {
-  let status;
+export interface CustomError extends Error {
+  status?: number;
+  message: string;
+  code?: string;
+  data?: string;
+}
+
+function errorHandler(
+  error: CustomError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  let status: number;
 
   if (
     error.name === "StructError" ||
@@ -24,7 +37,7 @@ function errorHandler(error, req, res, next) {
     status = error.status ?? 500;
   }
 
-  return res.status(status).json({
+  res.status(status).json({
     path: req.path,
     method: req.method,
     message: error.message ?? "Internal Server Error",
