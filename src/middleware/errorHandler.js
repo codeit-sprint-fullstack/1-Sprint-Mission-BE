@@ -1,6 +1,19 @@
-const errorHandler = (err, req, res, next) => {
-  console.log(err);
-  return res.status(500).json({ message: "Internal Server Error" });
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
-
-export default errorHandler;
+Object.defineProperty(exports, "__esModule", { value: true });
+// 에러 핸들러 미들웨어
+const errorHandler = (err, req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    console.error(err); // 에러 로그 출력
+    // 추가적으로 비동기 처리를 할 경우 await 사용
+    // await someAsyncLoggingFunction(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+});
+exports.default = errorHandler;
