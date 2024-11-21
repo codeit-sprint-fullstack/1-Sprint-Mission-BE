@@ -4,3 +4,5 @@ node_modules/
 
 prisma/mock.js
 prisma/seed.js
+
+http/
