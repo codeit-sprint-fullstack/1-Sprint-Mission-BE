@@ -4,5 +4,6 @@ express-mission-prisma/node_modules
 express-mission-prisma/.env
 
 node_modules/
-.env
+.env.development
+.env.production
 /src/test.ts
