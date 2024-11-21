@@ -3,7 +3,7 @@ import {
   ParsedProductListParams,
   ProductCreate,
   ProductSearchParam,
-} from "../dto/product.dto.js";
+} from "../dto/product.dto";
 import {
   getProductRepository,
   getProductListRepository,
@@ -11,7 +11,7 @@ import {
   patchProductRepository,
   deleteProductRepository,
   getProductTotalCountRepository,
-} from "../repository/productRepository.js";
+} from "../repository/productRepository";
 import { Product } from "@prisma/client";
 
 export const getProductService = async ({ id }: ParsedProductIdParam) => {

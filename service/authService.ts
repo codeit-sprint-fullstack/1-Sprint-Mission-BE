@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt-ts";
+import bcrypt from "bcrypt";
 import {
   createUserRepository,
   findUserEmailRepository,
