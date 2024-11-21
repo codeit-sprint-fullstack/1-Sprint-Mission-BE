@@ -9,11 +9,16 @@ export type CreateUserParams = Pick<
 
 export type FindUserIdParams = Pick<PrismaUser, "id">;
 
-export type SignupData = Pick<PrismaUser, "email" | "nickname"> & {
+export type SignupData = {
+  email: string;
+  nickname: string;
   password: string;
 };
 
-export type LoginData = Pick<PrismaUser, "email"> & { password: string };
+export type LoginData = {
+  email: string;
+  password: string;
+};
 
 export interface AuthResponse {
   accessToken: string;

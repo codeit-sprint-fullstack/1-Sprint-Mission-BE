@@ -2,9 +2,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import express, { Application } from "express";
 import cors from "cors";
-import productRoutes from "./routes/products";
-import uploadRoutes from "./routes/uploads";
-import authRoutes from "./routes/auth";
+import productRoutes from "./routes/products.js";
+import uploadRoutes from "./routes/uploads.js";
+import authRoutes from "./routes/auth.js";
 
 const app: Application = express();
 const port = parseInt(process.env.PORT || "3000", 10);

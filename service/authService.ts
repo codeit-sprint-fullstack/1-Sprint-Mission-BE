@@ -3,8 +3,8 @@ import bcrypt from "bcrypt";
 import {
   createUserRepository,
   findUserEmailRepository,
-} from "../repository/authRepository";
-import { LoginData, SignupData } from "../dto/auth.dto";
+} from "../repository/authRepository.js";
+import { LoginData, SignupData } from "../dto/auth.dto.js";
 
 const JWT_SECRET = (process.env.JWT_SECRET || "mini1018") as string;
 const REFRESH_SECRET = (process.env.REFRESH_SECRET || "mini1018") as string;

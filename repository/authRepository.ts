@@ -3,7 +3,7 @@ import {
   CreateUserParams,
   FindUserEmailParams,
   FindUserIdParams,
-} from "../dto/auth.dto";
+} from "../dto/auth.dto.js";
 
 const prisma = new PrismaClient();
 

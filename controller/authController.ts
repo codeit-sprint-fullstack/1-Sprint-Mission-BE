@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
-import { loginService, signupService } from "../service/authService";
-import { LoginData, SignupData } from "../dto/auth.dto";
+import { loginService, signupService } from "../service/authService.js";
+import { LoginData, SignupData } from "../dto/auth.dto.js";
 
 export const signupController: RequestHandler = async (req, res) => {
   const { email, password, nickname } = req.body as SignupData;

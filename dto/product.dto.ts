@@ -17,11 +17,14 @@ export type ProductCreate = Pick<
   "name" | "description" | "price" | "tags"
 > & { imageUrls: string[] };
 
-export interface ProductListParams
-  extends ParsedQs,
-    Partial<ProductParamsBase> {}
+export interface ProductListParams extends ParsedQs {
+  offset?: string;
+  limit?: string;
+  order?: string;
+  search?: string;
+}
 
-export type ProductSearchParam = Pick<ProductParamsBase, "search">;
+export type ProductSearchParam = Pick<ProductListParams, "search">;
 
 export interface ParsedProductListParams {
   offset: number;

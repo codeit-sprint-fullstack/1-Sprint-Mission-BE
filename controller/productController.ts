@@ -1,4 +1,4 @@
-import asyncHandler from "../utils/asyncHandler";
+import asyncHandler from "../utils/asyncHandler.js";
 import {
   deleteProductService,
   getProductListService,
@@ -6,7 +6,7 @@ import {
   getProductTotalCountService,
   patchProductService,
   postProductService,
-} from "../service/productService";
+} from "../service/productService.js";
 import { Request, RequestHandler, Response } from "express";
 import {
   ParsedProductListParams,
@@ -14,7 +14,7 @@ import {
   ProductIdParam,
   ProductListParams,
   ProductSearchParam,
-} from "../dto/product.dto";
+} from "../dto/product.dto.js";
 
 export const getProductController = asyncHandler(
   async (req: Request<ProductIdParam>, res: Response) => {

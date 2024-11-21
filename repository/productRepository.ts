@@ -4,7 +4,7 @@ import {
   ParsedProductListParams,
   ProductCreate,
   ProductSearchParam,
-} from "../dto/product.dto";
+} from "../dto/product.dto.js";
 
 const prisma = new PrismaClient();
 
@@ -32,13 +32,13 @@ export const getProductListRepository = async (
   let orderBy: Prisma.ProductOrderByWithRelationInput;
   switch (order) {
     case "old":
-      orderBy = { createdAt: "desc" as Prisma.SortOrder };
+      orderBy = { createdAt: "desc" };
       break;
     case "recent":
-      orderBy = { createdAt: "asc" as Prisma.SortOrder };
+      orderBy = { createdAt: "asc" };
       break;
     default:
-      orderBy = { createdAt: "asc" as Prisma.SortOrder };
+      orderBy = { createdAt: "asc" };
   }
   return await prisma.product.findMany({
     skip: offset,

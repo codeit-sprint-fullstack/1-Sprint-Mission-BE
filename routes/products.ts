@@ -6,7 +6,7 @@ import {
   getProductTotalCountController,
   patchProductController,
   postProductController,
-} from "../controller/productController";
+} from "../controller/productController.js";
 
 const router = express.Router();
 
