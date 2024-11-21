@@ -86,7 +86,10 @@ const filterSensitiveUserData = (user: User) => {
   return rest;
 };
 
-const verifyPassword = async (inputPassword: string, savedPassword: string) => {
+export const verifyPassword = async (
+  inputPassword: string,
+  savedPassword: string
+) => {
   const isValid = await bcrypt.compare(inputPassword, savedPassword); // 변경
   if (!isValid) {
     const error: CustomError = new Error("비밀번호가 일치 하지 않습니다.");
@@ -102,4 +105,5 @@ export default {
   updateRefreshToken,
   refreshToken,
   createToken,
+  verifyPassword,
 };
