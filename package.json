@@ -38,7 +38,7 @@
     "nodemon": "nodemon app.js",
     "dev": "nodemon --watch \"*.ts\" --exec \"node --loader ts-node/esm\" app.ts",
     "build": "tsc",
-    "start": "tsc && prisma migrate deploy && node dist/app.js"
+    "start": "node dist/app.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
