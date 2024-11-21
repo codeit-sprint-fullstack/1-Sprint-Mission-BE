@@ -6,7 +6,10 @@ import {
   verifyAccessToken,
   verifyProductAuth,
 } from "../middlewares/authorization";
-import imgUploadHandler from "../middlewares/img-upload-handler";
+import {
+  imageUploader,
+  multerMiddleware,
+} from "../middlewares/img-upload-handler";
 import validateData from "../middlewares/validate-data";
 
 const productRouter = express.Router();
@@ -16,7 +19,8 @@ productRouter
   .get(productController.getProductList)
   .post(
     verifyAccessToken,
-    imgUploadHandler,
+    multerMiddleware,
+    imageUploader,
     validateData.product("post"),
     attachUserId,
     productController.createProduct
