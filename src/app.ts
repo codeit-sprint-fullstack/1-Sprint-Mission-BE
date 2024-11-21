@@ -1,6 +1,4 @@
-import * as dotenv from "dotenv";
-import { env } from "./config/env";
-dotenv.config({ path: `.env.${env}` });
+import { port } from "./config/env";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -32,4 +30,4 @@ app.use("product", productRouter);
 
 app.use(errorHandler);
 
-app.listen(process.env.PORT || 3001, () => console.log("Server Started"));
+app.listen(port || 3001, () => console.log("Server Started"));
