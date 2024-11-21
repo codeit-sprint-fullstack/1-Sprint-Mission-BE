@@ -42,5 +42,8 @@
   },
   "prisma": {
     "seed": "node prisma/seed.js"
+  },
+  "engines": {
+    "node": "20.12.0"
   }
 }
