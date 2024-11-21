@@ -113,6 +113,12 @@ describe("Product Service", () => {
   });
 
   describe("getProduct", () => {
+    beforeEach(() => {
+      // 각 테스트 전에 Mock 초기화
+      (productRepository.getById as jest.Mock).mockClear();
+      (productRepository.existingLike as jest.Mock).mockClear();
+    });
+
     test("상품 상제조회", async () => {
       (productRepository.getById as jest.Mock).mockResolvedValue(product);
       (productRepository.existingLike as jest.Mock).mockResolvedValue(product);
@@ -145,6 +151,10 @@ describe("Product Service", () => {
   });
 
   describe("create products", () => {
+    beforeEach(() => {
+      (productRepository.create as jest.Mock).mockClear();
+    });
+
     test("상품 생성", async () => {
       (productRepository.create as jest.Mock).mockResolvedValue(product);
 
@@ -173,6 +183,10 @@ describe("Product Service", () => {
   });
 
   describe("update product", () => {
+    beforeEach(() => {
+      (productRepository.update as jest.Mock).mockClear();
+    });
+
     test("상품 수정", async () => {
       (productRepository.update as jest.Mock).mockResolvedValue({
         ...product,
@@ -207,6 +221,10 @@ describe("Product Service", () => {
   });
 
   describe("like product", () => {
+    beforeEach(() => {
+      (productRepository.likeProduct as jest.Mock).mockClear();
+    });
+
     test("상품 좋아요", async () => {
       (productRepository.likeProduct as jest.Mock).mockResolvedValue(product);
 
@@ -227,6 +245,10 @@ describe("Product Service", () => {
   });
 
   describe("unlike product", () => {
+    beforeEach(() => {
+      (productRepository.unlikeProduct as jest.Mock).mockClear();
+    });
+
     test("상품 좋아요 취소", async () => {
       (productRepository.unlikeProduct as jest.Mock).mockResolvedValue(product);
 
@@ -247,10 +269,22 @@ describe("Product Service", () => {
   });
 
   describe("delete product", () => {
+    beforeEach(() => {
+      (productRepository.deleteItem as jest.Mock).mockClear();
+    });
+
     test("상품 삭제", async () => {
       (productRepository.deleteItem as jest.Mock).mockResolvedValue(product);
 
       await expect(productService.deleteProduct("1")).resolves.toEqual(product);
+    });
+
+    test("상품 삭제 실패 - product가 null인 경우", async () => {
+      (productRepository.deleteItem as jest.Mock).mockResolvedValue(null);
+
+      await expect(productService.deleteProduct("1")).rejects.toThrow(
+        "상품을 찾지 못했습니다"
+      );
     });
 
     test("상품 삭제 실패 - DB 에러 발생", async () => {
