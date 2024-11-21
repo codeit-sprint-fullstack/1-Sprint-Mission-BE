@@ -39,14 +39,9 @@ export const createProduct = async (req, res) => {
     return res.status(400).json({ message: '이미지 파일이 안옴' });
   }
 
-  const convertToUrl =
-    files && files.length > 0
-      ? files.map((file) => {
-          return `${req.protocol}://${req.get('host')}/api/images/${
-            file.filename
-          }`;
-        })
-      : [];
+  const convertToUrl = files.map((file) => file.location);
+
+  console.log('convertToURL:', convertToUrl);
 
   const data = {
     name,
@@ -83,14 +78,7 @@ export const updateProductById = async (req, res) => {
       .json({ message: '이미지 파일이나 원래 저장된 url 아무것도 안옴' });
   }
 
-  const convertToUrl =
-    files && files.length > 0
-      ? files.map((file) => {
-          return `${req.protocol}://${req.get('host')}/api/images/${
-            file.filename
-          }`;
-        })
-      : [];
+  const convertToUrl = files.map((file) => file.location);
 
   const data = {
     name,

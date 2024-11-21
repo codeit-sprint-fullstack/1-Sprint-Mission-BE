@@ -5,7 +5,7 @@ GET http://localhost:3000/api/articles
 ### POST /articles
 POST http://localhost:3000/api/articles
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ODdmMGJlZS1mMWE3LTRlMmMtODlhOS0yMWNmNzg1NWUxM2UiLCJpYXQiOjE3Mjg0NDEzMTEsImV4cCI6MTcyOTY1MDkxMX0._QUw-B38B6YX4d8cv43kfDFyY29CGV9toC8jjWrMi3c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmZTQwNGMzOS00OTU1LTRjYmYtOThkOS0xNTZmNmQxZWM5ZDkiLCJpYXQiOjE3MzIxNjM5ODIsImV4cCI6MTczMjE2NzU4Mn0.mjGRNDo29CEay5UKxjvT3xPG_V3Wt3IkMvuCuj3MqsM
 
 {
       "content": "게시글 내용입니다.",

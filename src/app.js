@@ -21,7 +21,6 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 app.use(passport.initialize());
-app.use('/api/images', express.static('uploads'));
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
