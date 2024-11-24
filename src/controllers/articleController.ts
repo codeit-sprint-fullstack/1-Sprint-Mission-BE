@@ -16,7 +16,7 @@ const formatArticleResponse = (article: any) => ({
   isLiked: article.isLiked,
 });
 
-const sendResponse = (res: Response, data: any, status: number = 200) =>
+const sendResponse = (res: Response, data: any, status = 200) =>
   res.status(status).json(data);
 
 export const createArticle = async (
