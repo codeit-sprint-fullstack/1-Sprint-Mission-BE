@@ -11,3 +11,4 @@ node_modules
 test.http
 uploads/
 dist
+coverage
