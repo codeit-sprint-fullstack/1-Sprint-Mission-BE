@@ -45,7 +45,7 @@
     "typescript": "^5.6.3"
   },
   "scripts": {
-    "dev": "nodemon --watch src src/app.ts",
+    "dev": "nodemon",
     "start": "node dist/app.js",
     "seed": "node data/seed.js",
     "swagger": "node swagger.js",
@@ -54,6 +54,5 @@
   },
   "prisma": {
     "seed": "node prisma/seed.js"
-  },
-  "type": "module"
+  }
 }
