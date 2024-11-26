@@ -1,17 +1,37 @@
-import prisma from "../models/index.js";
+import prisma from "../models/index";
+import { Product, Prisma } from "@prisma/client";
 
-const parseId = (id) => parseInt(id, 10);
+interface User_Product {
+  productId: string | number;
+  userId: string | number;
+}
+
+interface ProductParams {
+  images: string[];
+  name: string;
+  price: number;
+  description: string;
+  tags: string[];
+  userId: number;
+  userNickname: string;
+}
+
+interface UpdateProductParams extends ProductParams {
+  productId: string | number;
+}
+
+const parseId = (id: string | number): number => parseInt(id.toString(), 10);
 
 // 상품 생성
-export const createProduct = async (
+export const createProduct = async ({
   images,
   name,
   price,
   description,
   tags,
   userId,
-  userNickname
-) => {
+  userNickname,
+}: ProductParams): Promise<Product> => {
   const newProduct = await prisma.product.create({
     data: {
       images,
@@ -29,14 +49,19 @@ export const createProduct = async (
 
 // 상품 목록 조회
 export const getProducts = async (
-  page = 1,
-  pageSize = 10,
-  keyword = "",
-  orderBy = "recent"
-) => {
+  page: number = 1,
+  pageSize: number = 10,
+  keyword: string = "",
+  orderBy: string = "recent"
+): Promise<{
+  list: Product[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+}> => {
   const offset = (page - 1) * pageSize;
 
-  const whereCondition = keyword
+  const whereCondition: Prisma.ProductWhereInput = keyword
     ? {
         OR: [
           { name: { contains: keyword, mode: "insensitive" } },
@@ -45,10 +70,10 @@ export const getProducts = async (
       }
     : {};
 
-  const orderCondition =
+  const orderCondition: Prisma.ProductOrderByWithRelationInput[] =
     orderBy === "favorite"
       ? [{ favoriteCount: "desc" }, { createdAt: "desc" }]
-      : { createdAt: "desc" };
+      : [{ createdAt: "desc" }];
 
   const [list, totalCount] = await prisma.$transaction([
     prisma.product.findMany({
@@ -64,7 +89,10 @@ export const getProducts = async (
 };
 
 // 특정 상품 조회
-export const getProductById = async (productId, userId) => {
+export const getProductById = async ({
+  productId,
+  userId,
+}: User_Product): Promise<Product & { isFavorite: boolean }> => {
   const product = await prisma.product.findUnique({
     where: { id: parseId(productId) },
     include: {
@@ -88,14 +116,16 @@ export const getProductById = async (productId, userId) => {
 };
 
 // 상품 업데이트
-export const updateProduct = async (
+export const updateProduct = async ({
   productId,
   images,
   name,
   price,
   description,
-  tags
-) => {
+  tags,
+  userId,
+  userNickname,
+}: UpdateProductParams): Promise<Product> => {
   const updatedProduct = await prisma.product.update({
     where: { id: parseId(productId) },
     data: {
@@ -104,17 +134,25 @@ export const updateProduct = async (
       price,
       description,
       tags,
+      ownerId: userId,
+      ownerNickname: userNickname,
     },
   });
 
   return updatedProduct;
 };
 
-export const deleteProduct = async (productId) => {
+export const deleteProduct = async (
+  productId: string | number
+): Promise<void> => {
   await prisma.product.delete({ where: { id: parseId(productId) } });
 };
 
-const updateFavorite = async (productId, increment = true, userId) => {
+const updateFavorite = async (
+  productId: string | number,
+  increment: boolean = true,
+  userId: string | number
+): Promise<{ updatedProduct: Product; favoriteActionResult: any }> => {
   const existingFavorite = await prisma.favorite.findFirst({
     where: { productId: parseId(productId), userId: parseId(userId) },
   });
@@ -137,17 +175,29 @@ const updateFavorite = async (productId, increment = true, userId) => {
           data: { productId: parseId(productId), userId: parseId(userId) },
         })
       : prisma.favorite.delete({
-          where: { id: existingFavorite.id },
+          where: { id: existingFavorite!.id },
         }),
   ]);
 
   return { updatedProduct, favoriteActionResult };
 };
 
-export const addFavorite = async (productId, userId) => {
+export const addFavorite = async ({
+  productId,
+  userId,
+}: User_Product): Promise<{
+  updatedProduct: Product;
+  favoriteActionResult: any;
+}> => {
   return updateFavorite(productId, true, userId);
 };
 
-export const deleteFavorite = async (productId, userId) => {
+export const deleteFavorite = async ({
+  productId,
+  userId,
+}: User_Product): Promise<{
+  updatedProduct: Product;
+  favoriteActionResult: any;
+}> => {
   return updateFavorite(productId, false, userId);
 };
