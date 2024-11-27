@@ -1,9 +1,0 @@
-const MIN_LENGTH_COMMENT = 1;
-const MAX_LENGTH_COMMENT = 500;
-
-export const commentSchema = {
-  MIN_LENGTH_COMMENT,
-  MAX_LENGTH_COMMENT,
-};
-
-export const SHOW_DEFAULT_COMMENT_COUNT = 100;

@@ -1,0 +1,44 @@
+###
+POST http://localhost:3000/auth/sign-up
+Content-Type : application/json
+
+{
+    "email" : "codeit1@codeit.com",
+    "password" : "!codeit1",
+    "nickname" : "코드잇1",
+    "name" : "코드잇1"
+}
+
+###
+POST http://localhost:3000/auth/sign-in
+Content-Type : application/json
+
+{
+    "email" : "codeit0@codeit.com",
+    "password" : "!codeit0"
+}
+
+###
+POST http://localhost:3000/auth/sign-in
+Content-Type : application/json
+
+{
+    "email" : "codeit1@codeit.com",
+    "password" : "!codeit1"
+}
+
+###
+POST http://localhost:3000/auth/refreshAccessToken
+Content-Type : application/json
+
+{
+    "RefreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1NDc3N2Y1LTJkZjgtNDM2ZC04NzMxLTUxNDQ5Zjk4MWRhZCIsImlhdCI6MTczMDg1ODQ0NSwiZXhwIjoxNzMxNDYzMjQ1fQ.PhnY1XhIH7k7Z91NFiQ0bZmFFg8POeFEdpdbvR6AyfA"
+}
+
+###
+POST https://sprint-be.onrender.com/auth/sign-in
+
+{
+    "email" : "codeit1@codeit.com",
+    "password" : "!codeit1"
+}
