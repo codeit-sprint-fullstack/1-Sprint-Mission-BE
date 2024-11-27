@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,76 +13,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// 사용자 모델 스키마
 model User {
-  id                Int            @id @default(autoincrement())
-  email             String         @unique
-  nickname          String         @unique
-  image             String?        // 이미지 URL
-  encryptedPassword String
-  googleId          String?        @unique // Google ID 추가
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
-  comments          Comment[]
-  refreshTokens     RefreshToken[]
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  nickname  String
+  password  String
+  image     String?   // 프로필 이미지 (선택적)
+  products  Product[] // 유저가 등록한 상품
+  articles  Article[] // 유저가 작성한 게시글
+  comments  Comment[] // 유저가 작성한 댓글
+  likes     Like[]    // 유저가 남긴 좋아요
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  price       Int
+  image       String[]
+  tags        String[]
+  comments    Comment[] @relation("ProductComments")
+  likes       Like[]    // 좋아요 연결
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      Int?
+  user        User?     @relation(fields: [userId], references: [id])
+}
+
+
+model Article {
+  id          Int       @id @default(autoincrement())
+  title       String
+  content     String
+  image       String[]   // 게시글 이미지 경로
+  tags        String[]
+  comments    Comment[] @relation("ArticleComments")
+  likes       Like[]    // 좋아요 연결
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      Int?
+  user        User?     @relation(fields: [userId], references: [id])
 }
 
 model Comment {
-  id          Int       @id @default(autoincrement())
-  content     String
-  articleId   Int?      // 자유게시판 게시글 외래키
-  marketPostId Int?      // 중고마켓 게시글 외래키
-  boardType   boardType @default(board)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  userId      Int       // 사용자 ID 필드를 필수로 변경
-  article     Article?   @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
-  marketPost  MarketPost? @relation("MarketComments", fields: [marketPostId], references: [id], onDelete: Cascade)
-  user        User       @relation(fields: [userId], references: [id]) // 사용자와의 관계 추가
-  
-  @@unique([id, boardType])
-}
-
-model RefreshToken {
-  id        Int      @id @default(autoincrement())
-  token     String   @unique
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-}
-
-// 자유게시판 게시글 모델 스키마
-model Article {
-  id        Int      @id @default(autoincrement())
-  title     String   
+  id        Int       @id @default(autoincrement())
   content   String
-  likeCount Int      @default(0)
+  productId Int?
+  product   Product?  @relation("ProductComments", fields: [productId], references: [id])
+  articleId Int?
+  article   Article?  @relation("ArticleComments", fields: [articleId], references: [id])
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id])
+  articleId Int?
+  article   Article? @relation(fields: [articleId], references: [id])
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  author    String   
-  imageUrl  String?
-  comments  Comment[] @relation("ArticleComments") // 댓글과의 관계 설정
 }
 
-// 중고마켓 게시글 모델 스키마
-model MarketPost {
-  id              Int      @id @default(autoincrement())
-  name            String   // 상품명
-  description     String   // 상품 설명
-  price           Int      // 가격
-  tags            String[] // 태그 배열
-  images          String[] // 이미지 URL 배열
-  ownerId         Int      // 소유자 ID
-  favoriteCount   Int      @default(0) // 찜 개수
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  ownerNickname   String   // 소유자 닉네임
-  isFavorite      Boolean   @default(false) // 찜 여부
-  comments        Comment[] @relation("MarketComments") // 댓글과의 관계 추가
-}
-
-enum boardType {
-  board
-  market
-  article
-}
