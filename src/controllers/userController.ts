@@ -1,4 +1,3 @@
-import * as userService from "../services/userService";
 import { Request, Response, NextFunction } from "express";
 
 export const getUserById = async (

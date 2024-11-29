@@ -1,5 +1,5 @@
-import prisma from "../models/index";
-import { Prisma } from "@prisma/client";
+import { ArticleRepository } from "../repositorys/articleRepository";
+import { Favorite, Prisma, User } from "@prisma/client";
 
 interface Article {
   id: number;
@@ -15,30 +15,12 @@ interface Article {
   likeCount?: number;
 }
 
-interface User {
-  id: number;
-  nickname: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface Favorite {
-  id: number;
-  userId: number;
-  articleId: number;
-}
-
 interface User_Article {
   articleId: number;
   userId: number;
 }
-const includeRelations = (userId: number) => ({
-  writer: true,
-  favorites: {
-    where: { userId: userId },
-    select: { id: true, userId: true, articleId: true }, // favorites의 전체 필드를 선택하도록 수정
-  },
-});
+
+const articleRepository = new ArticleRepository();
 
 const generateWhereCondition = (keyword: string): Prisma.ArticleWhereInput => {
   return keyword
@@ -72,21 +54,17 @@ export const getArticles = async (
   pageSize: number;
 }> => {
   const offset = (page - 1) * pageSize;
+  const whereCondition = generateWhereCondition(keyword);
+  const orderCondition = generateOrderCondition(orderBy);
 
-  const [list, totalCount] = await prisma.$transaction([
-    prisma.article.findMany({
-      where: generateWhereCondition(keyword),
-      skip: offset,
-      take: pageSize,
-      orderBy: generateOrderCondition(orderBy),
-      include: {
-        writer: true,
-        favorites: true, // Include all favorite fields
-      },
-    }),
-    prisma.article.count({
-      where: generateWhereCondition(keyword),
-    }),
+  const [list, totalCount] = await Promise.all([
+    articleRepository.findMany(
+      whereCondition,
+      orderCondition,
+      offset,
+      pageSize
+    ),
+    articleRepository.count(whereCondition),
   ]);
 
   const listWithLikeStatus = list.map((article) => ({
@@ -107,17 +85,16 @@ export const createArticle = async (
   title: string,
   userId: number
 ): Promise<Article> => {
-  const newArticle = await prisma.article.create({
-    data: { images, content, title, userId },
-    include: includeRelations(userId),
-  });
+  const newArticle = await articleRepository.create(
+    { images, content, title, userId },
+    userId
+  );
 
-  // 수동으로 Article 타입에 맞도록 매핑 (favorites가 부족한 경우 대응)
   return {
     ...newArticle,
     favorites: newArticle.favorites.map((fav) => ({
       id: fav.id,
-      userId: userId,
+      userId,
       articleId: newArticle.id,
     })),
   } as Article;
@@ -127,11 +104,7 @@ export const getArticleById = async ({
   articleId,
   userId,
 }: User_Article): Promise<Article> => {
-  const article = await prisma.article.findUnique({
-    where: { id: articleId },
-    include: includeRelations(userId),
-  });
-
+  const article = await articleRepository.findUnique(articleId, userId);
   if (!article) throw new Error("Article not found");
 
   const isLiked = article.favorites.length > 0;
@@ -154,11 +127,11 @@ export const updateArticle = async (
   title: string,
   content: string
 ): Promise<Article> => {
-  const updatedArticle = await prisma.article.update({
-    where: { id: articleId },
-    data: { images, title, content },
-    include: includeRelations(userId),
-  });
+  const updatedArticle = await articleRepository.update(
+    articleId,
+    { images, title, content },
+    userId
+  );
 
   return {
     ...updatedArticle,
@@ -171,47 +144,25 @@ export const updateArticle = async (
 };
 
 export const deleteArticle = async (articleId: number): Promise<void> => {
-  await prisma.article.delete({
-    where: { id: articleId },
-  });
+  await articleRepository.delete(articleId);
 };
 
 export const addLike = async ({
   articleId,
   userId,
 }: User_Article): Promise<Article> => {
-  await prisma.favorite.create({
-    data: {
-      articleId: articleId,
-      userId: userId,
-    },
-  });
-
-  return prisma.article.update({
-    where: { id: articleId },
-    data: {
-      likeCount: { increment: 1 },
-    },
-    include: includeRelations(userId),
-  }) as Promise<Article>;
+  return articleRepository.createFavorite(
+    articleId,
+    userId
+  ) as Promise<Article>;
 };
 
 export const deleteLike = async ({
   articleId,
   userId,
 }: User_Article): Promise<Article> => {
-  await prisma.favorite.deleteMany({
-    where: {
-      articleId: articleId,
-      userId: userId,
-    },
-  });
-
-  return prisma.article.update({
-    where: { id: articleId },
-    data: {
-      likeCount: { decrement: 1 },
-    },
-    include: includeRelations(userId),
-  }) as Promise<Article>;
+  return articleRepository.deleteFavorite(
+    articleId,
+    userId
+  ) as Promise<Article>;
 };
