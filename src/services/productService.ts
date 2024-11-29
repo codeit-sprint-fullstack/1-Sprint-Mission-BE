@@ -2,25 +2,18 @@ import { Request } from "express";
 import productRepository from "../repositorys/productRepository";
 import { setOrderByQuery } from "../utils/orderByQuery";
 import { CustomError } from "../utils/interfaces/customError";
-import { Product } from "@prisma/client";
 import { whereConditions } from "../utils/interfaces/whereConditions";
 import { ProductData } from "../utils/interfaces/products/productData";
-
-interface QueryString {
-  orderBy: string;
-  page: string;
-  pageSize: string;
-  keyword: string;
-}
+import offsetQueryString from "../utils/queryString/offsetQueryString";
 
 const getProducts = async (req: Request) => {
-  const query = req.query as unknown as QueryString;
+  const query = req.query as unknown as offsetQueryString;
   const {
     orderBy = "recent", // 기본값
     page = "1",
     pageSize = "10",
     keyword = "",
-  }: QueryString = query;
+  }: offsetQueryString = query;
   const parsePage = parseInt(page);
   const parsePageSize = parseInt(pageSize);
   const offset = (parsePage - 1) * parsePageSize; //page가 3이면 3-1 = 2 * count 만큼 스킵

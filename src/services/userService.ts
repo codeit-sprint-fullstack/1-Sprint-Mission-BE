@@ -3,13 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
 import { CustomError } from "../utils/interfaces/customError";
-
-interface UserData {
-  email: string;
-  password: string;
-  nickname: string;
-  refreshToken?: string;
-}
+import UserData from "../utils/interfaces/user/userData";
 
 type ResponseUser = Omit<User, "password" | "refreshToken">;
 

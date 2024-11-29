@@ -3,18 +3,11 @@ import articleRepository from "../repositorys/articleRepository";
 import { whereConditions } from "../utils/interfaces/whereConditions";
 import { Request } from "express";
 import { CustomError } from "../utils/interfaces/customError";
-import { Article } from "@prisma/client";
 import { ArticleData } from "../utils/interfaces/articles/articleData";
-
-interface QueryString {
-  orderBy: string;
-  keyword: string;
-  cursor: string;
-  limit: string;
-}
+import cursorQueryString from "../utils/queryString/cursorQueryString";
 
 const getArticles = async (req: Request) => {
-  const query = req.query as unknown as QueryString;
+  const query = req.query as unknown as cursorQueryString;
   const { orderBy = "recent", keyword = "", cursor = "", limit = "5" } = query;
   const parseLimit = parseInt(limit);
   const orderbyQuery = setOrderByQuery(orderBy);
