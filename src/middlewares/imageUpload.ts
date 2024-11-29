@@ -4,15 +4,16 @@ import multerS3 from "multer-s3";
 import path from "path";
 import dotenv from "dotenv";
 import { Request } from "express";
+import env from "../env";
 
 dotenv.config();
 
 // AWS S3 클라이언트 설정 (v3)
 const s3 = new S3Client({
-  region: process.env.AWS_REGION!,
+  region: env.Region!,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: env.AccessKeyId!,
+    secretAccessKey: env.SecretAccessKey!,
   },
 });
 
@@ -34,7 +35,7 @@ const fileFilter = (
 // S3 Storage 설정
 const storage = multerS3({
   s3,
-  bucket: process.env.AWS_BUCKET_NAME!,
+  bucket: env.BucketName!,
   metadata: (req: Request, file: Express.Multer.File, cb) => {
     cb(null, { fieldName: file.fieldname });
   },

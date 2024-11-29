@@ -1,6 +1,7 @@
 import prisma from "../models/index";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import env from "../env";
 
 interface User {
   id: number;
@@ -81,7 +82,7 @@ export const refreshToken = async (
 
   try {
     // 1. Refresh token 검증
-    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+    const decoded = jwt.verify(refreshToken, env.RefreshTokenSecret!);
 
     // 2. Refresh token의 존재 여부 확인
     const tokenRecord = await prisma.auth.findUnique({
@@ -120,23 +121,15 @@ export const refreshToken = async (
 };
 
 const generateAccessToken = (user: User): string => {
-  return jwt.sign(
-    { id: user.id, email: user.email },
-    process.env.ACCESS_TOKEN_SECRET!,
-    {
-      expiresIn: "3h",
-    }
-  );
+  return jwt.sign({ id: user.id, email: user.email }, env.AccessTokenSecret!, {
+    expiresIn: "3h",
+  });
 };
 
 const generateRefreshToken = (user: User): string => {
-  return jwt.sign(
-    { id: user.id, email: user.email },
-    process.env.REFRESH_TOKEN_SECRET!,
-    {
-      expiresIn: "7d",
-    }
-  );
+  return jwt.sign({ id: user.id, email: user.email }, env.RefreshTokenSecret!, {
+    expiresIn: "7d",
+  });
 };
 
 const getExpirationDate = (time: number, unit: string = "hours"): Date => {
