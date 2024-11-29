@@ -108,8 +108,8 @@ export const updateProduct = async (
     if (!user?.id) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const userId: number = user.id;
-    const userNickname: string = user.nickname;
+    const userId = user.id;
+    const userNickname = user.nickname;
     const newImagePaths = files
       ? files.map((file) => (file as any).location)
       : [];
