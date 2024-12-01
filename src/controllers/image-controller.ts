@@ -10,13 +10,12 @@ export async function uploadImage(
 ): Promise<void> {
   try {
     let result;
-
     if (req.file) {
-      result = await imageService.uploadGoogleCloud(req.file);
+      // result = await imageService.uploadGoogleCloud(req.file);
+      result = await imageService.uploadAWS(req.file);
     } else {
       throw new CustomError(40067);
     }
-
     res.status(201).send(result);
   } catch (err) {
     next(err);

@@ -14,6 +14,7 @@ export function userIndetificationInfoMapper({
     nickname: userInfo.nickname,
     name: userInfo.name,
     email: userInfo.email,
+    image: userInfo.image,
     createdAt: userInfo.createdAt,
     accessToken: accessToken,
     refreshToken: refreshToken,

@@ -130,6 +130,7 @@ export interface ProductBaseInfo {
   price: number | null | undefined;
   favoriteCount: number | null | undefined;
   images: string[] | null | undefined;
+  tags: string[] | null | undefined;
   ownerId: string | null | undefined;
   ownerImage: string | null | undefined;
   ownerNickname: string | undefined;

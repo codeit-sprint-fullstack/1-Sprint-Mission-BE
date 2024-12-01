@@ -23,6 +23,7 @@ export interface UserBaseInfo {
   nickname: string;
   name: string;
   email: string;
+  image: string | null;
   createdAt: Date;
 }
 

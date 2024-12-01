@@ -5,6 +5,7 @@ export const userBaseSelect: Prisma.UserSelect = {
   nickname: true,
   name: true,
   email: true,
+  image: true,
   createdAt: true,
 };
 
