@@ -1,0 +1,8 @@
+{
+  "watch": ["src"],
+  "execMap": {
+    "ts": "ts-node --loader ts-node/esm"
+  },
+  "ext": "ts,tsx",
+  "exec": "npx tsx src/app.tsx"
+}
