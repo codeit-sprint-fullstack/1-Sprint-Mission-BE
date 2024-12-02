@@ -43,7 +43,7 @@ async function createProduct(req: Request<{}, {}, CreateProductWithUser>) {
   let createData: CreateProducrData;
   let imagePath: ImagePath = {};
 
-  if (req.files && req.files.length > 0) {
+  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
     const imagePaths = req.files.map((file) => file.filename);
 
     createData = { ...req.body, image: imagePaths };

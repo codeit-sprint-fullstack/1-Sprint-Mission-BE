@@ -1,7 +1,5 @@
 import { expressjwt } from "express-jwt";
 import jwt from "jsonwebtoken";
-// import commentRepository from "../repositories/commentRepository.js";
-// import productRepositpry from "../repositories/productRepositpry.js";
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { CustomError } from "./error-handler";
 import articleRepository from "../repositories/article-repository";
@@ -10,6 +8,7 @@ import { UpdateProduct } from "../struct/product-struct";
 import productRepository from "../repositories/product-repository";
 import { UpdateComment } from "../struct/comment-struct";
 import commentRepository from "../repositories/comment-repository";
+import { JWT_SECRET } from "../config/env";
 
 type Decoded = {
   userId: string;
@@ -18,12 +17,12 @@ type Decoded = {
 };
 
 const verifyAccessToken = expressjwt({
-  secret: process.env.JWT_SECRET,
+  secret: JWT_SECRET,
   algorithms: ["HS256"],
 }) as unknown as RequestHandler;
 
 const verifyRefreshToken = expressjwt({
-  secret: process.env.JWT_SECRET,
+  secret: JWT_SECRET,
   algorithms: ["HS256"],
   getToken: (req) => req.cookies?.refreshToken,
 }) as unknown as RequestHandler;
@@ -133,6 +132,6 @@ export {
   attachUserId,
   setUserIdFromToken,
   verifyArticleAuth,
-    verifyCommentAuth,
+  verifyCommentAuth,
   verifyProductAuth,
 };
