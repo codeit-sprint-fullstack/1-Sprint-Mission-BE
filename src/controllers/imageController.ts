@@ -1,22 +1,24 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
+import generatePresignedUrl from '../utils/multer';
 
-interface MulterRequest extends Request {
-  file?: Express.Multer.File; // Multer 파일 속성을 추가
-}
+const ERROR_MESSAGES = {
+  UPLOAD_REQUIRED: '이미지를 업로드해 주세요.',
+};
 
-const imageUpload = (req: MulterRequest, res: Response): void => {
-  // 업로드된 파일이 없는 경우 에러 반환
-  if (!req.file) {
-    res.status(400).json({ error: "이미지를 업로드해 주세요." });
+const imageUpload = async (req: Request, res: Response): Promise<void> => {
+  const fileName = req.body.fileName; // 아이바오마켓에서 파일 이름을 받아올 예정
+
+  if (!fileName) {
+    res.status(400).json({ error: ERROR_MESSAGES.UPLOAD_REQUIRED });
     return;
   }
 
-  // 서버의 도메인 URL을 환경변수에서 가져옴
-  const serverUrl = process.env.SERVER_URL || "https://baomarket.onrender.com";
-
-  // 이미지 URL 생성
-  const imageUrl = `${serverUrl}/uploads/${req.file.filename}`;
-  res.status(200).json({ url: imageUrl });
+  try {
+    const presignedUrl = await generatePresignedUrl(fileName);
+    res.status(200).json({ url: presignedUrl });
+  } catch (error) {
+    res.status(500).json({ error: 'URL 생성 중 오류 발생' });
+  }
 };
 
 export default imageUpload;

@@ -1,37 +1,43 @@
-import multer from "multer";
-import path from "path";
-import fs from "fs";
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import path from 'path';
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "../uploads");
-
-    // 업로드 폴더가 존재하지 않으면 생성
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+const s3 = new S3Client({
+  region: 'ap-northeast-2',
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
 });
 
-const fileFilter = (req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-  const ext = path.extname(file.originalname).toLowerCase();
-  if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png") {
-    cb(null, false);
-  } else {
-    cb(null, true);
+const getMimeType = (fileName: string): string => {
+  const ext = path.extname(fileName).toLowerCase();
+  switch (ext) {
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.png':
+      return 'image/png';
+    case '.gif':
+      return 'image/gif';
+    case '.pdf':
+      return 'application/pdf';
+    default:
+      return 'application/octet-stream';
   }
 };
 
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 1024 * 1024 * 5 }, // 최대 파일 크기 5MB 제한
-});
+// Presigned URL 생성 함수
+const generatePresignedUrl = async (fileName: string): Promise<string> => {
+  const command = new PutObjectCommand({
+    Bucket: process.env.AWS_BUCKET_NAME as string,
+    Key: `uploads/${Date.now()}-${fileName}`,
+    ContentType: getMimeType(fileName), // MIME 타입 설정
+  });
 
-export default upload;
+  const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 60 });
+  return presignedUrl;
+};
+
+export default generatePresignedUrl;
 
