@@ -9,6 +9,9 @@ import {
   postFavorites,
   CustomRequest,
 } from '../controllers/productController';
+import uploadImage from '../controllers/uploadController';
+import multer from 'multer';
+const upload = multer();
 
 const router = express.Router();
 
@@ -25,6 +28,8 @@ router.post(
     postProduct(req as CustomRequest, res, next);
   }
 );
+
+router.post('/upload', upload.single('image'), uploadImage);
 
 // 특정 상품 정보 조회
 router.get('/:productId', (req: Request, res: Response, next: NextFunction) => {

@@ -19,6 +19,14 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const client_1 = require("@prisma/client");
 const dotenv_1 = __importDefault(require("dotenv"));
+const env_1 = __importDefault(require("../env"));
+const prisma = new client_1.PrismaClient({
+    datasources: {
+        db: {
+            url: env_1.default.baseUrl,
+        },
+    },
+});
 dotenv_1.default.config();
 if (!process.env.ACCESS_TOKEN_SECRET) {
     throw new Error('ACCESS_TOKEN_SECRET is not defined');
@@ -26,7 +34,6 @@ if (!process.env.ACCESS_TOKEN_SECRET) {
 else if (!process.env.REFRESH_TOKEN_SECRET) {
     throw new Error('REFRESH_TOKEN_SECRET is not defined');
 }
-const prisma = new client_1.PrismaClient();
 function signup(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

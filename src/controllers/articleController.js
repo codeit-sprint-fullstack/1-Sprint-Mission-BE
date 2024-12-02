@@ -8,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postArticle = postArticle;
 exports.getArticles = getArticles;
@@ -16,7 +19,14 @@ exports.patchArticle = patchArticle;
 exports.deleteArticle = deleteArticle;
 exports.postArticleFavorite = postArticleFavorite;
 const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const env_1 = __importDefault(require("../env"));
+const prisma = new client_1.PrismaClient({
+    datasources: {
+        db: {
+            url: env_1.default.baseUrl,
+        },
+    },
+});
 function postArticle(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;

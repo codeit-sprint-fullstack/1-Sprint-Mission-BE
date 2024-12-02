@@ -1,8 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
-
-const prisma = new PrismaClient();
-
+import env from '../env';
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: env.baseUrl,
+    },
+  },
+});
 // 사용자 요청 객체에 사용자 정보가 포함될 때 타입 정의
 export interface CustomRequest extends Request {
   user?: {

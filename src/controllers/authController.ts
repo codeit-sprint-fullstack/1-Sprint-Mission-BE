@@ -3,7 +3,14 @@ import bcrypt from 'bcryptjs';
 import { PrismaClient, User } from '@prisma/client';
 import dotenv from 'dotenv';
 import { Request, Response, NextFunction } from 'express';
-
+import env from '../env';
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: env.baseUrl,
+    },
+  },
+});
 dotenv.config();
 
 if (!process.env.ACCESS_TOKEN_SECRET) {
@@ -11,8 +18,6 @@ if (!process.env.ACCESS_TOKEN_SECRET) {
 } else if (!process.env.REFRESH_TOKEN_SECRET) {
   throw new Error('REFRESH_TOKEN_SECRET is not defined');
 }
-
-const prisma = new PrismaClient();
 
 export interface CustomRequest extends Request {
   user: {

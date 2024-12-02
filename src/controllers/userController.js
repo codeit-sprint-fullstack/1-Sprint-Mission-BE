@@ -13,10 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUser = getUser;
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
 const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const env_1 = __importDefault(require("../env"));
+const prisma = new client_1.PrismaClient({
+    datasources: {
+        db: {
+            url: env_1.default.baseUrl,
+        },
+    },
+});
 // 사용자 정보 조회
 function getUser(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {

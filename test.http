@@ -1,6 +1,6 @@
 
 ###회원가입
-POST http://localhost:3001/auth/signup
+POST http://54.152.14.197:3001/auth/signup
 Content-Type: application/json
 
 {
