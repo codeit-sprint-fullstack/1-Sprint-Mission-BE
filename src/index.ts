@@ -1,12 +1,12 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
-import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import productRoutes from "./routes/productRoutes";
 import articleRoutes from "./routes/articleRoutes";
 import commentRoutes from "./routes/commentRoutes";
 import { errorHandler } from "./middlewares/errorHandler";
+import cors from "cors";
 
 dotenv.config();
 
@@ -23,9 +23,11 @@ app.use("/", commentRoutes);
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
 
 export default app;

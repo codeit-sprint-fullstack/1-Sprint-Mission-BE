@@ -13,4 +13,21 @@ if (product === "Product") {
   baseUrl = dbUrl as string;
 }
 
-export default { dbUrl, awsUrl, product, baseUrl };
+const AccessKeyId = process.env.AWS_ACCESS_KEY_ID;
+const SecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+const BucketName = process.env.AWS_BUCKET_NAME;
+const Region = process.env.AWS_REGION;
+const AccessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+const RefreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+export default {
+  dbUrl,
+  awsUrl,
+  product,
+  baseUrl,
+  AccessKeyId,
+  SecretAccessKey,
+  BucketName,
+  Region,
+  AccessTokenSecret,
+  RefreshTokenSecret,
+};
