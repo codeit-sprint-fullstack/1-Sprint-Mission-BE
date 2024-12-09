@@ -1,11 +1,6 @@
 import prismaClient from "../utils/prismaClient";
 import { User } from "@prisma/client";
-
-interface UserData {
-  email: string;
-  password: string;
-  nickname: string;
-}
+import UserData from "../utils/interfaces/user/userData";
 
 const getUsers = (): Promise<User[]> => {
   return prismaClient.user.findMany();

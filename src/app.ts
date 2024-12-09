@@ -5,19 +5,34 @@ import articles from "./controllers/articleController";
 import comments from "./controllers/commentController";
 import products from "./controllers/productController";
 import users from "./controllers/userController";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import errorHandler from "./middlewares/errorHandler";
 
 const app = express();
 
 //CORS 설정
-app.use(
-  cors({
-    credentials: true,
-    origin: "http://localhost:3001",
-    exposedHeaders: ["set-cookie"],
-  })
-);
+const allowedOrigins: string[] = [
+  "http://localhost:3001",
+  "https://1-sprint-mission-fx6q8tnz1-woohyuntaks-projects.vercel.app",
+];
+// CORS 설정
+const corsOptions: CorsOptions = {
+  credentials: true,
+  origin: function (
+    origin: string | undefined,
+    callback: (err: Error | null, origin?: string) => void
+  ) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, origin); // 허용
+    } else {
+      callback(new Error("Not allowed by CORS")); // 허용하지 않음
+    }
+  },
+  exposedHeaders: ["set-cookie"],
+};
+
+// Express app에 CORS 적용
+app.use(cors(corsOptions));
 
 app.use(express.json()); //json parse
 app.use(cookieParser());

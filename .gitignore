@@ -36,3 +36,5 @@ commentsMock.js
 upload
 
 dist
+
+deploy.sh

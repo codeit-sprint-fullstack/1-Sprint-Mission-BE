@@ -1,15 +1,9 @@
-import userModel from "../repositorys/userRepository";
+import userRepository from "../repositorys/userRepository";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
 import { CustomError } from "../utils/interfaces/customError";
-
-interface UserData {
-  email: string;
-  password: string;
-  nickname: string;
-  refreshToken?: string;
-}
+import UserData from "../utils/interfaces/user/userData";
 
 type ResponseUser = Omit<User, "password" | "refreshToken">;
 
@@ -21,7 +15,7 @@ const createToken = (user: ResponseUser, type: string = "") => {
 
 const createUser = async (user: UserData) => {
   const hashedPassword = await hashingPassword(user.password); //비밀번호 해싱후 저장
-  const createUser = await userModel.create({
+  const createUser = await userRepository.create({
     ...user,
     password: hashedPassword, //해싱된 데이터로 변경
   });
@@ -29,7 +23,7 @@ const createUser = async (user: UserData) => {
 };
 
 const getUser = async (user: UserData) => {
-  const existedUser = await userModel.findByEmail(user.email);
+  const existedUser = await userRepository.findByEmail(user.email);
 
   if (!existedUser) {
     const error: CustomError = new Error("회원 정보가 없습니다.");
@@ -43,7 +37,7 @@ const getUser = async (user: UserData) => {
 };
 
 const getUserById = async (userId: string) => {
-  const user = await userModel.findById(userId);
+  const user = await userRepository.findById(userId);
   if (!user) {
     const error: CustomError = new Error("Not Found");
     error.status = 404;
@@ -53,7 +47,7 @@ const getUserById = async (userId: string) => {
 };
 
 const refreshToken = async (userId: string, refreshToken: string) => {
-  const existedUser = await userModel.findById(userId);
+  const existedUser = await userRepository.findById(userId);
   if (!existedUser || existedUser.refreshToken !== refreshToken) {
     //DB의 정보가 없거나 쿠키로 받은 토큰과 DB의 저당된 토큰을 비교한다.
     const error: CustomError = new Error("토큰이 유효하지 않습니다.");
@@ -66,7 +60,7 @@ const refreshToken = async (userId: string, refreshToken: string) => {
 };
 
 const updateRefreshToken = async (userId: string, refreshToken: string) => {
-  const user = await userModel.updateRefreshToken(userId, refreshToken);
+  const user = await userRepository.updateRefreshToken(userId, refreshToken);
   if (!user) {
     const error: CustomError = new Error("Not Found");
     error.status = 404;
@@ -86,7 +80,10 @@ const filterSensitiveUserData = (user: User) => {
   return rest;
 };
 
-const verifyPassword = async (inputPassword: string, savedPassword: string) => {
+export const verifyPassword = async (
+  inputPassword: string,
+  savedPassword: string
+) => {
   const isValid = await bcrypt.compare(inputPassword, savedPassword); // 변경
   if (!isValid) {
     const error: CustomError = new Error("비밀번호가 일치 하지 않습니다.");
@@ -102,4 +99,5 @@ export default {
   updateRefreshToken,
   refreshToken,
   createToken,
+  verifyPassword,
 };
